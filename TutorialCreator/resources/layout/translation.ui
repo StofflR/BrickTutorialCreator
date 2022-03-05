@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>517</width>
+    <height>545</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QTableWidget" name="tableWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>90</y>
+     <width>491</width>
+     <height>441</height>
+    </rect>
+   </property>
+   <property name="rowCount">
+    <number>0</number>
+   </property>
+   <column>
+    <property name="text">
+     <string>Original</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Translated</string>
+    </property>
+   </column>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>50</y>
+     <width>141</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Translation Language</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>181</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Select translation folder ..</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="text_path">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>10</y>
+     <width>291</width>
+     <height>31</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="text_language">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>50</y>
+     <width>291</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>default</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>released()</signal>
+   <receiver>Dialog</receiver>
+   <slot>getTranslationFolder()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>122</x>
+     <y>25</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>488</x>
+     <y>68</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tableWidget</sender>
+   <signal>cellChanged(int,int)</signal>
+   <receiver>Dialog</receiver>
+   <slot>contentChanged(int,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>181</x>
+     <y>141</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>513</x>
+     <y>203</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tableWidget</sender>
+   <signal>cellClicked(int,int)</signal>
+   <receiver>Dialog</receiver>
+   <slot>contentSelected(int,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>81</x>
+     <y>231</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1</x>
+     <y>102</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>text_language</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>Dialog</receiver>
+   <slot>exportLanguageChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>240</x>
+     <y>64</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>63</x>
+     <y>85</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>getTranslationFolder()</slot>
+  <slot>contentChanged(int,int)</slot>
+  <slot>contentSelected(int,int)</slot>
+  <slot>exportLanguageChanged(QString)</slot>
+ </slots>
+</ui>

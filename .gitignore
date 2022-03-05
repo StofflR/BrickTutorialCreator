@@ -347,3 +347,33 @@ healthchecksdb
 
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
+
+BrickCreator/.idea/
+
+BrickCreator/editing/
+
+TutorialCreator/.idea/
+
+TutorialCreator/resources/modules/out_test/
+
+TutorialCreator/export/
+
+TutorialCreator/out_test/
+
+TutorialCreator/resources/tmp/
+
+TutorialCreator/ui/venv/
+
+TutorialCreator/ui/main.dist/
+
+TutorialCreator/ui/main.onefile-build/
+
+TutorialCreator/ui/main.build/
+
+TutorialCreator/main.build/
+
+TutorialCreator/main.dist/
+
+TutorialCreator/ui/resources/tmp/
+
+TutorialCreator/ui/resources/out/
