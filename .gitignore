@@ -377,3 +377,19 @@ TutorialCreator/main.dist/
 TutorialCreator/ui/resources/tmp/
 
 TutorialCreator/ui/resources/out/
+
+BrickCreator/bricks/
+
+ui/venv/
+
+.idea/
+
+ui/resources/out/
+
+ui/resources/tmp/
+
+ui/main.build/
+
+ui/main.dist/
+
+ui/main.onefile-build/
