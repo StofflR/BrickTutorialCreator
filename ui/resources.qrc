@@ -114,6 +114,8 @@
         <file>resources/file_open_black_24dp.svg</file>
         <file>resources/folder_open_black_24dp.svg</file>
         <file>resources/text_snippet_black_24dp.svg</file>
+        <file>resources/icon.svg</file>
+        <file>resources/icon.png</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>

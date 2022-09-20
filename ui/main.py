@@ -1,7 +1,7 @@
 import sys
 import os
 from PySide6.QtCore import QUrl
-from PySide6.QtGui import QGuiApplication, QFontDatabase
+from PySide6.QtGui import QGuiApplication, QFontDatabase, QIcon
 from PySide6.QtQml import QQmlApplicationEngine, qmlRegisterType
 from qml import BrickManager
 from qml import Brick
@@ -13,6 +13,8 @@ import resources_rc
 if __name__ == "__main__":
     sys.argv += ['--style', 'Fusion']
     app = QGuiApplication(sys.argv)
+    app.setWindowIcon(QIcon("./resources/icon.svg"))
+    #sapp.applicationDisplayName("Brick Designer")
     qmlRegisterType(BrickManager.BrickManager, 'BrickManager', 1, 0, 'BrickManager')
     qmlRegisterType(Brick.Brick, 'Brick', 1, 0, 'Brick')
     qmlRegisterType(TutorialManager.TutorialManager, 'TutorialManager', 1, 0, 'TutorialManager')
