@@ -12,6 +12,7 @@ import "../views"
 Item {
     id: root
     signal update
+    signal updateStatusMessage(string text)
     onUpdate: {
         translationList.model = languageManager.sourceModel(textMetrics.text)
     }
@@ -93,13 +94,15 @@ Item {
                 languageManager.new(textMetrics.text, addLanguage.field.text)
                 language.comboBox.model = languageManager.languages(
                             textMetrics.text)
+                updateStatusMessage(
+                            "INFO: Added " + addLanguage.field.text + " as a new language!")
                 addLanguage.field.clear()
                 language.open()
             }
             field.anchors.right: abort.left
             IconButton {
                 id: abort
-                icon.source: "qrc:/bricks/resources/restore_black_24dp.svg"
+                icon.source: "qrc:/bricks/resources/arrow_back_ios_black_24dp.svg"
                 onClicked: language.open()
                 width: height
                 anchors.right: addLanguage.right

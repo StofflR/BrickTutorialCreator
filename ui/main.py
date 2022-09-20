@@ -7,6 +7,7 @@ from qml import BrickManager
 from qml import Brick
 from qml import TutorialManager
 from qml import LanguageManager
+from qml import Converter
 import resources_rc
 
 if __name__ == "__main__":
@@ -16,6 +17,7 @@ if __name__ == "__main__":
     qmlRegisterType(Brick.Brick, 'Brick', 1, 0, 'Brick')
     qmlRegisterType(TutorialManager.TutorialManager, 'TutorialManager', 1, 0, 'TutorialManager')
     qmlRegisterType(LanguageManager.LanguageManager, 'LanguageManager', 1, 0, 'LanguageManager')
+    qmlRegisterType(Converter.Converter, 'Converter', 1, 0, 'Converter')
 
     QFontDatabase.addApplicationFont(QUrl.fromLocalFile(
         os.getcwd()).toString() + "/qml/font/Roboto-Bold.ttf")

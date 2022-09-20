@@ -10,6 +10,8 @@ import "../font"
 import "../views"
 
 Rectangle {
+    id: root
+    signal updateStatusMessage(string text)
     anchors.fill: parent
     anchors.margins: 10
     ButtonField {
@@ -172,12 +174,22 @@ Rectangle {
             ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
             ToolTip.text: qsTr("Save the current brick!")
             onPressed: {
-                if (svg_check.checked)
+                var statusText = "INFO: Saved brick(s) as: "
+                var filename = svgBrick.fileName()
+                if (svg_check.checked) {
                     svgBrick.saveSVG(textMetrics.text)
-                if (json_check.checked)
+                    statusText += filename + ".svg "
+                }
+                if (json_check.checked) {
                     svgBrick.saveJSON(textMetrics.text)
-                if (png_check.checked)
+                    statusText += filename + ".json "
+                }
+                if (png_check.checked) {
                     svgBrick.savePNG(textMetrics.text)
+                    statusText += filename + ".png "
+                }
+                statusText += " to " + textMetrics.text
+                root.updateStatusMessage(statusText)
             }
         }
         IconButton {
@@ -190,6 +202,7 @@ Rectangle {
                     svgBrick.fromFile(currentFile)
                     brickContent.text = svgBrick.content()
                     svgPreview.source = svgBrick.path()
+                    root.updateStatusMessage("INFO: Loaded " + currentFile)
                 }
             }
             id: loadButton
@@ -213,7 +226,10 @@ Rectangle {
             ToolTip.visible: hovered
             ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
             ToolTip.text: qsTr("Clear current brick content!")
-            onPressed: brickContent.clear()
+            onPressed: {
+                brickContent.clear()
+                root.updateStatusMessage("INFO: Cleared brick content!")
+            }
         }
     }
     Brick {

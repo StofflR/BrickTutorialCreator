@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 2.15
+
 import "assets"
 import "font"
 import "views"
@@ -16,6 +17,11 @@ ApplicationWindow {
     title: qsTr("Brick Creator")
     font.family: Font.boldFont ? Font.boldFont : -1
     font.pixelSize: 10
+    property string statusText: ""
+    function updateStatusMessage(text) {
+        statusText = text
+    }
+
     menuBar: MenuBar {
         Menu {
             id: file
@@ -39,6 +45,19 @@ ApplicationWindow {
                 text: qsTr("&Convert Folder (JSON → SVG)")
                 font.family: Font.boldFont ? Font.boldFont : -1
                 font.pixelSize: 10
+                onTriggered: brickConverter.fromJSONtoSVG()
+            }
+            MenuItem {
+                text: qsTr("&Convert Folder (SVG → PNG)")
+                font.family: Font.boldFont ? Font.boldFont : -1
+                font.pixelSize: 10
+                onTriggered: brickConverter.fromSVGtoPNG()
+            }
+            MenuItem {
+                text: qsTr("&Convert Folder (JSON → PNG)")
+                font.family: Font.boldFont ? Font.boldFont : -1
+                font.pixelSize: 10
+                onTriggered: brickConverter.fromJSONtoPNG()
             }
         }
     }
@@ -74,24 +93,44 @@ ApplicationWindow {
             }
         }
     }
-
+    ConverterManager {
+        id: brickConverter
+        onConverted: count => root.updateStatusMessage(
+                         "INFO: Converted " + count + " files!")
+    }
     StackLayout {
         width: parent.width
         currentIndex: bar.currentIndex
         anchors.top: bar.bottom
-        anchors.bottom: parent.bottom
+        anchors.bottom: statusbar.top
         Item {
-            BrickCreator {}
+            BrickCreator {
+                onUpdateStatusMessage: text => root.updateStatusMessage(text)
+            }
         }
         Item {
             Translator {
                 id: translator
+                onUpdateStatusMessage: text => root.updateStatusMessage(text)
             }
         }
         Item {
             TutorialCreator {
                 width: parent.width
                 height: parent.height - 20
+                onUpdateStatusMessage: text => root.updateStatusMessage(text)
+            }
+        }
+    }
+    Rectangle {
+        id: statusbar
+        anchors.bottom: parent.bottom
+        height: 20
+        RowLayout {
+            anchors.fill: parent
+            Label {
+                height: statusbar.height
+                text: root.statusText
             }
         }
     }

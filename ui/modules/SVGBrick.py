@@ -202,7 +202,12 @@ class SVGBrick:
 
     @staticmethod
     def stringLength(line: str, size=12, font=BOLD):
-        metric = QFontMetrics(QFont(FAMILY_NAME[font], pointSize=int(size)))
+        if font == NORMAL:
+            weight = QFont.Thin
+        else:
+            weight = QFont.DemiBold+20
+        size = size-1
+        metric = QFontMetrics(QFont(FAMILY_NAME[font], pointSize=round(size),weight=weight))
         return metric.horizontalAdvance(line)
 
     def addVariable(self, line: str, x: int, y: int):

@@ -11,6 +11,7 @@ import TutorialManager 1.0
 
 Item {
     id: item
+    signal updateStatusMessage(string text)
     TutorialManager {
         id: tutorialManager
     }
@@ -78,6 +79,8 @@ Item {
                     fileMode: FileDialog.SaveFile
                     onAccepted: {
                         tutorialManager.saveTutorial(currentFile)
+                        root.updateStatusMessage(
+                                    "INFO: Saved tutorial to " + currentFile)
                     }
                 }
                 icon.source: "qrc:/bricks/resources/save_black_24dp.svg"
@@ -109,37 +112,43 @@ Item {
             }
             IconButton {
                 FileDialog {
-                    id: fileOpenDialog
-                    folder: tempFolder
-                    nameFilters: ["JSON files (*.json)"]
-                    fileMode: FileDialog.SaveFile
-                    onAccepted: tutorialManager.toJSON(currentFile)
-                }
-                icon.source: "qrc:/bricks/resources/text_snippet_black_24dp.svg"
-                width: height
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                onPressed: fileOpenDialog.open()
-                ToolTip.visible: hovered
-                ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-                ToolTip.text: qsTr("Load tutorial from JSON")
-            }
-            IconButton {
-                FileDialog {
                     id: fileSaveDialog
                     folder: tempFolder
                     nameFilters: ["JSON files (*.json)"]
-                    fileMode: FileDialog.OpenFile
+                    fileMode: FileDialog.SaveFile
                     onAccepted: {
-                        tutorialManager.fromJSON(currentFile)
+                        tutorialManager.toJSON(currentFile)
+                        root.updateStatusMessage(
+                                    "INFO: Saved tutorial to " + currentFile)
                     }
                 }
-                icon.source: "qrc:/bricks/resources/file_open_black_24dp.svg"
+                icon.source: "qrc:/bricks/resources/text_snippet_black_24dp.svg"
                 width: height
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 onPressed: fileSaveDialog.open()
                 ToolTip.visible: hovered
                 ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
                 ToolTip.text: qsTr("Save tutorial to JSON")
+            }
+            IconButton {
+                FileDialog {
+                    id: fileOpenDialog
+                    folder: tempFolder
+                    nameFilters: ["JSON files (*.json)"]
+                    fileMode: FileDialog.OpenFile
+                    onAccepted: {
+                        tutorialManager.fromJSON(currentFile)
+                        root.updateStatusMessage(
+                                    "INFO: Loaded tutorial from " + currentFile)
+                    }
+                }
+                icon.source: "qrc:/bricks/resources/file_open_black_24dp.svg"
+                width: height
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                onPressed: fileOpenDialog.open()
+                ToolTip.visible: hovered
+                ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+                ToolTip.text: qsTr("Load tutorial from JSON")
             }
         }
     }
