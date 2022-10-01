@@ -3,6 +3,8 @@ import QtQuick.Controls 2.15
 import Qt.labs.platform 1.1
 import QtQuick 2.0
 
+import "../style"
+
 Rectangle {
     id: editor
     visible: false
@@ -45,7 +47,7 @@ Rectangle {
         height: editor.height / 2
         anchors.top: editor.top
         anchors.right: saveTranslation.left
-        anchors.rightMargin: 10
+        anchors.rightMargin: AppStyle.spacing
     }
     IconButton {
         id: resetTranslation
@@ -67,7 +69,7 @@ Rectangle {
         height: editor.height / 2
         anchors.top: advancedTranslation.bottom
         anchors.right: saveTranslation.left
-        anchors.rightMargin: 10
+        anchors.rightMargin: AppStyle.spacing
     }
     IconButton {
         id: saveTranslation

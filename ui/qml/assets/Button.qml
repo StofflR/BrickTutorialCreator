@@ -3,16 +3,17 @@ import QtQuick.Controls 2.0 as T
 
 import "../assets"
 import "../font"
+import "../style"
 
 T.Button {
     id: control
     text: qsTr("Button")
-    height: 40
+    height: AppStyle.defaultHeight
 
     contentItem: Text {
         text: control.text
         font.family: Font.boldFont ? Font.boldFont : -1
-        font.pixelSize: 10
+        font.pixelSize: AppStyle.spacing
         opacity: enabled ? 1.0 : 0.3
         color: control.down ? "dimgray" : "black"
         horizontalAlignment: Text.AlignHCenter

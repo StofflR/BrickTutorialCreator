@@ -4,6 +4,7 @@ import QtQml 2.12
 
 import "../assets"
 import "../font"
+import "../style"
 
 T.SpinBox {
     id: spinbox
@@ -34,7 +35,7 @@ T.SpinBox {
         verticalAlignment: Qt.AlignVCenter
         text: spinbox.displayText
         font.family: Font.boldFont ? Font.boldFont : -1
-        font.pixelSize: 10
+        font.pixelSize: AppStyle.spacing
         color: "black"
         readOnly: !spinbox.editable
         inputMethodHints: Qt.ImhFormattedNumbersOnly
@@ -43,8 +44,8 @@ T.SpinBox {
         x: spinbox.mirrored ? 0 : parent.width - width
         height: parent.height
         width: height / 2
-        implicitWidth: 40
-        implicitHeight: 40
+        implicitWidth: AppStyle.defaultHeight
+        implicitHeight: AppStyle.defaultHeight
         color: spinbox.up.pressed ? "dimgray" : "white"
         border.color: "black"
 
@@ -64,7 +65,7 @@ T.SpinBox {
         x: spinbox.mirrored ? parent.width - width : 0
         height: parent.height
         width: height / 2
-        implicitWidth: 40
+        implicitWidth: AppStyle.defaultHeight
         implicitHeight: 20
         color: spinbox.down.pressed ? "dimgray" : "white"
         border.color: "black"
@@ -82,7 +83,7 @@ T.SpinBox {
     }
     background: Rectangle {
         implicitWidth: 120
-        implicitHeight: 40
+        implicitHeight: AppStyle.defaultHeight
         border.color: spinbox.pressed ? "dimgray" : "black"
         border.width: spinbox.visualFocus ? 2 : 1
         radius: 2

@@ -8,18 +8,19 @@ import Brick 1.0
 import "../assets"
 import "../font"
 import "../views"
+import "../style"
 
 Rectangle {
     id: root
     signal updateStatusMessage(string text)
     anchors.fill: parent
-    anchors.margins: 10
+    anchors.margins: AppStyle.spacing
     ButtonField {
         id: path
         button_label: qsTr("Set export to …")
         field.placeholderText: qsTr("Select export path …")
-        field.width: parent.width * 3 / 4 - 10
-        button.width: parent.width / 4 - 10
+        field.width: parent.width * 3 / 4 - AppStyle.spacing
+        button.width: parent.width / 4 - AppStyle.spacing
         field.text: textMetrics.elidedText
         field.readOnly: true
         button.onPressed: folderDialog.open()
@@ -45,7 +46,7 @@ Rectangle {
         width: parent.width / 2
         anchors.top: path.bottom
         anchors.left: parent.left
-        anchors.topMargin: 10
+        anchors.topMargin: AppStyle.spacing
         comboBox.model: bricks.availableBricks()
         onDisplayTextChanged: {
             bricks.sizes = bricks.availableSizes(comboBox.currentIndex)
@@ -66,8 +67,8 @@ Rectangle {
         width: parent.width / 2
         anchors.top: path.bottom
         anchors.left: availableBricks.right
-        anchors.topMargin: 10
-        anchors.leftMargin: 10
+        anchors.topMargin: AppStyle.spacing
+        anchors.leftMargin: AppStyle.spacing
         comboBox.model: bricks.sizes
         onDisplayTextChanged: svgPreview.update()
     }
@@ -81,16 +82,16 @@ Rectangle {
         width: parent.width / 2
         anchors.top: availableBricks.bottom
         anchors.left: parent.left
-        anchors.topMargin: 10
+        anchors.topMargin: AppStyle.spacing
         spinbox.onValueChanged: svgPreview.update()
     }
     Label {
         width: parent.width / 8
-        height: 40
+        height: AppStyle.defaultHeight
         id: saveLabel
         text: qsTr("Save as")
         font.family: Font.boldFont ? Font.boldFont : -1
-        font.pixelSize: 10
+        font.pixelSize: AppStyle.spacing
         anchors.top: contentScale.bottom
         anchors.left: parent.left
         horizontalAlignment: Text.AlignHCenter
@@ -102,11 +103,11 @@ Rectangle {
         width: parent.width / 6
         anchors.top: contentScale.bottom
         anchors.left: saveLabel.right
-        height: 40
+        height: AppStyle.defaultHeight
         CheckBox {
             id: svg_check
             text: "SVG"
-            font.pixelSize: 10
+            font.pixelSize: AppStyle.spacing
             anchors.fill: parent
             checked: true
         }
@@ -116,11 +117,11 @@ Rectangle {
         width: parent.width / 6
         anchors.top: contentScale.bottom
         anchors.left: svg.right
-        height: 40
+        height: AppStyle.defaultHeight
         CheckBox {
             id: json_check
             text: "JSON"
-            font.pixelSize: 10
+            font.pixelSize: AppStyle.spacing
             anchors.fill: parent
             checked: true
         }
@@ -130,11 +131,11 @@ Rectangle {
         width: parent.width / 6
         anchors.top: contentScale.bottom
         anchors.left: json.right
-        height: 40
+        height: AppStyle.defaultHeight
         CheckBox {
             id: png_check
             text: "PNG"
-            font.pixelSize: 10
+            font.pixelSize: AppStyle.spacing
             anchors.fill: parent
             checked: true
         }
@@ -151,7 +152,7 @@ Rectangle {
             anchors.left: contentLayout.left
             height: contentLayout.height
             anchors.right: saveButton.left
-            anchors.margins: 10
+            anchors.margins: AppStyle.spacing
             placeholderText: qsTr("Enter brick content …")
             verticalAlignment: TextField.AlignTop
             inputMethodHints: Qt.ImhMultiLine
@@ -164,7 +165,7 @@ Rectangle {
             id: saveButton
             anchors.top: brickContent.top
             anchors.right: parent.right
-            anchors.margins: 10
+            anchors.margins: AppStyle.spacing
             anchors.topMargin: 0
             width: height
             icon.source: "qrc:/bricks/resources/save_black_24dp.svg"
@@ -208,7 +209,7 @@ Rectangle {
             id: loadButton
             anchors.top: saveButton.bottom
             anchors.right: parent.right
-            anchors.margins: 10
+            anchors.margins: AppStyle.spacing
             width: height
             icon.source: "qrc:/bricks/resources/file_open_black_24dp.svg"
             ToolTip.visible: hovered
@@ -220,7 +221,7 @@ Rectangle {
             id: clearButton
             anchors.top: loadButton.bottom
             anchors.right: parent.right
-            anchors.margins: 10
+            anchors.margins: AppStyle.spacing
             width: height
             icon.source: "qrc:/bricks/resources/delete_black_24dp.svg"
             ToolTip.visible: hovered

@@ -8,6 +8,7 @@ import Brick 1.0
 import "../assets"
 import "../font"
 import "../views"
+import "../style"
 
 Item {
     id: root
@@ -33,7 +34,7 @@ Item {
             width: layout.width / 2
             field.readOnly: true
 
-            anchors.margins: 10
+            anchors.margins: AppStyle.spacing
             button.onPressed: folderDialog.open()
         }
         FolderDialog {
@@ -60,7 +61,7 @@ Item {
             anchors.top: layout.top
             anchors.left: path.right
             anchors.right: layout.right
-            anchors.margins: 10
+            anchors.margins: AppStyle.spacing
             comboBox.model: languageManager.languages(textMetrics.text)
             comboBox.onModelChanged: comboBox.currentIndex = -1
             comboBox.onCurrentIndexChanged: {
@@ -83,7 +84,7 @@ Item {
             anchors.left: path.right
             anchors.right: layout.right
             visible: !language.visible
-            anchors.margins: 10
+            anchors.margins: AppStyle.spacing
             button_label: qsTr("Add language …")
             field.placeholderText: qsTr("Enter new translation language …")
             button.enabled: field.text

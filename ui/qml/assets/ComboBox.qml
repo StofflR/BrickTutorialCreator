@@ -4,6 +4,7 @@ import QtQml 2.12
 
 import "../assets"
 import "../font"
+import "../style"
 
 T.ComboBox {
     id: control
@@ -16,7 +17,7 @@ T.ComboBox {
             text: modelData
             color: "black"
             font.family: Font.boldFont ? Font.boldFont : -1
-            font.pixelSize: 10
+            font.pixelSize: AppStyle.spacing
             elide: Text.ElideRight
             verticalAlignment: Text.AlignVCenter
         }
@@ -57,12 +58,12 @@ T.ComboBox {
     }
 
     contentItem: Text {
-        leftPadding: 10
+        leftPadding: AppStyle.spacing
         rightPadding: control.indicator.width + control.spacing
 
         text: displayText
         font.family: Font.boldFont ? Font.boldFont : -1
-        font.pixelSize: 10
+        font.pixelSize: AppStyle.spacing
         color: "black"
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
@@ -70,7 +71,7 @@ T.ComboBox {
 
     background: Rectangle {
         implicitWidth: 120
-        implicitHeight: 40
+        implicitHeight: AppStyle.defaultHeight
         border.color: control.pressed ? "dimgray" : "black"
         border.width: control.visualFocus ? 2 : 1
         radius: 2

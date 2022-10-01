@@ -3,12 +3,13 @@ import QtQuick.Controls 2.0 as T
 
 import "../assets"
 import "../font"
+import "../style"
 
 T.Button {
     id: control
-    implicitHeight: 40
+    implicitHeight: AppStyle.defaultHeight
     font.family: Font.boldFont ? Font.boldFont : -1
-    font.pixelSize: 10
+    font.pixelSize: AppStyle.spacing
     opacity: enabled ? 1.0 : 0.3
     background: Rectangle {
         implicitWidth: parent.width

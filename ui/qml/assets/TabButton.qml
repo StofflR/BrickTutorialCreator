@@ -3,6 +3,7 @@ import QtQuick.Controls 2.15 as T
 
 import "../assets"
 import "../font"
+import "../style"
 
 T.TabButton {
     id: creator
@@ -11,7 +12,7 @@ T.TabButton {
     contentItem: Text {
         text: creator.text
         font.family: Font.boldFont ? Font.boldFont : -1
-        font.pixelSize: 10
+        font.pixelSize: AppStyle.spacing
         opacity: enabled ? 1.0 : 0.3
         color: creator.down ? "dimgray" : "black"
         horizontalAlignment: Text.AlignHCenter

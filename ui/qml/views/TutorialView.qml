@@ -6,6 +6,7 @@ import QtQml 2.12
 import "../assets"
 import "../font"
 import "../views"
+import "../style"
 
 DelegateModel {
     id: visualModel
@@ -45,9 +46,9 @@ DelegateModel {
                         icon.source: "qrc:/bricks/resources/delete_black_24dp.svg"
                         onPressed: visualModel.removed(index)
                         anchors.right: image.right
-                        anchors.margins: 10
+                        anchors.margins: AppStyle.spacing
                         anchors.top: image.top
-                        width: image.height / 3
+                        width: AppStyle.defaultHeight
                         height: width
                     }
                 }

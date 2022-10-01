@@ -6,6 +6,7 @@ import QtQuick.Layouts 2.15
 import "assets"
 import "font"
 import "views"
+import "style"
 
 ApplicationWindow {
     id: root
@@ -16,7 +17,7 @@ ApplicationWindow {
     visible: true
     title: qsTr("Brick Creator")
     font.family: Font.boldFont ? Font.boldFont : -1
-    font.pixelSize: 10
+    font.pixelSize: AppStyle.spacing
     property string statusText: ""
     function updateStatusMessage(text) {
         statusText = text
@@ -27,36 +28,36 @@ ApplicationWindow {
             id: file
             title: qsTr("&File")
             font.family: Font.boldFont ? Font.boldFont : -1
-            font.pixelSize: 10
+            font.pixelSize: AppStyle.spacing
 
             MenuItem {
                 text: qsTr("&Help")
                 font.family: Font.boldFont ? Font.boldFont : -1
-                font.pixelSize: 10
+                font.pixelSize: AppStyle.spacing
             }
 
             MenuItem {
                 text: qsTr("&About")
                 font.family: Font.boldFont ? Font.boldFont : -1
-                font.pixelSize: 10
+                font.pixelSize: AppStyle.spacing
             }
             MenuSeparator {}
             MenuItem {
                 text: qsTr("&Convert Folder (JSON → SVG)")
                 font.family: Font.boldFont ? Font.boldFont : -1
-                font.pixelSize: 10
+                font.pixelSize: AppStyle.spacing
                 onTriggered: brickConverter.fromJSONtoSVG()
             }
             MenuItem {
                 text: qsTr("&Convert Folder (SVG → PNG)")
                 font.family: Font.boldFont ? Font.boldFont : -1
-                font.pixelSize: 10
+                font.pixelSize: AppStyle.spacing
                 onTriggered: brickConverter.fromSVGtoPNG()
             }
             MenuItem {
                 text: qsTr("&Convert Folder (JSON → PNG)")
                 font.family: Font.boldFont ? Font.boldFont : -1
-                font.pixelSize: 10
+                font.pixelSize: AppStyle.spacing
                 onTriggered: brickConverter.fromJSONtoPNG()
             }
         }
@@ -126,6 +127,7 @@ ApplicationWindow {
         id: statusbar
         anchors.bottom: parent.bottom
         height: 20
+        width: parent.width
         RowLayout {
             anchors.fill: parent
             Label {

@@ -5,6 +5,7 @@ import QtQml.Models 2.1
 import "../assets"
 import "../font"
 import "../views"
+import "../style"
 import Qt.labs.platform 1.1
 
 import TutorialManager 1.0
@@ -22,7 +23,7 @@ Item {
         anchors.left: item.left
         anchors.right: control.left
         anchors.top: item.top
-        anchors.margins: 10
+        anchors.margins: AppStyle.spacing
         height: item.height
 
         ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
@@ -35,7 +36,7 @@ Item {
                       }
 
             snapMode: ListView.SnapToItem
-            anchors.topMargin: 10
+            anchors.topMargin: AppStyle.spacing
             anchors.fill: scrollview
 
             orientation: ListView.Vertical
@@ -65,10 +66,10 @@ Item {
     Rectangle {
         id: control
         height: parent.height
-        width: 40
+        width: AppStyle.defaultHeight
         anchors.top: parent.top
         anchors.right: parent.right
-        anchors.margins: 10
+        anchors.margins: AppStyle.spacing
         ColumnLayout {
             width: parent.width
             IconButton {

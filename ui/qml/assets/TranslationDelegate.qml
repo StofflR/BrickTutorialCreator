@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.15
 import QtQml.Models 2.1
 import "../font"
 import "../views"
+import "../style"
 
 ItemDelegate {
     id: root
@@ -39,8 +40,8 @@ ItemDelegate {
         height: parent.height
         IconButton {
             id: edit
-            width: root.height / 2
-            height: width
+            width: AppStyle.defaultHeight
+            height: root.height / 2
             anchors.top: parent.top
             icon.source: "qrc:/bricks/resources/build_black_24dp.svg"
             icon.color: down ? "dimgray" : "black"
@@ -52,8 +53,8 @@ ItemDelegate {
         IconButton {
             id: reset
             anchors.bottom: parent.bottom
-            width: root.height / 2
-            height: width
+            width: AppStyle.defaultHeight
+            height: root.height / 2
             icon.source: "qrc:/bricks/resources/restore_black_24dp.svg"
             icon.color: down ? "dimgray" : "black"
             ToolTip.visible: hovered
