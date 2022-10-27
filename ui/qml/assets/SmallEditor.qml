@@ -13,6 +13,7 @@ Rectangle {
     signal okPressed(string content)
     signal advancedPressed
     signal resetPressed
+    signal resetLanguage
     signal contentChanged(string content)
 
     Area {

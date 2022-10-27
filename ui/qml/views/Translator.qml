@@ -16,6 +16,7 @@ Item {
     signal updateStatusMessage(string text)
     onUpdate: {
         translationList.model = languageManager.sourceModel(textMetrics.text)
+        language.comboBox.currentIndex = -1
     }
     anchors.fill: parent
     width: parent.width
@@ -128,14 +129,7 @@ Item {
                 editor.open()
             }
             onResetPressed: {
-                console.log("reset", index)
-
-                translationList.closeOpenEditor()
-            }
-            onSavePressed: {
-                console.log("save", index)
-
-                translationList.closeOpenEditor()
+                editor.resetLanguage()
             }
             sourcePath: textMetrics.text + "/" + translationList.model[index]
             Brick {
@@ -165,7 +159,7 @@ Item {
             SmallEditor {
                 id: editor
                 anchors.right: parent.right
-                width: delegate.editWidth
+                width: parent.width / 2 - 30
                 height: parent.height
                 signal close
                 signal open
@@ -188,6 +182,16 @@ Item {
                     bottomLayout.visible = false
                     editor.close()
                 }
+                onResetLanguage: {
+                    var targetPath = textMetrics.text + "/" + language.comboBox.currentText
+                    var targetFile = targetPath + "/" + translationList.model[index]
+                    brick.fromSVG(delegate.sourcePath)
+                    brick.saveSVG(targetPath, translationList.model[index])
+                    delegate.targetPath = brick.path()
+                    bottomLayout.visible = false
+                    editor.close()
+                }
+
                 onOkPressed: content => {
                                  var targetPath = textMetrics.text + "/"
                                  + language.comboBox.currentText
