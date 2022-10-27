@@ -70,28 +70,16 @@ ApplicationWindow {
             height: parent.height
             anchors.top: parent.top
             text: qsTr("Bricks")
-            onReleased: {
-                root.width = 960
-                root.height = 640
-            }
         }
         TabButton {
             height: parent.height
             anchors.top: parent.top
             text: qsTr("Translate")
-            onReleased: {
-                translator.update()
-                root.width = 960
-                root.height = 640
-            }
         }
         TabButton {
             height: parent.height
             anchors.top: parent.top
             text: qsTr("Tutorials")
-            onReleased: {
-                root.width = root.minimumWidth
-            }
         }
     }
     ConverterManager {
