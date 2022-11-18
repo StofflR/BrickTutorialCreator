@@ -159,7 +159,9 @@ Item {
                     if (brick.exists(targetFile)) {
                         brick.fromSVG(targetFile)
                     } else {
-                        brick.fromSVG(delegate.sourcePath)
+
+                        brick.fromSVG(
+                                    textMetrics.text + "/" + translationList.model[index])
                         brick.saveSVG(targetPath, translationList.model[index])
                     }
                     delegate.targetPath = targetFile
@@ -177,7 +179,9 @@ Item {
                 }
                 onOpen: {
                     editor.visible = true
-                    brick.fromSVG(delegate.sourcePath)
+                    brick.fromSVG(
+                                brick.fromSVG(
+                                    textMetrics.text + "/" + translationList.model[index]))
                 }
                 onClose: {
                     editor.visible = false
@@ -194,7 +198,9 @@ Item {
                 onResetLanguage: {
                     var targetPath = textMetrics.text + "/" + language.comboBox.currentText
                     var targetFile = targetPath + "/" + translationList.model[index]
-                    brick.fromSVG(delegate.sourcePath)
+
+                    brick.fromSVG(
+                                textMetrics.text + "/" + translationList.model[index])
                     brick.saveSVG(targetPath, translationList.model[index])
                     delegate.targetPath = brick.path()
                     bottomLayout.visible = false
