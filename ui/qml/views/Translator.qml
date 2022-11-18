@@ -68,6 +68,7 @@ Item {
             comboBox.onCurrentIndexChanged: {
                 if (comboBox.currentIndex + 1 === comboBox.model.length) {
                     comboBox.currentIndex = -1
+                    comboBox.enabled = false
                     visible = false
                 } else {
                     languageManager.currentIndex = comboBox.currentIndex
@@ -76,6 +77,7 @@ Item {
             comboBox.onCurrentTextChanged: updateListView()
             function open() {
                 comboBox.currentIndex = -1
+                comboBox.enabled = true
                 visible = true
             }
         }
@@ -92,7 +94,7 @@ Item {
             field.validator: RegularExpressionValidator {
                 regularExpression: /\w+/
             }
-            button.onPressed: {
+            function add() {
                 languageManager.new(textMetrics.text, addLanguage.field.text)
                 language.comboBox.model = languageManager.languages(
                             textMetrics.text)
@@ -101,6 +103,12 @@ Item {
                 addLanguage.field.clear()
                 language.open()
             }
+
+            button.onPressed: addLanguage.add()
+            field.onEditingFinished: {
+                addLanguage.add()
+            }
+
             field.anchors.right: abort.left
             IconButton {
                 id: abort
