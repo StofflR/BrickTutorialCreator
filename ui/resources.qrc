@@ -117,5 +117,8 @@
         <file>resources/icon.svg</file>
         <file>resources/icon.png</file>
     </qresource>
-    <qresource prefix="/"/>
+    <qresource prefix="/">
+        <file>help.html</file>
+        <file>about.html</file>
+    </qresource>
 </RCC>

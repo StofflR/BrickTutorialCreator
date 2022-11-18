@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 2.15
+import QtWebEngine 1.10
 
 import "assets"
 import "font"
@@ -34,12 +35,19 @@ ApplicationWindow {
                 text: qsTr("&Help")
                 font.family: Font.boldFont ? Font.boldFont : -1
                 font.pixelSize: AppStyle.spacing
+                onTriggered: {
+                    help.open()
+                }
             }
 
             MenuItem {
                 text: qsTr("&About")
                 font.family: Font.boldFont ? Font.boldFont : -1
                 font.pixelSize: AppStyle.spacing
+
+                onTriggered: {
+                    about.open()
+                }
             }
             MenuSeparator {}
             MenuItem {
@@ -121,6 +129,39 @@ ApplicationWindow {
             Label {
                 height: statusbar.height
                 text: root.statusText
+            }
+        }
+    }
+
+    Popup {
+        id: about
+        x: 100
+        y: 100
+        width: root.width - 200
+        height: root.height - 200
+        modal: true
+        focus: true
+        contentItem: Rectangle {
+            anchors.fill: parent
+            WebEngineView {
+                anchors.fill: parent
+                url: "qrc:/about.html"
+            }
+        }
+    }
+    Popup {
+        id: help
+        x: 100
+        y: 100
+        width: root.width - 200
+        height: root.height - 200
+        modal: true
+        focus: true
+        contentItem: Rectangle {
+            anchors.fill: parent
+            WebEngineView {
+                anchors.fill: parent
+                url: "qrc:/help.html"
             }
         }
     }
