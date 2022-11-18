@@ -72,6 +72,11 @@ class SVGBrick:
     def getWorkingBrick(self):
         return self.working_brick_
 
+    def textColor(self):
+        if "white" in self.base_type:
+            return '#274383'
+        return '#ffffff'
+
     def __del__(self):
         logging.debug("Deleting: " + self.working_brick_)
         if os.path.exists(self.working_brick_):
@@ -178,7 +183,7 @@ class SVGBrick:
         sub_element = Tree.SubElement(self.tree_.getroot(), 'ns0:text', {'id': svg_id,
                                                                          'x': str(x) + "px",
                                                                          'y': str(y) + "px",
-                                                                         'fill': '#ffffff',
+                                                                         'fill': self.textColor(),
                                                                          'fill-opacity': "1",
                                                                          "font-weight": font_weight,
                                                                          'xml:space': 'preserve',
