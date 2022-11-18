@@ -158,7 +158,6 @@ Item {
                         brick.fromSVG(targetFile)
                     } else {
                         brick.fromSVG(delegate.sourcePath)
-                        brick.updateBrickContent(language.comboBox.currentText)
                         brick.saveSVG(targetPath, translationList.model[index])
                     }
                     delegate.targetPath = targetFile
