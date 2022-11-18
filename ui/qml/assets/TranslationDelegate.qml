@@ -18,7 +18,7 @@ ItemDelegate {
 
     property double editWidth: targetImage.width + reset.width
 
-    width: parent.width
+    width: parent ? parent.width : 0
     height: source.height
     Rectangle {
         id: source

@@ -50,7 +50,7 @@ Rectangle {
         comboBox.model: bricks.availableBricks()
         onDisplayTextChanged: {
             bricks.sizes = bricks.availableSizes(comboBox.currentIndex)
-            svgPreview.update()
+            svgPreview.update(true)
         }
     }
     BrickManager {
@@ -70,7 +70,7 @@ Rectangle {
         anchors.topMargin: AppStyle.spacing
         anchors.leftMargin: AppStyle.spacing
         comboBox.model: bricks.sizes
-        onDisplayTextChanged: svgPreview.update()
+        onDisplayTextChanged: svgPreview.update(true)
     }
 
     LabelDoubleSpinBox {
@@ -83,7 +83,7 @@ Rectangle {
         anchors.top: availableBricks.bottom
         anchors.left: parent.left
         anchors.topMargin: AppStyle.spacing
-        spinbox.onValueChanged: svgPreview.update()
+        spinbox.onValueChanged: svgPreview.update(true)
     }
     Label {
         width: parent.width / 8
@@ -110,6 +110,19 @@ Rectangle {
             font.pixelSize: AppStyle.spacing
             anchors.fill: parent
             checked: true
+        }
+    }
+    Rectangle {
+        width: parent.width / 6
+        anchors.top: contentScale.bottom
+        anchors.right: parent.right
+        height: AppStyle.defaultHeight
+        CheckBox {
+            id: autoSave
+            text: "Auto-Save"
+            font.pixelSize: AppStyle.spacing
+            anchors.fill: parent
+            checked: false
         }
     }
     Rectangle {
@@ -156,7 +169,9 @@ Rectangle {
             placeholderText: qsTr("Enter brick content …")
             verticalAlignment: TextField.AlignTop
             inputMethodHints: Qt.ImhMultiLine
-            onTextChanged: svgPreview.update()
+            onTextChanged: svgPreview.update(false)
+            onEditingFinished: if (autoSave.checked)
+                                   saveButton.save()
             ToolTip.visible: hovered
             ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
             ToolTip.text: qsTr("Variables:\n$ some sample var $\nNew Line:\n\\\\\nDropdown:\n* some sample var *")
@@ -174,9 +189,13 @@ Rectangle {
             ToolTip.visible: hovered
             ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
             ToolTip.text: qsTr("Save the current brick!")
-            onPressed: {
+            onPressed: save()
+
+            function save() {
                 var statusText = "INFO: Saved brick(s) as: "
                 var filename = svgBrick.fileName()
+                if (!filename)
+                    return
                 if (svg_check.checked) {
                     svgBrick.saveSVG(textMetrics.text)
                     statusText += filename + ".svg "
@@ -244,15 +263,18 @@ Rectangle {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: contentLayout.bottom
-        onUpdate: {
-            svgBrick.updateBrick(availableBricks.comboBox.displayText,
-                                 bricks.brickPath(
-                                     availableBricks.comboBox.currentIndex,
-                                     availableSize.comboBox.displayText),
-                                 availableSize.comboBox.displayText,
-                                 brickContent.text, contentScale.spinbox.value)
-            source = svgBrick.path()
-        }
+        onUpdate: autosave => {
+                      svgBrick.updateBrick(
+                          availableBricks.comboBox.displayText,
+                          bricks.brickPath(
+                              availableBricks.comboBox.currentIndex,
+                              availableSize.comboBox.displayText),
+                          availableSize.comboBox.displayText,
+                          brickContent.text, contentScale.spinbox.value)
+                      source = svgBrick.path()
+                      if (autoSave.checked && autosave)
+                      saveButton.save()
+                  }
     }
-    Component.onCompleted: svgPreview.update()
+    Component.onCompleted: svgPreview.update(true)
 }
