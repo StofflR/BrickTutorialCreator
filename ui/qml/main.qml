@@ -100,6 +100,7 @@ ApplicationWindow {
         currentIndex: bar.currentIndex
         anchors.top: bar.bottom
         anchors.bottom: statusbar.top
+        onCurrentIndexChanged: translator.update()
         Item {
             BrickCreator {
                 onUpdateStatusMessage: text => root.updateStatusMessage(text)
