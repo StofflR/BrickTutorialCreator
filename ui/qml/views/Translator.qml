@@ -139,7 +139,6 @@ Item {
             onResetPressed: {
                 editor.resetLanguage()
             }
-            sourcePath: textMetrics.text + "/" + translationList.model[index]
             Brick {
                 id: brick
                 signal updateBricks
@@ -149,6 +148,9 @@ Item {
                     language.update()
                 }
                 function update() {
+                    brick.fromSVG(
+                                textMetrics.text + "/" + translationList.model[index])
+                    sourcePath = brick.path()
                     if (language.comboBox.currentText === "New …")
                         return
                     var targetPath = textMetrics.text + "/" + language.comboBox.currentText
