@@ -45,5 +45,3 @@ By writing data in the input field the content will be addded on the brick. Ther
 * setup automatic testing pipeline
 * * Magic Word on Tutorial & SVGBrick JSON / SVG
 * * Ask vor overwrite / duplicate file
-* * help / about messages
-* * * create utility to clean up paths if not relative
