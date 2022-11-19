@@ -1,7 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import Qt.labs.platform 1.1
-
 import LanguageManager 1.0
 import Brick 1.0
 
@@ -61,7 +60,7 @@ Item {
             label: "Available languages:"
             anchors.top: layout.top
             anchors.left: path.right
-            anchors.right: layout.right
+            anchors.right: deleteLanguage.left
             anchors.margins: AppStyle.spacing
             comboBox.model: languageManager.languages(textMetrics.text)
             comboBox.onModelChanged: comboBox.currentIndex = -1
@@ -70,6 +69,7 @@ Item {
                     comboBox.currentIndex = -1
                     comboBox.enabled = false
                     visible = false
+                    addLanguage.field.forceActiveFocus()
                 } else {
                     languageManager.currentIndex = comboBox.currentIndex
                 }
@@ -79,6 +79,74 @@ Item {
                 comboBox.currentIndex = -1
                 comboBox.enabled = true
                 visible = true
+            }
+        }
+        IconButton {
+            id: deleteLanguage
+            anchors.top: layout.top
+            enabled: language.comboBox.currentIndex >= 0
+                     && language.comboBox.enabled
+            anchors.right: layout.right
+            anchors.margins: AppStyle.spacing
+            width: height
+            icon.source: "qrc:/bricks/resources/delete_black_24dp.svg"
+            ToolTip.visible: hovered
+            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+            ToolTip.text: qsTr("Clear current brick content!")
+            onPressed: deleteDialog.open()
+        }
+        Popup {
+            id: deleteDialog
+            x: (root.width - 500) / 2
+            y: (root.height - 150) / 2
+            width: 500
+            height: 150
+            modal: true
+            focus: true
+            contentItem: Rectangle {
+                anchors.fill: parent
+                Text {
+                    anchors.centerIn: parent
+                    text: "WARNING!\nRemoving: " + language.comboBox.currentText
+                          + " will delete all associated files with the translation!\nDo you wish to continue anyway?"
+                }
+                Rectangle {
+                    id: deleteButtons
+                    width: parent.width / 2
+                    height: AppStyle.defaultHeight + AppStyle.spacing
+                    anchors.left: parent.left
+                    anchors.bottom: parent.bottom
+                    Button {
+                        width: parent.width / 2
+                        dangerButton: true
+                        text: "Continue"
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        onClicked: {
+                            languageManager.delete(
+                                        textMetrics.text,
+                                        language.comboBox.currentText)
+                            deleteDialog.close()
+                            language.comboBox.model = languageManager.languages(
+                                        textMetrics.text)
+                            root.update()
+                        }
+                    }
+                }
+
+                Rectangle {
+                    width: parent.width / 2
+                    height: AppStyle.defaultHeight + AppStyle.spacing
+                    anchors.left: deleteButtons.right
+                    anchors.bottom: parent.bottom
+                    Button {
+                        width: parent.width / 2
+                        text: "Abort"
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        onClicked: deleteDialog.close()
+                    }
+                }
             }
         }
         ButtonField {
