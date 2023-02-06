@@ -1,12 +1,12 @@
-import QtQuick 2.0
+import QtQuick 2.15
 import QtQuick.Controls 2.15
+import Qt.labs.platform 1.1
 import QtQuick.Layouts 1.15
 import QtQml.Models 2.1
 import "../assets"
 import "../font"
 import "../views"
 import "../style"
-import Qt.labs.platform 1.1
 
 import TutorialManager 1.0
 
@@ -162,5 +162,73 @@ Item {
         anchors.right: parent.right
         width: parent.width / 2
         height: item.height
+
+        ListView {
+            id: availableSources
+            anchors.top: addPathButton.bottom
+            anchors.left: addPathButton.left
+            anchors.right: parent.right
+            anchors.margins: AppStyle.spacing
+            height: parent.height / 3 < availableSources.count
+                    * 40 ? parent.height / 3 : availableSources.count * 40
+            delegate: Component {
+                MouseArea {
+                    onClicked: availableSources.currentIndex = index
+                    height: 40
+                    width: availableSources.width
+
+                    Text {
+                        id: contactInfo
+                        width: parent.width
+                        text: path
+                        elide: Text.ElideLeft
+
+                        color: wrapper.ListView.isCurrentItem ? "red" : "black"
+                    }
+                }
+            }
+            highlight: Rectangle {
+                color: "lightsteelblue"
+                radius: 5
+            }
+            focus: true
+            model: ListModel {
+                id: availableSourcesModel
+            }
+        }
+        Button {
+            id: addPathButton
+            anchors.left: parent.left
+            width: parent.width / 2 - 2 * AppStyle.spacing
+            anchors.margins: AppStyle.spacing
+            text: qsTr("Add path")
+            onPressed: folderDialog.open()
+        }
+        Button {
+            id: removePathButton
+            anchors.margins: AppStyle.spacing
+            anchors.right: parent.right
+            anchors.left: addPathButton.right
+            text: qsTr("Remove path")
+            enabled: availableSources.currentIndex > -1
+            onPressed: availableSourcesModel.remove(
+                           availableSources.currentIndex, 1)
+        }
+
+        UsableBrickView {
+            id: usableBrickView
+            anchors.top: availableSources.bottom
+            anchors.margins: AppStyle.spacing
+            brickSources: []
+        }
+
+        FolderDialog {
+            id: folderDialog
+            onAccepted: {
+                availableSourcesModel.append({
+                                                 "path": folder
+                                             })
+            }
+        }
     }
 }

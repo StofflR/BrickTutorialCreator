@@ -120,5 +120,6 @@
     <qresource prefix="/">
         <file>help.html</file>
         <file>about.html</file>
+        <file>qml/views/UsableBrickView.qml</file>
     </qresource>
 </RCC>
