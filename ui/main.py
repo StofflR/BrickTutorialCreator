@@ -8,6 +8,7 @@ from PySide6.QtQml import QQmlApplicationEngine, qmlRegisterType
 from qml import BrickManager
 from qml import Brick
 from qml import TutorialManager
+from qml import TutorialSourceManager
 from qml import LanguageManager
 from qml import Converter
 import resources_rc
@@ -21,10 +22,11 @@ if __name__ == "__main__":
     app.setWindowIcon(QIcon("./resources/icon.svg"))
 
     #sapp.applicationDisplayName("Brick Designer")
-    qmlRegisterType(BrickManager.BrickManager, 'BrickManager', 1, 0, 'BrickManager')
     qmlRegisterType(Brick.Brick, 'Brick', 1, 0, 'Brick')
+    qmlRegisterType(BrickManager.BrickManager, 'BrickManager', 1, 0, 'BrickManager')
     qmlRegisterType(TutorialManager.TutorialManager, 'TutorialManager', 1, 0, 'TutorialManager')
     qmlRegisterType(LanguageManager.LanguageManager, 'LanguageManager', 1, 0, 'LanguageManager')
+    qmlRegisterType(TutorialSourceManager.TutorialSourceManager, 'TutorialSourceManager', 1, 0, 'TutorialSourceManager')
     qmlRegisterType(Converter.Converter, 'Converter', 1, 0, 'Converter')
 
     QFontDatabase.addApplicationFont(QUrl.fromLocalFile(

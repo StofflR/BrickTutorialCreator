@@ -9,6 +9,7 @@ import "../views"
 import "../style"
 
 import TutorialManager 1.0
+import TutorialSourceManager 1.0
 
 Item {
     id: item
@@ -24,7 +25,7 @@ Item {
             id: scrollview
             clip: true
             anchors.left: parent.left
-            anchors.right: control.left
+            width: parent.width
             anchors.top: parent.top
             anchors.margins: AppStyle.spacing
             height: parent.height
@@ -67,12 +68,17 @@ Item {
                 }
             }
         }
+    }
+    Rectangle {
+        anchors.right: parent.right
+        width: parent.width / 2
+        height: item.height
         Rectangle {
             id: control
             height: parent.height
             width: AppStyle.defaultHeight
             anchors.top: parent.top
-            anchors.right: parent.right
+            anchors.left: parent.left
             anchors.margins: AppStyle.spacing
             ColumnLayout {
                 width: parent.width
@@ -157,12 +163,6 @@ Item {
                 }
             }
         }
-    }
-    Rectangle {
-        anchors.right: parent.right
-        width: parent.width / 2
-        height: item.height
-
         ListView {
             id: availableSources
             anchors.top: addPathButton.bottom
@@ -177,13 +177,12 @@ Item {
                     height: 40
                     width: availableSources.width
 
+                    property var content: path
                     Text {
                         id: contactInfo
                         width: parent.width
                         text: path
                         elide: Text.ElideLeft
-
-                        color: wrapper.ListView.isCurrentItem ? "red" : "black"
                     }
                 }
             }
@@ -196,10 +195,14 @@ Item {
                 id: availableSourcesModel
             }
         }
+        TutorialSourceManager {
+            id: manager
+        }
+
         Button {
             id: addPathButton
-            anchors.left: parent.left
-            width: parent.width / 2 - 2 * AppStyle.spacing
+            anchors.left: control.right
+            width: (parent.width - control.width) / 2 - 2 * AppStyle.spacing
             anchors.margins: AppStyle.spacing
             text: qsTr("Add path")
             onPressed: folderDialog.open()
@@ -211,23 +214,41 @@ Item {
             anchors.left: addPathButton.right
             text: qsTr("Remove path")
             enabled: availableSources.currentIndex > -1
-            onPressed: availableSourcesModel.remove(
-                           availableSources.currentIndex, 1)
+            onPressed: {
+                manager.removePath(availableSources.itemAtIndex(
+                                       availableSources.currentIndex).content)
+                availableSourcesModel.remove(availableSources.currentIndex, 1)
+            }
         }
 
         UsableBrickView {
             id: usableBrickView
             anchors.top: availableSources.bottom
             anchors.margins: AppStyle.spacing
-            brickSources: []
+            anchors.left: control.right
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            availableBricks: manager.model
+            onAddBrick: file => {
+                            tutorialManager.addBrick(file)
+                        }
         }
 
         FolderDialog {
             id: folderDialog
+            function find(model, folder) {
+                for (var i = 0; i < model.count; ++i)
+                    if (model.get(i).path === folder)
+                        return model.get(i)
+                return null
+            }
             onAccepted: {
-                availableSourcesModel.append({
-                                                 "path": folder
-                                             })
+                if (!(folderDialog.find(availableSourcesModel, folder))) {
+                    availableSourcesModel.append({
+                                                     "path": folder
+                                                 })
+                }
+                manager.addPath(folder)
             }
         }
     }
