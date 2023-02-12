@@ -4,7 +4,7 @@ from PySide6.QtCore import QUrl, Qt
 from PySide6.QtQuick import QQuickWindow, QSGRendererInterface
 from PySide6.QtWebEngineQuick import QtWebEngineQuick
 from PySide6.QtGui import QGuiApplication, QFontDatabase, QIcon
-from PySide6.QtQml import QQmlApplicationEngine, qmlRegisterType
+from PySide6.QtQml import QQmlApplicationEngine, qmlRegisterType , QQmlDebuggingEnabler
 from qml import BrickManager
 from qml import Brick
 from qml import TutorialManager
@@ -12,7 +12,7 @@ from qml import TutorialSourceManager
 from qml import LanguageManager
 from qml import Converter
 import resources_rc
-
+debug = QQmlDebuggingEnabler()
 if __name__ == "__main__":
     sys.argv += ['--style', 'Fusion']
     QGuiApplication.setAttribute(Qt.AA_ShareOpenGLContexts, True)

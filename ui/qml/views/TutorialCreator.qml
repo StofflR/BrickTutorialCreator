@@ -165,8 +165,8 @@ Item {
         }
         ListView {
             id: availableSources
-            anchors.top: addPathButton.bottom
-            anchors.left: addPathButton.left
+            anchors.top: sourceButtons.bottom
+            anchors.left: control.right
             anchors.right: parent.right
             anchors.margins: AppStyle.spacing
             height: parent.height / 3 < availableSources.count
@@ -199,32 +199,9 @@ Item {
             id: manager
         }
 
-        Button {
-            id: addPathButton
-            anchors.left: control.right
-            width: (parent.width - control.width) / 2 - 2 * AppStyle.spacing
-            anchors.margins: AppStyle.spacing
-            text: qsTr("Add path")
-            onPressed: folderDialog.open()
-        }
-        Button {
-            id: removePathButton
-            anchors.margins: AppStyle.spacing
-            anchors.right: parent.right
-            anchors.left: addPathButton.right
-            text: qsTr("Remove path")
-            enabled: availableSources.currentIndex > -1
-            onPressed: {
-                manager.removePath(availableSources.itemAtIndex(
-                                       availableSources.currentIndex).content)
-                availableSourcesModel.remove(availableSources.currentIndex, 1)
-            }
-        }
-
         UsableBrickView {
             id: usableBrickView
-            anchors.top: availableSources.bottom
-            anchors.margins: AppStyle.spacing
+            anchors.top: optionField.bottom
             anchors.left: control.right
             anchors.right: parent.right
             anchors.bottom: parent.bottom
@@ -233,7 +210,60 @@ Item {
                             tutorialManager.addBrick(file)
                         }
         }
+        Rectangle {
+            id: sourceButtons
+            anchors.left: control.right
+            anchors.top: parent.top
+            anchors.right: parent.right
+            anchors.margins: AppStyle.spacing
+            height: addPathButton.height
+            Button {
+                id: addPathButton
+                anchors.left: sourceButtons.left
+                width: (sourceButtons.width - AppStyle.spacing) / 2
+                text: qsTr("Add path")
+                onPressed: folderDialog.open()
+            }
+            Button {
+                id: removePathButton
+                anchors.margins: AppStyle.spacing
+                width: addPathButton.width
+                anchors.left: addPathButton.right
+                text: qsTr("Remove path")
+                enabled: availableSources.currentIndex > -1
+                onPressed: {
+                    manager.removePath(
+                                availableSources.itemAtIndex(
+                                    availableSources.currentIndex).content)
+                    availableSourcesModel.remove(availableSources.currentIndex,
+                                                 1)
+                }
+            }
+        }
 
+        Rectangle {
+            id: optionField
+            anchors.top: availableSources.bottom
+            anchors.left: control.right
+            anchors.right: parent.right
+            anchors.margins: AppStyle.spacing
+            height: refreshButton.height
+            Field {
+                // TODO: implement filtering for content
+                anchors.left: optionField.left
+                anchors.right: refreshButton.left
+                anchors.margins: AppStyle.spacing
+                width: 0
+                visible: false
+            }
+            IconButton {
+                id: refreshButton
+                anchors.right: optionField.right
+                width: height
+                icon.source: "qrc:/bricks/resources/refresh_black_24dp.svg"
+                onClicked: manager.refresh(true)
+            }
+        }
         FolderDialog {
             id: folderDialog
             function find(model, folder) {

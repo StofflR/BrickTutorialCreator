@@ -1,23 +1,22 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
+import "../style"
+
 Item {
     id: root
     signal addBrick(string file)
     property var availableBricks
-    Text {
-        id: name
-        text: qsTr("Available Bricks")
-    }
     ListView {
         id: view
         anchors.top: name.bottom
         anchors.bottom: root.bottom
         anchors.left: root.left
         anchors.right: root.right
+        anchors.margins: AppStyle.spacing
         delegate: Rectangle {
             id: source
-            width: root.width
+            width: view.width
             height: sourceImage.height
             MouseArea {
                 anchors.fill: parent
@@ -31,5 +30,17 @@ Item {
         }
         model: availableBricks
         onModelChanged: console.log(model)
+    }
+    Rectangle {
+        id: name
+        anchors.left: root.left
+        width: view.width
+        anchors.margins: AppStyle.spacing
+        height: text.height + AppStyle.spacing
+        Text {
+            id: text
+            anchors.left: name.left
+            text: qsTr("Available Bricks")
+        }
     }
 }

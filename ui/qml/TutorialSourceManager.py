@@ -17,15 +17,9 @@ class TutorialSourceManager(QObject):
     def isBrick(self, file : str):
         return True
 
-    @Slot(str, result=None)
-    def addPath(self, path):
+    def findResources(self, path):
         resources = []
         unique_resources = []
-        path = path.replace("file:///", "")
-
-        if path in self.paths.keys():
-            return
-
         files = os.listdir(path)
         for file in files:
             if ".svg" in file and self.isBrick(file):
@@ -33,20 +27,39 @@ class TutorialSourceManager(QObject):
                 resources.append(file)
                 if file not in self.modelVal:
                     unique_resources.append(file)
+        return resources, unique_resources
+
+    @Slot(str, result=None)
+    def addPath(self, path):
+        path = path.replace("file:///", "")
+
+        if path in self.paths.keys():
+            return
+
+        resources, unique_resources = self.findResources(path)
+
         self.paths[path] = resources
         self._updateModel(self.modelVal + unique_resources)
         self.modelChanged.emit()
 
+    @Slot(bool, result=None)
+    def refresh(self, reload=False):
+        model = []
+        self.modelVal = []
+        for path in self.paths.keys():
+            if(reload):
+                resources, unique_resources = self.findResources(path)
+                self.paths[path] = resources
+                model = model + unique_resources
+            else:
+                model = model + self.paths[path]
+        self._updateModel(model)
 
     @Slot(str, result=None)
     def removePath(self, path):
         path = path.replace("file:///", "")
         self.paths[path] = []
-        model = []
-        for path in self.paths.keys():
-            model + self.paths[path]
-        self._updateModel(model)
-
+        self.refresh()
 
     def _getModel(self):
         return self.modelVal
