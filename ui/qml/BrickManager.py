@@ -15,7 +15,7 @@ class BrickManager(QObject):
     @Slot(int, result=list)
     def at(self, index):
         if not self.resources:
-            ret =  None
+            ret = None
         else:
             ret = self.resources[index].color
         return ret

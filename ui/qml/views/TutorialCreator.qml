@@ -216,7 +216,7 @@ Item {
             anchors.top: parent.top
             anchors.right: parent.right
             anchors.margins: AppStyle.spacing
-            height: addPathButton.height
+            height: addPathButton.height + enableForeign.height + AppStyle.spacing
             Button {
                 id: addPathButton
                 anchors.left: sourceButtons.left
@@ -237,6 +237,16 @@ Item {
                                     availableSources.currentIndex).content)
                     availableSourcesModel.remove(availableSources.currentIndex,
                                                  1)
+                }
+            }
+            CheckBox {
+                id: enableForeign
+                anchors.top: addPathButton.bottom
+                anchors.margins: AppStyle.spacing
+                text: "Enable non bricks"
+                onCheckedChanged: {
+                    manager.allowForeign = enableForeign.checked
+                    manager.refresh(true)
                 }
             }
         }

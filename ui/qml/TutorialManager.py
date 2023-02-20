@@ -14,9 +14,9 @@ QML_IMPORT_MAJOR_VERSION = 1
 class TutorialManager(QObject):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-        self.bricks: Dict(str, SVGBrick)
+        self.bricks: Dict[str, SVGBrick]
         self.bricks = {}
-        self.modelVal: List(str)
+        self.modelVal: List[str]
         self.modelVal = []
         self.tutorial: QImage
         self.tutorial = None
@@ -24,11 +24,11 @@ class TutorialManager(QObject):
     @Slot(str)
     @Slot(str, int)
     def addBrick(self, path, index=None):
-        if not ".json" in path:
-            jsonText = SVGBrick.getJSONFromSVG(path.replace("file:///", ""))
+        if ".json" not in path:
+            json_text = SVGBrick.getJSONFromSVG(path.replace("file:///", ""))
         else:
-            jsonText = json.load(open(path.replace("file:///", "")))
-        brick = SVGBrick.fromJSON(jsonText)
+            json_text = json.load(open(path.replace("file:///", "")))
+        brick = SVGBrick.fromJSON(json_text)
         if ".json" in path:
             path = "file:///" + brick.getWorkingBrick()
 
@@ -45,7 +45,7 @@ class TutorialManager(QObject):
         content = []
         for brick in self.modelVal:
             content.append(self.bricks[brick].toJSON())
-        f = open(path.replace("file:///",""), "w")
+        f = open(path.replace("file:///", ""), "w")
         f.write(json.dumps(content))
         f.close()
 
@@ -53,12 +53,12 @@ class TutorialManager(QObject):
     def fromJSON(self, path):
         self.modelVal.clear()
         self.bricks.clear()
-        content = json.load(open(path.replace("file:///","")))
+        content = json.load(open(path.replace("file:///", "")))
         for element in content:
-            svgBrick = SVGBrick.fromJSON(json.loads(element))
-            brickPath = "file:///" + svgBrick.getWorkingBrick()
-            self.modelVal.append(brickPath)
-            self.bricks[brickPath] = svgBrick
+            svg_brick = SVGBrick.fromJSON(json.loads(element))
+            brick_path = "file:///" + svg_brick.getWorkingBrick()
+            self.modelVal.append(brick_path)
+            self.bricks[brick_path] = svg_brick
         self.modelChanged.emit()
 
     @Slot(int)
@@ -90,11 +90,11 @@ class TutorialManager(QObject):
             b = QImage(
                 self.bricks[brick].working_brick_.replace(".svg", ".png"))
             target = QImage(tutorial.width(), tutorial.height(
-            ) + b.height() - int(tutorial.width()/55), QImage.Format_RGBA32FPx4)
+            ) + b.height() - int(tutorial.width() / 55), QImage.Format_RGBA32FPx4)
             painter = QPainter(target)
             painter.drawImage(0, 0, tutorial)
             painter.drawImage(0, tutorial.height() -
-                              int(tutorial.width()/55), b)
+                              int(tutorial.width() / 55), b)
             tutorial = target
         self.tutorial = tutorial
 

@@ -17,33 +17,33 @@ class Converter(QObject):
 
     @Slot(str, result=int)
     def fromJSONtoSVG(self, path):
-        path = path.replace("file:///","")
+        path = path.replace("file:///", "")
         count = 0
         for element in os.listdir(path):
             if ".json" in element:
-                count +=1
-                element=path+"/"+element
-                SVGBrick.fromJSON(json.load(open(element))).save(element.replace(".json",".svg"))
+                count += 1
+                element = path + "/" + element
+                SVGBrick.fromJSON(json.load(open(element))).save(element.replace(".json", ".svg"))
         return count
 
     @Slot(str, result=int)
-    def fromJSONtoPNG(self,path):
-        path = path.replace("file:///","")
+    def fromJSONtoPNG(self, path):
+        path = path.replace("file:///", "")
         count = 0
         for element in os.listdir(path):
             if ".json" in element:
-                count +=1
-                element=path+"/"+element
-                SVGBrick.fromJSON(json.load(open(element))).savePNG(element.replace(".json",".png"))
+                count += 1
+                element = path + "/" + element
+                SVGBrick.fromJSON(json.load(open(element))).savePNG(element.replace(".json", ".png"))
         return count
 
     @Slot(str, result=int)
-    def fromSVGtoPNG(self,path):
-        path = path.replace("file:///","")
+    def fromSVGtoPNG(self, path):
+        path = path.replace("file:///", "")
         count = 0
         for element in os.listdir(path):
             if ".svg" in element:
                 count += 1
-                element=path+"/"+element
-                SVGBrick.fromJSON(SVGBrick.getJSONFromSVG(element)).savePNG(element.replace(".svg",".png"))
+                element = path + "/" + element
+                SVGBrick.fromJSON(SVGBrick.getJSONFromSVG(element)).savePNG(element.replace(".svg", ".png"))
         return count

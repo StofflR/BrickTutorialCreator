@@ -104,7 +104,6 @@ class SVGBrick:
             logging.info("created empty brick")
             return cls("", "", 1, "", 1)
 
-
     def toJSON(self, path=""):
         json_text = self.JSON()
         if path != "":
@@ -253,7 +252,7 @@ class SVGBrick:
 
     def addDescription(self):
         sub_element = Tree.SubElement(
-            self.tree_.getroot(), 'ns0:desc', {'id': "json"})
+            self.tree_.getroot(), 'ns0:desc', {'id': "json", 'tag' : "brick"})
         sub_element.text = self.JSON()
 
     def JSON(self):

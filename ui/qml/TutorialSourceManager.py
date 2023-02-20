@@ -1,10 +1,15 @@
+import os
+
 from PySide6.QtCore import Slot, QObject, Property, Signal
 from PySide6.QtQml import QmlElement
-from modules.ResourceManager import ResourceManager
-import os
+from modules.SVGBrick import SVGBrick
 
 QML_IMPORT_NAME = "TutorialSourceManager"
 QML_IMPORT_MAJOR_VERSION = 1
+
+
+def isBrick(file: str):
+    return '<desc id="json" tag="brick">' in open(file, 'r').read()
 
 
 @QmlElement
@@ -13,20 +18,25 @@ class TutorialSourceManager(QObject):
         super().__init__(parent=parent)
         self.paths = {}
         self.modelVal = []
-
-    def isBrick(self, file : str):
-        return True
+        self.allowForeignVal = False
 
     def findResources(self, path):
         resources = []
         unique_resources = []
         files = os.listdir(path)
         for file in files:
-            if ".svg" in file and self.isBrick(file):
-                file = path + "/" + file
-                resources.append(file)
-                if file not in self.modelVal:
-                    unique_resources.append(file)
+            file = path + "/" + file
+            if ".svg" in file:
+                is_brick = isBrick(file)
+                if is_brick or self.allowForeignVal:
+                    brick = {"path": file, "is_brick": is_brick}
+                    if is_brick:
+                        additional_data = SVGBrick.getJSONFromSVG(file)
+                        additional_data.update(brick)
+                        brick = additional_data
+                    resources.append(brick)
+                    if file not in self.modelVal:
+                        unique_resources.append(brick)
         return resources, unique_resources
 
     @Slot(str, result=None)
@@ -47,7 +57,7 @@ class TutorialSourceManager(QObject):
         model = []
         self.modelVal = []
         for path in self.paths.keys():
-            if(reload):
+            if reload:
                 resources, unique_resources = self.findResources(path)
                 self.paths[path] = resources
                 model = model + unique_resources
@@ -73,4 +83,17 @@ class TutorialSourceManager(QObject):
     def modelChanged(self):
         pass
 
+    def _getAllowForeign(self):
+        return self.allowForeignVal
+
+    @Slot(bool)
+    def _setAllowForeign(self, allow):
+        self.allowForeignVal = allow
+        self.foreignChanged.emit()
+
+    @Signal
+    def foreignChanged(self):
+        pass
+
     model = Property(list, _getModel, _updateModel, notify=modelChanged)
+    allowForeign = Property(bool, _getAllowForeign, _setAllowForeign, notify=foreignChanged)

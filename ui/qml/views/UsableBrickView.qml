@@ -23,13 +23,19 @@ Item {
                 onDoubleClicked: root.addBrick(sourceImage.source)
                 Image {
                     id: sourceImage
+                    fillMode: Image.PreserveAspectFit
                     width: source.width
-                    source: "file:///" + view.model[index]
+                    source: "file:///" + view.model[index].path
+                    Component.onCompleted: {
+                        if (!view.model[index].is_brick
+                                && height > root.height / 4)
+                            sourceImage.height = root.height / 4
+                    }
                 }
             }
         }
         model: availableBricks
-        onModelChanged: console.log(model)
+        onModelChanged: console.log(model[0].path)
     }
     Rectangle {
         id: name
