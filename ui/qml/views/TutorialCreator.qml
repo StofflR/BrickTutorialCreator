@@ -55,7 +55,6 @@ Item {
                         if (updatedModel == [])
                             return
                         tutorialManager.model = updatedModel
-                        //console.log(updatedModel) // Update python model
                     }
                 }
                 Component.onCompleted: proxyModel.removed.connect(
@@ -73,6 +72,18 @@ Item {
         anchors.right: parent.right
         width: parent.width / 2
         height: item.height
+        UsableBrickView {
+            id: usableBrickView
+            anchors.top: optionField.bottom
+            anchors.left: control.right
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            availableBricks: manager.model
+            groupedView: enableSorting.checked
+            onAddBrick: file => {
+                            tutorialManager.addBrick(file)
+                        }
+        }
         Rectangle {
             id: control
             height: parent.height
@@ -163,53 +174,58 @@ Item {
                 }
             }
         }
-        ListView {
-            id: availableSources
+        Rectangle {
+            anchors.fill: availableSourceScrollview
+        }
+
+        ScrollView {
+            id: availableSourceScrollview
             anchors.top: sourceButtons.bottom
             anchors.left: control.right
             anchors.right: parent.right
+            ScrollBar.vertical.snapMode: ScrollBar.SnapAlways
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+            ScrollBar.vertical.policy: ScrollBar.AsNeeded
             anchors.margins: AppStyle.spacing
-            height: parent.height / 3 < availableSources.count
-                    * 40 ? parent.height / 3 : availableSources.count * 40
-            delegate: Component {
-                MouseArea {
-                    onClicked: availableSources.currentIndex = index
-                    height: 40
-                    width: availableSources.width
+            height: parent.height / 4 < availableSources.count
+                    * 40 ? parent.height / 4 : availableSources.count * 40
 
-                    property var content: path
-                    Text {
-                        id: contactInfo
-                        width: parent.width
-                        text: path
-                        elide: Text.ElideLeft
+            ListView {
+                id: availableSources
+                width: availableSourceScrollview.width
+
+                delegate: Component {
+                    MouseArea {
+                        onClicked: availableSources.currentIndex = index
+                        height: 40
+                        width: availableSources.width
+
+                        property var content: path
+                        Text {
+                            id: contactInfo
+                            width: parent.width
+                            text: path
+                            anchors.centerIn: parent
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignHCenter
+                            elide: Text.ElideLeft
+                        }
                     }
                 }
-            }
-            highlight: Rectangle {
-                color: "lightsteelblue"
-                radius: 5
-            }
-            focus: true
-            model: ListModel {
-                id: availableSourcesModel
+                highlight: Rectangle {
+                    color: "lightsteelblue"
+                    radius: 5
+                }
+                focus: true
+                model: ListModel {
+                    id: availableSourcesModel
+                }
             }
         }
         TutorialSourceManager {
             id: manager
         }
 
-        UsableBrickView {
-            id: usableBrickView
-            anchors.top: optionField.bottom
-            anchors.left: control.right
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-            availableBricks: manager.model
-            onAddBrick: file => {
-                            tutorialManager.addBrick(file)
-                        }
-        }
         Rectangle {
             id: sourceButtons
             anchors.left: control.right
@@ -243,9 +259,20 @@ Item {
                 id: enableForeign
                 anchors.top: addPathButton.bottom
                 anchors.margins: AppStyle.spacing
-                text: "Enable non bricks"
+                text: "Legacy bricks"
                 onCheckedChanged: {
                     manager.allowForeign = enableForeign.checked
+                    manager.refresh(true)
+                }
+            }
+            CheckBox {
+                id: enableSorting
+                anchors.top: addPathButton.bottom
+                anchors.left: enableForeign.right
+                anchors.margins: AppStyle.spacing
+                text: "Sort bricks"
+                onCheckedChanged: {
+                    manager.sorted = enableSorting.checked
                     manager.refresh(true)
                 }
             }
@@ -253,18 +280,16 @@ Item {
 
         Rectangle {
             id: optionField
-            anchors.top: availableSources.bottom
+            anchors.top: availableSourceScrollview.bottom
             anchors.left: control.right
             anchors.right: parent.right
             anchors.margins: AppStyle.spacing
             height: refreshButton.height
             Field {
-                // TODO: implement filtering for content
                 anchors.left: optionField.left
                 anchors.right: refreshButton.left
                 anchors.margins: AppStyle.spacing
-                width: 0
-                visible: false
+                onTextChanged: manager.setFilter(text)
             }
             IconButton {
                 id: refreshButton
@@ -283,9 +308,10 @@ Item {
                 return null
             }
             onAccepted: {
-                if (!(folderDialog.find(availableSourcesModel, folder))) {
+                var path = folder.toString().replace("file:///", "")
+                if (!(folderDialog.find(availableSourcesModel, path))) {
                     availableSourcesModel.append({
-                                                     "path": folder
+                                                     "path": path
                                                  })
                 }
                 manager.addPath(folder)

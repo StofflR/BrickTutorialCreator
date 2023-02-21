@@ -7,39 +7,100 @@ Item {
     id: root
     signal addBrick(string file)
     property var availableBricks
-    ListView {
-        id: view
-        anchors.top: name.bottom
-        anchors.bottom: root.bottom
+    property bool groupedView
+    ScrollView {
+        id: scrollview
         anchors.left: root.left
         anchors.right: root.right
+        anchors.top: name.bottom
+        anchors.bottom: root.bottom
         anchors.margins: AppStyle.spacing
-        delegate: Rectangle {
-            id: source
-            width: view.width
-            height: sourceImage.height
-            MouseArea {
-                anchors.fill: parent
-                onDoubleClicked: root.addBrick(sourceImage.source)
-                Image {
-                    id: sourceImage
-                    fillMode: Image.PreserveAspectFit
-                    width: source.width
-                    source: "file:///" + view.model[index].path
-                    Component.onCompleted: {
-                        if (!view.model[index].is_brick
-                                && height > root.height / 4)
-                            sourceImage.height = root.height / 4
+        ScrollBar.vertical.snapMode: ScrollBar.SnapAlways
+        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+        ScrollBar.vertical.policy: ScrollBar.AsNeeded
+        ListView {
+            id: view
+            anchors.top: name.bottom
+            anchors.bottom: scrollview.bottom
+            anchors.left: scrollview.left
+            anchors.right: scrollview.right
+            anchors.margins: AppStyle.spacing
+            delegate: Rectangle {
+                id: source
+                width: view.width
+                height: expand ? sourceImage.height + recta.height : sourceImage.height
+
+                property bool expand: false
+
+                MouseArea {
+                    id: mouseArea
+                    anchors.left: source.left
+                    anchors.top: source.top
+                    width: sourceImage.width
+                    height: sourceImage.height
+                    onClicked: if (root.groupedView)
+                                   expand = !expand
+
+                    onDoubleClicked: if (!root.groupedView)
+                                         root.addBrick(sourceImage.source)
+                    Image {
+                        id: sourceImage
+                        fillMode: Image.PreserveAspectFit
+                        width: source.width
+                        Text {
+                            anchors.centerIn: parent
+                            visible: groupedView
+                            font.bold: true
+                            font.pointSize: 12
+                            text: "Click to " + (expand ? "collapse" : "expand") + "!"
+                        }
+                        source: "file:///" + view.model[index].path
+                    }
+                }
+                Rectangle {
+                    id: recta
+                    width: view.width
+                    anchors.top: mouseArea.bottom
+                    anchors.left: mouseArea.left
+                    height: expand ? viewExpand.contentHeight + 2 * AppStyle.spacing : 0
+
+                    ListView {
+                        id: viewExpand
+                        anchors.fill: recta
+                        anchors.margins: AppStyle.spacing
+                        model: groupedView ? view.model[index].elements : []
+                        interactive: false
+                        delegate: Rectangle {
+                            id: sourceExpand
+                            width: viewExpand.width
+                            height: sourceImageExpand.height
+
+                            MouseArea {
+                                id: mouseAreaExpand
+                                anchors.left: sourceExpand.left
+                                anchors.top: sourceExpand.top
+                                width: sourceImageExpand.width
+                                height: sourceImageExpand.height
+
+                                onDoubleClicked: root.addBrick(
+                                                     sourceImageExpand.source)
+                                Image {
+                                    id: sourceImageExpand
+                                    fillMode: Image.PreserveAspectFit
+                                    width: recta.width
+                                    source: "file:///" + viewExpand.model[index].path
+                                }
+                            }
+                        }
                     }
                 }
             }
+            model: availableBricks
         }
-        model: availableBricks
-        onModelChanged: console.log(model[0].path)
     }
     Rectangle {
         id: name
-        anchors.left: root.left
+        anchors.left: scrollview.left
         width: view.width
         anchors.margins: AppStyle.spacing
         height: text.height + AppStyle.spacing

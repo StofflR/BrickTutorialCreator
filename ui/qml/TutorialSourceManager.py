@@ -3,13 +3,11 @@ import os
 from PySide6.QtCore import Slot, QObject, Property, Signal
 from PySide6.QtQml import QmlElement
 from modules.SVGBrick import SVGBrick
+import logging
 
 QML_IMPORT_NAME = "TutorialSourceManager"
 QML_IMPORT_MAJOR_VERSION = 1
 
-
-def isBrick(file: str):
-    return '<desc id="json" tag="brick">' in open(file, 'r').read()
 
 
 @QmlElement
@@ -19,6 +17,23 @@ class TutorialSourceManager(QObject):
         self.paths = {}
         self.modelVal = []
         self.allowForeignVal = False
+        self.enableSorting = False
+        self.typeModel = {}
+        self.filter = ""
+
+    def isBrick(self, file: str):
+        is_brick = '<desc id="json" tag="brick">' in open(file, 'r').read()
+        if is_brick:
+            return SVGBrick.getJSONFromSVG(file)
+
+        if self.allowForeignVal:
+            try:
+                content = SVGBrick.getJSONFromSVG(file)
+                brick = SVGBrick.fromJSON(content)
+                return SVGBrick.getJSONFromSVG(file)
+            except Exception as e:
+                logging.debug("Cloud not load svg: " + file)
+        return False
 
     def findResources(self, path):
         resources = []
@@ -27,16 +42,18 @@ class TutorialSourceManager(QObject):
         for file in files:
             file = path + "/" + file
             if ".svg" in file:
-                is_brick = isBrick(file)
-                if is_brick or self.allowForeignVal:
-                    brick = {"path": file, "is_brick": is_brick}
-                    if is_brick:
-                        additional_data = SVGBrick.getJSONFromSVG(file)
-                        additional_data.update(brick)
-                        brick = additional_data
-                    resources.append(brick)
-                    if file not in self.modelVal:
-                        unique_resources.append(brick)
+                brick_data = self.isBrick(file)
+                if brick_data:
+
+                    brick = {"path": file,"is_brick":  True}
+                    brick_data["base_path"] = brick_data["path"]
+                    brick_data.update(brick)
+                    brick = brick_data
+
+                    if self.filter == "" or ("content" in brick.keys() and self.filter in brick["content"]):
+                        resources.append(brick)
+                        if file not in self.modelVal:
+                            unique_resources.append(brick)
         return resources, unique_resources
 
     @Slot(str, result=None)
@@ -63,6 +80,7 @@ class TutorialSourceManager(QObject):
                 model = model + unique_resources
             else:
                 model = model + self.paths[path]
+        print(self.filter, model)
         self._updateModel(model)
 
     @Slot(str, result=None)
@@ -73,6 +91,12 @@ class TutorialSourceManager(QObject):
 
     def _getModel(self):
         return self.modelVal
+
+
+    @Slot(str)
+    def setFilter(self, text):
+        self.filter = text
+        self.refresh(True)
 
     @Slot(list)
     def _updateModel(self, model):
