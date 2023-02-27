@@ -35,7 +35,7 @@ T.SpinBox {
         verticalAlignment: Qt.AlignVCenter
         text: spinbox.displayText
         font.family: Font.boldFont ? Font.boldFont : -1
-        font.pixelSize: AppStyle.spacing
+        font.pointSize: AppStyle.spacing * 8 / 6
         color: "black"
         readOnly: !spinbox.editable
         inputMethodHints: Qt.ImhFormattedNumbersOnly
@@ -52,7 +52,7 @@ T.SpinBox {
         Text {
             text: "+"
             font.family: Font.boldFont ? Font.boldFont : -1
-            font.pixelSize: spinbox.font.pixelSize * 2
+            font.pointSize: spinbox.font.pointSize * 2
             color: "black"
             anchors.fill: parent
             fontSizeMode: Text.Fit
@@ -73,7 +73,7 @@ T.SpinBox {
         Text {
             text: "-"
             font.family: Font.boldFont ? Font.boldFont : -1
-            font.pixelSize: spinbox.font.pixelSize * 2
+            font.pointSize: spinbox.font.pointSize * 2
             color: "black"
             anchors.fill: parent
             fontSizeMode: Text.Fit

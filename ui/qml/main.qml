@@ -18,7 +18,7 @@ ApplicationWindow {
     visible: true
     title: qsTr("Brick Creator")
     font.family: Font.boldFont ? Font.boldFont : -1
-    font.pixelSize: AppStyle.spacing
+    font.pointSize: AppStyle.spacing * 8 / 6
     property string statusText: ""
     function updateStatusMessage(text) {
         statusText = text
@@ -29,12 +29,12 @@ ApplicationWindow {
             id: file
             title: qsTr("&File")
             font.family: Font.boldFont ? Font.boldFont : -1
-            font.pixelSize: AppStyle.spacing
+            font.pointSize: AppStyle.spacing * 8 / 6
 
             MenuItem {
                 text: qsTr("&Help")
                 font.family: Font.boldFont ? Font.boldFont : -1
-                font.pixelSize: AppStyle.spacing
+                font.pointSize: AppStyle.spacing * 8 / 6
                 onTriggered: {
                     help.open()
                 }
@@ -43,7 +43,7 @@ ApplicationWindow {
             MenuItem {
                 text: qsTr("&About")
                 font.family: Font.boldFont ? Font.boldFont : -1
-                font.pixelSize: AppStyle.spacing
+                font.pointSize: AppStyle.spacing * 8 / 6
 
                 onTriggered: {
                     about.open()
@@ -53,19 +53,19 @@ ApplicationWindow {
             MenuItem {
                 text: qsTr("&Convert Folder (JSON → SVG)")
                 font.family: Font.boldFont ? Font.boldFont : -1
-                font.pixelSize: AppStyle.spacing
+                font.pointSize: AppStyle.spacing * 8 / 6
                 onTriggered: brickConverter.fromJSONtoSVG()
             }
             MenuItem {
                 text: qsTr("&Convert Folder (SVG → PNG)")
                 font.family: Font.boldFont ? Font.boldFont : -1
-                font.pixelSize: AppStyle.spacing
+                font.pointSize: AppStyle.spacing * 8 / 6
                 onTriggered: brickConverter.fromSVGtoPNG()
             }
             MenuItem {
                 text: qsTr("&Convert Folder (JSON → PNG)")
                 font.family: Font.boldFont ? Font.boldFont : -1
-                font.pixelSize: AppStyle.spacing
+                font.pointSize: AppStyle.spacing * 8 / 6
                 onTriggered: brickConverter.fromJSONtoPNG()
             }
         }

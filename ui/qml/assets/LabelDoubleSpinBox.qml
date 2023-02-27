@@ -12,13 +12,14 @@ Item {
     property alias spinbox: spinbox
     property var label: qsTr("Label")
     property var button_label: qsTr("Button")
+    property alias labelWidth: label.width
     Label {
         width: item.width / 2 - AppStyle.spacing
         height: item.height
         id: label
         text: item.label
         font.family: Font.boldFont ? Font.boldFont : -1
-        font.pixelSize: AppStyle.spacing
+        font.pointSize: AppStyle.spacing * 8 / 6
         anchors.verticalCenter: item.verticalCenter
         anchors.top: parent.top
         anchors.left: parent.left

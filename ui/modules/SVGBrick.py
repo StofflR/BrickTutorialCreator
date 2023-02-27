@@ -5,6 +5,7 @@ import random
 import string
 import sys
 import xml.etree.ElementTree as Tree
+from ssl import DefaultVerifyPaths
 from typing import Dict
 from PySide6.QtGui import QImage, QPainter, QFontMetrics, QFont
 from PySide6.QtSvg import QSvgRenderer
@@ -51,17 +52,18 @@ def randomString(digits):
 
 
 class SVGBrick:
-    def __init__(self, base_type: str, content: str, size: int, path: str, scaling_factor=1):
+    def __init__(self, base_type: str, content: str, size: int, path: str, scaling_factor=1, x=DEFAULT_X, y=DEFAULT_Y):
         self.base_type = base_type
         self.working_brick_ = ""
         self.scaling_factor = scaling_factor
         self.content = content.replace("\t", "")
         self.path = path
         self.size = size
-        self.tree_ = Tree.parse(open(os.getcwd()+"/base/"+self.path, 'r'))
+        self.x = x
+        self.y = y
+        self.tree_ = Tree.parse(open(os.getcwd() + "/base/" + self.path, 'r'))
         self.operations = {
-            "\\": self.addLineBreak,
-            '\n': self.addLineBreakNewLine,
+            '\n': self.addLineBreak,
             "\0": self.addString,
             "*": self.addDropdown,
             "$": self.addVariable
@@ -97,8 +99,10 @@ class SVGBrick:
     @classmethod
     def fromJSON(cls, json_text: Dict):
         try:
+            x = DEFAULT_X if "x" not in json_text.keys() else json_text["x"]
+            y = DEFAULT_Y if "y" not in json_text.keys() else json_text["y"]
             return cls(json_text["base_type"], json_text["content"], json_text["size"], json_text["path"],
-                       json_text["scaling_factor"])
+                       json_text["scaling_factor"], x, y)
         except Exception as e:
             logging.warning(e)
             logging.info("created empty brick")
@@ -118,17 +122,17 @@ class SVGBrick:
     def addLineBreakNewLine(self, line: str, x: int, y: int):
         return self.addLineBreak(line, x, y, "\n")
 
-    def addLineBreak(self, line: str, x: int, y: int, delim="\\"):
+    def addLineBreak(self, line: str, x: int, y: int, delim="\n"):
         segments = line.split(delim, 1)
         self.addString(segments[0], x, y)
-        return segments[1], DEFAULT_X, y + (LINE_HEIGHT + LINE_OFF) * self.scaling_factor
+        return segments[1], self.x, y + (LINE_HEIGHT + 2*LINE_OFF) * self.scaling_factor
 
     def addContent(self):
         if not os.path.isdir(DEF_TMP):
             os.makedirs(DEF_TMP)
         self.working_brick_ = DEF_TMP + randomString(10) + ".svg"
 
-        self.parse(self.content)
+        self.parse(self.content, self.x, self.y)
         self.save()
 
     def contentPlain(self):
@@ -229,12 +233,14 @@ class SVGBrick:
 
     def addDropdown(self, line: str, x: int, y: int):
         segments = line.split("*", 2)
-        _ = self.addString(segments[0], x, y)
+        x += self.addString(segments[0], x, y)
         self.addTriangle(DEFAULT_WIDTH, y)
-        x = DEFAULT_X
-        y += (LINE_HEIGHT + LINE_OFF) * self.scaling_factor
-        self.addString(segments[1], x + DROPDOWN_OFFSET,
-                       y, DROPDOWN, NORMAL, DROPDOWN_SIZE)
+        x += self.addString(segments[1], x + DROPDOWN_OFFSET,
+                       y, DROPDOWN, NORMAL, DROPDOWN_SIZE) + DROPDOWN_OFFSET
+
+        #y += (LINE_HEIGHT + 2*LINE_OFF) * self.scaling_factor
+
+        #y += (LINE_HEIGHT + 2*LINE_OFF) * self.scaling_factor
         if len(segments) > 2:
             return segments[2], x, y
         return None, x, y
@@ -260,7 +266,7 @@ class SVGBrick:
                            "content": self.content,
                            "size": self.size,
                            "path": self.path,
-                           "scaling_factor": self.scaling_factor})
+                           "scaling_factor": self.scaling_factor, "x":self.x, "y":self.y})
 
 
 if __name__ == "__main__":

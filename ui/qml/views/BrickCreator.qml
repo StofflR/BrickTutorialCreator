@@ -77,11 +77,39 @@ Rectangle {
         label: qsTr("Content scale")
         id: contentScale
         spinbox.from: 1
-        spinbox.to: 200
+        spinbox.to: 300
         spinbox.editable: true
         width: parent.width / 2
         anchors.top: availableBricks.bottom
         anchors.left: parent.left
+        anchors.topMargin: AppStyle.spacing
+        spinbox.onValueChanged: svgPreview.update(true)
+    }
+    LabelDoubleSpinBox {
+        label: qsTr("X")
+        id: xPos
+        labelWidth: width / 4
+        spinbox.from: 1
+        spinbox.value: 43
+        spinbox.to: 300
+        spinbox.editable: true
+        width: parent.width / 4
+        anchors.top: availableBricks.bottom
+        anchors.left: contentScale.right
+        anchors.topMargin: AppStyle.spacing
+        spinbox.onValueChanged: svgPreview.update(true)
+    }
+    LabelDoubleSpinBox {
+        label: qsTr("Y")
+        id: yPos
+        labelWidth: width / 4
+        spinbox.from: 1
+        spinbox.value: 33
+        spinbox.to: 200
+        spinbox.editable: true
+        width: parent.width / 4
+        anchors.top: availableBricks.bottom
+        anchors.left: xPos.right
         anchors.topMargin: AppStyle.spacing
         spinbox.onValueChanged: svgPreview.update(true)
     }
@@ -91,7 +119,7 @@ Rectangle {
         id: saveLabel
         text: qsTr("Save as")
         font.family: Font.boldFont ? Font.boldFont : -1
-        font.pixelSize: AppStyle.spacing
+        font.pointSize: AppStyle.spacing * 8 / 6
         anchors.top: contentScale.bottom
         anchors.left: parent.left
         horizontalAlignment: Text.AlignHCenter
@@ -107,7 +135,7 @@ Rectangle {
         CheckBox {
             id: svg_check
             text: "SVG"
-            font.pixelSize: AppStyle.spacing
+            font.pointSize: AppStyle.spacing * 8 / 6
             anchors.fill: parent
             checked: true
         }
@@ -120,7 +148,7 @@ Rectangle {
         CheckBox {
             id: autoSave
             text: "Auto-Save"
-            font.pixelSize: AppStyle.spacing
+            font.pointSize: AppStyle.spacing * 8 / 6
             anchors.fill: parent
             checked: false
         }
@@ -134,7 +162,7 @@ Rectangle {
         CheckBox {
             id: json_check
             text: "JSON"
-            font.pixelSize: AppStyle.spacing
+            font.pointSize: AppStyle.spacing * 8 / 6
             anchors.fill: parent
             checked: true
         }
@@ -148,7 +176,7 @@ Rectangle {
         CheckBox {
             id: png_check
             text: "PNG"
-            font.pixelSize: AppStyle.spacing
+            font.pointSize: AppStyle.spacing * 8 / 6
             anchors.fill: parent
             checked: true
         }
@@ -161,7 +189,8 @@ Rectangle {
         anchors.right: parent.right
         Area {
             id: brickContent
-            font.pixelSize: 30
+            text: previewContent.text
+            font.pointSize: 30 * 8 / 6
             anchors.left: contentLayout.left
             height: contentLayout.height
             anchors.right: saveButton.left
@@ -221,7 +250,9 @@ Rectangle {
                 onAccepted: {
                     svgBrick.fromFile(currentFile)
                     brickContent.text = svgBrick.content()
-                    svgPreview.source = svgBrick.path()
+                    svgPreview.brickImg = svgBrick.path()
+                    xPos.spinbox.value = svgBrick.x()
+                    yPos.spinbox.value = svgBrick.y()
                     root.updateStatusMessage("INFO: Loaded " + currentFile)
                 }
             }
@@ -258,6 +289,10 @@ Rectangle {
 
     Image {
         id: svgPreview
+        property var brickImg
+        source: overlay.visible ? "qrc:/bricks/base/" + bricks.brickPath(
+                                      availableBricks.comboBox.currentIndex,
+                                      availableSize.comboBox.displayText) : brickImg
 
         anchors.bottom: parent.bottom
         anchors.left: parent.left
@@ -270,11 +305,92 @@ Rectangle {
                               availableBricks.comboBox.currentIndex,
                               availableSize.comboBox.displayText),
                           availableSize.comboBox.displayText,
-                          brickContent.text, contentScale.spinbox.value)
-                      source = svgBrick.path()
+                          brickContent.text, contentScale.spinbox.value,
+                          xPos.spinbox.value, yPos.spinbox.value)
+                      brickImg = svgBrick.path()
                       if (autoSave.checked && autosave)
                       saveButton.save()
                   }
+        Column {
+            id: overlay
+            anchors.fill: previewContent
+            visible: previewContent.cursorVisible ? 1 : 0
+
+            Repeater {
+                id: repeater
+                property int cursorPosition: previewContent.cursorPosition
+                                             - previewContent.text.substring(
+                                                 0,
+                                                 previewContent.cursorPosition).lastIndexOf(
+                                                 "\n") - 1
+                model: {
+                    var data = previewContent.getText(0, previewContent.length)
+                    while (data.indexOf("\n") !== -1) {
+                        data = data.replace("\n", "\r")
+                    }
+
+                    while (data.indexOf("$") !== -1) {
+                        data = data.replace("$", "<u>&#8288;")
+                        data = data.replace("$", "&#8288;</u>")
+                    }
+                    while (data.indexOf("*") !== -1) {
+                        data = data.replace(
+                                    "*",
+                                    "<span style=\"text-indent:25px\"><small>&#8288;")
+                        data = data.replace("*", "&#8288;</small></span>")
+                    }
+                    return data.split("\r")
+                }
+
+                TextEdit {
+                    id: repeaterLine
+                    width: contentWidth
+                    height: 12 * previewContent.scale
+                    text: repeater.model[index]
+                    padding: 0
+                    textFormat: TextEdit.AutoText
+                    z: repeater.model.length - index
+                    font: previewContent.font
+                    cursorVisible: index === previewContent.cursorLine
+                                   && previewContent.cursorVisible
+                    Binding on cursorPosition {
+                        when: onTextChanged || previewContent.text
+                              || previewContent.cursorPosition
+                        value: repeater.cursorPosition
+                    }
+                    onTextChanged: cursorPosition = repeater.cursorPosition
+                    onCursorPositionChanged: console.log(cursorPosition)
+                }
+            }
+        }
+        TextEdit {
+            id: previewContent
+            property int cursorLine: previewContent.text.substring(
+                                         0,
+                                         previewContent.cursorPosition).split(
+                                         /\n/).length - 1
+
+            property real scale: svgPreview.paintedWidth / 350
+            anchors.left: svgPreview.left
+            anchors.top: svgPreview.top
+            anchors.leftMargin: (xPos.spinbox.value - 2) * scale
+                                + (svgPreview.width - svgPreview.paintedWidth) / 2
+            anchors.topMargin: (yPos.spinbox.value - 15) * scale
+                               + (svgPreview.height - svgPreview.paintedHeight) / 2
+
+            width: svgPreview.width - anchors.leftMargin
+            height: svgPreview.height - anchors.topMargin
+            cursorDelegate: Item {}
+
+            verticalAlignment: Text.AlignTop
+            horizontalAlignment: Text.AlignLeft
+            font.family: "Roboto"
+            cursorVisible: false
+            wrapMode: TextArea.WordWrap
+            font.bold: true
+            font.pointSize: 12 * scale < 0 ? 12 : 12 * scale
+            opacity: 0
+        }
     }
     Component.onCompleted: svgPreview.update(true)
 }

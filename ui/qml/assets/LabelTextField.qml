@@ -17,7 +17,7 @@ Item {
         id: label
         text: item.label
         font.family: Font.bold.name
-        font.pixelSize: AppStyle.spacing
+        font.pointSize: AppStyle.spacing * 8 / 6
         anchors.verticalCenter: item.verticalCenter
         anchors.top: parent.top
         anchors.left: parent.left

@@ -9,7 +9,7 @@ T.Button {
     id: control
     implicitHeight: AppStyle.defaultHeight
     font.family: Font.boldFont ? Font.boldFont : -1
-    font.pixelSize: AppStyle.spacing
+    font.pointSize: AppStyle.spacing *8 /6
     opacity: enabled ? 1.0 : 0.3
     background: Rectangle {
         implicitWidth: parent.width

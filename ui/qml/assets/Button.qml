@@ -13,7 +13,7 @@ T.Button {
     contentItem: Text {
         text: control.text
         font.family: Font.boldFont ? Font.boldFont : -1
-        font.pixelSize: AppStyle.spacing
+        font.pointSize: AppStyle.spacing * 8 / 6
         opacity: enabled ? 1.0 : 0.3
         color: dangerButton ? control.down ? "lightcoral" : "red" : control.down ? "dimgray" : "black"
         horizontalAlignment: Text.AlignHCenter
