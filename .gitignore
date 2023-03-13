@@ -393,3 +393,11 @@ ui/main.build/
 ui/main.dist/
 
 ui/main.onefile-build/
+
+ui/BrickTutorialCreator.dist/
+
+ui/BrickTutorialCreator.build/
+
+*.zip
+
+ui/BrickTutorialCreator/
