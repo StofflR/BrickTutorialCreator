@@ -17,7 +17,7 @@ import shutil
 debug = QQmlDebuggingEnabler()
 if __name__ == "__main__":
 
-    folder = os.path.join(os.getcwd() + r"\resources\tmp")
+    folder = os.path.join(os.getcwd() + r"/resources/tmp")
     logging.debug("Leftover tmp files form: "+folder)
     for filename in os.listdir(folder):
         file_path = os.path.join(folder, filename)

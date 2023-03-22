@@ -401,3 +401,9 @@ ui/BrickTutorialCreator.build/
 *.zip
 
 ui/BrickTutorialCreator/
+
+ui/BrickTutorialCreator.onefile-build/
+
+*.bin
+
+*.gz
