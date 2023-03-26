@@ -40,7 +40,7 @@ Rectangle {
         }
 
         onPressed: editor.advancedPressed()
-
+        enabled: false //TODO: implement advanced editor
         display: AbstractButton.IconOnly
         icon.source: "qrc:/bricks/resources/settings_black_24dp.svg"
         icon.color: down ? "dimgray" : "black"

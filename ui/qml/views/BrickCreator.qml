@@ -314,7 +314,7 @@ Rectangle {
         Column {
             id: overlay
             anchors.fill: previewContent
-            visible: previewContent.cursorVisible ? 1 : 0
+            visible: false // previewContent.cursorVisible ? 1 : 0 // TODO: enable on component completion
 
             Repeater {
                 id: repeater
@@ -326,18 +326,20 @@ Rectangle {
                 model: {
                     var data = previewContent.getText(0, previewContent.length)
                     while (data.indexOf("\n") !== -1) {
-                        data = data.replace("\n", "\r")
+                        data = data.replace("\n", "&nbsp;\r")
                     }
 
                     while (data.indexOf("$") !== -1) {
-                        data = data.replace("$", "<u>&#8288;")
-                        data = data.replace("$", "&#8288;</u>")
+                        data = data.replace(
+                                    "$",
+                                    "<u style=\"white-space:pre;\">&middot;")
+                        data = data.replace("$", "&middot;</u>")
                     }
                     while (data.indexOf("*") !== -1) {
                         data = data.replace(
                                     "*",
-                                    "<span style=\"text-indent:25px\"><small>&#8288;")
-                        data = data.replace("*", "&#8288;</small></span>")
+                                    "<span style=\"text-indent:25px;white-space:pre;\"><small>&middot;")
+                        data = data.replace("*", "&middot;</small></span>")
                     }
                     return data.split("\r")
                 }
@@ -365,6 +367,7 @@ Rectangle {
         }
         TextEdit {
             id: previewContent
+            visible: false // TODO: enable on component completion
             property int cursorLine: previewContent.text.substring(
                                          0,
                                          previewContent.cursorPosition).split(
