@@ -7,7 +7,16 @@ Note: when modifying the resources file, you will need to use `pyside6-rcc resou
 * [PySide6](https://pypi.org/project/PySide6/)
 
 It is recommended to use Qt 6.x when running the application via QtCreator.
-
+## Running with python
+Install the necessary dependencies with 
+```
+python3 -m pip install PySide6 
+```
+after that simply run  
+```
+python3 main.py 
+```
+from the containing folder.
 ## Compiling
 ### Nukita
 To compile the application from python source you need to install nuitka 
@@ -32,19 +41,7 @@ By writing data in the input field the content will be addded on the brick. Ther
 * Dropdown: \* some sample var \*
 
 ## WIP:
-* Help / About Text
-* Tutorial export to / load from JSON
-* OS specific text length calculation
 * redo Brickcreator Bricks (missing json description)
 * setup automatic testing pipeline
-* bug fixes and functionality:
-* * Tutorial Creator -> crash on path missing
 * * Magic Word on Tutorial & SVGBrick JSON / SVG
-* * Clear name for Tutorial
 * * Ask vor overwrite / duplicate file
-* * export / save sucessfull notification (bottom of window)
-* * help / about messages
-* * relativ path to files 
-* * * create utility to clean up paths if not relative
-* * ask if current tutorial should be appended or cleared on load
-* * create Tutorial Class with functionality of creating the tutorial
