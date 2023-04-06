@@ -1,5 +1,12 @@
 import re
 import ui.modules.SVGBrick as SVGBrick
+import os,sys
+from PySide6.QtCore import QUrl, Qt
+from PySide6.QtQuick import QQuickWindow, QSGRendererInterface
+from PySide6.QtWebEngineQuick import QtWebEngineQuick
+from PySide6.QtGui import QGuiApplication, QFontDatabase, QIcon
+from PySide6.QtQml import QQmlApplicationEngine, qmlRegisterType , QQmlDebuggingEnabler
+
 colorDict = {
     "408ac5": "brick_blue"
 }
@@ -115,6 +122,15 @@ def parse(param):
 
 
 if __name__ == '__main__':
+    QGuiApplication.setAttribute(Qt.AA_ShareOpenGLContexts, True)
+    QQuickWindow.setGraphicsApi(QSGRendererInterface.OpenGLRhi)
+    QtWebEngineQuick.initialize()
+    app = QGuiApplication(sys.argv)
+    QFontDatabase.addApplicationFont(QUrl.fromLocalFile(
+        os.getcwd()).toString() + "/ui/qml/font/Roboto-Bold.ttf")
+    QFontDatabase.addApplicationFont(QUrl.fromLocalFile(
+        os.getcwd()).toString() + "/ui/qml/font/Roboto-Light.ttf")
+    engine = QQmlApplicationEngine()
     f = []
     root_dir = "bricks"
     file_set = []
@@ -125,14 +141,28 @@ if __name__ == '__main__':
             rel_file = os.path.join(rel_dir, file_name)
             file_set.append(os.path.join(root_dir, rel_file))
     print(file_set)
-    bricks = [r"bricks\Sound\default\Speak_'Hello'_and_wait.svg"]
+    bricks = [r"bricks\ARDrone\Move_AR.Drone_2.0_backward_1_second_with_20_%_power.svg"]
     base = r"..\..\BrickTutorialCreator\ui\base"
-    for brick in bricks:
-        print(brick)
-        data = convert(brick)
-        print(data)
+    converted = 0
+    total = len(file_set)
+    if False:
+        file_set = bricks
+    for brick_path in file_set:
+        print(brick_path)
+        data = convert(brick_path)
+        print("DATA:", data)
         content = parse(data["data"])
-        print(content)
-        brick = SVGBrick.SVGBrick(data["color"], content, data["height"].replace("h", ""), base+"\\brick_"+data["color"]+"_"+data["height"]+".svg")
-        brick.save()
-        print("asd")
+        print("CONTENT:", content)
+        if "Roboto" in content or "</n" in content or "&#178;" in content or "/" in content:
+            continue
+
+        os.chdir(r".\ui")
+        brick = SVGBrick.SVGBrick(data["color"], re.sub(" +", " ", content), data["height"].replace("h", ""), "brick_"+data["color"]+"_"+data["height"]+".svg")
+        os.chdir("..")
+        target_path = os.getcwd()+"/converted"+"\\".join(brick_path.replace("bricks", "").split("\\")[0:-1])
+        if not os.path.exists(target_path):
+            os.makedirs(target_path)
+        print(target_path)
+        brick.save(target_path+"\\"+re.sub(" +", " ", brick.contentPlain()).replace(" ", "_").replace("/", ""))
+        converted += 1
+        print("Converted: ", converted/total*100, "%")
