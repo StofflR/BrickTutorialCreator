@@ -1,6 +1,7 @@
 from PySide6.QtCore import Slot, QObject
 from PySide6.QtQml import QmlElement
 from modules.SVGBrick import SVGBrick
+from modules.BatchBrickUpdater import BatchBrickUpdater
 
 import logging
 import os
@@ -47,3 +48,14 @@ class Converter(QObject):
                 element = path + "/" + element
                 SVGBrick.fromJSON(SVGBrick.getJSONFromSVG(element)).savePNG(element.replace(".svg", ".png"))
         return count
+
+    @Slot(str, result=type([]))
+    def updateExisting(self, path):
+        path = path.replace("file:///", "")
+        file_set = []
+        for dir_, _, files in os.walk(path):
+            for file_name in files:
+                rel_dir = os.path.relpath(dir_, path)
+                rel_file = os.path.join(rel_dir, file_name)
+                file_set.append(os.path.join(path , rel_file))
+        return file_set

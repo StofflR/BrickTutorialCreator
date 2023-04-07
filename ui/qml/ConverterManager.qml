@@ -3,11 +3,19 @@ import QtQml 2.0
 import Qt.labs.platform 1.1
 import Converter 1.0
 
+import "views"
+
 Item {
     signal converted(int count)
     Converter {
         id: converter
     }
+
+    BatchBrickDialog {
+        id: batchBrickDialog
+        onFinished: converted(count)
+    }
+
     FolderDialog {
         id: folderDialog
         property string mode
@@ -18,6 +26,8 @@ Item {
                 converted(converter.fromJSONtoPNG(folder))
             if (mode === "JS")
                 converted(converter.fromJSONtoSVG(folder))
+            if (mode === "UP")
+                batchBrickDialog.convert(converter.updateExisting(folder))
         }
     }
     function fromSVGtoPNG() {
@@ -30,6 +40,10 @@ Item {
     }
     function fromJSONtoSVG() {
         folderDialog.mode = "JS"
+        folderDialog.open()
+    }
+    function updateExisting() {
+        folderDialog.mode = "UP"
         folderDialog.open()
     }
 }
