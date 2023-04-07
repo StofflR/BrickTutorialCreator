@@ -409,3 +409,5 @@ ui/BrickTutorialCreator.onefile-build/
 *.gz
 
 ui/venv_linux/
+
+converted/
