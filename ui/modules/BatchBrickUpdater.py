@@ -39,13 +39,18 @@ class BatchBrickUpdater:
     @staticmethod
     def findHeight(text):
         m = re.search(r"viewBox=\"0 0 ", text)
-        sub = text.find("\">", m.span()[1])
-        return text[m.span()[1]:sub].split(" ")[1]
+        if m:
+            sub = text.find("\">", m.span()[1])
+            if sub:
+                return text[m.span()[1]:sub].split(" ")[1]
+        return "72"
 
     @staticmethod
     def findColor(text):
         m = re.search(r"cls-4\{fill(.){8}", text)
-        return text[m.span()[1] - 6: m.span()[1]]
+        if m:
+            return text[m.span()[1] - 6: m.span()[1]]
+        return "408ac5"
 
     @staticmethod
     def findText(text):

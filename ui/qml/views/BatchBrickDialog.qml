@@ -11,29 +11,66 @@ import "../views"
 import "../style"
 
 Popup {
+
+    Brick {
+        id: svgBrick
+    }
+
     id: batchDialog
     signal finished(int value)
     property int count
     property int index
     property var files
     property var converter
+    property var content: []
     width: 500
     height: 400
     function convert(files) {
         count = 0
-        index = 0
+        index = -1
         batchDialog.files = files
-        targetPreview.source = converter.convert(files[index])
+        converter.convert(files[0])
+        batchDialog.next()
         batchDialog.open()
     }
     function finish(count) {
         finished(count)
         batchDialog.close()
     }
+    function previous() {
+        converter.convert(files[batchDialog.index - 1])
+        var color = converter.getData("base_type")
+        var base = converter.getData("path")
+        var size = converter.getData("size")
+        var text = batchDialog.content[index - 2]
+        svgBrick.updateBrick(color, base, size, text, 100, 43, 33)
+        targetPreview.source = svgBrick.path()
+        converter.convert(files[batchDialog.index])
+        batchDialog.index = batchDialog.index - 1
+    }
+
     function next() {
-        //TODO save
-        targetPreview.source = converter.convert(files[index + 1])
+
+        var color = converter.getData("base_type")
+        var base = converter.getData("path")
+        var size = converter.getData("size")
+        var text = converter.getData("content")
+        if (batchDialog.content.length >= index + 1) {
+            text = batchDialog.content[index]
+        } else {
+            batchDialog.content.push(text)
+        }
+
+        console.log(color, base, size, text, 100)
+        svgBrick.updateBrick(color, base, size, text, 100, 43, 33)
+
+        targetPreview.source = svgBrick.path()
+        console.log(targetPreview.source)
+        //if(index != 0)
+        // TODO save
         index = batchDialog.index + 1
+        if (batchDialog.index < batchDialog.files.length - 1)
+            converter.convert(files[batchDialog.index + 1])
     }
 
     // source View Section
@@ -44,6 +81,7 @@ Popup {
         anchors.fill: parent
         Image {
             id: sourcePreview
+            enabled: index >= 0
             source: "file:///" + files[index]
             anchors.left: parent.left
             anchors.right: parent.right
@@ -53,6 +91,7 @@ Popup {
         Image {
             //TODO make editable brick
             id: targetPreview
+            enabled: index >= 0
             source: "file:///" + files[index]
             anchors.bottom: prev.top
             anchors.left: parent.left
@@ -68,7 +107,7 @@ Popup {
             width: parent.width / 4
             anchors.margins: AppStyle.spacing
             enabled: batchDialog.index > 0
-            onClicked: batchDialog.index = batchDialog.index - 1
+            onClicked: batchDialog.previous()
         }
         Button {
             anchors.left: prev.right

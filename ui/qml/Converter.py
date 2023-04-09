@@ -15,7 +15,8 @@ QML_IMPORT_MAJOR_VERSION = 1
 class Converter(QObject):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-        self.file_set = []
+        self.data = {}
+        self.content = ""
 
     @Slot(str, result=int)
     def fromJSONtoSVG(self, path):
@@ -56,15 +57,37 @@ class Converter(QObject):
         file_set = []
         for dir_, _, files in os.walk(path):
             for file_name in files:
-                rel_dir = os.path.relpath(dir_, path)
-                rel_file = os.path.join(rel_dir, file_name)
-                file_set.append(os.path.join(path , rel_file))
+                if ".svg" in file_name:
+                    rel_dir = os.path.relpath(dir_, path)
+                    rel_file = os.path.join(rel_dir, file_name)
+                    file_set.append(os.path.join(path , rel_file))
         return file_set
 
-    @Slot(str, result=str)
+    @Slot(str)
     def convert(self, file):
-        data, content = BatchBrickUpdater(file).resolveBrick()
-        brick = SVGBrick(data["color"], content, data["height"].replace("h", ""),
-                                  "brick_" + data["color"] + "_" + data["height"] + ".svg")
-        return "file:///" + brick.getWorkingBrick()
+        doc = open(file, 'r')
+        is_brick = '<desc id="json" tag="brick">' in doc.read()
+        doc.close()
+        if is_brick:
+            self.data = SVGBrick.getJSONFromSVG(file)
+            self.content = self.data["content"]
 
+        else:
+            self.data, self.content = BatchBrickUpdater(file).resolveBrick()
+            self.data["base_type"] = self.data["color"]
+            self.data["content"] = self.content
+            self.data["size"] = self.data["height"]
+            self.data["path"] = "brick_" + self.data["color"] + "_" + self.data["height"] + ".svg"
+
+    @Slot(str, result=str)
+    def getData(self, type):
+        result = ""
+        if type == "base_type":
+            result = self.data[type]
+        if type == "content":
+            result = self.content
+        if type == "size":
+            result = self.data["size"].replace("h", "")
+        if type == "path":
+            result = "brick_" + self.data["base_type"] + "_" + self.data["size"] + ".svg"
+        return result
