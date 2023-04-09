@@ -110,7 +110,9 @@ class BatchBrickUpdater:
 
     @staticmethod
     def parse(param):
-        line, poly, nl = False
+        line = False
+        poly = False
+        nl = False
         string = ""
         for element in param:
             if element == "nl":
@@ -127,12 +129,12 @@ class BatchBrickUpdater:
 
 
     def resolveBrick(self):
-        data = self.convert(self.brick_path)
+        data = self.convert(self.path)
         content = re.sub(" +", " ", self.parse(data["data"]))
         for key in self.unicodeDict.keys():
             content = content.replace(key, self.unicodeDict.get(key))
 
-        print("PATH:", self.brick_path)
+        print("PATH:", self.path)
         print("DATA:", data)
         print("CONTENT:", content)
         return data, content

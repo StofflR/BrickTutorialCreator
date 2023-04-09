@@ -138,10 +138,12 @@ ApplicationWindow {
     }
     ConverterManager {
         id: brickConverter
+        anchors.centerIn: layout
         onConverted: count => root.updateStatusMessage(
                          "INFO: Converted " + count + " files!")
     }
     StackLayout {
+        id: layout
         width: parent.width
         currentIndex: bar.currentIndex
         anchors.top: bar.bottom

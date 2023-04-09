@@ -135,10 +135,12 @@ class SVGBrick:
         self.parse(self.content, self.x, self.y)
         self.save()
 
-    def contentPlain(self):
+    def contentPlain(self, for_system=False):
         content = self.content
         for key in self.operations.keys():
             content = content.replace(key, "")
+        if for_system:
+            content = content.replace(" ", "_").replace("/", "").replace(":", "").replace("<", " lt ").replace(">", " gt ")
         return content
 
     def save(self, path=""):

@@ -15,6 +15,7 @@ QML_IMPORT_MAJOR_VERSION = 1
 class Converter(QObject):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
+        self.file_set = []
 
     @Slot(str, result=int)
     def fromJSONtoSVG(self, path):
@@ -59,3 +60,11 @@ class Converter(QObject):
                 rel_file = os.path.join(rel_dir, file_name)
                 file_set.append(os.path.join(path , rel_file))
         return file_set
+
+    @Slot(str, result=str)
+    def convert(self, file):
+        data, content = BatchBrickUpdater(file).resolveBrick()
+        brick = SVGBrick(data["color"], content, data["height"].replace("h", ""),
+                                  "brick_" + data["color"] + "_" + data["height"] + ".svg")
+        return "file:///" + brick.getWorkingBrick()
+

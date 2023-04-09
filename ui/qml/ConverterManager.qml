@@ -6,6 +6,7 @@ import Converter 1.0
 import "views"
 
 Item {
+    id: root
     signal converted(int count)
     Converter {
         id: converter
@@ -13,7 +14,10 @@ Item {
 
     BatchBrickDialog {
         id: batchBrickDialog
-        onFinished: converted(count)
+        onFinished: count => converted(count)
+        modal: true
+        converter: converter
+        anchors.centerIn: root
     }
 
     FolderDialog {
@@ -25,7 +29,7 @@ Item {
             if (mode === "JP")
                 converted(converter.fromJSONtoPNG(folder))
             if (mode === "JS")
-                converted(converter.fromJSONtoSVG(folder))
+                converted(cwonverter.fromJSONtoSVG(folder))
             if (mode === "UP")
                 batchBrickDialog.convert(converter.updateExisting(folder))
         }
