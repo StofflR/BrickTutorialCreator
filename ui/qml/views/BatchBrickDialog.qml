@@ -55,7 +55,8 @@ Popup {
         var base = converter.getData("path")
         var size = converter.getData("size")
         var text = converter.getData("content")
-        if (batchDialog.content.length >= index + 1) {
+
+        if (batchDialog.content.length >= index && index != -1) {
             text = batchDialog.content[index]
         } else {
             batchDialog.content.push(text)
@@ -81,18 +82,30 @@ Popup {
         anchors.fill: parent
         Image {
             id: sourcePreview
-            enabled: index >= 0
-            source: "file:///" + files[index]
+            Binding on source {
+                when: (index >= 0)
+                value: "file:///" + files[index]
+            }
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
             height: 200
+            onStatusChanged: {
+                if (status == Image.Error && index != -1) {
+                    var tmp_index = index
+                    index = -1
+                    converter.removeNS0(files[tmp_index])
+                    index = tmp_index
+                }
+            }
         }
         Image {
             //TODO make editable brick
             id: targetPreview
-            enabled: index >= 0
-            source: "file:///" + files[index]
+            Binding on source {
+                when: (index >= 0)
+                value: "file:///" + files[index]
+            }
             anchors.bottom: prev.top
             anchors.left: parent.left
             anchors.right: parent.right

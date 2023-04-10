@@ -91,3 +91,12 @@ class Converter(QObject):
         if type == "path":
             result = "brick_" + self.data["base_type"] + "_" + self.data["size"] + ".svg"
         return result
+
+    @Slot(str)
+    def removeNS0(self, path):
+        path = path.replace("file:///", "").replace("%5C.%5C", "/")
+        file = open(path, 'r')
+        content = "".join(file.read()).replace("ns0:", "")
+        file = open(path, 'w')
+        file.write(content)
+        file.close()
