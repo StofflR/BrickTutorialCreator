@@ -15,7 +15,8 @@ TextArea {
     background: Rectangle {
         implicitWidth: AppStyle.defaultWidth
         implicitHeight: AppStyle.defaultHeight
-        border.color: control.down ? "dimgray" : "black"
+        color: AppStyle.color.light
+        border.color:  Qt.darker(AppStyle.color.window)
         border.width: 1
         radius: 2
     }

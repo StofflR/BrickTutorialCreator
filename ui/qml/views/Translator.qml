@@ -23,7 +23,7 @@ Item {
         id: layout
         width: parent.width
         height: path.height + addLanguage.height + 20
-
+        color: AppStyle.color.window
         ButtonField {
             id: path
             button_label: "Translation folder"
@@ -110,12 +110,14 @@ Item {
                     text: "WARNING!\nRemoving: " + language.comboBox.currentText
                           + " will delete all associated files with the translation!\nDo you wish to continue anyway?"
                 }
+                color: AppStyle.color.window
                 Rectangle {
                     id: deleteButtons
                     width: parent.width / 2
                     height: AppStyle.defaultHeight + AppStyle.spacing
                     anchors.left: parent.left
                     anchors.bottom: parent.bottom
+                    color: AppStyle.color.window
                     Button {
                         width: parent.width / 2
                         dangerButton: true
@@ -303,7 +305,7 @@ Item {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        color: "white"
+        color: AppStyle.color.window
 
         Label {
             id: label
