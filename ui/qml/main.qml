@@ -28,24 +28,30 @@ ApplicationWindow {
 
         Menu {
             id: file
-            title: qsTr("&File")
+            title: qsTr("File")
             font.family: Font.boldFont ? Font.boldFont : -1
-            font.pointSize: AppStyle.spacing * 8 / 6
+            font.pointSize: AppStyle.spacing * 4 / 6
 
             MenuItem {
-                text: qsTr("&Help")
-                font.family: Font.boldFont ? Font.boldFont : -1
-                font.pointSize: AppStyle.spacing * 8 / 6
                 onTriggered: help.open()
+                contentItem: Text {
+                    text: qsTr("Help")
+                    font.family: Font.boldFont ? Font.boldFont : -1
+                    font.pointSize: AppStyle.spacing * 4 / 6
+                    color: AppStyle.color.text
+                }
                 background: Rectangle {
                     color: parent.highlighted ? AppStyle.color.light : AppStyle.color.window
                 }
             }
 
             MenuItem {
-                text: qsTr("&About")
-                font.family: Font.boldFont ? Font.boldFont : -1
-                font.pointSize: AppStyle.spacing * 8 / 6
+                contentItem: Text {
+                    text: qsTr("About")
+                    font.family: Font.boldFont ? Font.boldFont : -1
+                    font.pointSize: AppStyle.spacing * 4 / 6
+                    color: AppStyle.color.text
+                }
                 onTriggered: about.open()
                 background: Rectangle {
                     color: parent.highlighted ? AppStyle.color.light : AppStyle.color.window
@@ -53,27 +59,36 @@ ApplicationWindow {
             }
             MenuSeparator {}
             MenuItem {
-                text: qsTr("&Convert Folder (JSON → SVG)")
-                font.family: Font.boldFont ? Font.boldFont : -1
-                font.pointSize: AppStyle.spacing * 8 / 6
+                contentItem: Text {
+                    text: qsTr("Convert Folder (JSON → SVG)")
+                    font.family: Font.boldFont ? Font.boldFont : -1
+                    font.pointSize: AppStyle.spacing * 4 / 6
+                    color: AppStyle.color.text
+                }
                 onTriggered: brickConverter.fromJSONtoSVG()
                 background: Rectangle {
                     color: parent.highlighted ? AppStyle.color.light : AppStyle.color.window
                 }
             }
             MenuItem {
-                text: qsTr("&Convert Folder (SVG → PNG)")
-                font.family: Font.boldFont ? Font.boldFont : -1
-                font.pointSize: AppStyle.spacing * 8 / 6
+                contentItem: Text {
+                    text: qsTr("Convert Folder (SVG → PNG)")
+                    font.family: Font.boldFont ? Font.boldFont : -1
+                    font.pointSize: AppStyle.spacing * 4 / 6
+                    color: AppStyle.color.text
+                }
                 onTriggered: brickConverter.fromSVGtoPNG()
                 background: Rectangle {
                     color: parent.highlighted ? AppStyle.color.light : AppStyle.color.window
                 }
             }
             MenuItem {
-                text: qsTr("&Convert Folder (JSON → PNG)")
-                font.family: Font.boldFont ? Font.boldFont : -1
-                font.pointSize: AppStyle.spacing * 8 / 6
+                contentItem: Text {
+                    text: qsTr("Convert Folder (JSON → PNG)")
+                    font.family: Font.boldFont ? Font.boldFont : -1
+                    font.pointSize: AppStyle.spacing * 4 / 6
+                    color: AppStyle.color.text
+                }
                 onTriggered: brickConverter.fromJSONtoPNG()
                 background: Rectangle {
                     color: parent.highlighted ? AppStyle.color.light : AppStyle.color.window
@@ -81,9 +96,12 @@ ApplicationWindow {
             }
             MenuSeparator {}
             MenuItem {
-                text: qsTr("&Update existing bricks")
-                font.family: Font.boldFont ? Font.boldFont : -1
-                font.pointSize: AppStyle.spacing * 8 / 6
+                contentItem: Text {
+                    text: qsTr("Update existing bricks")
+                    font.family: Font.boldFont ? Font.boldFont : -1
+                    font.pointSize: AppStyle.spacing * 4 / 6
+                    color: AppStyle.color.text
+                }
                 onTriggered: brickConverter.updateExisting()
                 background: Rectangle {
                     color: parent.highlighted ? AppStyle.color.light : AppStyle.color.window

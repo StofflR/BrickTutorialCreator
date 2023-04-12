@@ -43,7 +43,6 @@ Rectangle {
         enabled: false //TODO: implement advanced editor
         display: AbstractButton.IconOnly
         icon.source: "qrc:/bricks/resources/settings_black_24dp.svg"
-        icon.color: down ? AppStyle.color.light : AppStyle.color.window
         width: height
         height: editor.height / 2
         anchors.top: editor.top
@@ -65,7 +64,6 @@ Rectangle {
 
         display: AbstractButton.IconOnly
         icon.source: "qrc:/bricks/resources/restore_black_24dp.svg"
-        icon.color: down ? AppStyle.color.light : AppStyle.color.window
         width: height
         height: editor.height / 2
         anchors.top: advancedTranslation.bottom
@@ -84,7 +82,6 @@ Rectangle {
 
         display: AbstractButton.IconOnly
         icon.source: "qrc:/bricks/resources/save_black_24dp.svg"
-        icon.color: down ? AppStyle.color.light : AppStyle.color.window
         width: height
         height: editor.height / 2
         anchors.top: editor.top
@@ -101,7 +98,6 @@ Rectangle {
         onPressed: editor.abortPressed()
         display: AbstractButton.IconOnly
         icon.source: "qrc:/bricks/resources/close_black_24dp.svg"
-        icon.color: down ? AppStyle.color.light : AppStyle.color.window
         width: height
         height: editor.height / 2
         anchors.right: editor.right

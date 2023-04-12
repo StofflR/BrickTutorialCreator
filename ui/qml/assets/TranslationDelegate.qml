@@ -44,7 +44,6 @@ ItemDelegate {
             height: root.height / 2
             anchors.top: parent.top
             icon.source: "qrc:/bricks/resources/build_black_24dp.svg"
-            icon.color: down ? AppStyle.color.light : AppStyle.color.window
             ToolTip.visible: hovered
             ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
             ToolTip.text: qsTr("Edit translation")
@@ -56,7 +55,6 @@ ItemDelegate {
             width: AppStyle.defaultHeight
             height: root.height / 2
             icon.source: "qrc:/bricks/resources/restore_black_24dp.svg"
-            icon.color: AppStyle.color.light
             ToolTip.visible: hovered
             ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
             ToolTip.text: qsTr("Reset translation")

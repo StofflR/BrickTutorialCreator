@@ -11,6 +11,7 @@ T.Button {
     font.family: Font.boldFont ? Font.boldFont : -1
     font.pointSize: AppStyle.spacing * 8 / 6
     opacity: enabled ? 1.0 : 0.3
+    icon.color: AppStyle.color.text
     background: Rectangle {
         implicitWidth: parent.width
         implicitHeight: parent.height
