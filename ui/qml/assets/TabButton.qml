@@ -14,7 +14,7 @@ T.TabButton {
         font.family: Font.boldFont ? Font.boldFont : -1
         font.pixelSize: AppStyle.spacing
         opacity: enabled ? 1.0 : 0.3
-        color: creator.down ? "dimgray" : "black"
+        color: AppStyle.color.text
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight

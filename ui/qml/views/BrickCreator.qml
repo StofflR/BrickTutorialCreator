@@ -15,6 +15,7 @@ Rectangle {
     signal updateStatusMessage(string text)
     anchors.fill: parent
     anchors.margins: AppStyle.spacing
+    color: AppStyle.color.window
     ButtonField {
         id: path
         button_label: qsTr("Set export to …")
@@ -132,6 +133,7 @@ Rectangle {
         anchors.top: contentScale.bottom
         anchors.left: saveLabel.right
         height: AppStyle.defaultHeight
+        color: AppStyle.color.window
         CheckBox {
             id: svg_check
             text: "SVG"
@@ -145,6 +147,7 @@ Rectangle {
         anchors.top: contentScale.bottom
         anchors.right: parent.right
         height: AppStyle.defaultHeight
+        color: AppStyle.color.window
         CheckBox {
             id: autoSave
             text: "Auto-Save"
@@ -159,6 +162,7 @@ Rectangle {
         anchors.top: contentScale.bottom
         anchors.left: svg.right
         height: AppStyle.defaultHeight
+        color: AppStyle.color.window
         CheckBox {
             id: json_check
             text: "JSON"
@@ -173,6 +177,7 @@ Rectangle {
         anchors.top: contentScale.bottom
         anchors.left: json.right
         height: AppStyle.defaultHeight
+        color: AppStyle.color.window
         CheckBox {
             id: png_check
             text: "PNG"
@@ -187,6 +192,7 @@ Rectangle {
         height: saveButton.height + loadButton.height + clearButton.height + 20
         anchors.left: parent.left
         anchors.right: parent.right
+        color: AppStyle.color.window
         Area {
             id: brickContent
             text: previewContent.text

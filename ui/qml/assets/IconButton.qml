@@ -9,13 +9,14 @@ T.Button {
     id: control
     implicitHeight: AppStyle.defaultHeight
     font.family: Font.boldFont ? Font.boldFont : -1
-    font.pointSize: AppStyle.spacing *8 /6
+    font.pointSize: AppStyle.spacing * 8 / 6
     opacity: enabled ? 1.0 : 0.3
     background: Rectangle {
         implicitWidth: parent.width
         implicitHeight: parent.height
         opacity: enabled ? 1 : 0.3
-        border.color: control.down ? "dimgray" : "black"
+        border.color: Qt.darker(AppStyle.color.window)
+        color: AppStyle.color.light
         border.width: 1
         radius: 2
     }

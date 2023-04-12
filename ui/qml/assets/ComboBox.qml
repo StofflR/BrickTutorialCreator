@@ -8,14 +8,13 @@ import "../style"
 
 T.ComboBox {
     id: control
-    model: ["First", "Second", "Third"]
 
     delegate: T.ItemDelegate {
         id: delegate
         width: control.width
         contentItem: T.Label {
             text: modelData
-            color: "black"
+            color: AppStyle.color.text
             font.family: Font.boldFont ? Font.boldFont : -1
             font.pointSize: AppStyle.spacing * 8 / 6
             elide: Text.ElideRight
@@ -24,7 +23,7 @@ T.ComboBox {
 
         background: Rectangle {
             width: control.width
-            color: delegate.highlighted ? "lightgray" : "white"
+            color: delegate.highlighted ? Qt.lighter(AppStyle.color.window) : AppStyle.color.window
         }
         highlighted: control.highlightedIndex == index
         required property int index
@@ -64,7 +63,7 @@ T.ComboBox {
         text: displayText
         font.family: Font.boldFont ? Font.boldFont : -1
         font.pointSize: AppStyle.spacing * 8 / 6
-        color: "black"
+        color: AppStyle.color.text
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
     }
@@ -72,8 +71,9 @@ T.ComboBox {
     background: Rectangle {
         implicitWidth: 120
         implicitHeight: AppStyle.defaultHeight
-        border.color: control.pressed ? "dimgray" : "black"
+        border.color: Qt.darker(AppStyle.color.window)
         border.width: control.visualFocus ? 2 : 1
+        color: AppStyle.color.light
         radius: 2
     }
 
@@ -91,7 +91,7 @@ T.ComboBox {
         }
 
         background: Rectangle {
-            border.color: "black"
+            border.color: Qt.darker(AppStyle.color.window)
             radius: 2
         }
     }

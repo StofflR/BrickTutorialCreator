@@ -21,6 +21,7 @@ Item {
     Rectangle {
         width: parent.width / 2
         height: item.height
+        color: AppStyle.color.window
         ScrollView {
             id: scrollview
             clip: true
@@ -72,6 +73,7 @@ Item {
         anchors.right: parent.right
         width: parent.width / 2
         height: item.height
+        color: AppStyle.color.window
         UsableBrickView {
             id: usableBrickView
             anchors.top: optionField.bottom
@@ -91,6 +93,7 @@ Item {
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.margins: AppStyle.spacing
+            color: AppStyle.color.window
             ColumnLayout {
                 width: parent.width
                 IconButton {
@@ -175,6 +178,7 @@ Item {
             }
         }
         Rectangle {
+            color: AppStyle.color.window
             anchors.fill: availableSourceScrollview
         }
 
@@ -213,7 +217,7 @@ Item {
                     }
                 }
                 highlight: Rectangle {
-                    color: "lightsteelblue"
+                    color: AppStyle.color.mid
                     radius: 5
                 }
                 focus: true
@@ -233,6 +237,7 @@ Item {
             anchors.right: parent.right
             anchors.margins: AppStyle.spacing
             height: addPathButton.height + enableForeign.height + AppStyle.spacing
+            color: AppStyle.color.window
             Button {
                 id: addPathButton
                 anchors.left: sourceButtons.left
@@ -284,6 +289,7 @@ Item {
             anchors.left: control.right
             anchors.right: parent.right
             anchors.margins: AppStyle.spacing
+            color: AppStyle.color.window
             height: refreshButton.height
             Field {
                 anchors.left: optionField.left

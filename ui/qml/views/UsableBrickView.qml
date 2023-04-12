@@ -20,7 +20,7 @@ Item {
         ScrollBar.vertical.policy: ScrollBar.AsNeeded
         ListView {
             id: view
-            anchors.top: name.bottom
+            anchors.top: scrollview.bottom
             anchors.bottom: scrollview.bottom
             anchors.left: scrollview.left
             anchors.right: scrollview.right
@@ -29,7 +29,7 @@ Item {
                 id: source
                 width: view.width
                 height: expand ? sourceImage.height + recta.height : sourceImage.height
-
+                color: Qt.lighter(AppStyle.color.window)
                 property bool expand: false
 
                 MouseArea {
@@ -63,6 +63,7 @@ Item {
                     anchors.top: mouseArea.bottom
                     anchors.left: mouseArea.left
                     height: expand ? viewExpand.contentHeight + 2 * AppStyle.spacing : 0
+                    color: Qt.lighter(AppStyle.color.window)
 
                     ListView {
                         id: viewExpand
@@ -104,10 +105,13 @@ Item {
         width: view.width
         anchors.margins: AppStyle.spacing
         height: text.height + AppStyle.spacing
+        color: AppStyle.color.window
         Text {
             id: text
             anchors.left: name.left
+            anchors.verticalCenter: name.verticalCenter
             text: qsTr("Available Bricks")
+            color: AppStyle.color.text
         }
     }
 }

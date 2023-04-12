@@ -25,6 +25,7 @@ ApplicationWindow {
     }
 
     menuBar: MenuBar {
+
         Menu {
             id: file
             title: qsTr("&File")
@@ -35,8 +36,9 @@ ApplicationWindow {
                 text: qsTr("&Help")
                 font.family: Font.boldFont ? Font.boldFont : -1
                 font.pointSize: AppStyle.spacing * 8 / 6
-                onTriggered: {
-                    help.open()
+                onTriggered: help.open()
+                background: Rectangle {
+                    color: parent.highlighted ? AppStyle.color.light : AppStyle.color.window
                 }
             }
 
@@ -44,9 +46,9 @@ ApplicationWindow {
                 text: qsTr("&About")
                 font.family: Font.boldFont ? Font.boldFont : -1
                 font.pointSize: AppStyle.spacing * 8 / 6
-
-                onTriggered: {
-                    about.open()
+                onTriggered: about.open()
+                background: Rectangle {
+                    color: parent.highlighted ? AppStyle.color.light : AppStyle.color.window
                 }
             }
             MenuSeparator {}
@@ -55,18 +57,37 @@ ApplicationWindow {
                 font.family: Font.boldFont ? Font.boldFont : -1
                 font.pointSize: AppStyle.spacing * 8 / 6
                 onTriggered: brickConverter.fromJSONtoSVG()
+                background: Rectangle {
+                    color: parent.highlighted ? AppStyle.color.light : AppStyle.color.window
+                }
             }
             MenuItem {
                 text: qsTr("&Convert Folder (SVG → PNG)")
                 font.family: Font.boldFont ? Font.boldFont : -1
                 font.pointSize: AppStyle.spacing * 8 / 6
                 onTriggered: brickConverter.fromSVGtoPNG()
+                background: Rectangle {
+                    color: parent.highlighted ? AppStyle.color.light : AppStyle.color.window
+                }
             }
             MenuItem {
                 text: qsTr("&Convert Folder (JSON → PNG)")
                 font.family: Font.boldFont ? Font.boldFont : -1
                 font.pointSize: AppStyle.spacing * 8 / 6
                 onTriggered: brickConverter.fromJSONtoPNG()
+                background: Rectangle {
+                    color: parent.highlighted ? AppStyle.color.light : AppStyle.color.window
+                }
+            }
+            MenuSeparator {}
+            MenuItem {
+                text: qsTr("&Update existing bricks")
+                font.family: Font.boldFont ? Font.boldFont : -1
+                font.pointSize: AppStyle.spacing * 8 / 6
+                onTriggered: brickConverter.updateExisting()
+                background: Rectangle {
+                    color: parent.highlighted ? AppStyle.color.light : AppStyle.color.window
+                }
             }
         }
     }
@@ -125,11 +146,13 @@ ApplicationWindow {
         anchors.bottom: parent.bottom
         height: 20
         width: parent.width
+        color: AppStyle.color.window
         RowLayout {
             anchors.fill: parent
             Label {
                 height: statusbar.height
                 text: root.statusText
+                color: AppStyle.color.text
             }
         }
     }
