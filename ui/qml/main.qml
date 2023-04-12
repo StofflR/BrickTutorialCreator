@@ -107,13 +107,6 @@ ApplicationWindow {
                     color: parent.highlighted ? AppStyle.color.light : AppStyle.color.window
                 }
             }
-            MenuSeparator {}
-            MenuItem {
-                text: qsTr("&Update existing bricks")
-                font.family: Font.boldFont ? Font.boldFont : -1
-                font.pointSize: AppStyle.spacing * 8 / 6
-                onTriggered: brickConverter.updateExisting()
-            }
         }
     }
     TabBar {
