@@ -51,7 +51,7 @@ Rectangle {
         comboBox.model: bricks.availableBricks()
         onDisplayTextChanged: {
             bricks.sizes = bricks.availableSizes(comboBox.currentIndex)
-            svgPreview.update(true)
+            edtiableBrick.update(true)
         }
     }
     BrickManager {
@@ -71,7 +71,7 @@ Rectangle {
         anchors.topMargin: AppStyle.spacing
         anchors.leftMargin: AppStyle.spacing
         comboBox.model: bricks.sizes
-        onDisplayTextChanged: svgPreview.update(true)
+        onDisplayTextChanged: edtiableBrick.update(true)
     }
 
     LabelDoubleSpinBox {
@@ -84,7 +84,7 @@ Rectangle {
         anchors.top: availableBricks.bottom
         anchors.left: parent.left
         anchors.topMargin: AppStyle.spacing
-        spinbox.onValueChanged: svgPreview.update(true)
+        spinbox.onValueChanged: edtiableBrick.update(true)
     }
     LabelDoubleSpinBox {
         label: qsTr("X")
@@ -98,7 +98,7 @@ Rectangle {
         anchors.top: availableBricks.bottom
         anchors.left: contentScale.right
         anchors.topMargin: AppStyle.spacing
-        spinbox.onValueChanged: svgPreview.update(true)
+        spinbox.onValueChanged: edtiableBrick.update(true)
     }
     LabelDoubleSpinBox {
         label: qsTr("Y")
@@ -112,7 +112,7 @@ Rectangle {
         anchors.top: availableBricks.bottom
         anchors.left: xPos.right
         anchors.topMargin: AppStyle.spacing
-        spinbox.onValueChanged: svgPreview.update(true)
+        spinbox.onValueChanged: edtiableBrick.update(true)
     }
     Label {
         width: parent.width / 8
@@ -192,10 +192,11 @@ Rectangle {
         height: saveButton.height + loadButton.height + clearButton.height + 20
         anchors.left: parent.left
         anchors.right: parent.right
+        anchors.bottom: edtiableBrick.top
         color: AppStyle.color.window
         Area {
             id: brickContent
-            text: previewContent.text
+            text: edtiableBrick.previewContent.text
             font.pointSize: 30 * 8 / 6
             anchors.left: contentLayout.left
             height: contentLayout.height
@@ -204,7 +205,7 @@ Rectangle {
             placeholderText: qsTr("Enter brick content …")
             verticalAlignment: TextField.AlignTop
             inputMethodHints: Qt.ImhMultiLine
-            onTextChanged: svgPreview.update(false)
+            onTextChanged: edtiableBrick.update(false)
             onEditingFinished: if (autoSave.checked)
                                    saveButton.save()
             ToolTip.visible: hovered
@@ -228,19 +229,20 @@ Rectangle {
 
             function save() {
                 var statusText = "INFO: Saved brick(s) as: "
-                var filename = svgBrick.fileName()
+                var filename = edtiableBrick.fileName
+                console.log(filename)
                 if (!filename)
                     return
                 if (svg_check.checked) {
-                    svgBrick.saveSVG(textMetrics.text)
+                    edtiableBrick.brick.saveSVG(textMetrics.text)
                     statusText += filename + ".svg "
                 }
                 if (json_check.checked) {
-                    svgBrick.saveJSON(textMetrics.text)
+                    edtiableBrick.brick.saveJSON(textMetrics.text)
                     statusText += filename + ".json "
                 }
                 if (png_check.checked) {
-                    svgBrick.savePNG(textMetrics.text)
+                    edtiableBrick.brick.savePNG(textMetrics.text)
                     statusText += filename + ".png "
                 }
                 statusText += " to " + textMetrics.text
@@ -254,11 +256,11 @@ Rectangle {
                 nameFilters: ["SVG files (*.svg)", "JSON files (*.json)"]
                 fileMode: FileDialog.OpenFiles
                 onAccepted: {
-                    svgBrick.fromFile(currentFile)
-                    brickContent.text = svgBrick.content()
-                    svgPreview.brickImg = svgBrick.path()
-                    xPos.spinbox.value = svgBrick.x()
-                    yPos.spinbox.value = svgBrick.y()
+                    edtiableBrick.brick.fromFile(currentFile)
+                    brickContent.text = edtiableBrick.brick.content()
+                    edtiableBrick.brickImg = edtiableBrick.brick.path()
+                    xPos.spinbox.value = edtiableBrick.brick.x()
+                    yPos.spinbox.value = edtiableBrick.brick.y()
                     root.updateStatusMessage("INFO: Loaded " + currentFile)
                 }
             }
@@ -289,117 +291,22 @@ Rectangle {
             }
         }
     }
-    Brick {
-        id: svgBrick
-    }
+    EditableBrick {
+        id: edtiableBrick
 
-    Image {
-        id: svgPreview
-        property var brickImg
-        source: overlay.visible ? "qrc:/bricks/base/" + bricks.brickPath(
-                                      availableBricks.comboBox.currentIndex,
-                                      availableSize.comboBox.displayText) : brickImg
+        brickColor: availableBricks.comboBox.displayText
+        brickPath: bricks.brickPath(availableBricks.comboBox.currentIndex,
+                                    availableSize.comboBox.displayText)
+        availableSize: availableSize.comboBox.displayText
+        contentScale: contentScale.spinbox.value
+        xPos: xPos.spinbox.value
+        yPos: yPos.spinbox.value
 
+        anchors.right: contentLayout.right
+        anchors.left: contentLayout.left
         anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: contentLayout.bottom
-        onUpdate: autosave => {
-                      svgBrick.updateBrick(
-                          availableBricks.comboBox.displayText,
-                          bricks.brickPath(
-                              availableBricks.comboBox.currentIndex,
-                              availableSize.comboBox.displayText),
-                          availableSize.comboBox.displayText,
-                          brickContent.text, contentScale.spinbox.value,
-                          xPos.spinbox.value, yPos.spinbox.value)
-                      brickImg = svgBrick.path()
-                      if (autoSave.checked && autosave)
-                      saveButton.save()
-                  }
-        Column {
-            id: overlay
-            anchors.fill: previewContent
-            visible: false // previewContent.cursorVisible ? 1 : 0 // TODO: enable on component completion
+        brickImg: "brick_blue_1h.svg"
 
-            Repeater {
-                id: repeater
-                property int cursorPosition: previewContent.cursorPosition
-                                             - previewContent.text.substring(
-                                                 0,
-                                                 previewContent.cursorPosition).lastIndexOf(
-                                                 "\n") - 1
-                model: {
-                    var data = previewContent.getText(0, previewContent.length)
-                    while (data.indexOf("\n") !== -1) {
-                        data = data.replace("\n", "&nbsp;\r")
-                    }
-
-                    while (data.indexOf("$") !== -1) {
-                        data = data.replace(
-                                    "$",
-                                    "<u style=\"white-space:pre;\">&middot;")
-                        data = data.replace("$", "&middot;</u>")
-                    }
-                    while (data.indexOf("*") !== -1) {
-                        data = data.replace(
-                                    "*",
-                                    "<span style=\"text-indent:25px;white-space:pre;\"><small>&middot;")
-                        data = data.replace("*", "&middot;</small></span>")
-                    }
-                    return data.split("\r")
-                }
-
-                TextEdit {
-                    id: repeaterLine
-                    width: contentWidth
-                    height: 12 * previewContent.scale
-                    text: repeater.model[index]
-                    padding: 0
-                    textFormat: TextEdit.AutoText
-                    z: repeater.model.length - index
-                    font: previewContent.font
-                    cursorVisible: index === previewContent.cursorLine
-                                   && previewContent.cursorVisible
-                    Binding on cursorPosition {
-                        when: onTextChanged || previewContent.text
-                              || previewContent.cursorPosition
-                        value: repeater.cursorPosition
-                    }
-                    onTextChanged: cursorPosition = repeater.cursorPosition
-                    onCursorPositionChanged: console.log(cursorPosition)
-                }
-            }
-        }
-        TextEdit {
-            id: previewContent
-            visible: false // TODO: enable on component completion
-            property int cursorLine: previewContent.text.substring(
-                                         0,
-                                         previewContent.cursorPosition).split(
-                                         /\n/).length - 1
-
-            property real scale: svgPreview.paintedWidth / 350
-            anchors.left: svgPreview.left
-            anchors.top: svgPreview.top
-            anchors.leftMargin: (xPos.spinbox.value - 2) * scale
-                                + (svgPreview.width - svgPreview.paintedWidth) / 2
-            anchors.topMargin: (yPos.spinbox.value - 15) * scale
-                               + (svgPreview.height - svgPreview.paintedHeight) / 2
-
-            width: svgPreview.width - anchors.leftMargin
-            height: svgPreview.height - anchors.topMargin
-            cursorDelegate: Item {}
-
-            verticalAlignment: Text.AlignTop
-            horizontalAlignment: Text.AlignLeft
-            font.family: "Roboto"
-            cursorVisible: false
-            wrapMode: TextArea.WordWrap
-            font.bold: true
-            font.pointSize: 12 * scale < 0 ? 12 : 12 * scale
-            opacity: 0
-        }
+        onUpdated: saveButton.save()
     }
-    Component.onCompleted: svgPreview.update(true)
 }

@@ -122,5 +122,6 @@
         <file>about.html</file>
         <file>qml/views/UsableBrickView.qml</file>
         <file>qml/views/BatchBrickDialog.qml</file>
+        <file>qml/assets/EditableBrick.qml</file>
     </qresource>
 </RCC>
