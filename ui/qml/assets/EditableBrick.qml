@@ -60,12 +60,10 @@ Image {
         id: svgBrick
     }
     onDataChanged: {
-        console.log("up")
         if (!brickPath || !brickColor || !availableSize || !xPos || !yPos
                 || !contentScale || !brickContent || loading) {
             return
         }
-        console.log("data")
 
         svgBrick.updateBrick(brickColor, brickPath, availableSize,
                              brickContent, contentScale, xPos, yPos)
@@ -82,7 +80,9 @@ Image {
         anchors.fill: previewContent
         text: {
             var data = previewContent.getText(0, previewContent.length)
-
+            while (data.indexOf("<") !== -1) {
+                data = data.replace("<", "&lt;")
+            }
             while (data.indexOf("\n") !== -1) {
                 data = data.replace("\n", "<br>")
             }

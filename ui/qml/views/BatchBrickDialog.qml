@@ -14,20 +14,25 @@ Popup {
 
     id: batchDialog
     signal finished(int value)
-    property int count
-    property int index
-    property var files
+    property int count: 0
+    property int index: 0
+    property var files: []
     property var converter
-    property var targetPath
+    property var targetPath: ""
     property var content: []
     property alias svgBrick: targetPreview.brick
     width: 500
     height: 400
-
-    function convert(files) {
+    onClosed: {
+        content = []
+        files = []
         count = 0
         index = 0
-        batchDialog.files = files
+        targetPath = ""
+    }
+
+    function convert(newFiles) {
+        files = newFiles
         loadBrick()
         batchDialog.open()
     }
