@@ -124,15 +124,16 @@ Image {
         anchors.top: svgPreview.top
         width: svgPreview.width - svgPreview.xPos
         height: svgPreview.height - svgPreview.yPos
-        anchors.leftMargin: (svgPreview.xPos - 4) * font.pointSize / 12
-        anchors.topMargin: (svgPreview.yPos - 16) * font.pointSize / 12
-
+        anchors.leftMargin: (svgPreview.xPos - 4) * svgPreview.paintedWidth / 350
+        anchors.topMargin: (svgPreview.yPos - 4) * svgPreview.paintedWidth / 350
+                           - 13 * previewContent.scale
         property int cursorLine: previewContent.text.substring(
                                      0, previewContent.cursorPosition).split(
                                      /\n/).length - 1
+        onScaleChanged: console.log(12 * previewContent.scale)
         property real scale: svgPreview.paintedWidth * contentScale / 35000
 
-        cursorVisible: true
+        cursorVisible: false
         wrapMode: TextArea
         font: textView.font
         opacity: 0
@@ -154,7 +155,7 @@ Image {
         id: clearButton
         anchors.top: svgPreview.top
         anchors.right: svgPreview.right
-        anchors.margins: AppStyle.spacing
+        anchors.margins: enabled ? AppStyle.spacing : 0
         height: enabled ? width : 0
         icon.source: "qrc:/bricks/resources/delete_black_24dp.svg"
         ToolTip.visible: hovered
@@ -185,7 +186,7 @@ Image {
         id: loadButton
         anchors.top: clearButton.bottom
         anchors.right: svgPreview.right
-        anchors.margins: AppStyle.spacing
+        anchors.margins: enabled ? AppStyle.spacing : 0
         height: enabled ? width : 0
         enabled: false //TODO: Load brick from file
         icon.source: "qrc:/bricks/resources/file_open_black_24dp.svg"
@@ -198,7 +199,7 @@ Image {
         id: saveButton
         anchors.top: loadButton.bottom
         anchors.right: svgPreview.right
-        anchors.margins: AppStyle.spacing
+        anchors.margins: enabled ? AppStyle.spacing : 0
         height: enabled ? width : 0
         icon.source: "qrc:/bricks/resources/save_black_24dp.svg"
         enabled: (svg_check.checked || json_check.checked || png_check.checked)
