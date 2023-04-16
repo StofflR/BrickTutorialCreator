@@ -30,8 +30,10 @@ Item {
                 converted(converter.fromJSONtoPNG(folder))
             if (mode === "JS")
                 converted(cwonverter.fromJSONtoSVG(folder))
-            if (mode === "UP")
+            if (mode === "UP") {
+                batchBrickDialog.targetPath = folder
                 batchBrickDialog.convert(converter.updateExisting(folder))
+            }
         }
     }
     function fromSVGtoPNG() {

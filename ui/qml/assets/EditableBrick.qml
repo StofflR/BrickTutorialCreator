@@ -93,8 +93,8 @@ Image {
                 data = data.replace("$", "&middot;</small></u>")
             }
             while (data.indexOf("*") !== -1) {
-                data = data.replace("*", "<small>&middot;")
-                data = data.replace("*", "&middot;</small>")
+                data = data.replace("*", "<small>&#9662;")
+                data = data.replace("*", "&#9662;</small>")
             }
             return "<p style=\"line-height:75%;letter-spacing:-1px;padding-left:-20px;white-space:pre;\">" + data + "</p>"
         }

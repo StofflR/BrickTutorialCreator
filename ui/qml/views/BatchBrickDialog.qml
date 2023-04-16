@@ -18,10 +18,12 @@ Popup {
     property int index
     property var files
     property var converter
+    property var targetPath
     property var content: []
     property alias svgBrick: targetPreview.brick
     width: 500
     height: 400
+
     function convert(files) {
         count = 0
         index = 0
@@ -33,6 +35,7 @@ Popup {
         if (index < 0 || files.length === 0)
             return
 
+        converter.removeNS0(files[index])
         sourcePreview.source = "file:///" + files[index]
 
         converter.convert(files[index])
@@ -47,6 +50,7 @@ Popup {
             //targetPreview.xPos = converter.getData["content"]
             //targetPreview.yPos = converter.getData["content"]
             targetPreview.loading = false
+            targetPreview.dataChanged()
         }
         if (content.length > index)
             targetPreview.content.text = content[index]
@@ -57,6 +61,7 @@ Popup {
             content[index] = targetPreview.brickContent
         else
             content.push(targetPreview.brickContent)
+        targetPreview.brick.saveSVG(batchDialog.targetPath + "/converted")
     }
 
     function finish(count) {
@@ -88,14 +93,6 @@ Popup {
             anchors.right: parent.right
             anchors.top: parent.top
             height: 200
-            onStatusChanged: {
-                if (status == Image.Error && index != -1) {
-                    var tmp_index = index
-                    index = -1
-                    converter.removeNS0(files[tmp_index])
-                    index = tmp_index
-                }
-            }
         }
         EditableBrick {
             //TODO make editable brick

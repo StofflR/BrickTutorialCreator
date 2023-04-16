@@ -94,7 +94,7 @@ class Brick(QObject):
     @Slot(result=str)
     def fileName(self):
         # clean multi, leading/tailing whitespaces
-        return ' '.join(self.brick.contentPlain().split()).strip().replace(" ", "_")
+        return ' '.join(self.brick.contentPlain().split()).strip().replace(" ", "_").replace("/", "").replace(".", "")
 
     @Slot(str)
     @Slot(str, str)

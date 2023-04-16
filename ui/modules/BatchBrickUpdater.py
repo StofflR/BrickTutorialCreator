@@ -54,14 +54,14 @@ class BatchBrickUpdater:
 
     @staticmethod
     def findText(text):
-        end = text[0:-1].find("<ns0:text id=\"text\" ")
+        end = text[0:-1].find("<text id=\"text\" ")
         data = []
         start_line = start_poly = start_text = 0
         x_pos = -1
         while start_poly > -1 or start_line > -1 or start_text > -1:
-            start_text = text[end:-1].find("<ns0:text id=\"text\" ")
-            start_poly = text[end:-1].find("<ns0:polygon ")
-            start_line = text[end:-1].find("<ns0:line ")
+            start_text = text[end:-1].find("<text id=\"text\" ")
+            start_poly = text[end:-1].find("<polygon ")
+            start_line = text[end:-1].find("<line ")
             text = text[end:]
             search_line = (start_line < start_poly or start_poly < 0) and (
                     start_line < start_text or start_text < 0) and start_line >= 0
@@ -86,11 +86,11 @@ class BatchBrickUpdater:
                     start_text < start_line or start_line < 0) and start_text >= 0
 
             if search_text:
-                end = text.find("</ns0:text>")
+                end = text.find("</text>")
                 if start_poly <= end:
                     print(text[start_text + 3:end])
                     data.append(text[start_text + 3:end])
-                end = end + len("</ns0:text>")
+                end = end + len("</text>")
 
             if search_poly:
                 end = text.find("/>")
