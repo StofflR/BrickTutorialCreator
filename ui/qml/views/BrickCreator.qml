@@ -190,13 +190,32 @@ Rectangle {
     EditableBrick {
         id: edtiableBrick
 
-        brickColor: availableBricks.comboBox.displayText
-        brickPath: bricks.brickPath(availableBricks.comboBox.currentIndex,
+        Binding on contentScale {
+            when: contentScale.spinbox.value
+            value: contentScale.spinbox.value
+        }
+        Binding on availableSize {
+            when: availableSize.comboBox.displayText
+            value: availableSize.comboBox.displayText
+        }
+        Binding on brickPath {
+            when: availableBricks.comboBox.currentIndex
+                  || availableSize.comboBox.displayText
+            value: bricks.brickPath(availableBricks.comboBox.currentIndex,
                                     availableSize.comboBox.displayText)
-        availableSize: availableSize.comboBox.displayText
-        contentScale: contentScale.spinbox.value
-        xPos: xPos.spinbox.value
-        yPos: yPos.spinbox.value
+        }
+        Binding on brickColor {
+            when: availableBricks.comboBox.displayText
+            value: availableBricks.comboBox.displayText
+        }
+        Binding on xPos {
+            when: xPos.spinbox.value
+            value: xPos.spinbox.value
+        }
+        Binding on yPos {
+            when: yPos.spinbox.value
+            value: yPos.spinbox.value
+        }
 
         anchors.right: parent.right
         anchors.left: parent.left

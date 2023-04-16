@@ -185,7 +185,7 @@ class SVGBrick:
         font_type = "font-family: 'Roboto Light', sans-serif;font-size:" + \
                     str(size) + "pt;"
 
-        sub_element = Tree.SubElement(self.tree_.getroot(), 'ns0:text', {'id': svg_id,
+        sub_element = Tree.SubElement(self.tree_.getroot(), 'text', {'id': svg_id,
                                                                          'x': str(x) + "px",
                                                                          'y': str(y) + "px",
                                                                          'fill': self.textColor(),
@@ -199,7 +199,7 @@ class SVGBrick:
     def addLine(self, line, x, y):
         length = self.stringLength(
             line, size=FONT_SIZE * self.scaling_factor, font=NORMAL)
-        Tree.SubElement(self.tree_.getroot(), 'ns0:line', {"id": "var_line",
+        Tree.SubElement(self.tree_.getroot(), 'line', {"id": "var_line",
                                                            "x1": str(x),
                                                            "y1": str(y),
                                                            "x2": str(x + length),
@@ -250,7 +250,7 @@ class SVGBrick:
     def addTriangle(self, x0: int, y0: int):
         x = x0 - 2 * FONT_SIZE
         y = y0 - FONT_SIZE
-        Tree.SubElement(self.tree_.getroot(), 'ns0:polygon',
+        Tree.SubElement(self.tree_.getroot(), 'polygon',
                         {"points": str(x) + "," + str(y) + " " + str(x + FONT_SIZE) + "," + str(y) + " " + str(
                             x + (FONT_SIZE / 2)) + "," + str(y + FONT_SIZE),
                          "id": "triangle",
@@ -260,7 +260,7 @@ class SVGBrick:
 
     def addDescription(self):
         sub_element = Tree.SubElement(
-            self.tree_.getroot(), 'ns0:desc', {'id': "json", 'tag' : "brick"})
+            self.tree_.getroot(), 'desc', {'id': "json", 'tag' : "brick"})
         sub_element.text = self.JSON()
 
     def JSON(self):

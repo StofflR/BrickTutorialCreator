@@ -14,7 +14,7 @@ from qml import Converter
 import resources_rc
 import logging
 import shutil
-#debug = QQmlDebuggingEnabler()
+
 if __name__ == "__main__":
 
     folder = os.path.join(os.getcwd() + r"/resources/tmp")
