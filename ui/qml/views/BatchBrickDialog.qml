@@ -12,10 +12,6 @@ import "../style"
 
 Popup {
 
-    Brick {
-        id: svgBrick
-    }
-
     id: batchDialog
     signal finished(int value)
     property int count
@@ -23,55 +19,60 @@ Popup {
     property var files
     property var converter
     property var content: []
+    property alias svgBrick: targetPreview.brick
     width: 500
     height: 400
     function convert(files) {
         count = 0
-        index = -1
+        index = 0
         batchDialog.files = files
-        converter.convert(files[0])
-        batchDialog.next()
+        loadBrick()
         batchDialog.open()
     }
+    function loadBrick() {
+        if (index < 0 || files.length === 0)
+            return
+
+        sourcePreview.source = "file:///" + files[index]
+
+        converter.convert(files[index])
+        if (converter.isBrick(files[index])) {
+            targetPreview.loadFromFile(files[index])
+        } else {
+            console.debug("Trying to convert Legacy brick!")
+            targetPreview.loading = true
+            targetPreview.content.text = converter.getData("content")
+            targetPreview.brickImg = "file:///" + files[index]
+            targetPreview.brickPath = converter.getData("path")
+            //targetPreview.xPos = converter.getData["content"]
+            //targetPreview.yPos = converter.getData["content"]
+            targetPreview.loading = false
+        }
+        if (content.length > index)
+            targetPreview.content.text = content[index]
+    }
+
+    function acceptCurrentBrick() {
+        if (content.length > index)
+            content[index] = targetPreview.brickContent
+        else
+            content.push(targetPreview.brickContent)
+    }
+
     function finish(count) {
         finished(count)
         batchDialog.close()
     }
     function previous() {
-        converter.convert(files[batchDialog.index - 1])
-        var color = converter.getData("base_type")
-        var base = converter.getData("path")
-        var size = converter.getData("size")
-        var text = batchDialog.content[index - 2]
-        svgBrick.updateBrick(color, base, size, text, 100, 43, 33)
-        targetPreview.source = svgBrick.path()
-        converter.convert(files[batchDialog.index])
-        batchDialog.index = batchDialog.index - 1
+        acceptCurrentBrick()
+        index = index - 1
+        loadBrick()
     }
 
     function next() {
-
-        var color = converter.getData("base_type")
-        var base = converter.getData("path")
-        var size = converter.getData("size")
-        var text = converter.getData("content")
-
-        if (batchDialog.content.length >= index && index != -1) {
-            text = batchDialog.content[index]
-        } else {
-            batchDialog.content.push(text)
-        }
-
-        console.log(color, base, size, text, 100)
-        svgBrick.updateBrick(color, base, size, text, 100, 43, 33)
-
-        targetPreview.source = svgBrick.path()
-        console.log(targetPreview.source)
-        //if(index != 0)
-        // TODO save
-        index = batchDialog.index + 1
-        if (batchDialog.index < batchDialog.files.length - 1)
-            converter.convert(files[batchDialog.index + 1])
+        acceptCurrentBrick()
+        index = index + 1
+        loadBrick()
     }
 
     // source View Section
@@ -82,10 +83,7 @@ Popup {
         anchors.fill: parent
         Image {
             id: sourcePreview
-            Binding on source {
-                when: (index >= 0)
-                value: "file:///" + files[index]
-            }
+            source: "qrc:/bricks/base/brick_blue_1h.svg"
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
@@ -99,18 +97,28 @@ Popup {
                 }
             }
         }
-        Image {
+        EditableBrick {
             //TODO make editable brick
             id: targetPreview
-            Binding on source {
-                when: (index >= 0)
-                value: "file:///" + files[index]
-            }
             anchors.bottom: prev.top
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: sourcePreview.bottom
-            height: 200
+            anchors.left: layout.left
+            width: sourcePreview.paintedWidth
+            height: sourcePreview.paintedHeight
+            loadButton.enabled: false
+            saveButton.enabled: false
+
+            IconButton {
+                id: customButton
+                anchors.top: targetPreview.clearButton.bottom
+                anchors.right: targetPreview.right
+                anchors.margins: enabled ? AppStyle.spacing : 0
+                height: enabled ? width : 0
+                icon.source: "qrc:/bricks/resources/done_black_24dp.svg"
+                ToolTip.visible: hovered
+                ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+                ToolTip.text: qsTr("Accept!")
+                onClicked: acceptCurrentBrick()
+            }
         }
         Button {
             id: prev

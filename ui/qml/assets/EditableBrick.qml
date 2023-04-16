@@ -13,13 +13,13 @@ import "../style"
 Image {
     id: svgPreview
     property string brickImg: "qrc:/bricks/base/brick_blue_1h.svg"
-    property var xPos
-    property var yPos
-    property var contentScale
-    property string brickContent: previewContent.text
-    property var availableSize
+    property int xPos: 43
+    property int yPos: 33
+    property int contentScale: 100
+    readonly property string brickContent: previewContent.text
+    property string availableSize: "1h"
     property string brickPath: "brick_blue_1h.svg"
-    property var brickColor
+    property string brickColor: "blue"
 
     property bool savePNG
     property bool saveSVG
@@ -28,9 +28,31 @@ Image {
     property string status
 
     property alias brick: svgBrick
+    property alias saveButton: saveButton
+    property alias loadButton: loadButton
+    property alias clearButton: clearButton
+    property alias content: previewContent
 
     signal dataChanged
     property bool loading: false
+
+    function loadFromFile(currentFile) {
+        {
+            svgBrick.fromFile(currentFile)
+            svgPreview.loading = true
+            previewContent.text = svgBrick.content()
+            svgPreview.brickImg = svgBrick.path()
+            svgPreview.brickPath = svgBrick.base()
+            svgPreview.xPos = svgBrick.posX()
+            svgPreview.yPos = svgBrick.posY()
+            svgPreview.loading = false
+            console.debug("Loaded: ", previewContent.text, svgPreview.brickImg,
+                          svgPreview.brickPath, svgPreview.xPos,
+                          svgPreview.yPos)
+            svgPreview.dataChanged()
+            svgPreview.status = "INFO: Loaded " + currentFile
+        }
+    }
 
     source: previewContent.cursorVisible ? "qrc:/bricks/base/" + brickPath : brickImg
     onSourceChanged: console.log(source)
@@ -38,10 +60,12 @@ Image {
         id: svgBrick
     }
     onDataChanged: {
+        console.log("up")
         if (!brickPath || !brickColor || !availableSize || !xPos || !yPos
                 || !contentScale || !brickContent || loading) {
             return
         }
+        console.log("data")
 
         svgBrick.updateBrick(brickColor, brickPath, availableSize,
                              brickContent, contentScale, xPos, yPos)
@@ -149,21 +173,7 @@ Image {
             folder: tempFolder
             nameFilters: ["SVG files (*.svg)", "JSON files (*.json)"]
             fileMode: FileDialog.OpenFiles
-            onAccepted: {
-                svgBrick.fromFile(currentFile)
-                svgPreview.loading = true
-                previewContent.text = svgBrick.content()
-                svgPreview.brickImg = svgBrick.path()
-                svgPreview.brickPath = svgBrick.base()
-                svgPreview.xPos = svgBrick.posX()
-                svgPreview.yPos = svgBrick.posY()
-                svgPreview.loading = false
-                console.debug("Loaded: ", previewContent.text,
-                              svgPreview.brickImg, svgPreview.brickPath,
-                              svgPreview.xPos, svgPreview.yPos)
-                svgPreview.dataChanged()
-                svgPreview.status = "INFO: Loaded " + currentFile
-            }
+            onAccepted: loadFromFile(currentFile)
         }
         id: loadButton
         anchors.top: clearButton.bottom
@@ -188,8 +198,10 @@ Image {
         ToolTip.visible: hovered
         ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
         ToolTip.text: qsTr("Save the current brick!")
-        onPressed: save()
+        //onPressed: save()
 
+
+        /*
         function save() {
             var statusText = "INFO: Saved brick(s) as: "
             var filename = svgBrick.fileName()
@@ -210,6 +222,6 @@ Image {
             }
             statusText += " to " + textMetrics.text
             root.updateStatusMessage(statusText)
-        }
+        }*/
     }
 }

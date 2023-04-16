@@ -79,6 +79,16 @@ class Converter(QObject):
             self.data["size"] = self.data["height"]
             self.data["path"] = "brick_" + self.data["color"] + "_" + self.data["height"] + ".svg"
 
+
+    @Slot(str, result=bool)
+    def isBrick(self, file):
+        if not file: return False
+        file = file.replace("file:///", "")
+        doc = open(file, 'r')
+        result = '<desc id="json" tag="brick">' in doc.read()
+        doc.close()
+        return result
+
     @Slot(str, result=str)
     def getData(self, type):
         result = ""

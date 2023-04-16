@@ -132,7 +132,6 @@ class BatchBrickUpdater:
             nl = element == "nl"
         return string
 
-
     def resolveBrick(self):
         data = self.convert(self.path)
         content = re.sub(" +", " ", self.parse(data["data"]))
