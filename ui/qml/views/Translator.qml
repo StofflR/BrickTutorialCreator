@@ -56,7 +56,7 @@ Item {
         }
         LabelComboBox {
             id: language
-            signal updateListView
+            signal updateLanguages
             label: "Available languages:"
             anchors.top: layout.top
             anchors.left: path.right
@@ -74,7 +74,9 @@ Item {
                     languageManager.currentIndex = comboBox.currentIndex
                 }
             }
-            comboBox.onCurrentTextChanged: updateListView()
+            Component.onCompleted: {
+                comboBox.onCurrentTextChanged.connect(language.updateLanguages)
+            }
             function open() {
                 comboBox.currentIndex = -1
                 comboBox.enabled = true
@@ -214,7 +216,7 @@ Item {
                 signal updateBricks
                 onUpdateBricks: update()
                 Component.onCompleted: {
-                    language.updateListView.connect(brick.updateBricks)
+                    language.updateLanguages.connect(brick.updateBricks)
                     language.update()
                 }
                 function update() {

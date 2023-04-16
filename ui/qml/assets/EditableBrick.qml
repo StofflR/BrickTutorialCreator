@@ -21,32 +21,38 @@ Image {
     property var brickPath
     property var brickColor
 
-    property var fileName
+    property bool savePNG
+    property bool saveSVG
+    property bool saveJSON
+
+    property string status
+
     property alias brick: svgBrick
 
     signal updated
-    source: overlay.visible || !svgBrick.path(
-                ) ? "qrc:/bricks/base/" + brickImg : svgBrick.path()
+    signal dataChanged
+    signal fileLoaded
+
+    source: brickImg // overlay.visible ? "qrc:/bricks/base/" + brickPath : brickImg
     Brick {
         id: svgBrick
     }
-    onUpdate: save => {
-                  if (!brickPath | !brickColor | !availableSize) {
-                      return
-                  }
-                  console.log("data", brickColor, brickPath, availableSize,
-                              brickContent, contentScale, xPos, yPos)
-                  svgBrick.updateBrick(brickColor, brickPath, availableSize,
-                                       brickContent, contentScale, xPos, yPos)
-                  svgPreview.fileName = svgBrick.fileName()
-                  svgPreview.updated()
-              }
+    onDataChanged: {
+        if (!brickPath || !brickColor || !availableSize) {
+            return
+        }
+        svgBrick.updateBrick(brickColor, brickPath, availableSize,
+                             brickContent, contentScale, xPos, yPos)
+        brickImg = svgBrick.path()
+        svgPreview.updated()
+    }
 
+
+    /*
     Column {
         id: overlay
         anchors.fill: previewContent
-        visible: previewContent.cursorVisible ? 1 : 0 // TODO: enable on component completion
-        onVisibleChanged: svgPreview.update(true)
+        visible: previewContent.cursorVisible
         Repeater {
             id: repeater
             property int cursorPosition: previewContent.cursorPosition
@@ -54,24 +60,7 @@ Image {
                                              0,
                                              previewContent.cursorPosition).lastIndexOf(
                                              "\n") - 1
-            model: {
-                var data = previewContent.getText(0, previewContent.length)
-                while (data.indexOf("\n") !== -1) {
-                    data = data.replace("\n", "&nbsp;\r")
-                }
-
-                while (data.indexOf("$") !== -1) {
-                    data = data.replace(
-                                "$", "<u style=\"white-space:pre;\">&middot;")
-                    data = data.replace("$", "&middot;</u>")
-                }
-                while (data.indexOf("*") !== -1) {
-                    data = data.replace(
-                                "*",
-                                "<span style=\"text-indent:25px;white-space:pre;\"><small>&middot;")
-                    data = data.replace("*", "&middot;</small></span>")
-                }
-                return data.split("\r")
+            model:
             }
 
             TextEdit {
@@ -80,6 +69,7 @@ Image {
                 height: 12 * previewContent.scale
                 text: repeater.model[index]
                 padding: 0
+                opacity: 0.5
                 textFormat: TextEdit.AutoText
                 z: repeater.model.length - index
                 font: previewContent.font
@@ -94,28 +84,150 @@ Image {
                 onCursorPositionChanged: console.log(cursorPosition)
             }
         }
+    }*/
+    TextArea {
+        id: textView
+        anchors.fill: previewContent
+        text: {
+            var data = previewContent.getText(0, previewContent.length)
+
+            while (data.indexOf("\n") !== -1) {
+                data = data.replace("\n", "<br>")
+            }
+            while (data.indexOf("$") !== -1) {
+                data = data.replace(
+                            "$",
+                            "<u style=\"letter-spacing:0px\"><small>&middot;")
+                data = data.replace("$", "&middot;</small></u>")
+            }
+            while (data.indexOf("*") !== -1) {
+                data = data.replace("*", "<small>&middot;")
+                data = data.replace("*", "&middot;</small>")
+            }
+            return "<p style=\"line-height:75%;letter-spacing:-1px;padding-left:-20px;white-space:pre;\">" + data + "</p>"
+        }
+        wrapMode: TextArea
+        cursorPosition: previewContent.cursorPosition
+        cursorVisible: previewContent.cursorVisible
+        textFormat: TextEdit.RichText
+        font.family: "Roboto"
+        color: "red"
+        font.bold: true
+        font.pointSize: 12 * previewContent.scale < 0 ? 12 : 12 * previewContent.scale
     }
-    TextEdit {
+
+    TextArea {
         id: previewContent
+        text: ""
+
         anchors.left: svgPreview.left
         anchors.top: svgPreview.top
         width: svgPreview.width - svgPreview.xPos
         height: svgPreview.height - svgPreview.yPos
-        anchors.leftMargin: svgPreview.xPos + 74
-        anchors.topMargin: svgPreview.yPos
+        anchors.leftMargin: (svgPreview.xPos - 4) * font.pointSize / 12
+        anchors.topMargin: (svgPreview.yPos - 16) * font.pointSize / 12
 
         property int cursorLine: previewContent.text.substring(
                                      0, previewContent.cursorPosition).split(
                                      /\n/).length - 1
-        property real scale: svgPreview.paintedWidth / 350
-        cursorDelegate: Item {}
-        verticalAlignment: Text.AlignTop
-        horizontalAlignment: Text.AlignLeft
-        font.family: "Roboto"
-        cursorVisible: false
-        wrapMode: TextArea.WordWrap
-        font.bold: true
-        font.pointSize: 12 * scale < 0 ? 12 : 12 * scale
+        property real scale: svgPreview.paintedWidth * contentScale / 35000
+
+        cursorVisible: true
+        wrapMode: TextArea
+        font: textView.font
         opacity: 0
+        Component.onCompleted: {
+            textChanged.connect(svgPreview.dataChanged)
+        }
+    }
+    Component.onCompleted: {
+        availableSizeChanged.connect(svgPreview.dataChanged)
+        xPosChanged.connect(svgPreview.dataChanged)
+        yPosChanged.connect(svgPreview.dataChanged)
+        contentScaleChanged.connect(svgPreview.dataChanged)
+        availableSizeChanged.connect(svgPreview.dataChanged)
+        brickPathChanged.connect(svgPreview.dataChanged)
+        brickColorChanged.connect(svgPreview.dataChanged)
+    }
+
+    IconButton {
+        id: clearButton
+        anchors.top: svgPreview.top
+        anchors.right: svgPreview.right
+        anchors.margins: AppStyle.spacing
+        height: enabled ? width : 0
+        icon.source: "qrc:/bricks/resources/delete_black_24dp.svg"
+        ToolTip.visible: hovered
+        ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+        ToolTip.text: qsTr("Clear current brick content!")
+        onPressed: {
+            previewContent.text = ""
+            status = "INFO: Cleared brick content!"
+        }
+    }
+    IconButton {
+        FileDialog {
+            id: brickOpenDialog
+            folder: tempFolder
+            nameFilters: ["SVG files (*.svg)", "JSON files (*.json)"]
+            fileMode: FileDialog.OpenFiles
+            onAccepted: {
+                svgBrick.fromFile(currentFile)
+                previewContent.text = svgBrick.content()
+                svgPreview.brickImg = svgBrick.path()
+                //svgPreview.xPos = svgBrick.x
+                //svgPreview.yPos = svgBrick.y
+                svgPreview.status = "INFO: Loaded " + currentFile
+                svgPreview.fileLoaded()
+                svgPreview.updated()
+            }
+        }
+        id: loadButton
+        anchors.top: clearButton.bottom
+        anchors.right: svgPreview.right
+        anchors.margins: AppStyle.spacing
+        height: enabled ? width : 0
+        enabled: false //TODO: Load brick from file
+        icon.source: "qrc:/bricks/resources/file_open_black_24dp.svg"
+        ToolTip.visible: hovered
+        ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+        ToolTip.text: qsTr("Load existring brick from SVG or JSON!")
+        onPressed: brickOpenDialog.open()
+    }
+    IconButton {
+        id: saveButton
+        anchors.top: loadButton.bottom
+        anchors.right: svgPreview.right
+        anchors.margins: AppStyle.spacing
+        height: enabled ? width : 0
+        icon.source: "qrc:/bricks/resources/save_black_24dp.svg"
+        enabled: (svg_check.checked || json_check.checked || png_check.checked)
+                 && brickContent.text !== ""
+        ToolTip.visible: hovered
+        ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+        ToolTip.text: qsTr("Save the current brick!")
+        onPressed: save()
+
+        function save() {
+            var statusText = "INFO: Saved brick(s) as: "
+            var filename = svgBrick.fileName()
+            console.log(filename)
+            if (!filename)
+                return
+            if (svgPreview.saveSVG) {
+                svgBrick.saveSVG(textMetrics.text)
+                statusText += filename + ".svg "
+            }
+            if (svgPreview.saveJSON) {
+                svgBrick.saveJSON(textMetrics.text)
+                statusText += filename + ".json "
+            }
+            if (svgPreview.savePNG) {
+                svgBrick.savePNG(textMetrics.text)
+                statusText += filename + ".png "
+            }
+            statusText += " to " + textMetrics.text
+            root.updateStatusMessage(statusText)
+        }
     }
 }

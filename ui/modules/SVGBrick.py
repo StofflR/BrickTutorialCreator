@@ -30,7 +30,7 @@ DEFAULT_X = 43
 DEFAULT_Y = 33
 
 DROPDOWN_SIZE = 10
-DROPDOWN_OFFSET = 10
+DROPDOWN_OFFSET = 5
 
 RES_PATH = {
     BOLD: "/qml/font/Roboto-Bold.ttf",
@@ -237,8 +237,8 @@ class SVGBrick:
         segments = line.split("*", 2)
         x += self.addString(segments[0], x, y)
         self.addTriangle(DEFAULT_WIDTH, y)
-        x += self.addString(segments[1], x + DROPDOWN_OFFSET,
-                       y, DROPDOWN, NORMAL, DROPDOWN_SIZE) + DROPDOWN_OFFSET
+        x += self.addString(segments[1], x+DROPDOWN_OFFSET,
+                       y, DROPDOWN, NORMAL, DROPDOWN_SIZE)+DROPDOWN_OFFSET
 
         #y += (LINE_HEIGHT + 2*LINE_OFF) * self.scaling_factor
 

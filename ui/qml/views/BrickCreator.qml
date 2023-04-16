@@ -89,7 +89,7 @@ Rectangle {
     LabelDoubleSpinBox {
         label: qsTr("X")
         id: xPos
-        labelWidth: width / 4
+        labelWidth: width / 6
         spinbox.from: 1
         spinbox.value: 43
         spinbox.to: 300
@@ -103,7 +103,7 @@ Rectangle {
     LabelDoubleSpinBox {
         label: qsTr("Y")
         id: yPos
-        labelWidth: width / 4
+        labelWidth: width / 6
         spinbox.from: 1
         spinbox.value: 33
         spinbox.to: 200
@@ -121,8 +121,8 @@ Rectangle {
         text: qsTr("Save as")
         font.family: Font.boldFont ? Font.boldFont : -1
         font.pointSize: AppStyle.spacing * 8 / 6
-        anchors.top: contentScale.bottom
-        anchors.left: parent.left
+        anchors.top: yPos.top
+        anchors.left: yPos.right
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
@@ -131,7 +131,7 @@ Rectangle {
         id: svg
         width: parent.width / 6
         anchors.top: contentScale.bottom
-        anchors.left: saveLabel.right
+        anchors.left: parent.left
         height: AppStyle.defaultHeight
         color: AppStyle.color.window
         CheckBox {
@@ -145,7 +145,7 @@ Rectangle {
     Rectangle {
         width: parent.width / 6
         anchors.top: contentScale.bottom
-        anchors.right: parent.right
+        anchors.left: yPos.left
         height: AppStyle.defaultHeight
         color: AppStyle.color.window
         CheckBox {
@@ -186,111 +186,7 @@ Rectangle {
             checked: true
         }
     }
-    Rectangle {
-        id: contentLayout
-        anchors.top: saveLabel.bottom
-        height: saveButton.height + loadButton.height + clearButton.height + 20
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: edtiableBrick.top
-        color: AppStyle.color.window
-        Area {
-            id: brickContent
-            text: edtiableBrick.previewContent.text
-            font.pointSize: 30 * 8 / 6
-            anchors.left: contentLayout.left
-            height: contentLayout.height
-            anchors.right: saveButton.left
-            anchors.margins: AppStyle.spacing
-            placeholderText: qsTr("Enter brick content …")
-            verticalAlignment: TextField.AlignTop
-            inputMethodHints: Qt.ImhMultiLine
-            onTextChanged: edtiableBrick.update(false)
-            onEditingFinished: if (autoSave.checked)
-                                   saveButton.save()
-            ToolTip.visible: hovered
-            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-            ToolTip.text: qsTr("Variables:\n$ some sample var $\nNew Line:\n\\\\\nDropdown:\n* some sample var *")
-        }
-        IconButton {
-            id: saveButton
-            anchors.top: brickContent.top
-            anchors.right: parent.right
-            anchors.margins: AppStyle.spacing
-            anchors.topMargin: 0
-            width: height
-            icon.source: "qrc:/bricks/resources/save_black_24dp.svg"
-            enabled: (svg_check.checked || json_check.checked
-                      || png_check.checked) && brickContent.text !== ""
-            ToolTip.visible: hovered
-            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-            ToolTip.text: qsTr("Save the current brick!")
-            onPressed: save()
 
-            function save() {
-                var statusText = "INFO: Saved brick(s) as: "
-                var filename = edtiableBrick.fileName
-                console.log(filename)
-                if (!filename)
-                    return
-                if (svg_check.checked) {
-                    edtiableBrick.brick.saveSVG(textMetrics.text)
-                    statusText += filename + ".svg "
-                }
-                if (json_check.checked) {
-                    edtiableBrick.brick.saveJSON(textMetrics.text)
-                    statusText += filename + ".json "
-                }
-                if (png_check.checked) {
-                    edtiableBrick.brick.savePNG(textMetrics.text)
-                    statusText += filename + ".png "
-                }
-                statusText += " to " + textMetrics.text
-                root.updateStatusMessage(statusText)
-            }
-        }
-        IconButton {
-            FileDialog {
-                id: brickOpenDialog
-                folder: tempFolder
-                nameFilters: ["SVG files (*.svg)", "JSON files (*.json)"]
-                fileMode: FileDialog.OpenFiles
-                onAccepted: {
-                    edtiableBrick.brick.fromFile(currentFile)
-                    brickContent.text = edtiableBrick.brick.content()
-                    edtiableBrick.brickImg = edtiableBrick.brick.path()
-                    xPos.spinbox.value = edtiableBrick.brick.x()
-                    yPos.spinbox.value = edtiableBrick.brick.y()
-                    root.updateStatusMessage("INFO: Loaded " + currentFile)
-                }
-            }
-            id: loadButton
-            anchors.top: saveButton.bottom
-            anchors.right: parent.right
-            anchors.margins: AppStyle.spacing
-            width: height
-            icon.source: "qrc:/bricks/resources/file_open_black_24dp.svg"
-            ToolTip.visible: hovered
-            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-            ToolTip.text: qsTr("Load existring brick from SVG or JSON!")
-            onPressed: brickOpenDialog.open()
-        }
-        IconButton {
-            id: clearButton
-            anchors.top: loadButton.bottom
-            anchors.right: parent.right
-            anchors.margins: AppStyle.spacing
-            width: height
-            icon.source: "qrc:/bricks/resources/delete_black_24dp.svg"
-            ToolTip.visible: hovered
-            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-            ToolTip.text: qsTr("Clear current brick content!")
-            onPressed: {
-                brickContent.clear()
-                root.updateStatusMessage("INFO: Cleared brick content!")
-            }
-        }
-    }
     EditableBrick {
         id: edtiableBrick
 
@@ -302,11 +198,24 @@ Rectangle {
         xPos: xPos.spinbox.value
         yPos: yPos.spinbox.value
 
-        anchors.right: contentLayout.right
-        anchors.left: contentLayout.left
+        anchors.right: parent.right
+        anchors.left: parent.left
         anchors.bottom: parent.bottom
-        brickImg: "brick_blue_1h.svg"
+        onStatusChanged: root.updateStatusMessage(edtiableBrick.status)
 
-        onUpdated: saveButton.save()
+        savePNG: png_check.checked
+        saveJSON: json_check.checked
+        saveSVG: svg_check.checked
+
+
+        /*onFileLoaded: {
+            //console.log(edtiableBrick.brickColor,
+                        availableBricks.comboBox.model.indexOf(
+                            edtiableBrick.brick.brickColor))
+           // availableBricks.comboBox.currentIndex = availableBricks.comboBox.model.indexOf(
+                        edtiableBrick.brick.brickColor)
+            //xPos.spinbox.value = edtiableBrick.brick.x
+            //yPos.spinbox.value = edtiableBrick.brick.y
+        }*/
     }
 }
