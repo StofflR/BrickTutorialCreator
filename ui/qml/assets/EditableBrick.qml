@@ -12,13 +12,13 @@ import "../style"
 
 Image {
     id: svgPreview
-    property var brickImg
+    property string brickImg: "qrc:/bricks/base/brick_blue_1h.svg"
     property var xPos
     property var yPos
     property var contentScale
     property string brickContent: previewContent.text
     property var availableSize
-    property var brickPath
+    property string brickPath: "brick_blue_1h.svg"
     property var brickColor
 
     property bool savePNG
@@ -29,22 +29,23 @@ Image {
 
     property alias brick: svgBrick
 
-    signal updated
     signal dataChanged
-    signal fileLoaded
+    property bool loading: false
 
-    source: textView.visible ? "qrc:/bricks/base/" + brickPath : brickImg
+    source: previewContent.cursorVisible ? "qrc:/bricks/base/" + brickPath : brickImg
+    onSourceChanged: console.log(source)
     Brick {
         id: svgBrick
     }
     onDataChanged: {
-        if (!brickPath || !brickColor || !availableSize) {
+        if (!brickPath || !brickColor || !availableSize || !xPos || !yPos
+                || !contentScale || !brickContent || loading) {
             return
         }
+
         svgBrick.updateBrick(brickColor, brickPath, availableSize,
                              brickContent, contentScale, xPos, yPos)
         brickImg = svgBrick.path()
-        svgPreview.updated()
     }
     TextArea {
         id: textView
@@ -98,12 +99,11 @@ Image {
         property int cursorLine: previewContent.text.substring(
                                      0, previewContent.cursorPosition).split(
                                      /\n/).length - 1
-        onScaleChanged: console.log(12 * previewContent.scale)
         property real scale: svgPreview.paintedWidth * contentScale / 35000
-        onTextChanged: console.log(cursorPosition)
         wrapMode: TextArea
         font: textView.font
         opacity: text ? 0 : 1
+        cursorVisible: false
         Component.onCompleted: {
             textChanged.connect(svgPreview.dataChanged)
         }
@@ -151,13 +151,18 @@ Image {
             fileMode: FileDialog.OpenFiles
             onAccepted: {
                 svgBrick.fromFile(currentFile)
+                svgPreview.loading = true
                 previewContent.text = svgBrick.content()
                 svgPreview.brickImg = svgBrick.path()
-                //svgPreview.xPos = svgBrick.x
-                //svgPreview.yPos = svgBrick.y
+                svgPreview.brickPath = svgBrick.base()
+                svgPreview.xPos = svgBrick.posX()
+                svgPreview.yPos = svgBrick.posY()
+                svgPreview.loading = false
+                console.debug("Loaded: ", previewContent.text,
+                              svgPreview.brickImg, svgPreview.brickPath,
+                              svgPreview.xPos, svgPreview.yPos)
+                svgPreview.dataChanged()
                 svgPreview.status = "INFO: Loaded " + currentFile
-                svgPreview.fileLoaded()
-                svgPreview.updated()
             }
         }
         id: loadButton
@@ -165,7 +170,6 @@ Image {
         anchors.right: svgPreview.right
         anchors.margins: enabled ? AppStyle.spacing : 0
         height: enabled ? width : 0
-        enabled: false //TODO: Load brick from file
         icon.source: "qrc:/bricks/resources/file_open_black_24dp.svg"
         ToolTip.visible: hovered
         ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval

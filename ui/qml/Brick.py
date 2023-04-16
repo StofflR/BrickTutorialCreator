@@ -22,6 +22,23 @@ class Brick(QObject):
     def content(self):
         return self.brick.content
 
+    @Slot(result=int)
+    def posX(self):
+        return self.brick.x
+
+    @Slot(result=int)
+    def posY(self):
+        return self.brick.y
+
+    @Slot(result=str)
+    def base(self):
+        baseBrick = self.brick.base_type
+        control=""
+        if "(control)" in baseBrick:
+            baseBrick = baseBrick.replace(" (control)","")
+            control = "_control"
+        return "brick_"+baseBrick+"_"+str(self.brick.size)+control+".svg"
+
     @Slot(str, str, str, str, int, int, int)
     def updateBrick(self, color, path, size, content, scale, x=43, y=33):
         if color and path and size and scale:
