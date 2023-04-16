@@ -51,7 +51,7 @@ Rectangle {
         comboBox.model: bricks.availableBricks()
         onDisplayTextChanged: {
             bricks.sizes = bricks.availableSizes(comboBox.currentIndex)
-            svgPreview.update(true)
+            edtiableBrick.update(true)
         }
     }
     BrickManager {
@@ -71,7 +71,7 @@ Rectangle {
         anchors.topMargin: AppStyle.spacing
         anchors.leftMargin: AppStyle.spacing
         comboBox.model: bricks.sizes
-        onDisplayTextChanged: svgPreview.update(true)
+        onDisplayTextChanged: edtiableBrick.update(true)
     }
 
     LabelDoubleSpinBox {
@@ -84,12 +84,12 @@ Rectangle {
         anchors.top: availableBricks.bottom
         anchors.left: parent.left
         anchors.topMargin: AppStyle.spacing
-        spinbox.onValueChanged: svgPreview.update(true)
+        spinbox.onValueChanged: edtiableBrick.update(true)
     }
     LabelDoubleSpinBox {
         label: qsTr("X")
         id: xPos
-        labelWidth: width / 4
+        labelWidth: width / 6
         spinbox.from: 1
         spinbox.value: 43
         spinbox.to: 300
@@ -98,12 +98,12 @@ Rectangle {
         anchors.top: availableBricks.bottom
         anchors.left: contentScale.right
         anchors.topMargin: AppStyle.spacing
-        spinbox.onValueChanged: svgPreview.update(true)
+        spinbox.onValueChanged: edtiableBrick.update(true)
     }
     LabelDoubleSpinBox {
         label: qsTr("Y")
         id: yPos
-        labelWidth: width / 4
+        labelWidth: width / 6
         spinbox.from: 1
         spinbox.value: 33
         spinbox.to: 200
@@ -112,7 +112,7 @@ Rectangle {
         anchors.top: availableBricks.bottom
         anchors.left: xPos.right
         anchors.topMargin: AppStyle.spacing
-        spinbox.onValueChanged: svgPreview.update(true)
+        spinbox.onValueChanged: edtiableBrick.update(true)
     }
     Label {
         width: parent.width / 8
@@ -121,8 +121,8 @@ Rectangle {
         text: qsTr("Save as")
         font.family: Font.boldFont ? Font.boldFont : -1
         font.pointSize: AppStyle.spacing * 8 / 6
-        anchors.top: contentScale.bottom
-        anchors.left: parent.left
+        anchors.top: yPos.top
+        anchors.left: yPos.right
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
@@ -131,7 +131,7 @@ Rectangle {
         id: svg
         width: parent.width / 6
         anchors.top: contentScale.bottom
-        anchors.left: saveLabel.right
+        anchors.left: parent.left
         height: AppStyle.defaultHeight
         color: AppStyle.color.window
         CheckBox {
@@ -145,7 +145,7 @@ Rectangle {
     Rectangle {
         width: parent.width / 6
         anchors.top: contentScale.bottom
-        anchors.right: parent.right
+        anchors.left: yPos.left
         height: AppStyle.defaultHeight
         color: AppStyle.color.window
         CheckBox {
@@ -186,220 +186,36 @@ Rectangle {
             checked: true
         }
     }
-    Rectangle {
-        id: contentLayout
-        anchors.top: saveLabel.bottom
-        height: saveButton.height + loadButton.height + clearButton.height + 20
-        anchors.left: parent.left
+
+    EditableBrick {
+        id: edtiableBrick
+
+        brickColor: availableBricks.comboBox.displayText
+        brickPath: bricks.brickPath(availableBricks.comboBox.currentIndex,
+                                    availableSize.comboBox.displayText)
+        availableSize: availableSize.comboBox.displayText
+        contentScale: contentScale.spinbox.value
+        xPos: xPos.spinbox.value
+        yPos: yPos.spinbox.value
+
         anchors.right: parent.right
-        color: AppStyle.color.window
-        Area {
-            id: brickContent
-            text: previewContent.text
-            font.pointSize: 30 * 8 / 6
-            anchors.left: contentLayout.left
-            height: contentLayout.height
-            anchors.right: saveButton.left
-            anchors.margins: AppStyle.spacing
-            placeholderText: qsTr("Enter brick content …")
-            verticalAlignment: TextField.AlignTop
-            inputMethodHints: Qt.ImhMultiLine
-            onTextChanged: svgPreview.update(false)
-            onEditingFinished: if (autoSave.checked)
-                                   saveButton.save()
-            ToolTip.visible: hovered
-            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-            ToolTip.text: qsTr("Variables:\n$ some sample var $\nNew Line:\n\\\\\nDropdown:\n* some sample var *")
-        }
-        IconButton {
-            id: saveButton
-            anchors.top: brickContent.top
-            anchors.right: parent.right
-            anchors.margins: AppStyle.spacing
-            anchors.topMargin: 0
-            width: height
-            icon.source: "qrc:/bricks/resources/save_black_24dp.svg"
-            enabled: (svg_check.checked || json_check.checked
-                      || png_check.checked) && brickContent.text !== ""
-            ToolTip.visible: hovered
-            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-            ToolTip.text: qsTr("Save the current brick!")
-            onPressed: save()
-
-            function save() {
-                var statusText = "INFO: Saved brick(s) as: "
-                var filename = svgBrick.fileName()
-                if (!filename)
-                    return
-                if (svg_check.checked) {
-                    svgBrick.saveSVG(textMetrics.text)
-                    statusText += filename + ".svg "
-                }
-                if (json_check.checked) {
-                    svgBrick.saveJSON(textMetrics.text)
-                    statusText += filename + ".json "
-                }
-                if (png_check.checked) {
-                    svgBrick.savePNG(textMetrics.text)
-                    statusText += filename + ".png "
-                }
-                statusText += " to " + textMetrics.text
-                root.updateStatusMessage(statusText)
-            }
-        }
-        IconButton {
-            FileDialog {
-                id: brickOpenDialog
-                folder: tempFolder
-                nameFilters: ["SVG files (*.svg)", "JSON files (*.json)"]
-                fileMode: FileDialog.OpenFiles
-                onAccepted: {
-                    svgBrick.fromFile(currentFile)
-                    brickContent.text = svgBrick.content()
-                    svgPreview.brickImg = svgBrick.path()
-                    xPos.spinbox.value = svgBrick.x()
-                    yPos.spinbox.value = svgBrick.y()
-                    root.updateStatusMessage("INFO: Loaded " + currentFile)
-                }
-            }
-            id: loadButton
-            anchors.top: saveButton.bottom
-            anchors.right: parent.right
-            anchors.margins: AppStyle.spacing
-            width: height
-            icon.source: "qrc:/bricks/resources/file_open_black_24dp.svg"
-            ToolTip.visible: hovered
-            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-            ToolTip.text: qsTr("Load existring brick from SVG or JSON!")
-            onPressed: brickOpenDialog.open()
-        }
-        IconButton {
-            id: clearButton
-            anchors.top: loadButton.bottom
-            anchors.right: parent.right
-            anchors.margins: AppStyle.spacing
-            width: height
-            icon.source: "qrc:/bricks/resources/delete_black_24dp.svg"
-            ToolTip.visible: hovered
-            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-            ToolTip.text: qsTr("Clear current brick content!")
-            onPressed: {
-                brickContent.clear()
-                root.updateStatusMessage("INFO: Cleared brick content!")
-            }
-        }
-    }
-    Brick {
-        id: svgBrick
-    }
-
-    Image {
-        id: svgPreview
-        property var brickImg
-        source: overlay.visible ? "qrc:/bricks/base/" + bricks.brickPath(
-                                      availableBricks.comboBox.currentIndex,
-                                      availableSize.comboBox.displayText) : brickImg
-
+        anchors.left: parent.left
         anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: contentLayout.bottom
-        onUpdate: autosave => {
-                      svgBrick.updateBrick(
-                          availableBricks.comboBox.displayText,
-                          bricks.brickPath(
-                              availableBricks.comboBox.currentIndex,
-                              availableSize.comboBox.displayText),
-                          availableSize.comboBox.displayText,
-                          brickContent.text, contentScale.spinbox.value,
-                          xPos.spinbox.value, yPos.spinbox.value)
-                      brickImg = svgBrick.path()
-                      if (autoSave.checked && autosave)
-                      saveButton.save()
-                  }
-        Column {
-            id: overlay
-            anchors.fill: previewContent
-            visible: false // previewContent.cursorVisible ? 1 : 0 // TODO: enable on component completion
+        onStatusChanged: root.updateStatusMessage(edtiableBrick.status)
 
-            Repeater {
-                id: repeater
-                property int cursorPosition: previewContent.cursorPosition
-                                             - previewContent.text.substring(
-                                                 0,
-                                                 previewContent.cursorPosition).lastIndexOf(
-                                                 "\n") - 1
-                model: {
-                    var data = previewContent.getText(0, previewContent.length)
-                    while (data.indexOf("\n") !== -1) {
-                        data = data.replace("\n", "&nbsp;\r")
-                    }
+        savePNG: png_check.checked
+        saveJSON: json_check.checked
+        saveSVG: svg_check.checked
 
-                    while (data.indexOf("$") !== -1) {
-                        data = data.replace(
-                                    "$",
-                                    "<u style=\"white-space:pre;\">&middot;")
-                        data = data.replace("$", "&middot;</u>")
-                    }
-                    while (data.indexOf("*") !== -1) {
-                        data = data.replace(
-                                    "*",
-                                    "<span style=\"text-indent:25px;white-space:pre;\"><small>&middot;")
-                        data = data.replace("*", "&middot;</small></span>")
-                    }
-                    return data.split("\r")
-                }
 
-                TextEdit {
-                    id: repeaterLine
-                    width: contentWidth
-                    height: 12 * previewContent.scale
-                    text: repeater.model[index]
-                    padding: 0
-                    textFormat: TextEdit.AutoText
-                    z: repeater.model.length - index
-                    font: previewContent.font
-                    cursorVisible: index === previewContent.cursorLine
-                                   && previewContent.cursorVisible
-                    Binding on cursorPosition {
-                        when: onTextChanged || previewContent.text
-                              || previewContent.cursorPosition
-                        value: repeater.cursorPosition
-                    }
-                    onTextChanged: cursorPosition = repeater.cursorPosition
-                    onCursorPositionChanged: console.log(cursorPosition)
-                }
-            }
-        }
-        TextEdit {
-            id: previewContent
-            visible: false // TODO: enable on component completion
-            property int cursorLine: previewContent.text.substring(
-                                         0,
-                                         previewContent.cursorPosition).split(
-                                         /\n/).length - 1
-
-            property real scale: svgPreview.paintedWidth / 350
-            anchors.left: svgPreview.left
-            anchors.top: svgPreview.top
-            anchors.leftMargin: (xPos.spinbox.value - 2) * scale
-                                + (svgPreview.width - svgPreview.paintedWidth) / 2
-            anchors.topMargin: (yPos.spinbox.value - 15) * scale
-                               + (svgPreview.height - svgPreview.paintedHeight) / 2
-
-            width: svgPreview.width - anchors.leftMargin
-            height: svgPreview.height - anchors.topMargin
-            cursorDelegate: Item {}
-
-            verticalAlignment: Text.AlignTop
-            horizontalAlignment: Text.AlignLeft
-            font.family: "Roboto"
-            cursorVisible: false
-            wrapMode: TextArea.WordWrap
-            font.bold: true
-            font.pointSize: 12 * scale < 0 ? 12 : 12 * scale
-            opacity: 0
-        }
+        /*onFileLoaded: {
+            //console.log(edtiableBrick.brickColor,
+                        availableBricks.comboBox.model.indexOf(
+                            edtiableBrick.brick.brickColor))
+           // availableBricks.comboBox.currentIndex = availableBricks.comboBox.model.indexOf(
+                        edtiableBrick.brick.brickColor)
+            //xPos.spinbox.value = edtiableBrick.brick.x
+            //yPos.spinbox.value = edtiableBrick.brick.y
+        }*/
     }
-    Component.onCompleted: svgPreview.update(true)
 }

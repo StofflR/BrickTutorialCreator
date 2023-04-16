@@ -28,17 +28,6 @@ T.SpinBox {
     valueFromText: function (text, locale) {
         return Number.fromLocaleString(locale, text)
     }
-    contentItem: TextInput {
-        rightPadding: spinbox.indicator.width + spinbox.spacing
-        horizontalAlignment: Qt.AlignHCenter
-        verticalAlignment: Qt.AlignVCenter
-        text: spinbox.displayText
-        font.family: Font.boldFont ? Font.boldFont : -1
-        font.pointSize: AppStyle.spacing * 8 / 6
-        color: AppStyle.color.text
-        readOnly: !spinbox.editable
-        inputMethodHints: Qt.ImhFormattedNumbersOnly
-    }
     up.indicator: Rectangle {
         x: spinbox.mirrored ? 0 : parent.width - width
         height: parent.height
@@ -66,7 +55,7 @@ T.SpinBox {
         height: parent.height
         width: height / 2
         implicitWidth: AppStyle.defaultHeight
-        implicitHeight: 20
+        implicitHeight: AppStyle.defaultHeight
         color: spinbox.down.pressed ? Qt.darker(
                                           AppStyle.color.window) : AppStyle.color.window
         border.color: Qt.darker(AppStyle.color.window)
@@ -81,6 +70,18 @@ T.SpinBox {
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
         }
+    }
+    contentItem: TextInput {
+        anchors.right: up.indicator.left
+        anchors.left: down.indicator.right
+        horizontalAlignment: Qt.AlignHCenter
+        verticalAlignment: Qt.AlignVCenter
+        text: spinbox.displayText
+        font.family: Font.boldFont ? Font.boldFont : -1
+        font.pointSize: AppStyle.spacing * 8 / 6
+        color: AppStyle.color.text
+        readOnly: !spinbox.editable
+        inputMethodHints: Qt.ImhFormattedNumbersOnly
     }
     background: Rectangle {
         implicitWidth: 120
