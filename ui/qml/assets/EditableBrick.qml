@@ -33,7 +33,7 @@ Image {
     signal dataChanged
     signal fileLoaded
 
-    source: brickImg // overlay.visible ? "qrc:/bricks/base/" + brickPath : brickImg
+    source: textView.visible ? "qrc:/bricks/base/" + brickPath : brickImg
     Brick {
         id: svgBrick
     }
@@ -46,47 +46,14 @@ Image {
         brickImg = svgBrick.path()
         svgPreview.updated()
     }
-
-
-    /*
-    Column {
-        id: overlay
-        anchors.fill: previewContent
-        visible: previewContent.cursorVisible
-        Repeater {
-            id: repeater
-            property int cursorPosition: previewContent.cursorPosition
-                                         - previewContent.text.substring(
-                                             0,
-                                             previewContent.cursorPosition).lastIndexOf(
-                                             "\n") - 1
-            model:
-            }
-
-            TextEdit {
-                id: repeaterLine
-                width: contentWidth
-                height: 12 * previewContent.scale
-                text: repeater.model[index]
-                padding: 0
-                opacity: 0.5
-                textFormat: TextEdit.AutoText
-                z: repeater.model.length - index
-                font: previewContent.font
-                cursorVisible: index === previewContent.cursorLine
-                               && previewContent.cursorVisible
-                Binding on cursorPosition {
-                    when: onTextChanged || previewContent.text
-                          || previewContent.cursorPosition
-                    value: repeater.cursorPosition
-                }
-                onTextChanged: cursorPosition = repeater.cursorPosition
-                onCursorPositionChanged: console.log(cursorPosition)
-            }
-        }
-    }*/
     TextArea {
         id: textView
+        Binding on cursorPosition {
+            when: previewContent.cursorPosition
+            value: previewContent.cursorPosition
+        }
+
+        visible: previewContent.cursorVisible
         anchors.fill: previewContent
         text: {
             var data = previewContent.getText(0, previewContent.length)
@@ -106,12 +73,13 @@ Image {
             }
             return "<p style=\"line-height:75%;letter-spacing:-1px;padding-left:-20px;white-space:pre;\">" + data + "</p>"
         }
+        onTextChanged: cursorPosition = previewContent.cursorPosition
         wrapMode: TextArea
-        cursorPosition: previewContent.cursorPosition
+
         cursorVisible: previewContent.cursorVisible
         textFormat: TextEdit.RichText
         font.family: "Roboto"
-        color: "red"
+        font.letterSpacing: -1
         font.bold: true
         font.pointSize: 12 * previewContent.scale < 0 ? 12 : 12 * previewContent.scale
     }
@@ -119,7 +87,7 @@ Image {
     TextArea {
         id: previewContent
         text: ""
-
+        placeholderText: "<b>Click to modify content!<\b>"
         anchors.left: svgPreview.left
         anchors.top: svgPreview.top
         width: svgPreview.width - svgPreview.xPos
@@ -132,15 +100,24 @@ Image {
                                      /\n/).length - 1
         onScaleChanged: console.log(12 * previewContent.scale)
         property real scale: svgPreview.paintedWidth * contentScale / 35000
-
-        cursorVisible: false
+        onTextChanged: console.log(cursorPosition)
         wrapMode: TextArea
         font: textView.font
-        opacity: 0
+        opacity: text ? 0 : 1
         Component.onCompleted: {
             textChanged.connect(svgPreview.dataChanged)
         }
     }
+    MouseArea {
+        anchors.fill: previewContent
+        onReleased: mouseEvent => {
+                        console.log("clickedy")
+                        previewContent.cursorPosition = textView.positionAt(
+                            mouseEvent.x, mouseEvent.y)
+                        previewContent.forceActiveFocus()
+                    }
+    }
+
     Component.onCompleted: {
         availableSizeChanged.connect(svgPreview.dataChanged)
         xPosChanged.connect(svgPreview.dataChanged)
