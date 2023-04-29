@@ -196,108 +196,20 @@ Item {
         visible: language.comboBox.currentIndex > -1
         signal closeOpenEditor
         width: root.width
-        reuseItems: false
         anchors.top: layout.bottom
         anchors.bottom: bottomLayout.top
-        model: languageManager.sourceModel(textMetrics.text)
+        model: visible ? languageManager.sourceModel(textMetrics.text) : []
         z: layout.z - 1
+        clip: true
+        enabled: model.length > 0
         delegate: TranslationDelegate {
             id: delegate
-            onEditPressed: {
-                translationList.closeOpenEditor()
-                bottomLayout.visible = true
-                editor.open()
-            }
-            onResetPressed: {
-                editor.resetLanguage()
-            }
-            Brick {
-                id: brick
-                signal updateBricks
-                onUpdateBricks: update()
-                Component.onCompleted: {
-                    language.updateLanguages.connect(brick.updateBricks)
-                    language.update()
-                }
-                function update() {
-                    brick.fromSVG(
-                                textMetrics.text + "/" + translationList.model[index])
-                    sourcePath = brick.path()
-                    if (language.comboBox.currentText === "New …")
-                        return
-                    var targetPath = textMetrics.text + "/" + language.comboBox.currentText
-                    var targetFile = targetPath + "/" + translationList.model[index]
-
-                    if (brick.exists(targetFile)) {
-                        brick.fromSVG(targetFile)
-                    } else {
-
-                        brick.fromSVG(
-                                    textMetrics.text + "/" + translationList.model[index])
-                        brick.saveSVG(targetPath, translationList.model[index])
-                    }
-                    delegate.targetPath = targetFile
-                }
-            }
-            SmallEditor {
-                id: editor
-                anchors.right: parent.right
-                width: parent.width / 2 - 30
-                height: parent.height
-                signal close
-                signal open
-                Component.onCompleted: {
-                    translationList.closeOpenEditor.connect(editor.close)
-                }
-                onOpen: {
-                    editor.visible = true
-                    brick.fromSVG(
-                                brick.fromSVG(
-                                    textMetrics.text + "/" + translationList.model[index]))
-                }
-                onClose: {
-                    editor.visible = false
-                }
-
-                onAbortPressed: {
-                    bottomLayout.visible = false
-                    editor.close()
-                }
-                onAdvancedPressed: {
-                    bottomLayout.visible = false
-                    editor.close()
-                }
-                onResetLanguage: {
-                    var targetPath = textMetrics.text + "/" + language.comboBox.currentText
-                    var targetFile = targetPath + "/" + translationList.model[index]
-
-                    brick.fromSVG(
-                                textMetrics.text + "/" + translationList.model[index])
-                    brick.saveSVG(targetPath, translationList.model[index])
-                    delegate.targetPath = brick.path()
-                    bottomLayout.visible = false
-                    editor.close()
-                }
-
-                onOkPressed: content => {
-                                 var targetPath = textMetrics.text + "/"
-                                 + language.comboBox.currentText
-                                 var targetFile = targetPath + "/" + translationList.model[index]
-                                 brick.updateBrickContent(content)
-                                 brick.saveSVG(targetPath,
-                                               translationList.model[index])
-                                 delegate.targetPath = brick.path()
-                                 bottomLayout.visible = false
-                                 editor.close()
-                             }
-
-                onContentChanged: content => {
-                                      brick.updateBrickContent(content)
-                                      svgPreview.source = brick.path()
-                                  }
-                // update svgPreview -> use loader for updating ListView
-            }
+            sourceFolder: textMetrics.text
+            sourcePath: modelData
+            targetFolder: textMetrics.text + "/" + language.comboBox.currentText
         }
+        onVisibleChanged: updateStatusMessage("")
+        cacheBuffer: visible ? 300 : 0
     }
 
     Rectangle {

@@ -18,7 +18,7 @@ Popup {
     property int index: 0
     property var files: []
     property var converter
-    property var targetPath: ""
+    property string targetPath: ""
     property var content: []
     property alias svgBrick: targetPreview.brick
     width: 500

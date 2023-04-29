@@ -70,3 +70,7 @@ class LanguageManager(QObject):
             if ".svg" in element:  # or ".json" in element:
                 result.append(element)
         return result
+
+    @Slot(str, result=bool)
+    def exists(self, file):
+        return os.path.isfile(file.replace("file:///", ""))

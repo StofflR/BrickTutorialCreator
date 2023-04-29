@@ -120,7 +120,7 @@ Rectangle {
         id: saveLabel
         text: qsTr("Save as")
         font.family: Font.boldFont ? Font.boldFont : -1
-        font.pointSize: AppStyle.spacing * 8 / 6
+        font.pointSize: AppStyle.pointsizeSpacing
         anchors.top: yPos.top
         anchors.left: yPos.right
         horizontalAlignment: Text.AlignHCenter
@@ -137,7 +137,7 @@ Rectangle {
         CheckBox {
             id: svg_check
             text: "SVG"
-            font.pointSize: AppStyle.spacing * 8 / 6
+            font.pointSize: AppStyle.pointsizeSpacing
             anchors.fill: parent
             checked: true
         }
@@ -151,7 +151,7 @@ Rectangle {
         CheckBox {
             id: autoSave
             text: "Auto-Save"
-            font.pointSize: AppStyle.spacing * 8 / 6
+            font.pointSize: AppStyle.pointsizeSpacing
             anchors.fill: parent
             checked: false
         }
@@ -166,7 +166,7 @@ Rectangle {
         CheckBox {
             id: json_check
             text: "JSON"
-            font.pointSize: AppStyle.spacing * 8 / 6
+            font.pointSize: AppStyle.pointsizeSpacing
             anchors.fill: parent
             checked: true
         }
@@ -181,7 +181,7 @@ Rectangle {
         CheckBox {
             id: png_check
             text: "PNG"
-            font.pointSize: AppStyle.spacing * 8 / 6
+            font.pointSize: AppStyle.pointsizeSpacing
             anchors.fill: parent
             checked: true
         }

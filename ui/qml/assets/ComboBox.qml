@@ -16,7 +16,7 @@ T.ComboBox {
             text: modelData
             color: AppStyle.color.text
             font.family: Font.boldFont ? Font.boldFont : -1
-            font.pointSize: AppStyle.spacing * 8 / 6
+            font.pointSize: AppStyle.pointsizeSpacing
             elide: Text.ElideRight
             verticalAlignment: Text.AlignVCenter
         }
@@ -62,7 +62,7 @@ T.ComboBox {
 
         text: displayText
         font.family: Font.boldFont ? Font.boldFont : -1
-        font.pointSize: AppStyle.spacing * 8 / 6
+        font.pointSize: AppStyle.pointsizeSpacing
         color: AppStyle.color.text
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight

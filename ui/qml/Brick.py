@@ -18,20 +18,20 @@ class Brick(QObject):
         self.hex = {
             "blue": "#408ac5"
         }
-    @Slot(result=str)
+    @Slot(None, result=str)
     def content(self):
         return self.brick.content
 
-    @Slot(result=int)
+    @Slot(None, result=int)
     def posX(self):
         return self.brick.x
 
-    @Slot(result=int)
+    @Slot(None, result=int)
     def posY(self):
         return self.brick.y
 
-    @Slot(result=str)
-    def base(self):
+    @Slot(None, result=str)
+    def basePath(self):
         baseBrick = self.brick.base_type
         control=""
         if "(control)" in baseBrick:
@@ -80,7 +80,7 @@ class Brick(QObject):
             self.brick = SVGBrick(
                 base_type=color, content=content, size=size, path=path, scaling_factor=scale)
 
-    @Slot(result=str)
+    @Slot(None, result=str)
     def path(self):
         if (self.brick):
             workingBrick = self.brick.getWorkingBrick()
