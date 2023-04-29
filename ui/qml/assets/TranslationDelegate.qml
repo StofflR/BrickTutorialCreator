@@ -8,68 +8,57 @@ import "../style"
 
 ItemDelegate {
     id: root
-    signal editPressed
-    signal resetPressed
-    signal savePressed
-    signal advancedPressed
-
     property string sourcePath
-    property string targetPath
+    property string sourceFolder
+    property string targetFolder
+    property alias translationBrick: target
 
-    property double editWidth: targetImage.width + reset.width
+    onTargetFolderChanged: reload()
+    onSourceFolderChanged: reload()
 
     width: parent ? parent.width : 0
-    height: source.height
-    Rectangle {
-        id: source
-        width: parent.width / 2 - 20
-        height: sourceImage.height
-        Image {
-            id: sourceImage
-            width: source.width
-            source: sourcePath
-            ToolTip.visible: hovered
-            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-            ToolTip.text: sourcePath
-        }
+    height: target.height
+
+    function reload() {
+        if (languageManager.exists(targetFolder + "/" + sourcePath))
+            target.loadFromFile(targetFolder + "/" + sourcePath)
+        else
+            target.loadFromFile(sourceFolder + "/" + sourcePath)
+        target.dataChanged()
     }
-    Rectangle {
-        anchors.left: source.right
-        id: control
-        width: parent.width - source.width - target.width
-        height: parent.height
-        IconButton {
-            id: edit
-            width: AppStyle.defaultHeight
-            height: root.height / 2
-            anchors.top: parent.top
-            icon.source: "qrc:/bricks/resources/build_black_24dp.svg"
-            ToolTip.visible: hovered
-            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-            ToolTip.text: qsTr("Edit translation")
-            onPressed: editPressed()
-        }
-        IconButton {
-            id: reset
-            anchors.bottom: parent.bottom
-            width: AppStyle.defaultHeight
-            height: root.height / 2
-            icon.source: "qrc:/bricks/resources/restore_black_24dp.svg"
-            ToolTip.visible: hovered
-            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-            ToolTip.text: qsTr("Reset translation")
-            onPressed: resetPressed()
-        }
+
+    Image {
+        id: sourceImage
+        anchors.left: root.left
+        width: root.width / 2
+        height: target.height
+        source: sourceFolder + "/" + sourcePath
+        ToolTip.visible: hovered
+        ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+        ToolTip.text: sourcePath
+        asynchronous: true
     }
-    Rectangle {
-        anchors.left: control.right
+
+    EditableBrick {
         id: target
-        width: parent.width / 2 - 20
-        height: targetImage.height
-        Image {
-            id: targetImage
-            width: target.width
-            source: targetPath
+        anchors.right: root.right
+        width: root.width / 2
+        loadButton.enabled: false
+        saveButton.enabled: false
+        clearButton.enabled: false
+        IconButton {
+            id: clearButton
+            anchors.top: target.top
+            anchors.right: target.right
+            anchors.margins: enabled ? AppStyle.spacing : 0
+            height: enabled ? width : 0
+            icon.source: "qrc:/bricks/resources/done_black_24dp.svg"
+            ToolTip.visible: hovered
+            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+            ToolTip.text: qsTr("Clear current brick content!")
         }
+        onDataChanged: target.brick.saveSVG(targetFolder, sourcePath)
+
+        Component.onCompleted: reload()
     }
 }

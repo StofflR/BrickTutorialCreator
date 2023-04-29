@@ -7,6 +7,7 @@ Item {
     property double defaultWidth: 200
     property double spacing: 10
     property alias color: myPalette
+    property double pointsizeSpacing: spacing
     SystemPalette {
         id: myPalette
         colorGroup: SystemPalette.Active

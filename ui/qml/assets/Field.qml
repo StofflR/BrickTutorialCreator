@@ -9,7 +9,7 @@ TextField {
     id: control
     placeholderText: qsTr("Enter description")
     font.family: Font.boldFont ? Font.boldFont : -1
-    font.pointSize: AppStyle.spacing * 8 / 6
+    font.pointSize: AppStyle.pointsizeSpacing
     leftInset: -AppStyle.spacing
     background: Rectangle {
         implicitWidth: AppStyle.defaultWidth

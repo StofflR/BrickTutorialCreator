@@ -8,13 +8,14 @@ import "../style"
 T.Button {
     id: control
     implicitHeight: AppStyle.defaultHeight
+    implicitWidth: AppStyle.defaultHeight
     font.family: Font.boldFont ? Font.boldFont : -1
-    font.pointSize: AppStyle.spacing * 8 / 6
+    font.pointSize: AppStyle.pointsizeSpacing
     opacity: enabled ? 1.0 : 0.3
     icon.color: AppStyle.color.text
     background: Rectangle {
-        implicitWidth: parent.width
-        implicitHeight: parent.height
+        implicitHeight: AppStyle.defaultHeight
+        implicitWidth: AppStyle.defaultHeight
         opacity: enabled ? 1 : 0.3
         border.color: Qt.darker(AppStyle.color.window)
         color: AppStyle.color.light

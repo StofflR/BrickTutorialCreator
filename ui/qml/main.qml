@@ -18,7 +18,7 @@ ApplicationWindow {
     visible: true
     title: qsTr("Brick Creator")
     font.family: Font.boldFont ? Font.boldFont : -1
-    font.pointSize: AppStyle.spacing * 8 / 6
+    font.pointSize: AppStyle.pointsizeSpacing
     property string statusText: ""
     function updateStatusMessage(text) {
         statusText = text
@@ -30,14 +30,14 @@ ApplicationWindow {
             id: file
             title: qsTr("File")
             font.family: Font.boldFont ? Font.boldFont : -1
-            font.pointSize: AppStyle.spacing * 4 / 6
+            font.pointSize: AppStyle.pointsizeSpacing
 
             MenuItem {
                 onTriggered: help.open()
                 contentItem: Text {
                     text: qsTr("Help")
                     font.family: Font.boldFont ? Font.boldFont : -1
-                    font.pointSize: AppStyle.spacing * 4 / 6
+                    font.pointSize: AppStyle.pointsizeSpacing
                     color: AppStyle.color.text
                 }
                 background: Rectangle {
@@ -49,7 +49,7 @@ ApplicationWindow {
                 contentItem: Text {
                     text: qsTr("About")
                     font.family: Font.boldFont ? Font.boldFont : -1
-                    font.pointSize: AppStyle.spacing * 4 / 6
+                    font.pointSize: AppStyle.pointsizeSpacing
                     color: AppStyle.color.text
                 }
                 onTriggered: about.open()
@@ -62,7 +62,7 @@ ApplicationWindow {
                 contentItem: Text {
                     text: qsTr("Convert Folder (JSON → SVG)")
                     font.family: Font.boldFont ? Font.boldFont : -1
-                    font.pointSize: AppStyle.spacing * 4 / 6
+                    font.pointSize: AppStyle.pointsizeSpacing
                     color: AppStyle.color.text
                 }
                 onTriggered: brickConverter.fromJSONtoSVG()
@@ -74,7 +74,7 @@ ApplicationWindow {
                 contentItem: Text {
                     text: qsTr("Convert Folder (SVG → PNG)")
                     font.family: Font.boldFont ? Font.boldFont : -1
-                    font.pointSize: AppStyle.spacing * 4 / 6
+                    font.pointSize: AppStyle.pointsizeSpacing
                     color: AppStyle.color.text
                 }
                 onTriggered: brickConverter.fromSVGtoPNG()
@@ -86,7 +86,7 @@ ApplicationWindow {
                 contentItem: Text {
                     text: qsTr("Convert Folder (JSON → PNG)")
                     font.family: Font.boldFont ? Font.boldFont : -1
-                    font.pointSize: AppStyle.spacing * 4 / 6
+                    font.pointSize: AppStyle.pointsizeSpacing
                     color: AppStyle.color.text
                 }
                 onTriggered: brickConverter.fromJSONtoPNG()
@@ -99,7 +99,7 @@ ApplicationWindow {
                 contentItem: Text {
                     text: qsTr("Update existing bricks")
                     font.family: Font.boldFont ? Font.boldFont : -1
-                    font.pointSize: AppStyle.spacing * 4 / 6
+                    font.pointSize: AppStyle.pointsizeSpacing
                     color: AppStyle.color.text
                 }
                 onTriggered: brickConverter.updateExisting()

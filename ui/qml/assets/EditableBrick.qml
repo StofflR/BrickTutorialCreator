@@ -34,28 +34,28 @@ Image {
     property alias content: previewContent
 
     signal dataChanged
+    signal save
+    asynchronous: true
     property bool loading: false
 
     function loadFromFile(currentFile) {
         {
+            if (!currentFile)
+                return
             svgBrick.fromFile(currentFile)
             svgPreview.loading = true
             previewContent.text = svgBrick.content()
             svgPreview.brickImg = svgBrick.path()
-            svgPreview.brickPath = svgBrick.base()
+            svgPreview.brickPath = svgBrick.basePath()
             svgPreview.xPos = svgBrick.posX()
             svgPreview.yPos = svgBrick.posY()
             svgPreview.loading = false
-            console.debug("Loaded: ", previewContent.text, svgPreview.brickImg,
-                          svgPreview.brickPath, svgPreview.xPos,
-                          svgPreview.yPos)
             svgPreview.dataChanged()
             svgPreview.status = "INFO: Loaded " + currentFile
         }
     }
-
+    fillMode: Image.PreserveAspectFit
     source: previewContent.cursorVisible ? "qrc:/bricks/base/" + brickPath : brickImg
-    onSourceChanged: console.log(source)
     Brick {
         id: svgBrick
     }
@@ -106,7 +106,7 @@ Image {
         font.family: "Roboto"
         font.letterSpacing: -1
         font.bold: true
-        font.pointSize: 12 * previewContent.scale < 0 ? 12 : 12 * previewContent.scale
+        font.pointSize: 12 * previewContent.scale <= 0 ? 12 : 12 * previewContent.scale
     }
 
     TextArea {
@@ -128,6 +128,7 @@ Image {
         font: textView.font
         opacity: text ? 0 : 1
         cursorVisible: false
+        onCursorVisibleChanged: dataChanged()
         Component.onCompleted: {
             textChanged.connect(svgPreview.dataChanged)
         }
@@ -135,7 +136,6 @@ Image {
     MouseArea {
         anchors.fill: previewContent
         onReleased: mouseEvent => {
-                        console.log("clickedy")
                         previewContent.cursorPosition = textView.positionAt(
                             mouseEvent.x, mouseEvent.y)
                         previewContent.forceActiveFocus()
@@ -157,7 +157,7 @@ Image {
         anchors.top: svgPreview.top
         anchors.right: svgPreview.right
         anchors.margins: enabled ? AppStyle.spacing : 0
-        height: enabled ? width : 0
+        visible: enabled
         icon.source: "qrc:/bricks/resources/delete_black_24dp.svg"
         ToolTip.visible: hovered
         ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
@@ -179,7 +179,7 @@ Image {
         anchors.top: clearButton.bottom
         anchors.right: svgPreview.right
         anchors.margins: enabled ? AppStyle.spacing : 0
-        height: enabled ? width : 0
+        visible: enabled
         icon.source: "qrc:/bricks/resources/file_open_black_24dp.svg"
         ToolTip.visible: hovered
         ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
@@ -191,37 +191,13 @@ Image {
         anchors.top: loadButton.bottom
         anchors.right: svgPreview.right
         anchors.margins: enabled ? AppStyle.spacing : 0
-        height: enabled ? width : 0
+        visible: enabled
         icon.source: "qrc:/bricks/resources/save_black_24dp.svg"
         enabled: (svg_check.checked || json_check.checked || png_check.checked)
                  && brickContent.text !== ""
         ToolTip.visible: hovered
         ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
         ToolTip.text: qsTr("Save the current brick!")
-        //onPressed: save()
-
-
-        /*
-        function save() {
-            var statusText = "INFO: Saved brick(s) as: "
-            var filename = svgBrick.fileName()
-            console.log(filename)
-            if (!filename)
-                return
-            if (svgPreview.saveSVG) {
-                svgBrick.saveSVG(textMetrics.text)
-                statusText += filename + ".svg "
-            }
-            if (svgPreview.saveJSON) {
-                svgBrick.saveJSON(textMetrics.text)
-                statusText += filename + ".json "
-            }
-            if (svgPreview.savePNG) {
-                svgBrick.savePNG(textMetrics.text)
-                statusText += filename + ".png "
-            }
-            statusText += " to " + textMetrics.text
-            root.updateStatusMessage(statusText)
-        }*/
+        onPressed: save()
     }
 }

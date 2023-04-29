@@ -78,7 +78,7 @@ T.SpinBox {
         verticalAlignment: Qt.AlignVCenter
         text: spinbox.displayText
         font.family: Font.boldFont ? Font.boldFont : -1
-        font.pointSize: AppStyle.spacing * 8 / 6
+        font.pointSize: AppStyle.pointsizeSpacing
         color: AppStyle.color.text
         readOnly: !spinbox.editable
         inputMethodHints: Qt.ImhFormattedNumbersOnly
