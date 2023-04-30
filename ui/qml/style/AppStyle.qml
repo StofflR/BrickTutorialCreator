@@ -9,6 +9,78 @@ Item {
     property alias color: myPalette
     property double pointsizeSpacing: spacing
 
+    property var colorSchemes: [{
+            "name": "blue",
+            "color": blue,
+            "shade": blue_shade,
+            "border": default_border
+        }, {
+            "name": "cyan",
+            "color": cyan,
+            "shade": cyan_shade,
+            "border": default_border
+        }, {
+            "name": "dark_blue",
+            "color": dark_blue,
+            "shade": dark_blue_shade,
+            "border": default_border
+        }, {
+            "name": "gold",
+            "color": gold,
+            "shade": gold_shade,
+            "border": default_border
+        }, {
+            "name": "dark_green",
+            "color": dark_green,
+            "shade": dark_green_shade,
+            "border": default_border
+        }, {
+            "name": "green",
+            "color": green,
+            "shade": green_shade,
+            "border": default_border
+        }, {
+            "name": "light_orange",
+            "color": light_orange,
+            "shade": light_orange_shade,
+            "border": default_border
+        }, {
+            "name": "olive",
+            "color": olive,
+            "shade": olive_shade,
+            "border": default_border
+        }, {
+            "name": "orange",
+            "color": orange,
+            "shade": orange_shade,
+            "border": default_border
+        }, {
+            "name": "yellow",
+            "color": yellow,
+            "shade": yellow_shade,
+            "border": default_border
+        }, {
+            "name": "violet",
+            "color": violet,
+            "shade": violet_shade,
+            "border": default_border
+        }, {
+            "name": "pink",
+            "color": pink,
+            "shade": pink_shade,
+            "border": default_border
+        }, {
+            "name": "red",
+            "color": red,
+            "shade": red_shade,
+            "border": default_border
+        }, {
+            "name": "white",
+            "color": white,
+            "shade": white_shade,
+            "border": white_border
+        }]
+
     property string blue: "408ac5"
     property string blue_shade: "27567c"
 
@@ -16,7 +88,7 @@ Item {
     property string cyan_shade: "2e7078"
 
     property string dark_blue: "395cab"
-    property string dark_blue_shade: "395cab"
+    property string dark_blue_shade: "889dcd"
 
     property string gold: "95750c"
     property string gold_shade: "57452c"
@@ -48,8 +120,8 @@ Item {
     property string red: "f24e50"
     property string red_shade: "ae2f2f"
 
-    property string white: "95750c"
-    property string white_shade: "57452c"
+    property string white: "ffffff"
+    property string white_shade: "a9b4cd"
     property string white_border: "274383"
 
     property string default_border: "383838"

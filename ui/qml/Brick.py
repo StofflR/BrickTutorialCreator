@@ -18,8 +18,9 @@ class Brick(QObject):
         self.hex = {
             "blue": "#408ac5"
         }
+
     @Slot(None, result=str)
-    def content(self):
+    def brickContent(self):
         return self.brick.content
 
     @Slot(None, result=int)
@@ -49,7 +50,6 @@ class Brick(QObject):
     def fromJSON(self, path):
         path = path.replace("file:///", "")
         self.brick = SVGBrick.fromJSON(json.load(open(path)))
-
 
     @Slot(str, result=str)
     def hexColor(self, color):

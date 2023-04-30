@@ -11,7 +11,6 @@ import "../views"
 import "../style"
 
 Popup {
-
     id: batchDialog
     signal finished(int value)
     property int count: 0
@@ -21,6 +20,7 @@ Popup {
     property string targetPath: ""
     property var content: []
     property alias svgBrick: targetPreview.brick
+    anchors.centerIn: Overlay.overlay
     width: 500
     height: 400
     onClosed: {

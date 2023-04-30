@@ -222,19 +222,28 @@ Rectangle {
         anchors.bottom: parent.bottom
         onStatusChanged: root.updateStatusMessage(edtiableBrick.status)
 
-        savePNG: png_check.checked
-        saveJSON: json_check.checked
-        saveSVG: svg_check.checked
+        onSave: saveBrick()
 
-
-        /*onFileLoaded: {
-            //console.log(edtiableBrick.brickColor,
-                        availableBricks.comboBox.model.indexOf(
-                            edtiableBrick.brick.brickColor))
-           // availableBricks.comboBox.currentIndex = availableBricks.comboBox.model.indexOf(
-                        edtiableBrick.brick.brickColor)
-            //xPos.spinbox.value = edtiableBrick.brick.x
-            //yPos.spinbox.value = edtiableBrick.brick.y
-        }*/
+        function saveBrick() {
+            var statusText = "INFO: Saved brick(s) as: "
+            var filename = edtiableBrick.brick.fileName()
+            console.log(filename)
+            if (!filename)
+                return
+            if (svg_check.checked) {
+                edtiableBrick.brick.saveSVG(textMetrics.text)
+                statusText += filename + ".svg "
+            }
+            if (json_check.checked) {
+                edtiableBrick.brick.saveJSON(textMetrics.text)
+                statusText += filename + ".json "
+            }
+            if (png_check.checked) {
+                edtiableBrick.brick.savePNG(textMetrics.text)
+                statusText += filename + ".png "
+            }
+            statusText += " to " + textMetrics.text
+            root.updateStatusMessage(statusText)
+        }
     }
 }

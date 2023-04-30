@@ -23,16 +23,14 @@ Image {
 
     property bool modified: false
 
-    property bool savePNG
-    property bool saveSVG
-    property bool saveJSON
-
     property string status
 
-    property alias brick: svgBrick
+    property alias brick: modifyableBrick
     property alias saveButton: saveButton
     property alias loadButton: loadButton
     property alias clearButton: clearButton
+    property alias colorButton: colorButton
+
     property alias content: previewContent
 
     signal dataChanged
@@ -44,13 +42,13 @@ Image {
         {
             if (!currentFile || !modified)
                 return
-            svgBrick.fromFile(currentFile)
+            modifyableBrick.fromFile(currentFile)
             svgPreview.loading = true
-            previewContent.text = svgBrick.content()
-            svgPreview.brickImg = svgBrick.path()
-            svgPreview.brickPath = svgBrick.basePath()
-            svgPreview.xPos = svgBrick.posX()
-            svgPreview.yPos = svgBrick.posY()
+            previewContent.text = modifyableBrick.brickContent()
+            svgPreview.brickImg = modifyableBrick.path()
+            svgPreview.brickPath = modifyableBrick.basePath()
+            svgPreview.xPos = modifyableBrick.posX()
+            svgPreview.yPos = modifyableBrick.posY()
             svgPreview.loading = false
             svgPreview.dataChanged()
             svgPreview.status = "INFO: Loaded " + currentFile
@@ -59,7 +57,7 @@ Image {
     fillMode: Image.PreserveAspectFit
     source: previewContent.cursorVisible ? "qrc:/bricks/base/" + brickPath : brickImg
     Brick {
-        id: svgBrick
+        id: modifyableBrick
     }
     onDataChanged: {
         if (!brickPath || !brickColor || !availableSize || !xPos || !yPos
@@ -67,9 +65,9 @@ Image {
             return
         }
         console.log("Updating brick!")
-        svgBrick.updateBrick(brickColor, brickPath, availableSize,
-                             brickContent, contentScale, xPos, yPos)
-        brickImg = svgBrick.path()
+        modifyableBrick.updateBrick(brickColor, brickPath, availableSize,
+                                    brickContent, contentScale, xPos, yPos)
+        brickImg = modifyableBrick.path()
     }
     TextArea {
         id: textView
@@ -142,7 +140,10 @@ Image {
                             mouseEvent.x, mouseEvent.y)
                         previewContent.forceActiveFocus()
                     }
-        onClicked: modified = true
+        onClicked: {
+            modified = true
+            colorDialog.open()
+        }
     }
 
     Component.onCompleted: {
@@ -203,5 +204,20 @@ Image {
         ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
         ToolTip.text: qsTr("Save the current brick!")
         onPressed: save()
+    }
+    IconButton {
+        ColorSelector {
+            id: selector
+        }
+        id: colorButton
+        anchors.top: svgPreview.top
+        anchors.right: clearButton.left
+        anchors.margins: enabled ? AppStyle.spacing : 0
+        visible: enabled
+        icon.source: "qrc:/bricks/resources/create_black_24dp.svg"
+        ToolTip.visible: hovered
+        ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+        ToolTip.text: qsTr("Clear current brick content!")
+        onPressed: selector.open()
     }
 }

@@ -124,5 +124,6 @@
         <file>qml/views/BatchBrickDialog.qml</file>
         <file>qml/assets/EditableBrick.qml</file>
         <file>qml/views/Translator.qml</file>
+        <file>qml/views/ColorSelector.qml</file>
     </qresource>
 </RCC>
