@@ -2,7 +2,6 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import Qt.labs.platform 1.1
 
-import BrickManager 1.0
 import Brick 1.0
 
 import "../assets"
@@ -55,7 +54,7 @@ Image {
         }
     }
     fillMode: Image.PreserveAspectFit
-    source: previewContent.cursorVisible ? "qrc:/bricks/base/" + brickPath : brickImg
+    source: previewContent.cursorVisible ? baseFolder + "/" + brickPath : brickImg
     Brick {
         id: modifyableBrick
     }
@@ -64,7 +63,6 @@ Image {
                 || !contentScale || loading || !modified) {
             return
         }
-        console.log("Updating brick!")
         modifyableBrick.updateBrick(brickColor, brickPath, availableSize,
                                     brickContent, contentScale, xPos, yPos)
         brickImg = modifyableBrick.path()
@@ -142,7 +140,6 @@ Image {
                     }
         onClicked: {
             modified = true
-            colorDialog.open()
         }
     }
 
@@ -208,6 +205,18 @@ Image {
     IconButton {
         ColorSelector {
             id: selector
+            onBaseChanged: (selectedColor, selectedPath, selectedSize) => {
+                               if (!selectedColor || !selectedPath
+                                   || !selectedSize) {
+                                   return
+                               }
+                               svgPreview.loading = true
+                               brickColor = selectedColor
+                               brickPath = selectedPath
+                               availableSize = selectedSize
+                               svgPreview.loading = false
+                               svgPreview.dataChanged()
+                           }
         }
         id: colorButton
         anchors.top: svgPreview.top
