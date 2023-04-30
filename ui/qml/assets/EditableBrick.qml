@@ -21,6 +21,8 @@ Image {
     property string brickPath: "brick_blue_1h.svg"
     property string brickColor: "blue"
 
+    property bool modified: false
+
     property bool savePNG
     property bool saveSVG
     property bool saveJSON
@@ -40,7 +42,7 @@ Image {
 
     function loadFromFile(currentFile) {
         {
-            if (!currentFile)
+            if (!currentFile || !modified)
                 return
             svgBrick.fromFile(currentFile)
             svgPreview.loading = true
@@ -61,10 +63,10 @@ Image {
     }
     onDataChanged: {
         if (!brickPath || !brickColor || !availableSize || !xPos || !yPos
-                || !contentScale || !brickContent || loading) {
+                || !contentScale || loading || !modified) {
             return
         }
-
+        console.log("Updating brick!")
         svgBrick.updateBrick(brickColor, brickPath, availableSize,
                              brickContent, contentScale, xPos, yPos)
         brickImg = svgBrick.path()
@@ -140,6 +142,7 @@ Image {
                             mouseEvent.x, mouseEvent.y)
                         previewContent.forceActiveFocus()
                     }
+        onClicked: modified = true
     }
 
     Component.onCompleted: {
@@ -164,6 +167,7 @@ Image {
         ToolTip.text: qsTr("Clear current brick content!")
         onPressed: {
             previewContent.text = ""
+            dataChanged()
             status = "INFO: Cleared brick content!"
         }
     }

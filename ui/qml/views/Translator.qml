@@ -198,6 +198,7 @@ Item {
         width: root.width
         anchors.top: layout.bottom
         anchors.bottom: bottomLayout.top
+        reuseItems: true
         model: visible ? languageManager.sourceModel(textMetrics.text) : []
         z: layout.z - 1
         clip: true

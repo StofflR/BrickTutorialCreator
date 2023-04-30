@@ -46,6 +46,7 @@ ItemDelegate {
         loadButton.enabled: false
         saveButton.enabled: false
         clearButton.enabled: false
+        brickImg: sourceFolder + "/" + sourcePath
         IconButton {
             id: clearButton
             anchors.top: target.top
@@ -57,8 +58,9 @@ ItemDelegate {
             ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
             ToolTip.text: qsTr("Clear current brick content!")
         }
-        onDataChanged: target.brick.saveSVG(targetFolder, sourcePath)
+        onDataChanged: if (modified)
+                           target.brick.saveSVG(targetFolder, sourcePath)
 
-        Component.onCompleted: reload()
+        Component.onCompleted: modified = true
     }
 }
