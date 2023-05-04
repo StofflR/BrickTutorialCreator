@@ -17,13 +17,13 @@ class LanguageManager(QObject):
 
     @Slot(str, str)
     def new(self, path, newLanguage):
-        path = path.replace("file:///", "") + "/"+newLanguage
+        path = path.replace("file:///", "") + "/" + newLanguage
         logging.debug("Created new directory: " + path)
         os.makedirs(path, exist_ok=True)
 
     @Slot(str, str)
     def delete(self, path, language):
-        path = path.replace("file:///", "") + "/"+language
+        path = path.replace("file:///", "") + "/" + language
         logging.debug("Deleting language located in: " + path)
         self._currentIndex = self._currentIndex - 1
         def delete(path):
@@ -55,8 +55,10 @@ class LanguageManager(QObject):
         result = []
         path = path.replace("file:///", "")
         for root, dirs, files in os.walk(path):
-            result += dirs
-        result.append("New …")
+            if(dirs not in result):
+                result += dirs
+        if "New …" not in result:
+            result += "New …"
         return result
 
     @Slot(str, result=list)

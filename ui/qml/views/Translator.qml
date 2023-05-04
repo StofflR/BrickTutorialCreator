@@ -111,6 +111,8 @@ Item {
                     anchors.centerIn: parent
                     text: "WARNING!\nRemoving: " + language.comboBox.currentText
                           + " will delete all associated files with the translation!\nDo you wish to continue anyway?"
+                    font: Font.lightFont
+                    color: AppStyle.color.text
                 }
                 color: AppStyle.color.window
                 Rectangle {
@@ -124,6 +126,7 @@ Item {
                         width: parent.width / 2
                         dangerButton: true
                         text: "Continue"
+                        font: Font.lightFont
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.horizontalCenter: parent.horizontalCenter
                         onClicked: {
@@ -143,9 +146,11 @@ Item {
                     height: AppStyle.defaultHeight + AppStyle.spacing
                     anchors.left: deleteButtons.right
                     anchors.bottom: parent.bottom
+                    color: AppStyle.color.window
                     Button {
                         width: parent.width / 2
                         text: "Abort"
+                        font: Font.lightFont
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.horizontalCenter: parent.horizontalCenter
                         onClicked: deleteDialog.close()
