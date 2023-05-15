@@ -79,6 +79,11 @@ Item {
             "color": white,
             "shade": white_shade,
             "border": white_border
+        }, {
+            "name": "transparent",
+            "color": "00FFFFFF",
+            "shade": "00FFFFFF",
+            "border": "00FFFFFF"
         }]
 
     property string blue: "408ac5"
