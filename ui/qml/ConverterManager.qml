@@ -17,7 +17,6 @@ Item {
         onFinished: count => converted(count)
         modal: true
         converter: converter
-        anchors.centerIn: root
     }
 
     FolderDialog {

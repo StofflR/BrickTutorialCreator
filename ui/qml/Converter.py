@@ -71,7 +71,6 @@ class Converter(QObject):
         if is_brick:
             self.data = SVGBrick.getJSONFromSVG(file)
             self.content = self.data["content"]
-
         else:
             self.data, self.content = BatchBrickUpdater(file).resolveBrick()
             self.data["base_type"] = self.data["color"]
@@ -106,7 +105,7 @@ class Converter(QObject):
     def removeNS0(self, path):
         path = path.replace("file:///", "").replace("%5C.%5C", "/")
         file = open(path, 'r')
-        content = "".join(file.read()).replace("ns0:", "")
+        content = "".join(file.read()).replace('ns0:', '').replace(':ns0', '')
         file = open(path, 'w')
         file.write(content)
         file.close()

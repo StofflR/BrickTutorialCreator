@@ -2,7 +2,6 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import Qt.labs.platform 1.1
 
-import BrickManager 1.0
 import Brick 1.0
 
 import "../assets"
@@ -41,39 +40,6 @@ Rectangle {
         }
     }
 
-    LabelComboBox {
-        label: qsTr("Available bricks")
-        id: availableBricks
-        width: parent.width / 2
-        anchors.top: path.bottom
-        anchors.left: parent.left
-        anchors.topMargin: AppStyle.spacing
-        comboBox.model: bricks.availableBricks()
-        onDisplayTextChanged: {
-            bricks.sizes = bricks.availableSizes(comboBox.currentIndex)
-            edtiableBrick.update(true)
-        }
-    }
-    BrickManager {
-        id: bricks
-        Component.onCompleted: {
-            bricks.reset()
-        }
-        property var sizes
-    }
-
-    LabelComboBox {
-        label: qsTr("Available sizes")
-        id: availableSize
-        width: parent.width / 2
-        anchors.top: path.bottom
-        anchors.left: availableBricks.right
-        anchors.topMargin: AppStyle.spacing
-        anchors.leftMargin: AppStyle.spacing
-        comboBox.model: bricks.sizes
-        onDisplayTextChanged: edtiableBrick.update(true)
-    }
-
     LabelDoubleSpinBox {
         label: qsTr("Content scale")
         id: contentScale
@@ -81,7 +47,7 @@ Rectangle {
         spinbox.to: 300
         spinbox.editable: true
         width: parent.width / 2
-        anchors.top: availableBricks.bottom
+        anchors.top: path.bottom
         anchors.left: parent.left
         anchors.topMargin: AppStyle.spacing
         spinbox.onValueChanged: edtiableBrick.update(true)
@@ -95,7 +61,7 @@ Rectangle {
         spinbox.to: 300
         spinbox.editable: true
         width: parent.width / 4
-        anchors.top: availableBricks.bottom
+        anchors.top: path.bottom
         anchors.left: contentScale.right
         anchors.topMargin: AppStyle.spacing
         spinbox.onValueChanged: edtiableBrick.update(true)
@@ -109,7 +75,7 @@ Rectangle {
         spinbox.to: 200
         spinbox.editable: true
         width: parent.width / 4
-        anchors.top: availableBricks.bottom
+        anchors.top: path.bottom
         anchors.left: xPos.right
         anchors.topMargin: AppStyle.spacing
         spinbox.onValueChanged: edtiableBrick.update(true)
@@ -194,20 +160,6 @@ Rectangle {
             when: contentScale.spinbox.value
             value: contentScale.spinbox.value
         }
-        Binding on availableSize {
-            when: availableSize.comboBox.displayText
-            value: availableSize.comboBox.displayText
-        }
-        Binding on brickPath {
-            when: availableBricks.comboBox.currentIndex
-                  || availableSize.comboBox.displayText
-            value: bricks.brickPath(availableBricks.comboBox.currentIndex,
-                                    availableSize.comboBox.displayText)
-        }
-        Binding on brickColor {
-            when: availableBricks.comboBox.displayText
-            value: availableBricks.comboBox.displayText
-        }
         Binding on xPos {
             when: xPos.spinbox.value
             value: xPos.spinbox.value
@@ -221,20 +173,28 @@ Rectangle {
         anchors.left: parent.left
         anchors.bottom: parent.bottom
         onStatusChanged: root.updateStatusMessage(edtiableBrick.status)
+        modified: true
+        onSave: saveBrick()
 
-        savePNG: png_check.checked
-        saveJSON: json_check.checked
-        saveSVG: svg_check.checked
-
-
-        /*onFileLoaded: {
-            //console.log(edtiableBrick.brickColor,
-                        availableBricks.comboBox.model.indexOf(
-                            edtiableBrick.brick.brickColor))
-           // availableBricks.comboBox.currentIndex = availableBricks.comboBox.model.indexOf(
-                        edtiableBrick.brick.brickColor)
-            //xPos.spinbox.value = edtiableBrick.brick.x
-            //yPos.spinbox.value = edtiableBrick.brick.y
-        }*/
+        function saveBrick() {
+            var statusText = "INFO: Saved brick(s) as: "
+            var filename = edtiableBrick.brick.fileName()
+            if (!filename)
+                return
+            if (svg_check.checked) {
+                edtiableBrick.brick.saveSVG(textMetrics.text)
+                statusText += filename + ".svg "
+            }
+            if (json_check.checked) {
+                edtiableBrick.brick.saveJSON(textMetrics.text)
+                statusText += filename + ".json "
+            }
+            if (png_check.checked) {
+                edtiableBrick.brick.savePNG(textMetrics.text)
+                statusText += filename + ".png "
+            }
+            statusText += " to " + textMetrics.text
+            root.updateStatusMessage(statusText)
+        }
     }
 }

@@ -5,12 +5,12 @@ from PySide6.QtQuick import QQuickWindow, QSGRendererInterface
 from PySide6.QtWebEngineQuick import QtWebEngineQuick
 from PySide6.QtGui import QGuiApplication, QFontDatabase, QIcon
 from PySide6.QtQml import QQmlApplicationEngine, qmlRegisterType , QQmlDebuggingEnabler
-from qml import BrickManager
 from qml import Brick
 from qml import TutorialManager
 from qml import TutorialSourceManager
 from qml import LanguageManager
 from qml import Converter
+from qml import ColorManager
 import resources_rc
 import logging
 import shutil
@@ -39,11 +39,11 @@ if __name__ == "__main__":
 
     #sapp.applicationDisplayName("Brick Designer")
     qmlRegisterType(Brick.Brick, 'Brick', 1, 0, 'Brick')
-    qmlRegisterType(BrickManager.BrickManager, 'BrickManager', 1, 0, 'BrickManager')
     qmlRegisterType(TutorialManager.TutorialManager, 'TutorialManager', 1, 0, 'TutorialManager')
     qmlRegisterType(LanguageManager.LanguageManager, 'LanguageManager', 1, 0, 'LanguageManager')
     qmlRegisterType(TutorialSourceManager.TutorialSourceManager, 'TutorialSourceManager', 1, 0, 'TutorialSourceManager')
     qmlRegisterType(Converter.Converter, 'Converter', 1, 0, 'Converter')
+    qmlRegisterType(ColorManager.ColorManager, 'ColorManager', 1, 0, 'ColorManager')
 
     QFontDatabase.addApplicationFont(QUrl.fromLocalFile(
         os.getcwd()).toString() + "/qml/font/Roboto-Bold.ttf")
@@ -51,8 +51,11 @@ if __name__ == "__main__":
         os.getcwd()).toString() + "/qml/font/Roboto-Light.ttf")
     engine = QQmlApplicationEngine()
     engine.load("./qml/main.qml")
+
     engine.rootContext().setContextProperty(
         "tempFolder", QUrl.fromLocalFile(os.getcwd()).toString() + r"/resources/out")
+    engine.rootContext().setContextProperty(
+        "baseFolder", QUrl.fromLocalFile(os.getcwd()).toString() + r"/base")
     if not engine.rootObjects():
         sys.exit(-1)
 

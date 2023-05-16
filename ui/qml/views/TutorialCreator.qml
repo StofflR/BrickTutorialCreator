@@ -72,20 +72,8 @@ Item {
     Rectangle {
         anchors.right: parent.right
         width: parent.width / 2
-        height: item.height
+        height: parent.height
         color: AppStyle.color.window
-        UsableBrickView {
-            id: usableBrickView
-            anchors.top: optionField.bottom
-            anchors.left: control.right
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-            availableBricks: manager.model
-            groupedView: enableSorting.checked
-            onAddBrick: file => {
-                            tutorialManager.addBrick(file)
-                        }
-        }
         Rectangle {
             id: control
             height: parent.height
@@ -267,7 +255,7 @@ Item {
                 text: "Legacy bricks"
                 onCheckedChanged: {
                     manager.allowForeign = enableForeign.checked
-                    manager.refresh(true)
+                    manager.refresh()
                 }
             }
             CheckBox {
@@ -278,7 +266,7 @@ Item {
                 text: "Sort bricks"
                 onCheckedChanged: {
                     manager.sorted = enableSorting.checked
-                    manager.refresh(true)
+                    manager.refresh()
                 }
             }
         }
@@ -304,6 +292,18 @@ Item {
                 icon.source: "qrc:/bricks/resources/refresh_black_24dp.svg"
                 onClicked: manager.refresh(true)
             }
+        }
+        UsableBrickView {
+            id: usableBrickView
+            anchors.top: optionField.bottom
+            anchors.left: control.right
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            availableBricks: manager.model
+            groupedView: enableSorting.checked
+            onAddBrick: file => {
+                            tutorialManager.addBrick(file)
+                        }
         }
         FolderDialog {
             id: folderDialog

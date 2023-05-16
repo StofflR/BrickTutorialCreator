@@ -7,9 +7,9 @@ import sys
 import xml.etree.ElementTree as Tree
 from ssl import DefaultVerifyPaths
 from typing import Dict
-from PySide6.QtGui import QImage, QPainter, QFontMetrics, QFont
+from PySide6.QtGui import QImage, QPainter, QFontMetrics, QFont, QIcon
 from PySide6.QtSvg import QSvgRenderer
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QSize
 
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
@@ -75,9 +75,14 @@ class SVGBrick:
         return self.working_brick_
 
     def textColor(self):
+        if "transparent" in self.base_type:
+            if "white" in self.base_type:
+                return '#FFFFFF'
+            return '#000000'
+
         if "white" in self.base_type:
             return '#274383'
-        return '#ffffff'
+        return '#FFFFFF'
 
     def __del__(self):
         logging.debug("Deleting: " + self.working_brick_)
@@ -160,10 +165,15 @@ class SVGBrick:
             file.write(filedata)
 
     def savePNG(self, path="", width=1920):
-        svgRenderer = QSvgRenderer(path.replace(".png", ".svg"))
+        renderer = QSvgRenderer(path.replace(".png", ".svg"))
+
         image = QImage(path.replace(".png", ".svg")).scaledToWidth(
             width, Qt.SmoothTransformation)
-        svgRenderer.render(QPainter(image))
+
+        painter = QPainter(image)
+        painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_Source) # only use the high res image
+        renderer.render(painter)
+        del painter # painter doesn't get deleted properly
         image.save(path, quality=100)
         logging.debug("Brick saved to: " + path)
 

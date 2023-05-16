@@ -2,7 +2,6 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import Qt.labs.platform 1.1
 
-import BrickManager 1.0
 import Brick 1.0
 
 import "../assets"
@@ -11,7 +10,6 @@ import "../views"
 import "../style"
 
 Popup {
-
     id: batchDialog
     signal finished(int value)
     property int count: 0
@@ -21,6 +19,7 @@ Popup {
     property string targetPath: ""
     property var content: []
     property alias svgBrick: targetPreview.brick
+    anchors.centerIn: Overlay.overlay
     width: 500
     height: 400
     onClosed: {
@@ -93,14 +92,12 @@ Popup {
         anchors.fill: parent
         Image {
             id: sourcePreview
-            source: "qrc:/bricks/base/brick_blue_1h.svg"
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
             height: 200
         }
         EditableBrick {
-            //TODO make editable brick
             id: targetPreview
             anchors.bottom: prev.top
             anchors.left: layout.left
@@ -108,7 +105,7 @@ Popup {
             height: sourcePreview.paintedHeight
             loadButton.enabled: false
             saveButton.enabled: false
-
+            modified: true
             IconButton {
                 id: customButton
                 anchors.top: targetPreview.clearButton.bottom

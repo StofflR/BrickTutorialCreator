@@ -9,7 +9,6 @@ QML_IMPORT_NAME = "TutorialSourceManager"
 QML_IMPORT_MAJOR_VERSION = 1
 
 
-
 @QmlElement
 class TutorialSourceManager(QObject):
     def __init__(self, parent=None):
@@ -28,8 +27,6 @@ class TutorialSourceManager(QObject):
 
         if self.allowForeignVal:
             try:
-                content = SVGBrick.getJSONFromSVG(file)
-                brick = SVGBrick.fromJSON(content)
                 return SVGBrick.getJSONFromSVG(file)
             except Exception as e:
                 logging.debug("Cloud not load svg: " + file)
@@ -45,16 +42,26 @@ class TutorialSourceManager(QObject):
                 brick_data = self.isBrick(file)
                 if brick_data:
 
-                    brick = {"path": file,"is_brick":  True}
+                    brick = {"path": file, "is_brick":  True}
                     brick_data["base_path"] = brick_data["path"]
                     brick_data.update(brick)
                     brick = brick_data
 
                     if self.filter == "" or ("content" in brick.keys() and self.filter in brick["content"]):
-                        resources.append(brick)
-                        if file not in self.modelVal:
-                            unique_resources.append(brick)
+                        if self.enableSorting:
+                            self.addSorted(resources, brick)
+                            unique_resources = resources.copy()
+                        else:
+                            resources.append(brick)
+                            if file not in self.modelVal:
+                                unique_resources.append(brick)
         return resources, unique_resources
+
+    def addSorted(self, resources, brick):
+        for color in resources:
+            if color["path"] == brick["base_path"]:
+                return color["elements"].append(brick)
+        resources.append({"path": brick["base_path"], "elements": [brick]})
 
     @Slot(str, result=None)
     def addPath(self, path):
@@ -64,23 +71,18 @@ class TutorialSourceManager(QObject):
             return
 
         resources, unique_resources = self.findResources(path)
-
         self.paths[path] = resources
         self._updateModel(self.modelVal + unique_resources)
         self.modelChanged.emit()
 
-    @Slot(bool, result=None)
-    def refresh(self, reload=False):
+    @Slot()
+    def refresh(self):
         model = []
         self.modelVal = []
         for path in self.paths.keys():
-            if reload:
-                resources, unique_resources = self.findResources(path)
-                self.paths[path] = resources
-                model = model + unique_resources
-            else:
-                model = model + self.paths[path]
-        print(self.filter, model)
+            resources, unique_resources = self.findResources(path)
+            self.paths[path] = resources
+            model = model + unique_resources
         self._updateModel(model)
 
     @Slot(str, result=None)
@@ -92,11 +94,10 @@ class TutorialSourceManager(QObject):
     def _getModel(self):
         return self.modelVal
 
-
     @Slot(str)
     def setFilter(self, text):
         self.filter = text
-        self.refresh(True)
+        self.refresh()
 
     @Slot(list)
     def _updateModel(self, model):
@@ -119,5 +120,19 @@ class TutorialSourceManager(QObject):
     def foreignChanged(self):
         pass
 
+    def _getSorting(self):
+        return self.enableSorting
+
+    @Slot(bool)
+    def _setSorting(self, allow):
+        self.enableSorting = allow
+        self.refresh()
+
+    @Signal
+    def sortingChanged(self):
+        pass
+
     model = Property(list, _getModel, _updateModel, notify=modelChanged)
-    allowForeign = Property(bool, _getAllowForeign, _setAllowForeign, notify=foreignChanged)
+    allowForeign = Property(bool, _getAllowForeign,
+                            _setAllowForeign, notify=foreignChanged)
+    sorted = Property(bool, _getSorting, _setSorting, notify=sortingChanged)
