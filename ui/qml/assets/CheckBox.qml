@@ -23,7 +23,7 @@ T.CheckBox {
             x: 6
             y: 6
             radius: 2
-            color:  AppStyle.color.light
+            color:  Qt.darker(AppStyle.color.light)
             visible: control.checked
         }
     }

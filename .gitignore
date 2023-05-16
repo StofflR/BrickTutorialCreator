@@ -12,3 +12,11 @@ ui/resources/out/
 ui/resources/tmp/
 
 *.zip
+
+ui/venv/
+
+ui/main.build/
+
+ui/BrickTutorialCreator.dist/
+
+ui/BrickTutorialCreator.build/

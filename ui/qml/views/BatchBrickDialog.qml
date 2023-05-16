@@ -45,10 +45,6 @@ Popup {
         converter.convert(files[index])
         if (converter.isBrick(files[index])) {
             targetPreview.loadFromFile(files[index])
-        }
-        if (converter.existsIn(batchDialog.targetPath, "/converted",
-                               files[index])) {
-            targetPreview.loadFromFile(files[index])
         } else {
             console.debug("Trying to convert Legacy brick!")
             targetPreview.loading = true
@@ -96,14 +92,12 @@ Popup {
         anchors.fill: parent
         Image {
             id: sourcePreview
-            source: "qrc:/bricks/base/brick_blue_1h.svg"
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
             height: 200
         }
         EditableBrick {
-            //TODO make editable brick
             id: targetPreview
             anchors.bottom: prev.top
             anchors.left: layout.left
