@@ -14,7 +14,7 @@ Item {
     signal update
     signal updateStatusMessage(string text)
     onUpdate: {
-        translationList.model = languageManager.sourceModel(textMetrics.text)
+        translationList.model = languageManager.sourceModel
         language.comboBox.currentIndex = -1
     }
     anchors.fill: parent
@@ -53,50 +53,50 @@ Item {
         }
         LanguageManager {
             id: languageManager
+            path: textMetrics.text
         }
         LabelComboBox {
             id: language
-            signal updateLanguages
             label: "Available languages:"
             anchors.top: layout.top
             anchors.left: path.right
-            anchors.right: deleteLanguage.left
+            anchors.right: addLanguage.left
             anchors.margins: AppStyle.spacing
-            comboBox.model: languageManager.languages(textMetrics.text)
+            comboBox.model: languageManager.languages
             comboBox.onModelChanged: comboBox.currentIndex = -1
-            comboBox.onCurrentIndexChanged: {
-                if (comboBox.currentIndex + 1 === comboBox.model.length) {
-                    comboBox.currentIndex = -1
-                    comboBox.enabled = false
-                    visible = false
-                    addLanguage.field.forceActiveFocus()
-                } else {
-                    languageManager.currentIndex = comboBox.currentIndex
-                }
-            }
-            Component.onCompleted: {
-                comboBox.onCurrentTextChanged.connect(language.updateLanguages)
-            }
-            function open() {
-                comboBox.currentIndex = -1
-                comboBox.enabled = true
-                visible = true
+        }
+        LabelTextField {
+            id: newLanguage
+            visible: !language.visible
+            label: "Add languages:"
+            field.placeholderText: "Enter new Language!"
+            anchors.top: layout.top
+            anchors.left: path.right
+            anchors.right: addLanguage.left
+            anchors.margins: AppStyle.spacing
+        }
+        IconButton {
+            id: addLanguage
+            anchors.top: layout.top
+            anchors.right: removeLanguage.left
+            anchors.margins: AppStyle.spacing
+            icon.source: language.visible ? "qrc:/bricks/resources/add_black_24dp.svg" : "qrc:/bricks/resources/check_circle_black_24dp.svg"
+            onClicked: {
+                if (newLanguage.visible)
+                    languageManager.newLanguage(newLanguage.field.text)
+                language.visible = !language.visible
             }
         }
         IconButton {
-            id: deleteLanguage
+            id: removeLanguage
             anchors.top: layout.top
-            enabled: language.comboBox.currentIndex >= 0
-                     && language.comboBox.enabled
             anchors.right: layout.right
             anchors.margins: AppStyle.spacing
-            width: height
             icon.source: "qrc:/bricks/resources/delete_black_24dp.svg"
-            ToolTip.visible: hovered
-            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-            ToolTip.text: qsTr("Clear current brick content!")
-            onPressed: deleteDialog.open()
+            enabled: language.comboBox.currentIndex != -1
+            onClicked: deleteDialog.open()
         }
+
         Popup {
             id: deleteDialog
             x: (root.width - 500) / 2
@@ -109,7 +109,7 @@ Item {
                 anchors.fill: parent
                 Text {
                     anchors.centerIn: parent
-                    text: "WARNING!\nRemoving: " + language.comboBox.currentText
+                    text: "WARNING!\nRemoving: " + languageManager.currentLanguage
                           + " will delete all associated files with the translation!\nDo you wish to continue anyway?"
                     font: Font.lightFont
                     color: AppStyle.color.text
@@ -131,11 +131,8 @@ Item {
                         anchors.horizontalCenter: parent.horizontalCenter
                         onClicked: {
                             languageManager.delete(
-                                        textMetrics.text,
                                         language.comboBox.currentText)
                             deleteDialog.close()
-                            language.comboBox.model = languageManager.languages(
-                                        textMetrics.text)
                             root.update()
                         }
                     }
@@ -158,43 +155,6 @@ Item {
                 }
             }
         }
-        ButtonField {
-            id: addLanguage
-            anchors.top: layout.top
-            anchors.left: path.right
-            anchors.right: layout.right
-            visible: !language.visible
-            anchors.margins: AppStyle.spacing
-            button_label: qsTr("Add language …")
-            field.placeholderText: qsTr("Enter new translation language …")
-            button.enabled: field.text
-            field.validator: RegularExpressionValidator {
-                regularExpression: /\w+/
-            }
-            function add() {
-                languageManager.new(textMetrics.text, addLanguage.field.text)
-                language.comboBox.model = languageManager.languages(
-                            textMetrics.text)
-                updateStatusMessage(
-                            "INFO: Added " + addLanguage.field.text + " as a new language!")
-                addLanguage.field.clear()
-                language.open()
-            }
-
-            button.onPressed: addLanguage.add()
-            field.onEditingFinished: {
-                addLanguage.add()
-            }
-
-            field.anchors.right: abort.left
-            IconButton {
-                id: abort
-                icon.source: "qrc:/bricks/resources/arrow_back_ios_black_24dp.svg"
-                onClicked: language.open()
-                width: height
-                anchors.right: addLanguage.right
-            }
-        }
     }
     ListView {
         id: translationList
@@ -204,7 +164,7 @@ Item {
         anchors.top: layout.bottom
         anchors.bottom: bottomLayout.top
         reuseItems: true
-        model: visible ? languageManager.sourceModel(textMetrics.text) : []
+        model: languageManager.sourceModel
         z: layout.z - 1
         clip: true
         enabled: model.length > 0

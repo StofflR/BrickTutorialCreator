@@ -35,6 +35,7 @@ Image {
     signal dataChanged
     signal save
     asynchronous: true
+
     property bool loading: false
 
     function loadFromFile(currentFile) {
@@ -104,6 +105,9 @@ Image {
         font.family: "Roboto"
         font.letterSpacing: -1
         font.bold: true
+        color: brickColor.lastIndexOf(
+                   "white") == -1 ? "white" : brickColor.lastIndexOf(
+                                        "transparent") == -1 ? "blue" : "black"
         font.pointSize: 12 * previewContent.scale <= 0 ? 12 : 12 * previewContent.scale
     }
 

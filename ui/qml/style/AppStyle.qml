@@ -80,8 +80,13 @@ Item {
             "shade": white_shade,
             "border": white_border
         }, {
-            "name": "transparent",
-            "color": "00FFFFFF",
+            "name": "transparent_white",
+            "color": "FFFFFF",
+            "shade": "00FFFFFF",
+            "border": "00FFFFFF"
+        }, {
+            "name": "transparent_black",
+            "color": "000000",
             "shade": "00FFFFFF",
             "border": "00FFFFFF"
         }]

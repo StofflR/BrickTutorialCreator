@@ -75,11 +75,14 @@ class SVGBrick:
         return self.working_brick_
 
     def textColor(self):
+        if "transparent" in self.base_type:
+            if "white" in self.base_type:
+                return '#FFFFFF'
+            return '#000000'
+
         if "white" in self.base_type:
             return '#274383'
-        if "transparent" in self.base_type:
-            return '#383838'
-        return '#ffffff'
+        return '#FFFFFF'
 
     def __del__(self):
         logging.debug("Deleting: " + self.working_brick_)

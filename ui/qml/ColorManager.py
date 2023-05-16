@@ -18,6 +18,6 @@ class ColorManager(QObject):
     def addBaseType(self, path, background, shade, border, base):
         with open(os.getcwd() + "/resources/" + base, 'r') as file:
             filedata = file.read()
-            filedata = filedata.replace('BACKGROUND', background).replace('SHADE', shade).replace('BORDER', border)
+            filedata = filedata.replace('BACKGROUND', background).replace('SHADE', shade).replace('BORDER', border).replace('ns0:', '').replace(':ns0', '')
         with open(os.getcwd() + "/base/" +path, 'w') as file:
             file.write(filedata)

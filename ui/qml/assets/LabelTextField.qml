@@ -11,6 +11,7 @@ Item {
     height: AppStyle.defaultHeight
     property var label: qsTr("Label")
     property var button_label: qsTr("Button")
+    property alias field: field
     Label {
         width: item.width / 2 - AppStyle.spacing
         height: item.height
@@ -28,10 +29,9 @@ Item {
     Field {
         width: item.width / 2 - AppStyle.spacing
         height: item.height
-        id: button
+        id: field
         anchors.top: parent.top
         anchors.left: label.right
         anchors.leftMargin: AppStyle.spacing
-        text: "Button"
     }
 }

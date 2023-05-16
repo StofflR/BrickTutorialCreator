@@ -45,6 +45,10 @@ Popup {
         converter.convert(files[index])
         if (converter.isBrick(files[index])) {
             targetPreview.loadFromFile(files[index])
+        }
+        if (converter.existsIn(batchDialog.targetPath, "/converted",
+                               files[index])) {
+            targetPreview.loadFromFile(files[index])
         } else {
             console.debug("Trying to convert Legacy brick!")
             targetPreview.loading = true

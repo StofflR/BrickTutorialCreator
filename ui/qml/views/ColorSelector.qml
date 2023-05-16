@@ -42,7 +42,7 @@ Popup {
 
     Rectangle {
         id: header
-        width: colorSelector.width / 2
+        width: colorSelector.width * 2 / 3
         height: backText.height
         color: AppStyle.color.window
         Text {
@@ -83,7 +83,7 @@ Popup {
     ListView {
         id: colorList
         anchors.top: header.bottom
-        width: colorSelector.width / 2
+        width: colorSelector.width * 2 / 3
         height: 200
         model: AppStyle.colorSchemes
         clip: true
@@ -104,7 +104,7 @@ Popup {
 
         delegate: ItemDelegate {
             id: delegate
-            width: colorSelector.width / 2
+            width: colorSelector.width * 2 / 3
             height: name.height
             onClicked: colorList.currentIndex = index
             property bool selected: index == colorList.currentIndex
@@ -161,10 +161,13 @@ Popup {
     }
     ListView {
         id: sizeList
-        width: colorSelector.width / 2 - 2 * AppStyle.spacing
+        width: colorSelector.width / 3 - 2 * AppStyle.spacing
         height: colorSelector.height
         anchors.left: colorList.right
         anchors.margins: AppStyle.spacing
+
+        interactive: false
+
         model: [{
                 "text": "1h",
                 "type": "",
