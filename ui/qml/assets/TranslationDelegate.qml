@@ -51,10 +51,12 @@ ItemDelegate {
         loadButton.enabled: false
         saveButton.enabled: false
         clearButton.enabled: false
-        onDataChanged: if (modified)
+        onDataChanged: if (modified) {
                            target.brick.saveSVG(
                                        sourceFolder + "/" + targetFolder,
                                        sourcePath)
+                           modified = false
+                       }
 
 
         /*IconButton {

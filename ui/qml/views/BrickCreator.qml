@@ -179,7 +179,7 @@ Rectangle {
         function saveBrick() {
             var statusText = "INFO: Saved brick(s) as: "
             var filename = edtiableBrick.brick.fileName()
-            if (!filename)
+            if (!filename || !modified)
                 return
             if (svg_check.checked) {
                 edtiableBrick.brick.saveSVG(textMetrics.text)
@@ -193,6 +193,7 @@ Rectangle {
                 edtiableBrick.brick.savePNG(textMetrics.text)
                 statusText += filename + ".png "
             }
+            modified = false
             statusText += " to " + textMetrics.text
             root.updateStatusMessage(statusText)
         }

@@ -290,7 +290,7 @@ Item {
                 anchors.right: optionField.right
                 width: height
                 icon.source: "qrc:/bricks/resources/refresh_black_24dp.svg"
-                onClicked: manager.refresh(true)
+                onClicked: manager.refresh()
             }
         }
         UsableBrickView {

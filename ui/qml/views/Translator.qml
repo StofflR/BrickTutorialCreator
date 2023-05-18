@@ -175,7 +175,7 @@ Item {
             targetFolder: language.comboBox.currentText
         }
         onVisibleChanged: updateStatusMessage("")
-        cacheBuffer: visible ? 300 : 0
+        cacheBuffer: visible ? 400 : 0
     }
 
     Rectangle {

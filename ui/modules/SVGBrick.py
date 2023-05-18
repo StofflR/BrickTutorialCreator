@@ -171,7 +171,6 @@ class SVGBrick:
             width, Qt.SmoothTransformation)
 
         painter = QPainter(image)
-        painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_Source) # only use the high res image
         renderer.render(painter)
         del painter # painter doesn't get deleted properly
         image.save(path, quality=100)

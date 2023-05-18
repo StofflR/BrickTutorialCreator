@@ -52,7 +52,6 @@ Image {
             svgPreview.yPos = modifyableBrick.posY()
             svgPreview.brickColor = modifyableBrick.brickColor()
             svgPreview.loading = false
-            svgPreview.dataChanged()
             svgPreview.status = "INFO: Loaded " + currentFile
         }
     }

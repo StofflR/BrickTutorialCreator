@@ -20,3 +20,7 @@ ui/main.build/
 ui/BrickTutorialCreator.dist/
 
 ui/BrickTutorialCreator.build/
+
+*.bin
+
+*.gz
