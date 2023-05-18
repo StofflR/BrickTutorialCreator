@@ -28,32 +28,21 @@ T.SpinBox {
     valueFromText: function (text, locale) {
         return Number.fromLocaleString(locale, text)
     }
-    contentItem: TextInput {
-        rightPadding: spinbox.indicator.width + spinbox.spacing
-
-        horizontalAlignment: Qt.AlignHCenter
-        verticalAlignment: Qt.AlignVCenter
-        text: spinbox.displayText
-        font.family: Font.boldFont ? Font.boldFont : -1
-        font.pointSize: AppStyle.spacing * 8 / 6
-        color: "black"
-        readOnly: !spinbox.editable
-        inputMethodHints: Qt.ImhFormattedNumbersOnly
-    }
     up.indicator: Rectangle {
         x: spinbox.mirrored ? 0 : parent.width - width
         height: parent.height
         width: height / 2
         implicitWidth: AppStyle.defaultHeight
         implicitHeight: AppStyle.defaultHeight
-        color: spinbox.up.pressed ? "dimgray" : "white"
-        border.color: "black"
+        color: spinbox.up.pressed ? Qt.darker(
+                                        AppStyle.color.window) : AppStyle.color.window
+        border.color: Qt.darker(AppStyle.color.window)
 
         Text {
             text: "+"
             font.family: Font.boldFont ? Font.boldFont : -1
             font.pointSize: spinbox.font.pointSize * 2
-            color: "black"
+            color: AppStyle.color.text
             anchors.fill: parent
             fontSizeMode: Text.Fit
             horizontalAlignment: Text.AlignHCenter
@@ -66,26 +55,40 @@ T.SpinBox {
         height: parent.height
         width: height / 2
         implicitWidth: AppStyle.defaultHeight
-        implicitHeight: 20
-        color: spinbox.down.pressed ? "dimgray" : "white"
-        border.color: "black"
+        implicitHeight: AppStyle.defaultHeight
+        color: spinbox.down.pressed ? Qt.darker(
+                                          AppStyle.color.window) : AppStyle.color.window
+        border.color: Qt.darker(AppStyle.color.window)
 
         Text {
             text: "-"
             font.family: Font.boldFont ? Font.boldFont : -1
             font.pointSize: spinbox.font.pointSize * 2
-            color: "black"
+            color: AppStyle.color.text
             anchors.fill: parent
             fontSizeMode: Text.Fit
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
         }
     }
+    contentItem: TextInput {
+        anchors.right: up.indicator.left
+        anchors.left: down.indicator.right
+        horizontalAlignment: Qt.AlignHCenter
+        verticalAlignment: Qt.AlignVCenter
+        text: spinbox.displayText
+        font.family: Font.boldFont ? Font.boldFont : -1
+        font.pointSize: AppStyle.pointsizeSpacing
+        color: AppStyle.color.text
+        readOnly: !spinbox.editable
+        inputMethodHints: Qt.ImhFormattedNumbersOnly
+    }
     background: Rectangle {
         implicitWidth: 120
         implicitHeight: AppStyle.defaultHeight
-        border.color: spinbox.pressed ? "dimgray" : "black"
+        border.color: Qt.darker(AppStyle.color.window)
         border.width: spinbox.visualFocus ? 2 : 1
         radius: 2
+        color: AppStyle.color.light
     }
 }

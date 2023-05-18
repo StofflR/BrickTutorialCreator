@@ -1,93 +1,5 @@
 <RCC>
     <qresource prefix="/bricks">
-        <file>base/brick_blue_1h.ai</file>
-        <file>base/brick_blue_1h.svg</file>
-        <file>base/brick_blue_2h.ai</file>
-        <file>base/brick_blue_2h.svg</file>
-        <file>base/brick_blue_2h_control.ai</file>
-        <file>base/brick_blue_2h_control.svg</file>
-        <file>base/brick_blue_3h.ai</file>
-        <file>base/brick_blue_3h.svg</file>
-        <file>base/brick_cyan_1h.ai</file>
-        <file>base/brick_cyan_1h.svg</file>
-        <file>base/brick_cyan_2h.ai</file>
-        <file>base/brick_cyan_2h.svg</file>
-        <file>base/brick_cyan_3h.ai</file>
-        <file>base/brick_cyan_3h.svg</file>
-        <file>base/brick_darkblue_2h.ai</file>
-        <file>base/brick_darkblue_2h.svg</file>
-        <file>base/brick_darkgreen_1h.ai</file>
-        <file>base/brick_darkgreen_1h.svg</file>
-        <file>base/brick_darkgreen_2h.ai</file>
-        <file>base/brick_darkgreen_2h.svg</file>
-        <file>base/brick_gold_1h.ai</file>
-        <file>base/brick_gold_1h.svg</file>
-        <file>base/brick_gold_1h_control.ai</file>
-        <file>base/brick_gold_1h_control.svg</file>
-        <file>base/brick_gold_2h.ai</file>
-        <file>base/brick_gold_2h.svg</file>
-        <file>base/brick_gold_2h_control.ai</file>
-        <file>base/brick_gold_2h_control.svg</file>
-        <file>base/brick_gold_3h.ai</file>
-        <file>base/brick_gold_3h.svg</file>
-        <file>base/brick_green_1h.ai</file>
-        <file>base/brick_green_1h.svg</file>
-        <file>base/brick_green_2h.ai</file>
-        <file>base/brick_green_2h.svg</file>
-        <file>base/brick_green_3h.ai</file>
-        <file>base/brick_green_3h.svg</file>
-        <file>base/brick_lightorange_1h.ai</file>
-        <file>base/brick_lightorange_1h.svg</file>
-        <file>base/brick_lightorange_1h_control.ai</file>
-        <file>base/brick_lightorange_1h_control.svg</file>
-        <file>base/brick_lightorange_2h.ai</file>
-        <file>base/brick_lightorange_2h.svg</file>
-        <file>base/brick_lightorange_2h_control.ai</file>
-        <file>base/brick_lightorange_2h_control.svg</file>
-        <file>base/brick_lightorange_3h.ai</file>
-        <file>base/brick_lightorange_3h.svg</file>
-        <file>base/brick_olive_1h.ai</file>
-        <file>base/brick_olive_1h.svg</file>
-        <file>base/brick_olive_2h.ai</file>
-        <file>base/brick_olive_2h.svg</file>
-        <file>base/brick_olive_3h.ai</file>
-        <file>base/brick_olive_3h.svg</file>
-        <file>base/brick_orange_1h.ai</file>
-        <file>base/brick_orange_1h.svg</file>
-        <file>base/brick_orange_1h_control.ai</file>
-        <file>base/brick_orange_1h_control.svg</file>
-        <file>base/brick_orange_2h.ai</file>
-        <file>base/brick_orange_2h.svg</file>
-        <file>base/brick_orange_2h_control.ai</file>
-        <file>base/brick_orange_3h.ai</file>
-        <file>base/brick_pink_1h.ai</file>
-        <file>base/brick_pink_1h.svg</file>
-        <file>base/brick_pink_2h.ai</file>
-        <file>base/brick_pink_2h.svg</file>
-        <file>base/brick_pink_3h.ai</file>
-        <file>base/brick_pink_3h.svg</file>
-        <file>base/brick_red_1h.ai</file>
-        <file>base/brick_red_1h.svg</file>
-        <file>base/brick_red_2h.ai</file>
-        <file>base/brick_red_2h.svg</file>
-        <file>base/brick_red_3h.ai</file>
-        <file>base/brick_red_3h.svg</file>
-        <file>base/brick_violet_1h.ai</file>
-        <file>base/brick_violet_1h.svg</file>
-        <file>base/brick_violet_2h.ai</file>
-        <file>base/brick_violet_2h.svg</file>
-        <file>base/brick_violet_3h.ai</file>
-        <file>base/brick_violet_3h.svg</file>
-        <file>base/brick_white_1h.ai</file>
-        <file>base/brick_white_1h.svg</file>
-        <file>base/brick_white_2h_control.ai</file>
-        <file>base/brick_white_2h_control.svg</file>
-        <file>base/brick_yellow_1h.ai</file>
-        <file>base/brick_yellow_1h.svg</file>
-        <file>base/brick_yellow_2h.ai</file>
-        <file>base/brick_yellow_2h.svg</file>
-        <file>base/brick_yellow_3h.ai</file>
-        <file>base/brick_yellow_3h.svg</file>
         <file>resources/add_black_24dp.svg</file>
         <file>resources/add_circle_black_24dp.svg</file>
         <file>resources/add_circle_outline_black_24dp.svg</file>
@@ -120,6 +32,10 @@
     <qresource prefix="/">
         <file>help.html</file>
         <file>about.html</file>
-        <file>qml/views/UsableBrickView.qml</file>
+        <file>resources/base_1h.svg</file>
+        <file>resources/base_1h_control.svg</file>
+        <file>resources/base_2h.svg</file>
+        <file>resources/base_2h_control.svg</file>
+        <file>resources/base_3h.svg</file>
     </qresource>
 </RCC>

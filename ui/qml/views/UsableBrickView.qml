@@ -20,16 +20,14 @@ Item {
         ScrollBar.vertical.policy: ScrollBar.AsNeeded
         ListView {
             id: view
-            anchors.top: name.bottom
-            anchors.bottom: scrollview.bottom
-            anchors.left: scrollview.left
-            anchors.right: scrollview.right
+            anchors.fill: parent
             anchors.margins: AppStyle.spacing
+            clip: true
             delegate: Rectangle {
                 id: source
                 width: view.width
                 height: expand ? sourceImage.height + recta.height : sourceImage.height
-
+                color: AppStyle.color.window
                 property bool expand: false
 
                 MouseArea {
@@ -38,11 +36,13 @@ Item {
                     anchors.top: source.top
                     width: sourceImage.width
                     height: sourceImage.height
-                    onClicked: if (root.groupedView)
+                    onClicked: if (root.groupedView) {
                                    expand = !expand
-
-                    onDoubleClicked: if (!root.groupedView)
+                               }
+                    onDoubleClicked: if (!root.groupedView) {
                                          root.addBrick(sourceImage.source)
+                                     }
+
                     Image {
                         id: sourceImage
                         fillMode: Image.PreserveAspectFit
@@ -54,7 +54,8 @@ Item {
                             font.pointSize: 12
                             text: "Click to " + (expand ? "collapse" : "expand") + "!"
                         }
-                        source: "file:///" + view.model[index].path
+                        source: (groupedView ? baseFolder + "/" : "file:///" )
+                                + view.model[index].path
                     }
                 }
                 Rectangle {
@@ -63,6 +64,7 @@ Item {
                     anchors.top: mouseArea.bottom
                     anchors.left: mouseArea.left
                     height: expand ? viewExpand.contentHeight + 2 * AppStyle.spacing : 0
+                    color: AppStyle.color.window
 
                     ListView {
                         id: viewExpand
@@ -74,6 +76,7 @@ Item {
                             id: sourceExpand
                             width: viewExpand.width
                             height: sourceImageExpand.height
+                            color: AppStyle.color.window
 
                             MouseArea {
                                 id: mouseAreaExpand
@@ -88,7 +91,7 @@ Item {
                                     id: sourceImageExpand
                                     fillMode: Image.PreserveAspectFit
                                     width: recta.width
-                                    source: "file:///" + viewExpand.model[index].path
+                                    source: "file:///"  + viewExpand.model[index].path
                                 }
                             }
                         }
@@ -104,10 +107,13 @@ Item {
         width: view.width
         anchors.margins: AppStyle.spacing
         height: text.height + AppStyle.spacing
+        color: AppStyle.color.window
         Text {
             id: text
             anchors.left: name.left
+            anchors.verticalCenter: name.verticalCenter
             text: qsTr("Available Bricks")
+            color: AppStyle.color.text
         }
     }
 }

@@ -8,70 +8,67 @@ import "../style"
 
 ItemDelegate {
     id: root
-    signal editPressed
-    signal resetPressed
-    signal savePressed
-    signal advancedPressed
-
     property string sourcePath
-    property string targetPath
-
-    property double editWidth: targetImage.width + reset.width
+    property string sourceFolder
+    property string targetFolder
+    property alias translationBrick: target
 
     width: parent ? parent.width : 0
-    height: source.height
-    Rectangle {
-        id: source
-        width: parent.width / 2 - 20
-        height: sourceImage.height
-        Image {
-            id: sourceImage
-            width: source.width
-            source: sourcePath
-            ToolTip.visible: hovered
-            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-            ToolTip.text: sourcePath
+    height: target.height
+
+    onTargetFolderChanged: reload()
+
+    function reload() {
+        var folder = targetFolder
+        var targetPath = sourceFolder + "/" + folder + "/" + sourcePath
+        var source = sourceFolder + "/" + sourcePath
+        if (languageManager.exists(targetPath)) {
+            return target.loadFromFile(targetPath)
+        }
+        if (folder != "") {
+            console.log(source)
+            target.loadFromFile(source)
+            target.brick.saveSVG(sourceFolder + "/" + folder, sourcePath)
         }
     }
-    Rectangle {
-        anchors.left: source.right
-        id: control
-        width: parent.width - source.width - target.width
-        height: parent.height
-        IconButton {
-            id: edit
-            width: AppStyle.defaultHeight
-            height: root.height / 2
-            anchors.top: parent.top
-            icon.source: "qrc:/bricks/resources/build_black_24dp.svg"
-            icon.color: down ? "dimgray" : "black"
-            ToolTip.visible: hovered
-            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-            ToolTip.text: qsTr("Edit translation")
-            onPressed: editPressed()
-        }
-        IconButton {
-            id: reset
-            anchors.bottom: parent.bottom
-            width: AppStyle.defaultHeight
-            height: root.height / 2
-            icon.source: "qrc:/bricks/resources/restore_black_24dp.svg"
-            icon.color: down ? "dimgray" : "black"
-            ToolTip.visible: hovered
-            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-            ToolTip.text: qsTr("Reset translation")
-            onPressed: resetPressed()
-        }
+
+    Image {
+        id: sourceImage
+        anchors.left: root.left
+        source: sourceFolder + "/" + sourcePath
+        width: root.width / 2
+        height: target.height
+        ToolTip.visible: hovered
+        ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+        ToolTip.text: sourcePath
+        fillMode: Image.PreserveAspectFit
     }
-    Rectangle {
-        anchors.left: control.right
+
+    EditableBrick {
         id: target
-        width: parent.width / 2 - 20
-        height: targetImage.height
-        Image {
-            id: targetImage
-            width: target.width
-            source: targetPath
-        }
+        anchors.right: root.right
+        width: root.width / 2
+        loadButton.enabled: false
+        saveButton.enabled: false
+        clearButton.enabled: false
+        onDataChanged: if (modified) {
+                           target.brick.saveSVG(
+                                       sourceFolder + "/" + targetFolder,
+                                       sourcePath)
+                           modified = false
+                       }
+
+
+        /*IconButton {
+            id: clearButton
+            anchors.top: target.top
+            anchors.right: target.right
+            anchors.margins: enabled ? AppStyle.spacing : 0
+            height: enabled ? width : 0
+            icon.source: "qrc:/bricks/resources/done_black_24dp.svg"
+            ToolTip.visible: hovered
+            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+            ToolTip.text: qsTr("Clear current brick content!")
+        }*/
     }
 }

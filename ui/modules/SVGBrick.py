@@ -7,9 +7,9 @@ import sys
 import xml.etree.ElementTree as Tree
 from ssl import DefaultVerifyPaths
 from typing import Dict
-from PySide6.QtGui import QImage, QPainter, QFontMetrics, QFont
+from PySide6.QtGui import QImage, QPainter, QFontMetrics, QFont, QIcon
 from PySide6.QtSvg import QSvgRenderer
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QSize
 
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
@@ -30,7 +30,7 @@ DEFAULT_X = 43
 DEFAULT_Y = 33
 
 DROPDOWN_SIZE = 10
-DROPDOWN_OFFSET = 10
+DROPDOWN_OFFSET = 5
 
 RES_PATH = {
     BOLD: "/qml/font/Roboto-Bold.ttf",
@@ -75,9 +75,14 @@ class SVGBrick:
         return self.working_brick_
 
     def textColor(self):
+        if "transparent" in self.base_type:
+            if "white" in self.base_type:
+                return '#FFFFFF'
+            return '#000000'
+
         if "white" in self.base_type:
             return '#274383'
-        return '#ffffff'
+        return '#FFFFFF'
 
     def __del__(self):
         logging.debug("Deleting: " + self.working_brick_)
@@ -135,10 +140,12 @@ class SVGBrick:
         self.parse(self.content, self.x, self.y)
         self.save()
 
-    def contentPlain(self):
+    def contentPlain(self, for_system=False):
         content = self.content
         for key in self.operations.keys():
             content = content.replace(key, "")
+        if for_system:
+            content = content.replace(" ", "_").replace("/", "").replace(":", "").replace("<", " lt ").replace(">", " gt ")
         return content
 
     def save(self, path=""):
@@ -158,10 +165,14 @@ class SVGBrick:
             file.write(filedata)
 
     def savePNG(self, path="", width=1920):
-        svgRenderer = QSvgRenderer(path.replace(".png", ".svg"))
+        renderer = QSvgRenderer(path.replace(".png", ".svg"))
+
         image = QImage(path.replace(".png", ".svg")).scaledToWidth(
             width, Qt.SmoothTransformation)
-        svgRenderer.render(QPainter(image))
+
+        painter = QPainter(image)
+        renderer.render(painter)
+        del painter # painter doesn't get deleted properly
         image.save(path, quality=100)
         logging.debug("Brick saved to: " + path)
 
@@ -183,7 +194,7 @@ class SVGBrick:
         font_type = "font-family: 'Roboto Light', sans-serif;font-size:" + \
                     str(size) + "pt;"
 
-        sub_element = Tree.SubElement(self.tree_.getroot(), 'ns0:text', {'id': svg_id,
+        sub_element = Tree.SubElement(self.tree_.getroot(), 'text', {'id': svg_id,
                                                                          'x': str(x) + "px",
                                                                          'y': str(y) + "px",
                                                                          'fill': self.textColor(),
@@ -197,7 +208,7 @@ class SVGBrick:
     def addLine(self, line, x, y):
         length = self.stringLength(
             line, size=FONT_SIZE * self.scaling_factor, font=NORMAL)
-        Tree.SubElement(self.tree_.getroot(), 'ns0:line', {"id": "var_line",
+        Tree.SubElement(self.tree_.getroot(), 'line', {"id": "var_line",
                                                            "x1": str(x),
                                                            "y1": str(y),
                                                            "x2": str(x + length),
@@ -235,8 +246,8 @@ class SVGBrick:
         segments = line.split("*", 2)
         x += self.addString(segments[0], x, y)
         self.addTriangle(DEFAULT_WIDTH, y)
-        x += self.addString(segments[1], x + DROPDOWN_OFFSET,
-                       y, DROPDOWN, NORMAL, DROPDOWN_SIZE) + DROPDOWN_OFFSET
+        x += self.addString(segments[1], x+DROPDOWN_OFFSET,
+                       y, DROPDOWN, NORMAL, DROPDOWN_SIZE)+DROPDOWN_OFFSET
 
         #y += (LINE_HEIGHT + 2*LINE_OFF) * self.scaling_factor
 
@@ -248,7 +259,7 @@ class SVGBrick:
     def addTriangle(self, x0: int, y0: int):
         x = x0 - 2 * FONT_SIZE
         y = y0 - FONT_SIZE
-        Tree.SubElement(self.tree_.getroot(), 'ns0:polygon',
+        Tree.SubElement(self.tree_.getroot(), 'polygon',
                         {"points": str(x) + "," + str(y) + " " + str(x + FONT_SIZE) + "," + str(y) + " " + str(
                             x + (FONT_SIZE / 2)) + "," + str(y + FONT_SIZE),
                          "id": "triangle",
@@ -258,7 +269,7 @@ class SVGBrick:
 
     def addDescription(self):
         sub_element = Tree.SubElement(
-            self.tree_.getroot(), 'ns0:desc', {'id': "json", 'tag' : "brick"})
+            self.tree_.getroot(), 'desc', {'id': "json", 'tag' : "brick"})
         sub_element.text = self.JSON()
 
     def JSON(self):

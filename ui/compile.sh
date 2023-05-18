@@ -5,6 +5,7 @@ source venv/bin/activate
 ./venv/bin/python3 -m pip install PySide6 nuitka
 ./venv/bin/python3 -m nuitka --standalone --include-qt-plugins=sensible,styles,qml --plugin-enable=pyside6 --include-data-dir=qml=qml --follow-imports BrickTutorialCreator.py
 mkdir -p BrickTutorialCreator.dist/resources/tmp
+mkdir -p BrickTutorialCreator.dist/resources/out
 cp -r venv/lib/python3.10/site-packages/PySide6/Qt/ BrickTutorialCreator.dist/PySide6/
 cp -r base/ BrickTutorialCreator.dist/
 mv BrickTutorialCreator.dist BrickTutorialCreator

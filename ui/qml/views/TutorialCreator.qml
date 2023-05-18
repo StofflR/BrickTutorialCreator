@@ -21,6 +21,7 @@ Item {
     Rectangle {
         width: parent.width / 2
         height: item.height
+        color: AppStyle.color.window
         ScrollView {
             id: scrollview
             clip: true
@@ -71,19 +72,8 @@ Item {
     Rectangle {
         anchors.right: parent.right
         width: parent.width / 2
-        height: item.height
-        UsableBrickView {
-            id: usableBrickView
-            anchors.top: optionField.bottom
-            anchors.left: control.right
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-            availableBricks: manager.model
-            groupedView: enableSorting.checked
-            onAddBrick: file => {
-                            tutorialManager.addBrick(file)
-                        }
-        }
+        height: parent.height
+        color: AppStyle.color.window
         Rectangle {
             id: control
             height: parent.height
@@ -91,6 +81,7 @@ Item {
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.margins: AppStyle.spacing
+            color: AppStyle.color.window
             ColumnLayout {
                 width: parent.width
                 IconButton {
@@ -175,6 +166,7 @@ Item {
             }
         }
         Rectangle {
+            color: AppStyle.color.window
             anchors.fill: availableSourceScrollview
         }
 
@@ -213,7 +205,7 @@ Item {
                     }
                 }
                 highlight: Rectangle {
-                    color: "lightsteelblue"
+                    color: AppStyle.color.mid
                     radius: 5
                 }
                 focus: true
@@ -233,6 +225,7 @@ Item {
             anchors.right: parent.right
             anchors.margins: AppStyle.spacing
             height: addPathButton.height + enableForeign.height + AppStyle.spacing
+            color: AppStyle.color.window
             Button {
                 id: addPathButton
                 anchors.left: sourceButtons.left
@@ -262,7 +255,7 @@ Item {
                 text: "Legacy bricks"
                 onCheckedChanged: {
                     manager.allowForeign = enableForeign.checked
-                    manager.refresh(true)
+                    manager.refresh()
                 }
             }
             CheckBox {
@@ -273,7 +266,7 @@ Item {
                 text: "Sort bricks"
                 onCheckedChanged: {
                     manager.sorted = enableSorting.checked
-                    manager.refresh(true)
+                    manager.refresh()
                 }
             }
         }
@@ -284,6 +277,7 @@ Item {
             anchors.left: control.right
             anchors.right: parent.right
             anchors.margins: AppStyle.spacing
+            color: AppStyle.color.window
             height: refreshButton.height
             Field {
                 anchors.left: optionField.left
@@ -296,8 +290,20 @@ Item {
                 anchors.right: optionField.right
                 width: height
                 icon.source: "qrc:/bricks/resources/refresh_black_24dp.svg"
-                onClicked: manager.refresh(true)
+                onClicked: manager.refresh()
             }
+        }
+        UsableBrickView {
+            id: usableBrickView
+            anchors.top: optionField.bottom
+            anchors.left: control.right
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            availableBricks: manager.model
+            groupedView: enableSorting.checked
+            onAddBrick: file => {
+                            tutorialManager.addBrick(file)
+                        }
         }
         FolderDialog {
             id: folderDialog
@@ -308,7 +314,7 @@ Item {
                 return null
             }
             onAccepted: {
-                var path = folder.toString().replace("file:///", "")
+                var path = folder.toString().replace("file:///" , "")
                 if (!(folderDialog.find(availableSourcesModel, path))) {
                     availableSourcesModel.append({
                                                      "path": path

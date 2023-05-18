@@ -13,9 +13,9 @@ T.Button {
     contentItem: Text {
         text: control.text
         font.family: Font.boldFont ? Font.boldFont : -1
-        font.pointSize: AppStyle.spacing * 8 / 6
+        font.pointSize: AppStyle.pointsizeSpacing
         opacity: enabled ? 1.0 : 0.3
-        color: dangerButton ? control.down ? "lightcoral" : "red" : control.down ? "dimgray" : "black"
+        color: dangerButton ? control.down ? "lightcoral" : "red" : AppStyle.color.text
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
@@ -25,8 +25,9 @@ T.Button {
         implicitWidth: parent.width
         implicitHeight: parent.height
         opacity: enabled ? 1 : 0.3
-        border.color: dangerButton ? control.down ? "lightcoral" : "red" : control.down ? "dimgray" : "black"
+        border.color: dangerButton ? "red" :  Qt.darker(AppStyle.color.window)
         border.width: 1
         radius: 2
+        color: AppStyle.color.light
     }
 }
