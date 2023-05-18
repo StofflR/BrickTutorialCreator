@@ -14,10 +14,6 @@ class Brick(QObject):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.brick = None
-        self.pngPath = ""
-        self.hex = {
-            "blue": "#408ac5"
-        }
 
     @Slot(None, result=str)
     def brickContent(self):
@@ -40,6 +36,10 @@ class Brick(QObject):
             control = "_control"
         return "brick_"+baseBrick+"_"+str(self.brick.size)+control+".svg"
 
+    @Slot(None, result=str)
+    def brickColor(self):
+        return  self.brick.base_type
+
     @Slot(str, str, str, str, int, int, int)
     def updateBrick(self, color, path, size, content, scale, x=43, y=33):
         if color and path and size and scale:
@@ -50,13 +50,6 @@ class Brick(QObject):
     def fromJSON(self, path):
         path = path.replace("file:///", "")
         self.brick = SVGBrick.fromJSON(json.load(open(path)))
-
-    @Slot(str, result=str)
-    def hexColor(self, color):
-        if color in self.hex.keys():
-            return self.hex[color]
-        else:
-            return self.hex["blue"]
 
     @Slot(str)
     def fromSVG(self, path):

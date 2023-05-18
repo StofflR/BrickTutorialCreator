@@ -13,30 +13,35 @@ ItemDelegate {
     property string targetFolder
     property alias translationBrick: target
 
-    onTargetFolderChanged: reload()
-    onSourceFolderChanged: reload()
-
     width: parent ? parent.width : 0
     height: target.height
 
+    onTargetFolderChanged: reload()
+
     function reload() {
-        if (languageManager.exists(targetFolder + "/" + sourcePath))
-            target.loadFromFile(targetFolder + "/" + sourcePath)
-        else
-            target.loadFromFile(sourceFolder + "/" + sourcePath)
-        target.dataChanged()
+        var folder = targetFolder
+        var targetPath = sourceFolder + "/" + folder + "/" + sourcePath
+        var source = sourceFolder + "/" + sourcePath
+        if (languageManager.exists(targetPath)) {
+            return target.loadFromFile(targetPath)
+        }
+        if (folder != "") {
+            console.log(source)
+            target.loadFromFile(source)
+            target.brick.saveSVG(sourceFolder + "/" + folder, sourcePath)
+        }
     }
 
     Image {
         id: sourceImage
         anchors.left: root.left
+        source: sourceFolder + "/" + sourcePath
         width: root.width / 2
         height: target.height
-        source: sourceFolder + "/" + sourcePath
         ToolTip.visible: hovered
         ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
         ToolTip.text: sourcePath
-        asynchronous: true
+        fillMode: Image.PreserveAspectFit
     }
 
     EditableBrick {
@@ -46,8 +51,13 @@ ItemDelegate {
         loadButton.enabled: false
         saveButton.enabled: false
         clearButton.enabled: false
-        brickImg: sourceFolder + "/" + sourcePath
-        IconButton {
+        onDataChanged: if (modified)
+                           target.brick.saveSVG(
+                                       sourceFolder + "/" + targetFolder,
+                                       sourcePath)
+
+
+        /*IconButton {
             id: clearButton
             anchors.top: target.top
             anchors.right: target.right
@@ -57,10 +67,6 @@ ItemDelegate {
             ToolTip.visible: hovered
             ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
             ToolTip.text: qsTr("Clear current brick content!")
-        }
-        onDataChanged: if (modified)
-                           target.brick.saveSVG(targetFolder, sourcePath)
-
-        Component.onCompleted: modified = true
+        }*/
     }
 }

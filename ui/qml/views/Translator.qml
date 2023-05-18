@@ -163,7 +163,7 @@ Item {
         width: root.width
         anchors.top: layout.bottom
         anchors.bottom: bottomLayout.top
-        reuseItems: true
+        reuseItems: false
         model: languageManager.sourceModel
         z: layout.z - 1
         clip: true
@@ -172,7 +172,7 @@ Item {
             id: delegate
             sourceFolder: textMetrics.text
             sourcePath: modelData
-            targetFolder: textMetrics.text + "/" + language.comboBox.currentText
+            targetFolder: language.comboBox.currentText
         }
         onVisibleChanged: updateStatusMessage("")
         cacheBuffer: visible ? 300 : 0

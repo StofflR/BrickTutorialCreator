@@ -21,6 +21,7 @@ Image {
     property string brickColor: "blue"
 
     property bool modified: false
+    property bool disable: false
 
     property string status
 
@@ -40,7 +41,7 @@ Image {
 
     function loadFromFile(currentFile) {
         {
-            if (!currentFile || !modified)
+            if (!currentFile)
                 return
             modifyableBrick.fromFile(currentFile)
             svgPreview.loading = true
@@ -49,6 +50,7 @@ Image {
             svgPreview.brickPath = modifyableBrick.basePath()
             svgPreview.xPos = modifyableBrick.posX()
             svgPreview.yPos = modifyableBrick.posY()
+            svgPreview.brickColor = modifyableBrick.brickColor()
             svgPreview.loading = false
             svgPreview.dataChanged()
             svgPreview.status = "INFO: Loaded " + currentFile
@@ -61,7 +63,7 @@ Image {
     }
     onDataChanged: {
         if (!brickPath || !brickColor || !availableSize || !xPos || !yPos
-                || !contentScale || loading || !modified) {
+                || !contentScale || loading) {
             return
         }
         modifyableBrick.updateBrick(brickColor, brickPath, availableSize,
@@ -74,7 +76,6 @@ Image {
             when: previewContent.cursorPosition
             value: previewContent.cursorPosition
         }
-
         visible: previewContent.cursorVisible
         anchors.fill: previewContent
         text: {
@@ -163,6 +164,8 @@ Image {
         anchors.right: svgPreview.right
         anchors.margins: enabled ? AppStyle.spacing : 0
         visible: enabled
+        width: visible ? IconButton.width : 0
+        height: visible ? IconButton.height : 0
         icon.source: "qrc:/bricks/resources/delete_black_24dp.svg"
         ToolTip.visible: hovered
         ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
@@ -186,6 +189,8 @@ Image {
         anchors.right: svgPreview.right
         anchors.margins: enabled ? AppStyle.spacing : 0
         visible: enabled
+        width: visible ? IconButton.width : 0
+        height: visible ? IconButton.height : 0
         icon.source: "qrc:/bricks/resources/file_open_black_24dp.svg"
         ToolTip.visible: hovered
         ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
@@ -198,6 +203,8 @@ Image {
         anchors.right: svgPreview.right
         anchors.margins: enabled ? AppStyle.spacing : 0
         visible: enabled
+        width: visible ? IconButton.width : 0
+        height: visible ? IconButton.height : 0
         icon.source: "qrc:/bricks/resources/save_black_24dp.svg"
         enabled: (svg_check.checked || json_check.checked || png_check.checked)
                  && brickContent.text !== ""
@@ -227,6 +234,8 @@ Image {
         anchors.right: clearButton.left
         anchors.margins: enabled ? AppStyle.spacing : 0
         visible: enabled
+        width: visible ? IconButton.width : 0
+        height: visible ? IconButton.height : 0
         icon.source: "qrc:/bricks/resources/create_black_24dp.svg"
         ToolTip.visible: hovered
         ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval

@@ -88,7 +88,7 @@ class TutorialSourceManager(QObject):
     @Slot(str, result=None)
     def removePath(self, path):
         path = path.replace("file:///", "")
-        self.paths[path] = []
+        self.paths.pop(path, None)
         self.refresh()
 
     def _getModel(self):
