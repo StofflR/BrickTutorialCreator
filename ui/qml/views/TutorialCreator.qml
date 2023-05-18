@@ -314,7 +314,7 @@ Item {
                 return null
             }
             onAccepted: {
-                var path = folder.toString().replace("file:///", "")
+                var path = folder.toString().replace("file:///" , "")
                 if (!(folderDialog.find(availableSourcesModel, path))) {
                     availableSourcesModel.append({
                                                      "path": path

@@ -6,6 +6,13 @@ from typing import Dict, List
 import logging
 import json
 
+from sys import platform
+
+if platform == "linux" or platform == "linux2":
+    FILE_STUB = "file://"
+else:
+    FILE_STUB = "file:///"
+
 QML_IMPORT_NAME = "TutorialManager"
 QML_IMPORT_MAJOR_VERSION = 1
 
@@ -25,12 +32,12 @@ class TutorialManager(QObject):
     @Slot(str, int)
     def addBrick(self, path, index=None):
         if ".json" not in path:
-            json_text = SVGBrick.getJSONFromSVG(path.replace("file:///", ""))
+            json_text = SVGBrick.getJSONFromSVG(path.replace(FILE_STUB, ""))
         else:
-            json_text = json.load(open(path.replace("file:///", "")))
+            json_text = json.load(open(path.replace(FILE_STUB, "")))
         brick = SVGBrick.fromJSON(json_text)
         if ".json" in path:
-            path = "file:///" + brick.getWorkingBrick()
+            path = FILE_STUB + brick.getWorkingBrick()
 
         if not index:
             self.modelVal.append(path)
@@ -45,7 +52,7 @@ class TutorialManager(QObject):
         content = []
         for brick in self.modelVal:
             content.append(self.bricks[brick].toJSON())
-        f = open(path.replace("file:///", ""), "w")
+        f = open(path.replace(FILE_STUB, ""), "w")
         f.write(json.dumps(content))
         f.close()
 
@@ -53,10 +60,10 @@ class TutorialManager(QObject):
     def fromJSON(self, path):
         self.modelVal.clear()
         self.bricks.clear()
-        content = json.load(open(path.replace("file:///", "")))
+        content = json.load(open(path.replace(FILE_STUB, "")))
         for element in content:
             svg_brick = SVGBrick.fromJSON(json.loads(element))
-            brick_path = "file:///" + svg_brick.getWorkingBrick()
+            brick_path = FILE_STUB + svg_brick.getWorkingBrick()
             self.modelVal.append(brick_path)
             self.bricks[brick_path] = svg_brick
         self.modelChanged.emit()
@@ -76,7 +83,7 @@ class TutorialManager(QObject):
     def saveTutorial(self, path):
         self.generateTutorial()
         logging.debug("Saving Tutorial to: " + path)
-        self.tutorial.save(path.replace("file:///", ""))
+        self.tutorial.save(path.replace(FILE_STUB, ""))
 
     def generateTutorial(self):
         self.bricks[self.modelVal[0]].savePNG(
