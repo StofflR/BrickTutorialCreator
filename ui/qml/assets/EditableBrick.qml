@@ -162,8 +162,9 @@ Image {
         anchors.right: svgPreview.right
         anchors.margins: enabled ? AppStyle.spacing : 0
         visible: enabled
-        width: visible ? IconButton.width : 0
-        height: visible ? IconButton.height : 0
+        opacity: enabled ? 0.7 : 0.3
+        width: visible ? AppStyle.defaultHeight / 2 : 0
+        height: visible ? width : 0
         icon.source: "qrc:/bricks/resources/delete_black_24dp.svg"
         ToolTip.visible: hovered
         ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
@@ -187,8 +188,9 @@ Image {
         anchors.right: svgPreview.right
         anchors.margins: enabled ? AppStyle.spacing : 0
         visible: enabled
-        width: visible ? IconButton.width : 0
-        height: visible ? IconButton.height : 0
+        opacity: enabled ? 0.7 : 0.3
+        width: visible ? AppStyle.defaultHeight / 2 : 0
+        height: visible ? width : 0
         icon.source: "qrc:/bricks/resources/file_open_black_24dp.svg"
         ToolTip.visible: hovered
         ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
@@ -201,8 +203,9 @@ Image {
         anchors.right: svgPreview.right
         anchors.margins: enabled ? AppStyle.spacing : 0
         visible: enabled
-        width: visible ? IconButton.width : 0
-        height: visible ? IconButton.height : 0
+        opacity: enabled ? 0.7 : 0.3
+        width: visible ? AppStyle.defaultHeight / 2 : 0
+        height: visible ? width : 0
         icon.source: "qrc:/bricks/resources/save_black_24dp.svg"
         enabled: (svg_check.checked || json_check.checked || png_check.checked)
                  && brickContent.text !== ""
@@ -232,8 +235,9 @@ Image {
         anchors.right: clearButton.left
         anchors.margins: enabled ? AppStyle.spacing : 0
         visible: enabled
-        width: visible ? IconButton.width : 0
-        height: visible ? IconButton.height : 0
+        opacity: enabled ? 0.7 : 0.3
+        width: visible ? AppStyle.defaultHeight / 2 : 0
+        height: visible ? width : 0
         icon.source: "qrc:/bricks/resources/create_black_24dp.svg"
         ToolTip.visible: hovered
         ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval

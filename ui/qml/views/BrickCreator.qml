@@ -202,7 +202,7 @@ Rectangle {
     Rectangle {
         id: bottomPadding
         height: edtiableBrick.brickColor.search(
-                    "collapsed") > -1 ? AppStyle.defaultHeight * 3 : 0
+                    "collapsed") > -1 ? AppStyle.defaultHeight * 2 : 0
         anchors.bottom: parent.bottom
     }
 }

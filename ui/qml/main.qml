@@ -155,6 +155,7 @@ ApplicationWindow {
         }
         Item {
             TutorialCreator {
+                id: creator
                 width: parent.width
                 height: parent.height - 20
                 onUpdateStatusMessage: text => root.updateStatusMessage(text)

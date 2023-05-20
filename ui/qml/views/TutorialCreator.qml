@@ -3,6 +3,7 @@ import QtQuick.Controls 2.15
 import Qt.labs.platform 1.1
 import QtQuick.Layouts 1.15
 import QtQml.Models 2.1
+import QtQuick 2.15
 import "../assets"
 import "../font"
 import "../views"
@@ -11,13 +12,23 @@ import "../style"
 import TutorialManager 1.0
 import TutorialSourceManager 1.0
 
-Item {
+FocusScope {
     id: item
     anchors.fill: parent
     signal updateStatusMessage(string text)
+    signal deletePressed
     TutorialManager {
         id: tutorialManager
     }
+    Keys.enabled: true
+    Keys.onDeletePressed: {
+        if (proxyModel.selectedIndex != -1) {
+            tutorialManager.removeBrick(proxyModel.selectedIndex)
+            proxyModel.selectedIndex = -1
+        }
+    }
+    onVisibleChanged: proxyModel.selectedIndex = -1
+
     Rectangle {
         width: parent.width / 2
         height: item.height
@@ -28,24 +39,26 @@ Item {
             anchors.left: parent.left
             width: parent.width
             anchors.top: parent.top
-            anchors.margins: AppStyle.spacing
             height: parent.height
+            ToolTip.visible: hovered
+            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+            ToolTip.text: qsTr("Press 'Delete' to remove selected item!")
 
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-            ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+            ScrollBar.vertical.policy: ScrollBar.AsNeeded
             ListView {
                 id: timeline
                 signal remove(int index)
                 onRemove: index => {
                               tutorialManager.removeBrick(index)
+                              proxyModel.selectedIndex = -1
                           }
-
                 snapMode: ListView.SnapToItem
                 anchors.topMargin: AppStyle.spacing
                 anchors.fill: scrollview
-
                 orientation: ListView.Vertical
                 model: TutorialView {
+                    onFocus: item.forceActiveFocus()
                     id: proxyModel
                     model: tutorialManager.model
                     onModelUpdated: {
@@ -58,8 +71,6 @@ Item {
                         tutorialManager.model = updatedModel
                     }
                 }
-                Component.onCompleted: proxyModel.removed.connect(
-                                           timeline.remove)
                 moveDisplaced: Transition {
                     NumberAnimation {
                         properties: "x,y"
@@ -314,7 +325,7 @@ Item {
                 return null
             }
             onAccepted: {
-                var path = folder.toString().replace("file:///" , "")
+                var path = folder.toString().replace("file:///", "")
                 if (!(folderDialog.find(availableSourcesModel, path))) {
                     availableSourcesModel.append({
                                                      "path": path
