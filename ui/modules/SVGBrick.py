@@ -142,6 +142,8 @@ class SVGBrick:
 
     def contentPlain(self, for_system=False):
         content = self.content
+        if("collapsed" in self.base_type):
+            content += self.base_type
         for key in self.operations.keys():
             content = content.replace(key, "")
         if for_system:

@@ -28,7 +28,10 @@ Popup {
                                 || !size) {
                                 return
                             }
-                            var control = type ? "_control" : ""
+                            var control = type ? (type.search(
+                                                      "control") > -1 ? "_control" : "")
+                                                 + (type.search(
+                                                        "collapsed") > -1 ? "_collapsed" : "") : ""
                             var file = "brick_" + base + "_" + size + control + ".svg"
                             var baseFile = "base_" + size + control + ".svg"
 
@@ -36,7 +39,10 @@ Popup {
                                 manager.addBaseType(file, background, shade,
                                                     border, baseFile)
                             }
-                            control = type ? " (control)" : ""
+                            control = type ? (type.search(
+                                                  "control") > -1 ? " (control)" : "")
+                                             + (type.search(
+                                                    "collapsed") > -1 ? " (collapsed)" : "") : ""
                             baseChanged(base + control, file, size)
                         }
 
@@ -188,6 +194,10 @@ Popup {
                 "text": "2h (control)",
                 "type": "control",
                 "size": "2h"
+            }, {
+                "text": "0h (collapsed)",
+                "type": "collapsed",
+                "size": "0h"
             }]
         property string brickType
         property string brickSize

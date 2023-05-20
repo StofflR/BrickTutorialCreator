@@ -37,5 +37,6 @@
         <file>resources/base_2h.svg</file>
         <file>resources/base_2h_control.svg</file>
         <file>resources/base_3h.svg</file>
+        <file>base/base_0h_collapsed.svg</file>
     </qresource>
 </RCC>
