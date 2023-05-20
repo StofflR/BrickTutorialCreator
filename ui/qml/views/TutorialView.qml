@@ -11,7 +11,9 @@ import "../style"
 DelegateModel {
     id: visualModel
     delegate: timelineDelegate
-    signal removed(int index)
+    property int selectedIndex: -1
+    signal focus
+
     Component {
         id: timelineDelegate
 
@@ -24,10 +26,12 @@ DelegateModel {
             pressAndHoldInterval: 1
             drag.target: held ? content : undefined
             drag.axis: Drag.YAxis
-
             onPressAndHold: held = true
-            onReleased: held = false
-
+            onReleased: {
+                held = false
+                visualModel.selectedIndex = dragArea.DelegateModel.itemsIndex
+                visualModel.focus()
+            }
             Item {
                 id: content
                 anchors {
@@ -38,21 +42,18 @@ DelegateModel {
                 height: image.height
                 Image {
                     id: image
-                    width: parent.width
+                    width: content.width - 20
                     source: modelData
-                    IconButton {
-                        id: remove
-                        opacity: 0.4
-                        icon.source: "qrc:/bricks/resources/delete_black_24dp.svg"
-                        onPressed: visualModel.removed(index)
-                        anchors.right: image.right
-                        anchors.margins: AppStyle.spacing
-                        anchors.top: image.top
-                        width: AppStyle.defaultHeight
-                        height: width
-                    }
                 }
-                opacity: dragArea.held ? 0.8 : 1.0
+                Rectangle {
+                    width: 10
+                    height: image.height - image.width * 0.018
+                    color: Qt.lighter(AppStyle.color.highlight)
+                    opacity: dragArea.DelegateModel.itemsIndex === visualModel.selectedIndex ? 1 : 0
+                    anchors.left: image.right
+                    anchors.margins: 5
+                    radius: 5
+                }
 
                 Drag.active: dragArea.held
                 Drag.source: dragArea

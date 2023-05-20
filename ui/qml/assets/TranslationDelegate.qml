@@ -14,8 +14,8 @@ ItemDelegate {
     property alias translationBrick: target
 
     width: parent ? parent.width : 0
-    height: target.height + target.brickColor.search(
-                "collapsed") > -1 ? AppStyle.defaultHeight * 2 : 0
+    height: target.height + target.height
+            < AppStyle.defaultHeight ? AppStyle.defaultHeight : target.height
 
     onTargetFolderChanged: reload()
 
