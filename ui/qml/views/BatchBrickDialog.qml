@@ -40,7 +40,7 @@ Popup {
             return
 
         converter.removeNS0(files[index])
-        sourcePreview.source = "file:///"  + files[index]
+        sourcePreview.source = "file:///" + files[index]
 
         converter.convert(files[index])
         if (converter.isBrick(files[index])) {

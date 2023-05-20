@@ -36,7 +36,6 @@ Image {
     signal dataChanged
     signal save
     asynchronous: true
-
     property bool loading: false
 
     function loadFromFile(currentFile) {

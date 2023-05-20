@@ -171,7 +171,7 @@ Rectangle {
 
         anchors.right: parent.right
         anchors.left: parent.left
-        anchors.bottom: parent.bottom
+        anchors.bottom: bottomPadding.top
         onStatusChanged: root.updateStatusMessage(edtiableBrick.status)
         modified: true
         onSave: saveBrick()
@@ -179,7 +179,8 @@ Rectangle {
         function saveBrick() {
             var statusText = "INFO: Saved brick(s) as: "
             var filename = edtiableBrick.brick.fileName()
-            if (!filename || !modified)
+            if (!filename || !modified && edtiableBrick.brickColor.search(
+                        "collapsed") < 0)
                 return
             if (svg_check.checked) {
                 edtiableBrick.brick.saveSVG(textMetrics.text)
@@ -197,5 +198,11 @@ Rectangle {
             statusText += " to " + textMetrics.text
             root.updateStatusMessage(statusText)
         }
+    }
+    Rectangle {
+        id: bottomPadding
+        height: edtiableBrick.brickColor.search(
+                    "collapsed") > -1 ? AppStyle.defaultHeight * 3 : 0
+        anchors.bottom: parent.bottom
     }
 }
