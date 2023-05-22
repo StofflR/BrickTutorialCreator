@@ -32,6 +32,16 @@ ItemDelegate {
             target.brick.saveSVG(sourceFolder + "/" + folder, sourcePath)
         }
     }
+    Rectangle {
+        anchors.fill: sourceImage
+        color: AppStyle.color.midlight
+        radius: 5
+    }
+    Rectangle {
+        anchors.fill: target
+        color: AppStyle.color.midlight
+        radius: 5
+    }
 
     Image {
         id: sourceImage

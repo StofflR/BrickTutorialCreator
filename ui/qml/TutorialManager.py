@@ -1,3 +1,5 @@
+import os
+
 from PySide6.QtCore import Slot, QObject, Property, Signal
 from PySide6.QtQml import QmlElement
 from PySide6.QtGui import QImage, QPainter
@@ -27,6 +29,19 @@ class TutorialManager(QObject):
         self.modelVal = []
         self.tutorial: QImage
         self.tutorial = None
+        self.ccby = False
+
+    def _getCCBY(self):
+        return self.ccby
+
+    def _setCCBY(self, value):
+        self.ccby = value
+
+    @Signal
+    def ccByChanged(self):
+        pass
+
+    enableCCBY = Property(bool, _getCCBY, _setCCBY, notify=ccByChanged)
 
     @Slot(str)
     @Slot(str, int)
@@ -86,6 +101,8 @@ class TutorialManager(QObject):
         self.tutorial.save(path.replace(FILE_STUB, ""))
 
     def generateTutorial(self):
+        if self.ccby:
+            self.addBrick(FILE_STUB + os.getcwd() + "/resources/ccbysa.svg")
         self.bricks[self.modelVal[0]].savePNG(
             path=self.bricks[self.modelVal[0]].working_brick_.replace(".svg", ".png"), width=640)
         tutorial = QImage(
@@ -103,6 +120,8 @@ class TutorialManager(QObject):
             painter.drawImage(0, tutorial.height() -
                               int(tutorial.width() / 55), b)
             tutorial = target
+        if self.ccby:
+            self.removeBrick(len(self.bricks)-1)
         self.tutorial = tutorial
 
     def _getModel(self):

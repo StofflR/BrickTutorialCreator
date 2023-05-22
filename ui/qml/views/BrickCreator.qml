@@ -153,6 +153,11 @@ Rectangle {
         }
     }
 
+    Rectangle {
+        anchors.fill: edtiableBrick
+        color: AppStyle.color.midlight
+        radius: 5
+    }
     EditableBrick {
         id: edtiableBrick
 

@@ -14,14 +14,12 @@ Item {
         anchors.right: root.right
         anchors.top: name.bottom
         anchors.bottom: root.bottom
-        anchors.margins: AppStyle.spacing
         ScrollBar.vertical.snapMode: ScrollBar.SnapAlways
         ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
         ScrollBar.vertical.policy: ScrollBar.AsNeeded
         ListView {
             id: view
             anchors.fill: parent
-            anchors.margins: AppStyle.spacing
             clip: true
             delegate: Rectangle {
                 id: source
@@ -43,6 +41,11 @@ Item {
                                          root.addBrick(sourceImage.source)
                                      }
 
+                    Rectangle {
+                        anchors.fill: sourceImage
+                        color: AppStyle.color.midlight
+                        radius: 5
+                    }
                     Image {
                         id: sourceImage
                         fillMode: Image.PreserveAspectFit
@@ -54,7 +57,7 @@ Item {
                             font.pointSize: 12
                             text: "Click to " + (expand ? "collapse" : "expand") + "!"
                         }
-                        source: (groupedView ? baseFolder + "/" : "file:///" )
+                        source: (groupedView ? baseFolder + "/" : "file:///")
                                 + view.model[index].path
                     }
                 }
@@ -76,22 +79,19 @@ Item {
                             id: sourceExpand
                             width: viewExpand.width
                             height: sourceImageExpand.height
-                            color: AppStyle.color.window
+                            color: AppStyle.color.midlight
+                            radius: 5
 
-                            MouseArea {
-                                id: mouseAreaExpand
-                                anchors.left: sourceExpand.left
-                                anchors.top: sourceExpand.top
-                                width: sourceImageExpand.width
-                                height: sourceImageExpand.height
-
-                                onDoubleClicked: root.addBrick(
-                                                     sourceImageExpand.source)
-                                Image {
-                                    id: sourceImageExpand
-                                    fillMode: Image.PreserveAspectFit
-                                    width: recta.width
-                                    source: "file:///"  + viewExpand.model[index].path
+                            Image {
+                                id: sourceImageExpand
+                                fillMode: Image.PreserveAspectFit
+                                width: recta.width
+                                source: "file:///" + viewExpand.model[index].path
+                                MouseArea {
+                                    id: mouseAreaExpand
+                                    anchors.fill: sourceImageExpand
+                                    onDoubleClicked: root.addBrick(
+                                                         sourceImageExpand.source)
                                 }
                             }
                         }

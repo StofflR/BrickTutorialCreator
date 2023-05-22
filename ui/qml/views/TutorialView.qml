@@ -40,6 +40,7 @@ DelegateModel {
                 }
                 width: parent.width
                 height: image.height
+
                 Image {
                     id: image
                     width: content.width - 20

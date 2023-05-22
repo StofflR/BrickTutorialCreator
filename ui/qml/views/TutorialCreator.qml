@@ -280,6 +280,15 @@ FocusScope {
                     manager.refresh()
                 }
             }
+            CheckBox {
+                id: addCCBYSorting
+                anchors.top: addPathButton.bottom
+                anchors.left: enableSorting.right
+                anchors.right: sourceButtons.right
+                anchors.margins: AppStyle.spacing
+                text: "Add CC-BY-SA 4.0"
+                onCheckedChanged: tutorialManager.enableCCBY = addCCBYSorting.checked
+            }
         }
 
         Rectangle {
