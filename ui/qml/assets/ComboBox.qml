@@ -15,7 +15,7 @@ T.ComboBox {
         contentItem: T.Label {
             text: modelData
             color: AppStyle.color.text
-            font.family: Font.boldFont ? Font.boldFont : -1
+            font.family: "Roboto"
             font.pointSize: AppStyle.pointsizeSpacing
             elide: Text.ElideRight
             verticalAlignment: Text.AlignVCenter
@@ -61,7 +61,7 @@ T.ComboBox {
         rightPadding: control.indicator.width + control.spacing
 
         text: displayText
-        font.family: Font.boldFont ? Font.boldFont : -1
+        font.family: "Roboto"
         font.pointSize: AppStyle.pointsizeSpacing
         color: AppStyle.color.text
         verticalAlignment: Text.AlignVCenter

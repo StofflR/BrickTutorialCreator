@@ -8,7 +8,7 @@ import "../style"
 TextField {
     id: control
     placeholderText: qsTr("Enter description")
-    font.family: Font.boldFont ? Font.boldFont : -1
+    font.family: "Roboto"
     font.pointSize: AppStyle.pointsizeSpacing
     leftInset: -AppStyle.spacing
     background: Rectangle {

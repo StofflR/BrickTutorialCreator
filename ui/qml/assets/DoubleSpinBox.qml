@@ -40,7 +40,7 @@ T.SpinBox {
 
         Text {
             text: "+"
-            font.family: Font.boldFont ? Font.boldFont : -1
+            font.family: "Roboto"
             font.pointSize: spinbox.font.pointSize * 2
             color: AppStyle.color.text
             anchors.fill: parent
@@ -62,7 +62,7 @@ T.SpinBox {
 
         Text {
             text: "-"
-            font.family: Font.boldFont ? Font.boldFont : -1
+            font.family: "Roboto"
             font.pointSize: spinbox.font.pointSize * 2
             color: AppStyle.color.text
             anchors.fill: parent
@@ -77,7 +77,7 @@ T.SpinBox {
         horizontalAlignment: Qt.AlignHCenter
         verticalAlignment: Qt.AlignVCenter
         text: spinbox.displayText
-        font.family: Font.boldFont ? Font.boldFont : -1
+        font.family: "Roboto"
         font.pointSize: AppStyle.pointsizeSpacing
         color: AppStyle.color.text
         readOnly: !spinbox.editable

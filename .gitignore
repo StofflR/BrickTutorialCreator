@@ -24,3 +24,5 @@ ui/BrickTutorialCreator.build/
 *.bin
 
 *.gz
+
+.DS_Store

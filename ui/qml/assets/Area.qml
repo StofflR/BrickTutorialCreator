@@ -8,7 +8,7 @@ import "../style"
 TextArea {
     id: control
     placeholderText: qsTr("Enter description")
-    font.family: Font.boldFont ? Font.boldFont : -1
+    font.family: "Roboto"
     font.pointSize: AppStyle.pointsizeSpacing
     leftInset: -AppStyle.spacing
     wrapMode: TextEdit.WordWrap

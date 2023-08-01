@@ -12,7 +12,7 @@ T.Button {
     property bool dangerButton: false
     contentItem: Text {
         text: control.text
-        font.family: Font.boldFont ? Font.boldFont : -1
+        font.family: "Roboto"
         font.pointSize: AppStyle.pointsizeSpacing
         opacity: enabled ? 1.0 : 0.3
         color: dangerButton ? control.down ? "lightcoral" : "red" : AppStyle.color.text
