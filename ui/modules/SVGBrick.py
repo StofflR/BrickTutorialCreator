@@ -10,6 +10,8 @@ from typing import Dict
 from PySide6.QtGui import QImage, QPainter, QFontMetrics, QFont, QIcon
 from PySide6.QtSvg import QSvgRenderer
 from PySide6.QtCore import Qt, QSize
+import math
+from sys import platform
 
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
@@ -224,10 +226,19 @@ class SVGBrick:
     @staticmethod
     def stringLength(line: str, size=12, font=BOLD):
         if font == NORMAL:
-            weight = QFont.Thin
+            if platform == "darwin":
+                weight = QFont.Normal
+                size = size + 1
+            else:
+                weight = QFont.Thin
         else:
-            weight = QFont.DemiBold+20
-        size = size-1
+            if platform == "darwin":
+                weight = QFont.ExtraBold + 20
+                size = size + 2
+            else:
+                weight = QFont.DemiBold + 20
+        if platform != "darwin":
+            size = size - 1
         metric = QFontMetrics(QFont(FAMILY_NAME[font], pointSize=round(size),weight=weight))
         return metric.horizontalAdvance(line)
 
