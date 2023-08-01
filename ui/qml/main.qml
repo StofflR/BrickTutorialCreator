@@ -2,7 +2,6 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 2.15
-import QtWebEngine 1.10
 
 import "assets"
 import "font"
@@ -188,10 +187,6 @@ ApplicationWindow {
         focus: true
         contentItem: Rectangle {
             anchors.fill: parent
-            WebEngineView {
-                anchors.fill: parent
-                url: "qrc:/about.html"
-            }
         }
     }
     Popup {
@@ -204,10 +199,6 @@ ApplicationWindow {
         focus: true
         contentItem: Rectangle {
             anchors.fill: parent
-            WebEngineView {
-                anchors.fill: parent
-                url: "qrc:/help.html"
-            }
         }
     }
 }
