@@ -2,7 +2,7 @@ import sys
 import os
 from PySide6.QtCore import QUrl, Qt
 from PySide6.QtQuick import QQuickWindow, QSGRendererInterface
-from PySide6.QtGui import QGuiApplication, QFontDatabase, QIcon
+from PySide6.QtGui import QGuiApplication, QFontDatabase, QIcon, QFont
 from PySide6.QtQml import QQmlApplicationEngine, qmlRegisterType , QQmlDebuggingEnabler
 from qml import Brick
 from qml import TutorialManager
@@ -10,6 +10,7 @@ from qml import TutorialSourceManager
 from qml import LanguageManager
 from qml import Converter
 from qml import ColorManager
+
 import resources_rc
 import logging
 import shutil
@@ -32,6 +33,7 @@ if __name__ == "__main__":
 
     sys.argv += ['--style', 'Fusion']
     QGuiApplication.setAttribute(Qt.AA_ShareOpenGLContexts, True)
+    QGuiApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
     QQuickWindow.setGraphicsApi(QSGRendererInterface.OpenGLRhi)
     app = QGuiApplication(sys.argv)
     app.setWindowIcon(QIcon("./resources/icon.svg"))
@@ -46,8 +48,19 @@ if __name__ == "__main__":
 
     assert(QFontDatabase.addApplicationFont(os.getcwd() + "/qml/font/Roboto-Bold.ttf") != -1)
     assert(QFontDatabase.addApplicationFont(os.getcwd() + "/qml/font/Roboto-Light.ttf") != -1)
+
     engine = QQmlApplicationEngine()
     engine.load("./qml/main.qml")
+    fontStyles = QFontDatabase.styles("Roboto")
+    assert("Light" in fontStyles)
+    assert("Bold" in fontStyles)
+
+    for style in fontStyles:
+        font = QFontDatabase.font("Roboto", style, 12)
+        assert(font)
+        engine.rootContext().setContextProperty(
+            style.lower()+"Roboto", font)
+
 
     engine.rootContext().setContextProperty(
         "tempFolder", QUrl.fromLocalFile(os.getcwd()).toString() + r"/resources/out")

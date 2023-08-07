@@ -7,7 +7,7 @@ import sys
 import xml.etree.ElementTree as Tree
 from ssl import DefaultVerifyPaths
 from typing import Dict
-from PySide6.QtGui import QImage, QPainter, QFontMetrics, QFont, QIcon
+from PySide6.QtGui import QImage, QPainter, QFontMetrics, QFont, QIcon, QFontDatabase
 from PySide6.QtSvg import QSvgRenderer
 from PySide6.QtCore import Qt, QSize
 import math
@@ -39,8 +39,8 @@ RES_PATH = {
     NORMAL: "/qml/font/Roboto-Light.ttf"
 }
 FAMILY_NAME = {
-    BOLD: "Roboto-Bold",
-    NORMAL: "Roboto-Light"
+    BOLD: "Roboto",
+    NORMAL: "Roboto"
 }
 
 LEN_SCALAR = {
@@ -195,8 +195,7 @@ class SVGBrick:
 
     def addString(self, line: str, x: int, y: int, svg_id=TEXT, font_weight=BOLD, size=FONT_SIZE):
         size = size * self.scaling_factor
-        font_type = "font-family: 'Roboto Light', sans-serif;font-size:" + \
-                    str(size) + "pt;"
+        font_type = "font-family: Roboto;font-size:" + str(size) + "pt;"
 
         sub_element = Tree.SubElement(self.tree_.getroot(), 'text', {'id': svg_id,
                                                                          'x': str(x) + "px",
@@ -227,19 +226,23 @@ class SVGBrick:
     def stringLength(line: str, size=12, font=BOLD):
         if font == NORMAL:
             if platform == "darwin":
-                weight = QFont.Normal
+                weight = QFont.Normal + 30
                 size = size + 1
             else:
                 weight = QFont.Thin
+            style = "Light"
         else:
             if platform == "darwin":
-                weight = QFont.ExtraBold + 20
+                weight = QFont.ExtraBold + 30
                 size = size + 2
             else:
                 weight = QFont.DemiBold + 20
+            style = "Bold"
+
         if platform != "darwin":
             size = size - 1
-        metric = QFontMetrics(QFont(FAMILY_NAME[font], pointSize=round(size),weight=weight))
+        metric = QFontMetrics(QFontDatabase.font("Roboto", style, math.ceil(size)), pointSize=math.ceil(size),weight=weight)
+        print("dpi:", metric.fontDpi())
         return metric.horizontalAdvance(line)
 
     def addVariable(self, line: str, x: int, y: int):
@@ -249,7 +252,7 @@ class SVGBrick:
 
         segments[1] = " " + segments[1] + " "
         _ = self.addString(segments[1], x, y, font_weight=NORMAL)
-        x = self.addLine(segments[1], x, y + LINE_OFF)
+        x = self.addLine(segments[1], math.ceil(x), y + LINE_OFF)
 
         if len(segments) > 2:
             return segments[2], x, y

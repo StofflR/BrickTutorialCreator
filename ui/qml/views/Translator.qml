@@ -111,7 +111,7 @@ Item {
                     anchors.centerIn: parent
                     text: "WARNING!\nRemoving: " + languageManager.currentLanguage
                           + " will delete all associated files with the translation!\nDo you wish to continue anyway?"
-                    font: Font.light.font
+                    font: lightFont
                     color: AppStyle.color.text
                 }
                 color: AppStyle.color.window
@@ -126,7 +126,7 @@ Item {
                         width: parent.width / 2
                         dangerButton: true
                         text: "Continue"
-                        font: Font.light.font
+                        font: lightFont
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.horizontalCenter: parent.horizontalCenter
                         onClicked: {
@@ -147,7 +147,7 @@ Item {
                     Button {
                         width: parent.width / 2
                         text: "Abort"
-                        font: Font.light.font
+                        font: lightFont
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.horizontalCenter: parent.horizontalCenter
                         onClicked: deleteDialog.close()

@@ -55,7 +55,7 @@ Popup {
             id: backText
             text: "Back"
             width: header.width / 5
-            font: Font.light.font
+            font: lightFont
             color: AppStyle.color.text
             horizontalAlignment: Text.AlignHCenter
         }
@@ -64,7 +64,7 @@ Popup {
             text: "Shade"
             anchors.left: backText.right
             width: header.width / 5
-            font: Font.light.font
+            font: lightFont
             color: AppStyle.color.text
             horizontalAlignment: Text.AlignHCenter
         }
@@ -73,7 +73,7 @@ Popup {
             text: "Border"
             anchors.left: shadeText.right
             width: header.width / 5
-            font: Font.light.font
+            font: lightFont
             color: AppStyle.color.text
             horizontalAlignment: Text.AlignHCenter
         }
@@ -81,7 +81,7 @@ Popup {
             text: "Name"
             width: header.width * 2 / 5
             anchors.left: borderText.right
-            font: Font.light.font
+            font: lightFont
             color: AppStyle.color.text
             horizontalAlignment: Text.AlignHCenter
         }
@@ -159,7 +159,7 @@ Popup {
                 text: modelData.name
                 width: delegate.width * 2 / 5
                 anchors.left: border.right
-                font: Font.light.font
+                font: lightFont
                 color: AppStyle.color.text
                 horizontalAlignment: Text.AlignHCenter
             }
@@ -208,7 +208,7 @@ Popup {
             Text {
                 text: "Size"
                 width: sizeList.width
-                font: Font.light.font
+                font: lightFont
                 color: AppStyle.color.text
                 horizontalAlignment: Text.AlignHCenter
             }
@@ -242,7 +242,7 @@ Popup {
                 id: sizeText
                 text: modelData.text
                 width: sizeList.width
-                font: Font.light.font
+                font: lightFont
                 color: AppStyle.color.text
                 horizontalAlignment: Text.AlignHCenter
             }
