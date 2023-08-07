@@ -225,25 +225,15 @@ class SVGBrick:
     @staticmethod
     def stringLength(line: str, size=12, font=BOLD):
         if font == NORMAL:
-            if platform == "darwin":
-                weight = QFont.Normal + 30
-                size = size + 1
-            else:
-                weight = QFont.Thin
+            weight = QFont.Thin
             style = "Light"
         else:
-            if platform == "darwin":
-                weight = QFont.ExtraBold + 30
-                size = size + 2
-            else:
-                weight = QFont.DemiBold + 20
+            weight = QFont.DemiBold + 20
             style = "Bold"
-
-        if platform != "darwin":
-            size = size - 1
+        size = size - 1
         metric = QFontMetrics(QFontDatabase.font("Roboto", style, math.ceil(size)), pointSize=math.ceil(size),weight=weight)
         print("dpi:", metric.fontDpi())
-        return metric.horizontalAdvance(line)
+        return metric.horizontalAdvance(line) / metric.fontDpi() * 96 # mhh small mac dpi
 
     def addVariable(self, line: str, x: int, y: int):
         segments = line.split("$", 2)

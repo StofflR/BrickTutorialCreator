@@ -17,6 +17,7 @@ import shutil
 
 if __name__ == "__main__":
 
+    os.environ["QT_FONT_DPI"] = "96"
     folder = os.path.join(os.getcwd() + r"/resources/tmp")
     logging.debug("Leftover tmp files form: "+folder)
     os.makedirs(folder, exist_ok=True)
