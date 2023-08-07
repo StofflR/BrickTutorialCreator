@@ -11,7 +11,7 @@ T.TabButton {
     opacity: enabled ? 1.0 : 0.3
     contentItem: Text {
         text: creator.text
-        font.family: Font.boldFont ? Font.boldFont : -1
+        font.family: "Roboto"
         font.pixelSize: AppStyle.spacing
         opacity: enabled ? 1.0 : 0.3
         color: AppStyle.color.text

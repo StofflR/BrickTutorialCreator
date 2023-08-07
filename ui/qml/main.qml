@@ -2,7 +2,6 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 2.15
-import QtWebEngine 1.10
 
 import "assets"
 import "font"
@@ -17,7 +16,7 @@ ApplicationWindow {
     minimumHeight: 500
     visible: true
     title: qsTr("Brick Creator")
-    font.family: Font.boldFont ? Font.boldFont : -1
+    font.family: "Roboto"
     font.pointSize: AppStyle.pointsizeSpacing
     property string statusText: ""
     function updateStatusMessage(text) {
@@ -29,14 +28,14 @@ ApplicationWindow {
         Menu {
             id: file
             title: qsTr("File")
-            font.family: Font.boldFont ? Font.boldFont : -1
+            font.family: "Roboto"
             font.pointSize: AppStyle.pointsizeSpacing
 
             MenuItem {
                 onTriggered: help.open()
                 contentItem: Text {
                     text: qsTr("Help")
-                    font.family: Font.boldFont ? Font.boldFont : -1
+                    font.family: "Roboto"
                     font.pointSize: AppStyle.pointsizeSpacing
                     color: AppStyle.color.text
                 }
@@ -48,7 +47,7 @@ ApplicationWindow {
             MenuItem {
                 contentItem: Text {
                     text: qsTr("About")
-                    font.family: Font.boldFont ? Font.boldFont : -1
+                    font.family: "Roboto"
                     font.pointSize: AppStyle.pointsizeSpacing
                     color: AppStyle.color.text
                 }
@@ -61,7 +60,7 @@ ApplicationWindow {
             MenuItem {
                 contentItem: Text {
                     text: qsTr("Convert Folder (JSON → SVG)")
-                    font.family: Font.boldFont ? Font.boldFont : -1
+                    font.family: "Roboto"
                     font.pointSize: AppStyle.pointsizeSpacing
                     color: AppStyle.color.text
                 }
@@ -73,7 +72,7 @@ ApplicationWindow {
             MenuItem {
                 contentItem: Text {
                     text: qsTr("Convert Folder (SVG → PNG)")
-                    font.family: Font.boldFont ? Font.boldFont : -1
+                    font.family: "Roboto"
                     font.pointSize: AppStyle.pointsizeSpacing
                     color: AppStyle.color.text
                 }
@@ -85,7 +84,7 @@ ApplicationWindow {
             MenuItem {
                 contentItem: Text {
                     text: qsTr("Convert Folder (JSON → PNG)")
-                    font.family: Font.boldFont ? Font.boldFont : -1
+                    font.family: "Roboto"
                     font.pointSize: AppStyle.pointsizeSpacing
                     color: AppStyle.color.text
                 }
@@ -98,7 +97,7 @@ ApplicationWindow {
             MenuItem {
                 contentItem: Text {
                     text: qsTr("Update existing bricks")
-                    font.family: Font.boldFont ? Font.boldFont : -1
+                    font.family: "Roboto"
                     font.pointSize: AppStyle.pointsizeSpacing
                     color: AppStyle.color.text
                 }
@@ -188,10 +187,6 @@ ApplicationWindow {
         focus: true
         contentItem: Rectangle {
             anchors.fill: parent
-            WebEngineView {
-                anchors.fill: parent
-                url: "qrc:/about.html"
-            }
         }
     }
     Popup {
@@ -204,10 +199,6 @@ ApplicationWindow {
         focus: true
         contentItem: Rectangle {
             anchors.fill: parent
-            WebEngineView {
-                anchors.fill: parent
-                url: "qrc:/help.html"
-            }
         }
     }
 }

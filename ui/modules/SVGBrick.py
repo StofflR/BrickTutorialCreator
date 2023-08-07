@@ -7,9 +7,11 @@ import sys
 import xml.etree.ElementTree as Tree
 from ssl import DefaultVerifyPaths
 from typing import Dict
-from PySide6.QtGui import QImage, QPainter, QFontMetrics, QFont, QIcon
+from PySide6.QtGui import QImage, QPainter, QFontMetrics, QFont, QIcon, QFontDatabase
 from PySide6.QtSvg import QSvgRenderer
 from PySide6.QtCore import Qt, QSize
+import math
+from sys import platform
 
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
@@ -37,8 +39,8 @@ RES_PATH = {
     NORMAL: "/qml/font/Roboto-Light.ttf"
 }
 FAMILY_NAME = {
-    BOLD: "Roboto-Bold",
-    NORMAL: "Roboto-Light"
+    BOLD: "Roboto",
+    NORMAL: "Roboto"
 }
 
 LEN_SCALAR = {
@@ -193,8 +195,7 @@ class SVGBrick:
 
     def addString(self, line: str, x: int, y: int, svg_id=TEXT, font_weight=BOLD, size=FONT_SIZE):
         size = size * self.scaling_factor
-        font_type = "font-family: 'Roboto Light', sans-serif;font-size:" + \
-                    str(size) + "pt;"
+        font_type = "font-family: Roboto;font-size:" + str(size) + "pt;"
 
         sub_element = Tree.SubElement(self.tree_.getroot(), 'text', {'id': svg_id,
                                                                          'x': str(x) + "px",
@@ -225,11 +226,14 @@ class SVGBrick:
     def stringLength(line: str, size=12, font=BOLD):
         if font == NORMAL:
             weight = QFont.Thin
+            style = "Light"
         else:
-            weight = QFont.DemiBold+20
-        size = size-1
-        metric = QFontMetrics(QFont(FAMILY_NAME[font], pointSize=round(size),weight=weight))
-        return metric.horizontalAdvance(line)
+            weight = QFont.DemiBold + 20
+            style = "Bold"
+        size = size - 1
+        metric = QFontMetrics(QFontDatabase.font("Roboto", style, math.ceil(size)), pointSize=math.ceil(size),weight=weight)
+        print("dpi:", metric.fontDpi())
+        return metric.horizontalAdvance(line) / metric.fontDpi() * 96 # mhh small mac dpi
 
     def addVariable(self, line: str, x: int, y: int):
         segments = line.split("$", 2)
@@ -238,7 +242,7 @@ class SVGBrick:
 
         segments[1] = " " + segments[1] + " "
         _ = self.addString(segments[1], x, y, font_weight=NORMAL)
-        x = self.addLine(segments[1], x, y + LINE_OFF)
+        x = self.addLine(segments[1], math.ceil(x), y + LINE_OFF)
 
         if len(segments) > 2:
             return segments[2], x, y

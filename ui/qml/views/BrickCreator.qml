@@ -30,7 +30,7 @@ Rectangle {
         folder: tempFolder
         TextMetrics {
             id: textMetrics
-            font.family: Font.boldFont ? Font.boldFont : -1
+            font.family: "Roboto"
             elide: Text.ElideLeft
             elideWidth: path.field.width
             text: folderDialog.folder
@@ -85,7 +85,7 @@ Rectangle {
         height: AppStyle.defaultHeight
         id: saveLabel
         text: qsTr("Save as")
-        font.family: Font.boldFont ? Font.boldFont : -1
+        font.family: "Roboto"
         font.pointSize: AppStyle.pointsizeSpacing
         anchors.top: yPos.top
         anchors.left: yPos.right
