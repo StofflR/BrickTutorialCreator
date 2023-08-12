@@ -97,6 +97,11 @@ Popup {
             anchors.top: parent.top
             height: 200
         }
+
+        MouseArea{
+            anchors.fill: batchDialog
+            onClicked: batchDialog.forceActiveFocus()
+        }
         EditableBrick {
             id: targetPreview
             anchors.bottom: prev.top

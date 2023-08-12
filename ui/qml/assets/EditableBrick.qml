@@ -241,7 +241,7 @@ Image {
         icon.source: "qrc:/bricks/resources/create_black_24dp.svg"
         ToolTip.visible: hovered
         ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-        ToolTip.text: qsTr("Clear current brick content!")
+        ToolTip.text: qsTr("Edit visuals of current brick!")
         onPressed: selector.open()
     }
 }

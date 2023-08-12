@@ -232,7 +232,6 @@ class SVGBrick:
             style = "Bold"
         size = size - 1
         metric = QFontMetrics(QFontDatabase.font("Roboto", style, math.ceil(size)), pointSize=math.ceil(size),weight=weight)
-        print("dpi:", metric.fontDpi())
         return metric.horizontalAdvance(line) / metric.fontDpi() * 96 # mhh small mac dpi
 
     def addVariable(self, line: str, x: int, y: int):

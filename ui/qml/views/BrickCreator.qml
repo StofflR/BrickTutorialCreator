@@ -158,6 +158,11 @@ Rectangle {
         color: AppStyle.color.midlight
         radius: 5
     }
+    MouseArea{
+        anchors.fill: root
+        onClicked: root.forceActiveFocus()
+    }
+
     EditableBrick {
         id: edtiableBrick
 
@@ -204,6 +209,7 @@ Rectangle {
             root.updateStatusMessage(statusText)
         }
     }
+
     Rectangle {
         id: bottomPadding
         height: edtiableBrick.brickColor.search(

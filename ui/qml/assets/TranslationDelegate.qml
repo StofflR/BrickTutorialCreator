@@ -55,6 +55,10 @@ ItemDelegate {
         fillMode: Image.PreserveAspectFit
     }
 
+    MouseArea{
+        anchors.fill: root
+        onClicked: root.forceActiveFocus()
+    }
     EditableBrick {
         id: target
         anchors.right: root.right
@@ -68,18 +72,5 @@ ItemDelegate {
                                        sourcePath)
                            modified = false
                        }
-
-
-        /*IconButton {
-            id: clearButton
-            anchors.top: target.top
-            anchors.right: target.right
-            anchors.margins: enabled ? AppStyle.spacing : 0
-            height: enabled ? width : 0
-            icon.source: "qrc:/bricks/resources/done_black_24dp.svg"
-            ToolTip.visible: hovered
-            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-            ToolTip.text: qsTr("Clear current brick content!")
-        }*/
     }
 }

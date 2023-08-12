@@ -26,3 +26,5 @@ ui/BrickTutorialCreator.build/
 *.gz
 
 .DS_Store
+
+ui/ui.pyproject.user

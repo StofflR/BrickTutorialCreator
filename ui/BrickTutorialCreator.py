@@ -34,7 +34,6 @@ if __name__ == "__main__":
 
     sys.argv += ['--style', 'Fusion']
     QGuiApplication.setAttribute(Qt.AA_ShareOpenGLContexts, True)
-    QGuiApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
     QQuickWindow.setGraphicsApi(QSGRendererInterface.OpenGLRhi)
     app = QGuiApplication(sys.argv)
     app.setWindowIcon(QIcon("./resources/icon.svg"))
