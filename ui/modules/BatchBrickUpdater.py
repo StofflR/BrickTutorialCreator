@@ -166,7 +166,7 @@ class BatchBrickUpdater:
                 rel_dir = os.path.relpath(dir_, root_dir)
                 rel_file = os.path.join(rel_dir, file_name)
                 file_set.append(os.path.join(root_dir, rel_file))
-        print(file_set)
+        #print(file_set)
         bricks = [r"bricks\RaspberryPi\Set_Raspberry_Pi_PWM_pin_3_to_50_%_100_Hz.svg"]
         base = r"..\..\BrickTutorialCreator\ui\base"
         converted = 0
@@ -182,7 +182,7 @@ class BatchBrickUpdater:
             target_path = os.getcwd() + "/converted" + "\\".join(brick_path.replace("bricks", "").split("\\")[0:-1])
             if not os.path.exists(target_path):
                 os.makedirs(target_path)
-            print(target_path)
+            #print(target_path)
             brick.save(
                 target_path + "\\" + re.sub(" +", " ", brick.contentPlain()).replace(" ", "_").replace("/", "")
                 .replace(":", "").replace("<", " lt ").replace(">", " gt "))
