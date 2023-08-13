@@ -7,14 +7,16 @@ import "views"
 
 Item {
     id: root
-    signal converted(int count)
+    signal converted(var count)
     Converter {
         id: converter
     }
 
     BatchBrickDialog {
         id: batchBrickDialog
-        onFinished: count => converted(count)
+        onFinished: count => root.converted(count)
+        onConverted: target => root.converted(target)
+
         modal: true
         converter: converter
     }

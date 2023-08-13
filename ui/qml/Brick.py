@@ -95,14 +95,16 @@ class Brick(QObject):
         # clean multi, leading/tailing whitespaces
         return ' '.join(self.brick.contentPlain().split()).strip().replace(" ", "_").replace("/", "_").replace(".", "_").replace(":", "_").replace("<", "l").replace(">", "g").replace("'","").replace("?","")
 
-    @Slot(str)
-    @Slot(str, str)
+    @Slot(str, result=str)
+    @Slot(str, str, result = str)
     def saveSVG(self, path, filename=None):
         if not filename:
             filename = self.fileName()
         filename = cleanFileName(filename)
         os.makedirs(self.localPath(path), exist_ok=True)
-        self.brick.save(self.localPath(path) + "/" + filename + ".svg")
+        target = self.localPath(path) + "/" + filename + ".svg"
+        self.brick.save(target)
+        return target
 
     @Slot(str)
     @Slot(str, str)

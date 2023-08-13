@@ -149,7 +149,7 @@ class SVGBrick:
         for key in self.operations.keys():
             content = content.replace(key, "")
         if for_system:
-            content = content.replace(" ", "_").replace("/", "").replace(":", "").replace("<", " lt ").replace(">", " gt ")
+            content = content.replace(" ", "_").replace("/", "").replace(":", "").replace("<", " lt ").replace(">", " gt ").replace('"', "")
         return content
 
     def save(self, path=""):

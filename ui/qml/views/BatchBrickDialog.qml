@@ -12,6 +12,7 @@ import "../style"
 Popup {
     id: batchDialog
     signal finished(int value)
+    signal converted(var target)
     property int count: 0
     property int index: 0
     property var files: []
@@ -65,7 +66,8 @@ Popup {
             content[index] = targetPreview.brickContent
         else
             content.push(targetPreview.brickContent)
-        targetPreview.brick.saveSVG(batchDialog.targetPath + "/converted")
+        var target = targetPreview.brick.saveSVG(batchDialog.targetPath + "/converted")
+        converted(index + "/" + files.length + " : " + target)
     }
 
     function finish(count) {
@@ -139,10 +141,10 @@ Popup {
             width: parent.width / 4
             anchors.bottom: layout.bottom
             anchors.margins: AppStyle.spacing
-            onClicked: batchDialog.index < batchDialog.files.length
+            onClicked: batchDialog.index <= batchDialog.files.length
                        - 1 ? batchDialog.next() : batchDialog.finish(
                                  batchDialog.index)
-            text: batchDialog.index < batchDialog.files.length - 1 ? "Next" : "Finish"
+            text: batchDialog.index <= batchDialog.files.length - 1 ? "Next" : "Finish"
         }
     }
 }
