@@ -10,7 +10,7 @@ import json
 
 from sys import platform
 
-if platform == "linux" or platform == "linux2" or platform == 'darwin':
+if platform == "linux" or platform == "linux2" or platform == "darwin":
     FILE_STUB = "file://"
 else:
     FILE_STUB = "file:///"
@@ -104,24 +104,30 @@ class TutorialManager(QObject):
         if self.ccby:
             self.addBrick(FILE_STUB + os.getcwd() + "/resources/ccbysa.svg")
         self.bricks[self.modelVal[0]].savePNG(
-            path=self.bricks[self.modelVal[0]].working_brick_.replace(".svg", ".png"), width=640)
+            path=self.bricks[self.modelVal[0]].working_brick_.replace(".svg", ".png"),
+            width=640,
+        )
         tutorial = QImage(
-            self.bricks[self.modelVal[0]].working_brick_.replace(".svg", ".png"))
+            self.bricks[self.modelVal[0]].working_brick_.replace(".svg", ".png")
+        )
 
         for brick in self.modelVal[1::]:
             self.bricks[brick].savePNG(
-                path=self.bricks[brick].working_brick_.replace(".svg", ".png"), width=640)
-            b = QImage(
-                self.bricks[brick].working_brick_.replace(".svg", ".png"))
-            target = QImage(tutorial.width(), tutorial.height(
-            ) + b.height() - int(tutorial.width() / 55), QImage.Format_RGBA32FPx4)
+                path=self.bricks[brick].working_brick_.replace(".svg", ".png"),
+                width=640,
+            )
+            b = QImage(self.bricks[brick].working_brick_.replace(".svg", ".png"))
+            target = QImage(
+                tutorial.width(),
+                tutorial.height() + b.height() - int(tutorial.width() / 55),
+                QImage.Format_RGBA32FPx4,
+            )
             painter = QPainter(target)
             painter.drawImage(0, 0, tutorial)
-            painter.drawImage(0, tutorial.height() -
-                              int(tutorial.width() / 55), b)
+            painter.drawImage(0, tutorial.height() - int(tutorial.width() / 55), b)
             tutorial = target
         if self.ccby:
-            self.removeBrick(len(self.bricks)-1)
+            self.removeBrick(len(self.bricks) - 1)
         self.tutorial = tutorial
 
     def _getModel(self):

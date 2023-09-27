@@ -7,7 +7,7 @@ import json
 
 from sys import platform
 
-if platform == "linux" or platform == "linux2" or platform == 'darwin':
+if platform == "linux" or platform == "linux2" or platform == "darwin":
     FILE_STUB = "file://"
 else:
     FILE_STUB = "file:///"
@@ -36,21 +36,28 @@ class Brick(QObject):
     @Slot(None, result=str)
     def basePath(self):
         baseBrick = self.brick.base_type
-        control=""
+        control = ""
         if "(control)" in baseBrick:
-            baseBrick = baseBrick.replace(" (control)","")
+            baseBrick = baseBrick.replace(" (control)", "")
             control = "_control"
-        return "brick_"+baseBrick+"_"+str(self.brick.size)+control+".svg"
+        return "brick_" + baseBrick + "_" + str(self.brick.size) + control + ".svg"
 
     @Slot(None, result=str)
     def brickColor(self):
-        return  self.brick.base_type
+        return self.brick.base_type
 
     @Slot(str, str, str, str, int, int, int)
     def updateBrick(self, color, path, size, content, scale, x=43, y=33):
         if color and path and size and scale:
-            self.brick = SVGBrick(base_type=color, content=content,
-                                  size=size, path=path, scaling_factor=scale / 100, x=x, y=y)
+            self.brick = SVGBrick(
+                base_type=color,
+                content=content,
+                size=size,
+                path=path,
+                scaling_factor=scale / 100,
+                x=x,
+                y=y,
+            )
 
     @Slot(str)
     def fromJSON(self, path):
@@ -77,11 +84,16 @@ class Brick(QObject):
         scale = self.brick.scaling_factor
         if color and path and size and scale:
             self.brick = SVGBrick(
-                base_type=color, content=content, size=size, path=path, scaling_factor=scale)
+                base_type=color,
+                content=content,
+                size=size,
+                path=path,
+                scaling_factor=scale,
+            )
 
     @Slot(None, result=str)
     def path(self):
-        if (self.brick):
+        if self.brick:
             workingBrick = self.brick.getWorkingBrick()
             return QUrl.fromLocalFile(workingBrick).toString()
         return ""
@@ -93,10 +105,21 @@ class Brick(QObject):
     @Slot(result=str)
     def fileName(self):
         # clean multi, leading/tailing whitespaces
-        return ' '.join(self.brick.contentPlain().split()).strip().replace(" ", "_").replace("/", "_").replace(".", "_").replace(":", "_").replace("<", "l").replace(">", "g").replace("'","").replace("?","")
+        return (
+            " ".join(self.brick.contentPlain().split())
+            .strip()
+            .replace(" ", "_")
+            .replace("/", "_")
+            .replace(".", "_")
+            .replace(":", "_")
+            .replace("<", "l")
+            .replace(">", "g")
+            .replace("'", "")
+            .replace("?", "")
+        )
 
     @Slot(str, result=str)
-    @Slot(str, str, result = str)
+    @Slot(str, str, result=str)
     def saveSVG(self, path, filename=None):
         if not filename:
             filename = self.fileName()
