@@ -1,6 +1,6 @@
 from PySide6.QtCore import Slot, QObject, QUrl
 from PySide6.QtQml import QmlElement
-from modules.SVGBrick import SVGBrick
+from modules.SVGBrick import SVGBrick, forbidden_characters
 import logging
 import os
 import json
@@ -105,18 +105,7 @@ class Brick(QObject):
     @Slot(result=str)
     def fileName(self):
         # clean multi, leading/tailing whitespaces
-        return (
-            " ".join(self.brick.contentPlain().split())
-            .strip()
-            .replace(" ", "_")
-            .replace("/", "_")
-            .replace(".", "_")
-            .replace(":", "_")
-            .replace("<", "l")
-            .replace(">", "g")
-            .replace("'", "")
-            .replace("?", "")
-        )
+        return " ".join(self.brick.contentPlain().split()).strip().replace(" ", "_")
 
     @Slot(str, result=str)
     @Slot(str, str, result=str)
@@ -154,4 +143,7 @@ class Brick(QObject):
 
 
 def cleanFileName(filename):
-    return filename.replace(".svg", "").replace(".png", "").replace(".json", "")
+    name = filename.replace(".svg", "").replace(".png", "").replace(".json", "")
+    for key, value in forbidden_characters.items():
+        name = name.replace(key, value)
+    return name

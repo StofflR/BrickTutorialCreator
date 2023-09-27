@@ -19,14 +19,11 @@ def test_svg_brick():
     out_path = "resources/modules/out_test/"
 
     for content in contents:
-        brick = SVGBrick(
-            "blue", content, 1, base_file, scaling_factor=scale)
-        brick.save(path=out_path +
-                   brick.contentPlain().replace(" ", "_")+".svg")
-        brick.savePNG(path=out_path +
-                      brick.contentPlain().replace(" ", "_")+".svg")
+        brick = SVGBrick("blue", content, 1, base_file, scaling_factor=scale)
+        brick.save(path=out_path + brick.contentPlain().replace(" ", "_") + ".svg")
+        brick.savePNG(path=out_path + brick.contentPlain().replace(" ", "_") + ".svg")
     input()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     test_svg_brick()
