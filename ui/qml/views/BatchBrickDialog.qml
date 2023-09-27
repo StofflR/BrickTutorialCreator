@@ -66,10 +66,11 @@ Popup {
             content[index] = targetPreview.brickContent
         else
             content.push(targetPreview.brickContent)
-        var target = targetPreview.brick.saveSVG(batchDialog.targetPath + "/converted")
+
+        console.log("updating file: " + batchDialog.brickPath)
+        var target = targetPreview.brick.saveSVG(converter.getOutputPath(files[index]))
         converted(index + "/" + files.length + " : " + target)
     }
-
     function finish(count) {
         finished(count)
         batchDialog.close()

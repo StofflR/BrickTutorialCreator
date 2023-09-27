@@ -116,3 +116,8 @@ class Converter(QObject):
         file = open(path, 'w')
         file.write(content)
         file.close()
+
+    @Slot(str, result=str)
+    def getOutputPath(self, file):
+        print("File is:", os.path.dirname(file)+"/converted")
+        return FILE_STUB + os.path.dirname(file)+"/converted"
