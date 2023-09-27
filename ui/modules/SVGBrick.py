@@ -34,27 +34,43 @@ DEFAULT_Y = 33
 DROPDOWN_SIZE = 10
 DROPDOWN_OFFSET = 5
 
-RES_PATH = {
-    BOLD: "/qml/font/Roboto-Bold.ttf",
-    NORMAL: "/qml/font/Roboto-Light.ttf"
-}
-FAMILY_NAME = {
-    BOLD: "Roboto",
-    NORMAL: "Roboto"
-}
+RES_PATH = {BOLD: "/qml/font/Roboto-Bold.ttf", NORMAL: "/qml/font/Roboto-Light.ttf"}
+FAMILY_NAME = {BOLD: "Roboto", NORMAL: "Roboto"}
 
-LEN_SCALAR = {
-    BOLD: 1.1,
-    NORMAL: 1.1
-}
+LEN_SCALAR = {BOLD: 1.1, NORMAL: 1.1}
+
+forbidden_characters = {r" ": "_",
+                        r"/": "",
+                        r":": "",
+                        r"<": "_lt_",
+                        r">": "_gt_",
+                        r'"': "",
+                        r"\": "", "
+                        r"|": "",
+                        r"?": "",
+                        r"*": "",
+                        r".": "",
+                        r"=": "_eq_"}
 
 
 def randomString(digits):
-    return ''.join(random.SystemRandom().choice(string.ascii_letters + string.digits) for _ in range(digits))
+    return "".join(
+        random.SystemRandom().choice(string.ascii_letters + string.digits)
+        for _ in range(digits)
+    )
 
 
 class SVGBrick:
-    def __init__(self, base_type: str, content: str, size: int, path: str, scaling_factor=1, x=DEFAULT_X, y=DEFAULT_Y):
+    def __init__(
+        self,
+        base_type: str,
+        content: str,
+        size: int,
+        path: str,
+        scaling_factor=1,
+        x=DEFAULT_X,
+        y=DEFAULT_Y,
+    ):
         self.base_type = base_type
         self.working_brick_ = ""
         self.scaling_factor = scaling_factor
@@ -63,12 +79,12 @@ class SVGBrick:
         self.size = size
         self.x = x
         self.y = y
-        self.tree_ = Tree.parse(open(os.getcwd() + "/base/" + self.path, 'r'))
+        self.tree_ = Tree.parse(open(os.getcwd() + "/base/" + self.path, "r"))
         self.operations = {
-            '\n': self.addLineBreak,
+            "\n": self.addLineBreak,
             "\0": self.addString,
             "*": self.addDropdown,
-            "$": self.addVariable
+            "$": self.addVariable,
         }
         self.addContent()
         pass
@@ -79,12 +95,12 @@ class SVGBrick:
     def textColor(self):
         if "transparent" in self.base_type:
             if "white" in self.base_type:
-                return '#FFFFFF'
-            return '#000000'
+                return "#FFFFFF"
+            return "#000000"
 
         if "white" in self.base_type:
-            return '#274383'
-        return '#FFFFFF'
+            return "#274383"
+        return "#FFFFFF"
 
     def __del__(self):
         logging.debug("Deleting: " + self.working_brick_)
@@ -94,10 +110,14 @@ class SVGBrick:
 
     @staticmethod
     def getJSONFromSVG(path):
-        svg = Tree.parse(open(path, 'r'))
+        svg = Tree.parse(open(path, "r"))
         json_text = ""
         for element in svg.getroot():
-            if hasattr(element, "attrib") and "id" in element.attrib.keys() and element.attrib["id"] == "json":
+            if (
+                hasattr(element, "attrib")
+                and "id" in element.attrib.keys()
+                and element.attrib["id"] == "json"
+            ):
                 json_text = element.text
         if json_text == "":
             return json_text
@@ -108,8 +128,15 @@ class SVGBrick:
         try:
             x = DEFAULT_X if "x" not in json_text.keys() else json_text["x"]
             y = DEFAULT_Y if "y" not in json_text.keys() else json_text["y"]
-            return cls(json_text["base_type"], json_text["content"], json_text["size"], json_text["path"],
-                       json_text["scaling_factor"], x, y)
+            return cls(
+                json_text["base_type"],
+                json_text["content"],
+                json_text["size"],
+                json_text["path"],
+                json_text["scaling_factor"],
+                x,
+                y,
+            )
         except Exception as e:
             logging.warning(e)
             logging.info("created empty brick")
@@ -132,7 +159,11 @@ class SVGBrick:
     def addLineBreak(self, line: str, x: int, y: int, delim="\n"):
         segments = line.split(delim, 1)
         self.addString(segments[0], x, y)
-        return segments[1], self.x, y + (LINE_HEIGHT + 2*LINE_OFF) * self.scaling_factor
+        return (
+            segments[1],
+            self.x,
+            y + (LINE_HEIGHT + 2 * LINE_OFF) * self.scaling_factor,
+        )
 
     def addContent(self):
         if not os.path.isdir(DEF_TMP):
@@ -144,12 +175,13 @@ class SVGBrick:
 
     def contentPlain(self, for_system=False):
         content = self.content
-        if("collapsed" in self.base_type):
+        if "collapsed" in self.base_type:
             content += self.base_type
         for key in self.operations.keys():
             content = content.replace(key, "")
         if for_system:
-            content = content.replace(" ", "_").replace("/", "").replace(":", "").replace("<", " lt ").replace(">", " gt ").replace('"', "")
+            for key, value in forbidden_characters.items():
+                content = content.replace(key, value)
         return content
 
     def save(self, path=""):
@@ -162,21 +194,22 @@ class SVGBrick:
         self.tree_.write(path)
 
         # TODO find better solution
-        with open(path, 'r') as file:
+        with open(path, "r") as file:
             filedata = file.read()
-            filedata = filedata.replace('ns0:', '').replace(':ns0', '')
-        with open(path, 'w') as file:
+            filedata = filedata.replace("ns0:", "").replace(":ns0", "")
+        with open(path, "w") as file:
             file.write(filedata)
 
     def savePNG(self, path="", width=1920):
         renderer = QSvgRenderer(path.replace(".png", ".svg"))
 
         image = QImage(path.replace(".png", ".svg")).scaledToWidth(
-            width, Qt.SmoothTransformation)
+            width, Qt.SmoothTransformation
+        )
 
         painter = QPainter(image)
         renderer.render(painter)
-        del painter # painter doesn't get deleted properly
+        del painter  # painter doesn't get deleted properly
         image.save(path, quality=100)
         logging.debug("Brick saved to: " + path)
 
@@ -193,32 +226,47 @@ class SVGBrick:
             self.addString(content, x, y)
         self.addDescription()
 
-    def addString(self, line: str, x: int, y: int, svg_id=TEXT, font_weight=BOLD, size=FONT_SIZE):
+    def addString(
+        self, line: str, x: int, y: int, svg_id=TEXT, font_weight=BOLD, size=FONT_SIZE
+    ):
         size = size * self.scaling_factor
         font_type = "font-family: Roboto;font-size:" + str(size) + "pt;"
 
-        sub_element = Tree.SubElement(self.tree_.getroot(), 'text', {'id': svg_id,
-                                                                         'x': str(x) + "px",
-                                                                         'y': str(y) + "px",
-                                                                         'fill': self.textColor(),
-                                                                         'fill-opacity': "1",
-                                                                         "font-weight": font_weight,
-                                                                         'xml:space': 'preserve',
-                                                                         'style': font_type})
+        sub_element = Tree.SubElement(
+            self.tree_.getroot(),
+            "text",
+            {
+                "id": svg_id,
+                "x": str(x) + "px",
+                "y": str(y) + "px",
+                "fill": self.textColor(),
+                "fill-opacity": "1",
+                "font-weight": font_weight,
+                "xml:space": "preserve",
+                "style": font_type,
+            },
+        )
         sub_element.text = line
         return self.stringLength(line, size=FONT_SIZE * self.scaling_factor)
 
     def addLine(self, line, x, y):
         length = self.stringLength(
-            line, size=FONT_SIZE * self.scaling_factor, font=NORMAL)
-        Tree.SubElement(self.tree_.getroot(), 'line', {"id": "var_line",
-                                                           "x1": str(x),
-                                                           "y1": str(y),
-                                                           "x2": str(x + length),
-                                                           "y2": str(y),
-                                                           "stroke": "#ffffff",
-                                                           "fill": "#ffffff",
-                                                           "stroke-width": "1"})
+            line, size=FONT_SIZE * self.scaling_factor, font=NORMAL
+        )
+        Tree.SubElement(
+            self.tree_.getroot(),
+            "line",
+            {
+                "id": "var_line",
+                "x1": str(x),
+                "y1": str(y),
+                "x2": str(x + length),
+                "y2": str(y),
+                "stroke": "#ffffff",
+                "fill": "#ffffff",
+                "stroke-width": "1",
+            },
+        )
 
         return x + length
 
@@ -231,8 +279,14 @@ class SVGBrick:
             weight = QFont.DemiBold + 20
             style = "Bold"
         size = size - 1
-        metric = QFontMetrics(QFontDatabase.font("Roboto", style, math.ceil(size)), pointSize=math.ceil(size),weight=weight)
-        return metric.horizontalAdvance(line) / metric.fontDpi() * 96 # mhh small mac dpi
+        metric = QFontMetrics(
+            QFontDatabase.font("Roboto", style, math.ceil(size)),
+            pointSize=math.ceil(size),
+            weight=weight,
+        )
+        return (
+            metric.horizontalAdvance(line) / metric.fontDpi() * 96
+        )  # mhh small mac dpi
 
     def addVariable(self, line: str, x: int, y: int):
         segments = line.split("$", 2)
@@ -251,12 +305,16 @@ class SVGBrick:
         segments = line.split("*", 2)
         x += self.addString(segments[0], x, y)
         self.addTriangle(DEFAULT_WIDTH, y)
-        x += self.addString(segments[1], x+DROPDOWN_OFFSET,
-                       y, DROPDOWN, NORMAL, DROPDOWN_SIZE)+DROPDOWN_OFFSET
+        x += (
+            self.addString(
+                segments[1], x + DROPDOWN_OFFSET, y, DROPDOWN, NORMAL, DROPDOWN_SIZE
+            )
+            + DROPDOWN_OFFSET
+        )
 
-        #y += (LINE_HEIGHT + 2*LINE_OFF) * self.scaling_factor
+        # y += (LINE_HEIGHT + 2*LINE_OFF) * self.scaling_factor
 
-        #y += (LINE_HEIGHT + 2*LINE_OFF) * self.scaling_factor
+        # y += (LINE_HEIGHT + 2*LINE_OFF) * self.scaling_factor
         if len(segments) > 2:
             return segments[2], x, y
         return None, x, y
@@ -264,28 +322,52 @@ class SVGBrick:
     def addTriangle(self, x0: int, y0: int):
         x = x0 - 2 * FONT_SIZE
         y = y0 - FONT_SIZE
-        Tree.SubElement(self.tree_.getroot(), 'polygon',
-                        {"points": str(x) + "," + str(y) + " " + str(x + FONT_SIZE) + "," + str(y) + " " + str(
-                            x + (FONT_SIZE / 2)) + "," + str(y + FONT_SIZE),
-                         "id": "triangle",
-                         "stroke": "white",
-                         "fill": "white",
-                         "stroke-width": "1"})
+        Tree.SubElement(
+            self.tree_.getroot(),
+            "polygon",
+            {
+                "points": str(x)
+                + ","
+                + str(y)
+                + " "
+                + str(x + FONT_SIZE)
+                + ","
+                + str(y)
+                + " "
+                + str(x + (FONT_SIZE / 2))
+                + ","
+                + str(y + FONT_SIZE),
+                "id": "triangle",
+                "stroke": "white",
+                "fill": "white",
+                "stroke-width": "1",
+            },
+        )
 
     def addDescription(self):
         sub_element = Tree.SubElement(
-            self.tree_.getroot(), 'desc', {'id': "json", 'tag' : "brick"})
+            self.tree_.getroot(), "desc", {"id": "json", "tag": "brick"}
+        )
         sub_element.text = self.JSON()
 
     def JSON(self):
-        return json.dumps({"base_type": self.base_type,
-                           "content": self.content,
-                           "size": self.size,
-                           "path": self.path,
-                           "scaling_factor": self.scaling_factor, "x":self.x, "y":self.y})
+        return json.dumps(
+            {
+                "base_type": self.base_type,
+                "content": self.content,
+                "size": self.size,
+                "path": self.path,
+                "scaling_factor": self.scaling_factor,
+                "x": self.x,
+                "y": self.y,
+            }
+        )
 
 
 if __name__ == "__main__":
-    brick = SVGBrick("blue", "Hellllllllllllo $Hellllllllllllo$ does it work?!*DROP",
-                     "/mnt/c/Users/Stoffl/Documents/GIT/BrickTutorialCreator/BrickCreator/base/brick_blue_1h.svg")
+    brick = SVGBrick(
+        "blue",
+        "Hellllllllllllo $Hellllllllllllo$ does it work?!*DROP",
+        "/mnt/c/Users/Stoffl/Documents/GIT/BrickTutorialCreator/BrickCreator/base/brick_blue_1h.svg",
+    )
     brick.addContent()

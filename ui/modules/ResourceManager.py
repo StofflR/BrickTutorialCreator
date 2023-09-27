@@ -21,8 +21,11 @@ class ResourceManager:
     def brick_op(self, file, colors, file_type):
         if file_type in file:
             color = file.split("_", 2)[1]
-            size = file.replace("brick_", "").replace(
-                color + "_", "").replace(file_type, "")
+            size = (
+                file.replace("brick_", "")
+                .replace(color + "_", "")
+                .replace(file_type, "")
+            )
             if "control" in file:
                 color = color + " (control)"
                 size = size.replace("_control", "")
@@ -50,7 +53,7 @@ class ResourceManager:
         return self.base_bricks
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     brick_manager = ResourceManager(file_type=".ai")
     for element in brick_manager.getAvailable():
         print(element.color, json.dumps(element.sizes, indent=2))

@@ -9,7 +9,7 @@ import json
 
 from sys import platform
 
-if platform == "linux" or platform == "linux2" or platform == 'darwin':
+if platform == "linux" or platform == "linux2" or platform == "darwin":
     FILE_STUB = "file://"
 else:
     FILE_STUB = "file:///"
@@ -33,7 +33,9 @@ class Converter(QObject):
             if ".json" in element:
                 count += 1
                 element = path + "/" + element
-                SVGBrick.fromJSON(json.load(open(element))).save(element.replace(".json", ".svg"))
+                SVGBrick.fromJSON(json.load(open(element))).save(
+                    element.replace(".json", ".svg")
+                )
         return count
 
     @Slot(str, result=int)
@@ -44,7 +46,9 @@ class Converter(QObject):
             if ".json" in element:
                 count += 1
                 element = path + "/" + element
-                SVGBrick.fromJSON(json.load(open(element))).savePNG(element.replace(".json", ".png"))
+                SVGBrick.fromJSON(json.load(open(element))).savePNG(
+                    element.replace(".json", ".png")
+                )
         return count
 
     @Slot(str, result=int)
@@ -55,7 +59,9 @@ class Converter(QObject):
             if ".svg" in element:
                 count += 1
                 element = path + "/" + element
-                SVGBrick.fromJSON(SVGBrick.getJSONFromSVG(element)).savePNG(element.replace(".svg", ".png"))
+                SVGBrick.fromJSON(SVGBrick.getJSONFromSVG(element)).savePNG(
+                    element.replace(".svg", ".png")
+                )
         return count
 
     @Slot(str, result=type([]))
@@ -67,12 +73,12 @@ class Converter(QObject):
                 if ".svg" in file_name:
                     rel_dir = os.path.relpath(dir_, path)
                     rel_file = os.path.join(rel_dir, file_name)
-                    file_set.append(os.path.join(path , rel_file))
+                    file_set.append(os.path.join(path, rel_file))
         return file_set
 
     @Slot(str)
     def convert(self, file):
-        doc = open(file, 'r')
+        doc = open(file, "r")
         is_brick = '<desc id="json" tag="brick">' in doc.read()
         doc.close()
         if is_brick:
@@ -83,14 +89,16 @@ class Converter(QObject):
             self.data["base_type"] = self.data["color"]
             self.data["content"] = self.content
             self.data["size"] = self.data["height"]
-            self.data["path"] = "brick_" + self.data["color"] + "_" + self.data["height"] + ".svg"
-
+            self.data["path"] = (
+                "brick_" + self.data["color"] + "_" + self.data["height"] + ".svg"
+            )
 
     @Slot(str, result=bool)
     def isBrick(self, file):
-        if not file: return False
+        if not file:
+            return False
         file = file.replace(FILE_STUB, "")
-        doc = open(file, 'r')
+        doc = open(file, "r")
         result = '<desc id="json" tag="brick">' in doc.read()
         doc.close()
         return result
@@ -105,19 +113,21 @@ class Converter(QObject):
         if type == "size":
             result = self.data["size"].replace("h", "")
         if type == "path":
-            result = "brick_" + self.data["base_type"] + "_" + self.data["size"] + ".svg"
+            result = (
+                "brick_" + self.data["base_type"] + "_" + self.data["size"] + ".svg"
+            )
         return result
 
     @Slot(str)
     def removeNS0(self, path):
         path = path.replace(FILE_STUB, "").replace("%5C.%5C", "/")
-        file = open(path, 'r')
-        content = "".join(file.read()).replace('ns0:', '').replace(':ns0', '')
-        file = open(path, 'w')
+        file = open(path, "r")
+        content = "".join(file.read()).replace("ns0:", "").replace(":ns0", "")
+        file = open(path, "w")
         file.write(content)
         file.close()
 
     @Slot(str, result=str)
     def getOutputPath(self, file):
-        print("File is:", os.path.dirname(file)+"/converted")
-        return FILE_STUB + os.path.dirname(file)+"/converted"
+        print("File is:", os.path.dirname(file) + "/converted")
+        return FILE_STUB + os.path.dirname(file) + "/converted"

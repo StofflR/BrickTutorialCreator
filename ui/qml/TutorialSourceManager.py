@@ -7,7 +7,7 @@ import logging
 
 from sys import platform
 
-if platform == "linux" or platform == "linux2" or platform == 'darwin':
+if platform == "linux" or platform == "linux2" or platform == "darwin":
     FILE_STUB = "file://"
 else:
     FILE_STUB = "file:///"
@@ -28,7 +28,7 @@ class TutorialSourceManager(QObject):
         self.filter = ""
 
     def isBrick(self, file: str):
-        is_brick = '<desc id="json" tag="brick">' in open(file, 'r').read()
+        is_brick = '<desc id="json" tag="brick">' in open(file, "r").read()
         if is_brick:
             return SVGBrick.getJSONFromSVG(file)
 
@@ -48,13 +48,14 @@ class TutorialSourceManager(QObject):
             if ".svg" in file:
                 brick_data = self.isBrick(file)
                 if brick_data:
-
-                    brick = {"path": file, "is_brick":  True}
+                    brick = {"path": file, "is_brick": True}
                     brick_data["base_path"] = brick_data["path"]
                     brick_data.update(brick)
                     brick = brick_data
 
-                    if self.filter == "" or ("content" in brick.keys() and self.filter in brick["content"]):
+                    if self.filter == "" or (
+                        "content" in brick.keys() and self.filter in brick["content"]
+                    ):
                         if self.enableSorting:
                             self.addSorted(resources, brick)
                             unique_resources = resources.copy()
@@ -140,6 +141,7 @@ class TutorialSourceManager(QObject):
         pass
 
     model = Property(list, _getModel, _updateModel, notify=modelChanged)
-    allowForeign = Property(bool, _getAllowForeign,
-                            _setAllowForeign, notify=foreignChanged)
+    allowForeign = Property(
+        bool, _getAllowForeign, _setAllowForeign, notify=foreignChanged
+    )
     sorted = Property(bool, _getSorting, _setSorting, notify=sortingChanged)
