@@ -179,9 +179,10 @@ Image {
         FileDialog {
             id: brickOpenDialog
             folder: tempFolder
-            nameFilters: ["SVG files (*.svg)", "JSON files (*.json)"]
+            nameFilters: ["Any (*.svg *.json)", "SVG files (*.svg)", "JSON files (*.json)"]
             fileMode: FileDialog.OpenFiles
             onAccepted: loadFromFile(currentFile)
+            options: FileDialog.HideNameFilterDetails
         }
         id: loadButton
         anchors.top: clearButton.bottom
