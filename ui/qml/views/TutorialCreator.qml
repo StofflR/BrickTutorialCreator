@@ -120,7 +120,7 @@ FocusScope {
                     FileDialog {
                         id: brickOpenDialog
                         folder: tempFolder
-                        nameFilters: ["SVG files (*.svg)", "JSON files (*.json)"]
+                        nameFilters: ["Any (*.svg *.json)", "SVG files (*.svg)", "JSON files (*.json)"]
                         fileMode: FileDialog.OpenFiles
                         onAccepted: {
                             tutorialManager.addBrick(currentFile)
