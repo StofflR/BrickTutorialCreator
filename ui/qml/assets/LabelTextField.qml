@@ -10,7 +10,6 @@ Item {
     width: 600
     height: AppStyle.defaultHeight
     property var label: qsTr("Label")
-    property var button_label: qsTr("Button")
     property alias field: field
     Label {
         width: item.width / 2 - AppStyle.spacing

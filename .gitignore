@@ -1,25 +1,19 @@
 
 .idea/
 
-ui/__pycache__/
-
-ui/modules/
-
-ui/qml/__pycache__/
-
 ui/resources/out/
 
 ui/resources/tmp/
 
 *.zip
 
-ui/venv/
+*/venv/
 
-ui/main.build/
+*/main.build/
 
-ui/BrickTutorialCreator.dist/
+*/BrickTutorialCreator.dist
 
-ui/BrickTutorialCreator.build/
+*/BrickTutorialCreator.build
 
 *.bin
 
@@ -27,4 +21,8 @@ ui/BrickTutorialCreator.build/
 
 .DS_Store
 
-ui/ui.pyproject.user
+*ui.pyproject.user
+
+venv/
+
+*__pycache__

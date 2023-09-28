@@ -67,11 +67,18 @@ class TutorialManager(QObject):
         content = []
         for brick in self.modelVal:
             content.append(self.bricks[brick].toJSON())
-        f = open(path.replace(FILE_STUB, ""), "w")
+        pre, _ = os.path.splitext(path.replace(FILE_STUB, ""))
+        f = open(pre + ".json", "w")
         f.write(json.dumps(content))
         f.close()
 
     @Slot(str)
+    def toPNG(self, path):
+        pre, _ = os.path.splitext(path.replace(FILE_STUB, ""))
+        self.generateTutorial()
+        self.tutorial.save(pre + ".png")
+
+    @Slot(str, result=str)
     def fromJSON(self, path):
         self.modelVal.clear()
         self.bricks.clear()
@@ -82,6 +89,10 @@ class TutorialManager(QObject):
             self.modelVal.append(brick_path)
             self.bricks[brick_path] = svg_brick
         self.modelChanged.emit()
+
+        filename_w_ext = os.path.basename(path.replace(FILE_STUB, ""))
+        filename, file_extension = os.path.splitext(filename_w_ext)
+        return filename
 
     @Slot(int)
     def removeBrick(self, index):
@@ -94,11 +105,18 @@ class TutorialManager(QObject):
     def _updateModel(self, model):
         self.modelVal = model
 
-    @Slot(str)
+    @Slot(str, result=str)
     def saveTutorial(self, path):
-        self.generateTutorial()
-        logging.debug("Saving Tutorial to: " + path)
-        self.tutorial.save(path.replace(FILE_STUB, ""))
+        pre, ext = os.path.splitext(path.replace(FILE_STUB, ""))
+        if "png" in ext:
+            logging.debug("Saving Tutorial to: " + pre + ".png")
+            self.toPNG(pre)
+        elif "json" in ext:
+            logging.debug("Saving Tutorial to: " + pre + ".json")
+            self.toJSON(pre)
+        filename_w_ext = os.path.basename(pre)
+        filename, file_extension = os.path.splitext(filename_w_ext)
+        return filename
 
     def generateTutorial(self):
         if self.ccby:
