@@ -1,24 +1,25 @@
-name: auto-format
-on: push
+name: black-action
+on: [push, pull_request]
 jobs:
-  format:
-    # Check if the PR is not from a fork
+  linter_name:
+    name: runner / black
     runs-on: ubuntu-latest
     steps:
-      - name: black
-        uses: lgeiger/black-action@v1.0.1
+      - uses: actions/checkout@v2
+      - name: Check files using the black formatter
+        uses: rickstaa/action-black@v1
+        id: action_black
         with:
-          args: .
-      - name: Check for modified files
-        id: git-check
-        run: echo "modified=$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)" >> $GITHUB_OUTPUT
-        
-        if: steps.git-check.outputs.modified == 'true'
-      - name: Check out changes            
-      - uses: actions/checkout@v3
-      - name: Push changes
-        run: |
-          git config --global user.name 'StofflR'
-          git config --global user.email 'StofflR@users.noreply.github.com'
-          git commit -am "Automated report"
-          git push
+          black_args: "."
+      - name: Create Pull Request
+        if: steps.action_black.outputs.is_formatted == 'true'
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: "Format Python code with psf/black push"
+          commit-message: ":art: Format Python code with psf/black"
+          body: |
+            There appear to be some python formatting errors in ${{ github.sha }}. This pull request
+            uses the [psf/black](https://github.com/psf/black) formatter to fix these issues.
+          base: ${{ github.head_ref }} # Creates pull request onto pull request or commit branch
+          branch: actions/black
