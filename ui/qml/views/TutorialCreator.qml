@@ -18,7 +18,7 @@ Item {
         id: tutorialName
         anchors.top: root.top
         anchors.topMargin: AppStyle.spacing
-        property string folderPath: tempFolder
+        property string folderPath: tempFolder.replace("file:///", "")
         width: root.width / 2
         label: "Name:"
         field.text: "new_tutorial"
@@ -37,7 +37,19 @@ Item {
             ToolTip.text: tutorialName.folderPath
         }
     }
-
+    Button {
+        text: "Change export path ..."
+        onClicked: exportPathDialog.open()
+        anchors.left: tutorialName.right
+        anchors.top: tutorialName.top
+        FolderDialog {
+            id: exportPathDialog
+            onAccepted: {
+                tutorialName.folderPath = folder.toString().replace("file:///",
+                                                                    "")
+            }
+        }
+    }
     signal updateStatusMessage(string text)
     signal deletePressed
     FocusScope {
@@ -188,7 +200,7 @@ Item {
                     IconButton {
                         property string currentFile: tutorialName.folderPath + "/"
                                                      + tutorialName.field.text
-                        icon.source: "qrc:/bricks/resources/save_black_24dp.svg"
+                        icon.source: "qrc:/bricks/resources/image_black.svg"
                         width: height
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                         enabled: tutorialManager.model.length > 0

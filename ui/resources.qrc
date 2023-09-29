@@ -28,6 +28,7 @@
         <file>resources/text_snippet_black_24dp.svg</file>
         <file>resources/icon.svg</file>
         <file>resources/icon.png</file>
+        <file>resources/image_black.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>help.html</file>
