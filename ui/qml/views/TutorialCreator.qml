@@ -12,9 +12,9 @@ import "../style"
 import TutorialManager 1.0
 import TutorialSourceManager 1.0
 
-Item{
+Item {
     id: root
-    LabelTextField{
+    LabelTextField {
         id: tutorialName
         anchors.top: root.top
         anchors.topMargin: AppStyle.spacing
@@ -22,10 +22,12 @@ Item{
         width: root.width / 2
         label: "Name:"
         field.text: "new_tutorial"
-        field.enabled:true
-        field.validator: RegularExpressionValidator { regularExpression: /\w+/ }
+        field.enabled: true
+        field.validator: RegularExpressionValidator {
+            regularExpression: /\w+/
+        }
 
-        MouseArea{
+        MouseArea {
             id: area
             anchors.fill: tutorialName.label
             hoverEnabled: true
@@ -128,14 +130,20 @@ Item{
                             nameFilters: ["Any (*.json *.png)", "PNG files(*.png)", "JSON files (*.json)"]
                             fileMode: FileDialog.SaveFile
                             onAccepted: {
-                                tutorialName.field.text = tutorialManager.saveTutorial(currentFile)
+                                var filename = tutorialManager.saveTutorial(
+                                            currentFile)
+                                if (!filename)
+                                    return root.updateStatusMessage(
+                                                "INFO: Could not save tutorial to " + currentFile)
+                                tutorialName.field.text = filename
                                 root.updateStatusMessage(
                                             "INFO: Saved tutorial to " + currentFile)
                             }
                         }
                         icon.source: "qrc:/bricks/resources/save_black_24dp.svg"
                         width: height
-                        enabled: tutorialManager.model.length > 0 && tutorialName.field.text
+                        enabled: tutorialManager.model.length > 0
+                                 && tutorialName.field.text
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                         onPressed: brickSaveDialog.open()
                         ToolTip.visible: hovered
@@ -161,11 +169,13 @@ Item{
                         ToolTip.text: qsTr("Add existing brick")
                     }
                     IconButton {
-                        property string currentFile: tutorialName.folderPath + "/" + tutorialName.field.text
+                        property string currentFile: tutorialName.folderPath + "/"
+                                                     + tutorialName.field.text
                         icon.source: "qrc:/bricks/resources/text_snippet_black_24dp.svg"
                         width: height
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                        enabled: tutorialManager.model.length > 0 && tutorialName.field.text
+                        enabled: tutorialManager.model.length > 0
+                                 && tutorialName.field.text
                         onPressed: {
                             tutorialManager.toJSON(currentFile)
                             root.updateStatusMessage(
@@ -176,11 +186,13 @@ Item{
                         ToolTip.text: qsTr("Save tutorial to JSON")
                     }
                     IconButton {
-                        property string currentFile: tutorialName.folderPath + "/" + tutorialName.field.text
+                        property string currentFile: tutorialName.folderPath + "/"
+                                                     + tutorialName.field.text
                         icon.source: "qrc:/bricks/resources/save_black_24dp.svg"
                         width: height
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                        enabled: tutorialManager.model.length > 0 && tutorialName.field.text
+                        enabled: tutorialManager.model.length > 0
+                                 && tutorialName.field.text
                         onPressed: {
                             tutorialManager.toPNG(currentFile)
                             root.updateStatusMessage(
@@ -198,7 +210,8 @@ Item{
                             fileMode: FileDialog.OpenFile
                             defaultSuffix: "json"
                             onAccepted: {
-                                tutorialName.field.text = tutorialManager.fromJSON(currentFile)
+                                tutorialName.field.text = tutorialManager.fromJSON(
+                                            currentFile)
                                 root.updateStatusMessage(
                                             "INFO: Loaded tutorial from " + currentFile)
                             }
@@ -292,8 +305,8 @@ Item{
                         manager.removePath(
                                     availableSources.itemAtIndex(
                                         availableSources.currentIndex).content)
-                        availableSourcesModel.remove(availableSources.currentIndex,
-                                                     1)
+                        availableSourcesModel.remove(
+                                    availableSources.currentIndex, 1)
                     }
                 }
                 CheckBox {
