@@ -107,11 +107,10 @@ class TutorialManager(QObject):
 
     @Slot(str, result=str)
     def saveTutorial(self, path):
-
         pre, ext = os.path.splitext(path.replace(FILE_STUB, ""))
         _, error = os.path.splitext(pre)
         if error:
-          return None
+            return None
         print(pre, ext)
         if "png" in ext:
             logging.debug("Saving Tutorial to: " + pre + ".png")

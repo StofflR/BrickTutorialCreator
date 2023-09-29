@@ -39,18 +39,19 @@ FAMILY_NAME = {BOLD: "Roboto", NORMAL: "Roboto"}
 
 LEN_SCALAR = {BOLD: 1.1, NORMAL: 1.1}
 
-forbidden_characters = {r" ": "_",
-                        r"/": "",
-                        r":": "",
-                        r"<": "_lt_",
-                        r">": "_gt_",
-                        r'"': "",
-                        r"\": "", "
-                        r"|": "",
-                        r"?": "",
-                        r"*": "",
-                        r".": "",
-                        r"=": "_eq_"}
+forbidden_characters = {
+    r" ": "_",
+    r"/": "",
+    r":": "",
+    r"<": "_lt_",
+    r">": "_gt_",
+    r'"': "",
+    r"\": " ", " r"|": "",
+    r"?": "",
+    r"*": "",
+    r".": "",
+    r"=": "_eq_",
+}
 
 
 def randomString(digits):
