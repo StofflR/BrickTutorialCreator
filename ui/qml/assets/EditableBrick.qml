@@ -213,7 +213,10 @@ Image {
         ToolTip.visible: hovered
         ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
         ToolTip.text: qsTr("Save the current brick!")
-        onPressed: save()
+        onPressed: {
+            saveButton.forceActiveFocus()
+            save()
+        }
     }
     IconButton {
         ColorSelector {

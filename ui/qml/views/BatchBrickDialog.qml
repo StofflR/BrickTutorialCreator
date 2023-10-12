@@ -41,7 +41,7 @@ Popup {
             return
 
         converter.removeNS0(files[index])
-        sourcePreview.source = "file:///" + files[index]
+        sourcePreview.source = fileStub + files[index]
 
         converter.convert(files[index])
         if (converter.isBrick(files[index])) {
@@ -50,7 +50,7 @@ Popup {
             console.debug("Trying to convert Legacy brick!")
             targetPreview.loading = true
             targetPreview.content.text = converter.getData("content")
-            targetPreview.brickImg = "file:///" + files[index]
+            targetPreview.brickImg = fileStub + files[index]
             targetPreview.brickPath = converter.getData("path")
             //targetPreview.xPos = converter.getData["content"]
             //targetPreview.yPos = converter.getData["content"]
