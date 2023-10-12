@@ -18,7 +18,7 @@ Item {
         id: tutorialName
         anchors.top: root.top
         anchors.topMargin: AppStyle.spacing
-        property string folderPath: tempFolder.replace("file:///", "")
+        property string folderPath: tempFolder.replace(fileStub, "")
         width: root.width / 2
         label: "Name:"
         field.text: "new_tutorial"
@@ -45,7 +45,7 @@ Item {
         FolderDialog {
             id: exportPathDialog
             onAccepted: {
-                tutorialName.folderPath = folder.toString().replace("file:///",
+                tutorialName.folderPath = folder.toString().replace(fileStub,
                                                                     "")
             }
         }
@@ -396,7 +396,7 @@ Item {
                     return null
                 }
                 onAccepted: {
-                    var path = folder.toString().replace("file:///", "")
+                    var path = folder.toString().replace(fileStub, "")
                     if (!(folderDialog.find(availableSourcesModel, path))) {
                         availableSourcesModel.append({
                                                          "path": path

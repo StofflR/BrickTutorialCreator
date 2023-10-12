@@ -57,7 +57,7 @@ Item {
                             font.pointSize: 12
                             text: "Click to " + (expand ? "collapse" : "expand") + "!"
                         }
-                        source: (groupedView ? baseFolder + "/" : "file:///")
+                        source: (groupedView ? baseFolder + "/" : fileStub)
                                 + view.model[index].path
                     }
                 }
@@ -86,7 +86,7 @@ Item {
                                 id: sourceImageExpand
                                 fillMode: Image.PreserveAspectFit
                                 width: recta.width
-                                source: "file:///" + viewExpand.model[index].path
+                                source: fileStub + viewExpand.model[index].path
                                 MouseArea {
                                     id: mouseAreaExpand
                                     anchors.fill: sourceImageExpand

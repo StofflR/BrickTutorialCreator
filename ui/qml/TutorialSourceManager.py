@@ -7,10 +7,8 @@ import logging
 
 from sys import platform
 
-if platform == "linux" or platform == "linux2" or platform == "darwin":
-    FILE_STUB = "file://"
-else:
-    FILE_STUB = "file:///"
+import OSDefs
+
 
 QML_IMPORT_NAME = "TutorialSourceManager"
 QML_IMPORT_MAJOR_VERSION = 1
@@ -73,7 +71,7 @@ class TutorialSourceManager(QObject):
 
     @Slot(str, result=None)
     def addPath(self, path):
-        path = path.replace(FILE_STUB, "")
+        path = path.replace(OSDefs.FILE_STUB, "")
 
         if path in self.paths.keys():
             return
@@ -95,7 +93,7 @@ class TutorialSourceManager(QObject):
 
     @Slot(str, result=None)
     def removePath(self, path):
-        path = path.replace(FILE_STUB, "")
+        path = path.replace(OSDefs.FILE_STUB, "")
         self.paths.pop(path, None)
         self.refresh()
 

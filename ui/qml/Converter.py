@@ -9,10 +9,8 @@ import json
 
 from sys import platform
 
-if platform == "linux" or platform == "linux2" or platform == "darwin":
-    FILE_STUB = "file://"
-else:
-    FILE_STUB = "file:///"
+import OSDefs
+
 
 QML_IMPORT_NAME = "Converter"
 QML_IMPORT_MAJOR_VERSION = 1
@@ -27,7 +25,7 @@ class Converter(QObject):
 
     @Slot(str, result=int)
     def fromJSONtoSVG(self, path):
-        path = path.replace(FILE_STUB, "")
+        path = path.replace(OSDefs.FILE_STUB, "")
         count = 0
         for element in os.listdir(path):
             if ".json" in element:
@@ -40,7 +38,7 @@ class Converter(QObject):
 
     @Slot(str, result=int)
     def fromJSONtoPNG(self, path):
-        path = path.replace(FILE_STUB, "")
+        path = path.replace(OSDefs.FILE_STUB, "")
         count = 0
         for element in os.listdir(path):
             if ".json" in element:
@@ -53,7 +51,7 @@ class Converter(QObject):
 
     @Slot(str, result=int)
     def fromSVGtoPNG(self, path):
-        path = path.replace(FILE_STUB, "")
+        path = path.replace(OSDefs.FILE_STUB, "")
         count = 0
         for element in os.listdir(path):
             if ".svg" in element:
@@ -66,7 +64,7 @@ class Converter(QObject):
 
     @Slot(str, result=type([]))
     def updateExisting(self, path):
-        path = path.replace(FILE_STUB, "")
+        path = path.replace(OSDefs.FILE_STUB, "")
         file_set = []
         for dir_, _, files in os.walk(path):
             for file_name in files:
@@ -97,7 +95,7 @@ class Converter(QObject):
     def isBrick(self, file):
         if not file:
             return False
-        file = file.replace(FILE_STUB, "")
+        file = file.replace(OSDefs.FILE_STUB, "")
         doc = open(file, "r")
         result = '<desc id="json" tag="brick">' in doc.read()
         doc.close()
@@ -120,7 +118,7 @@ class Converter(QObject):
 
     @Slot(str)
     def removeNS0(self, path):
-        path = path.replace(FILE_STUB, "").replace("%5C.%5C", "/")
+        path = path.replace(OSDefs.FILE_STUB, "").replace("%5C.%5C", "/")
         file = open(path, "r")
         content = "".join(file.read()).replace("ns0:", "").replace(":ns0", "")
         file = open(path, "w")
@@ -130,4 +128,4 @@ class Converter(QObject):
     @Slot(str, result=str)
     def getOutputPath(self, file):
         print("File is:", os.path.dirname(file) + "/converted")
-        return FILE_STUB + os.path.dirname(file) + "/converted"
+        return OSDefs.FILE_STUB + os.path.dirname(file) + "/converted"

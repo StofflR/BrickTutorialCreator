@@ -7,13 +7,7 @@ from modules.SVGBrick import SVGBrick
 from typing import Dict, List
 import logging
 import json
-
-from sys import platform
-
-if platform == "linux" or platform == "linux2" or platform == "darwin":
-    FILE_STUB = "file://"
-else:
-    FILE_STUB = "file:///"
+import OSDefs
 
 QML_IMPORT_NAME = "TutorialManager"
 QML_IMPORT_MAJOR_VERSION = 1
@@ -47,12 +41,12 @@ class TutorialManager(QObject):
     @Slot(str, int)
     def addBrick(self, path, index=None):
         if ".json" not in path:
-            json_text = SVGBrick.getJSONFromSVG(path.replace(FILE_STUB, ""))
+            json_text = SVGBrick.getJSONFromSVG(path.replace(OSDefs.FILE_STUB, ""))
         else:
-            json_text = json.load(open(path.replace(FILE_STUB, "")))
+            json_text = json.load(open(path.replace(OSDefs.FILE_STUB, "")))
         brick = SVGBrick.fromJSON(json_text)
         if ".json" in path:
-            path = FILE_STUB + brick.getWorkingBrick()
+            path = OSDefs.FILE_STUB + brick.getWorkingBrick()
 
         if not index:
             self.modelVal.append(path)
@@ -67,14 +61,15 @@ class TutorialManager(QObject):
         content = []
         for brick in self.modelVal:
             content.append(self.bricks[brick].toJSON())
-        pre, _ = os.path.splitext(path.replace(FILE_STUB, ""))
+        print(path)
+        pre, _ = os.path.splitext(path.replace(OSDefs.FILE_STUB, ""))
         f = open(pre + ".json", "w")
         f.write(json.dumps(content))
         f.close()
 
     @Slot(str)
     def toPNG(self, path):
-        pre, _ = os.path.splitext(path.replace(FILE_STUB, ""))
+        pre, _ = os.path.splitext(path.replace(OSDefs.FILE_STUB, ""))
         self.generateTutorial()
         self.tutorial.save(pre + ".png")
 
@@ -82,15 +77,15 @@ class TutorialManager(QObject):
     def fromJSON(self, path):
         self.modelVal.clear()
         self.bricks.clear()
-        content = json.load(open(path.replace(FILE_STUB, "")))
+        content = json.load(open(path.replace(OSDefs.FILE_STUB, "")))
         for element in content:
             svg_brick = SVGBrick.fromJSON(json.loads(element))
-            brick_path = FILE_STUB + svg_brick.getWorkingBrick()
+            brick_path = OSDefs.FILE_STUB + svg_brick.getWorkingBrick()
             self.modelVal.append(brick_path)
             self.bricks[brick_path] = svg_brick
         self.modelChanged.emit()
 
-        filename_w_ext = os.path.basename(path.replace(FILE_STUB, ""))
+        filename_w_ext = os.path.basename(path.replace(OSDefs.FILE_STUB, ""))
         filename, file_extension = os.path.splitext(filename_w_ext)
         return filename
 
@@ -107,7 +102,7 @@ class TutorialManager(QObject):
 
     @Slot(str, result=str)
     def saveTutorial(self, path):
-        pre, ext = os.path.splitext(path.replace(FILE_STUB, ""))
+        pre, ext = os.path.splitext(path.replace(OSDefs.FILE_STUB, ""))
         _, error = os.path.splitext(pre)
         if error:
             return None
@@ -124,7 +119,7 @@ class TutorialManager(QObject):
 
     def generateTutorial(self):
         if self.ccby:
-            self.addBrick(FILE_STUB + os.getcwd() + "/resources/ccbysa.svg")
+            self.addBrick(OSDefs.FILE_STUB + os.getcwd() + "/resources/ccbysa.svg")
         self.bricks[self.modelVal[0]].savePNG(
             path=self.bricks[self.modelVal[0]].working_brick_.replace(".svg", ".png"),
             width=640,

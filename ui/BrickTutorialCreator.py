@@ -14,6 +14,7 @@ from qml import ColorManager
 import resources_rc
 import logging
 import shutil
+import OSDefs
 
 if __name__ == "__main__":
     os.environ["QT_FONT_DPI"] = "96"
@@ -76,6 +77,9 @@ if __name__ == "__main__":
 
     engine.rootContext().setContextProperty(
         "tempFolder", QUrl.fromLocalFile(os.getcwd()).toString() + r"/resources/out"
+    )
+    engine.rootContext().setContextProperty(
+        "fileStub", OSDefs.FILE_STUB
     )
     engine.rootContext().setContextProperty(
         "baseFolder", QUrl.fromLocalFile(os.getcwd()).toString() + r"/base"

@@ -6,11 +6,7 @@ import os
 import json
 
 from sys import platform
-
-if platform == "linux" or platform == "linux2" or platform == "darwin":
-    FILE_STUB = "file://"
-else:
-    FILE_STUB = "file:///"
+import OSDefs
 QML_IMPORT_NAME = "Brick"
 QML_IMPORT_MAJOR_VERSION = 1
 
@@ -61,12 +57,12 @@ class Brick(QObject):
 
     @Slot(str)
     def fromJSON(self, path):
-        path = path.replace(FILE_STUB, "")
+        path = path.replace(OSDefs.FILE_STUB, "")
         self.brick = SVGBrick.fromJSON(json.load(open(path)))
 
     @Slot(str)
     def fromSVG(self, path):
-        path = path.replace(FILE_STUB, "")
+        path = path.replace(OSDefs.FILE_STUB, "")
         self.brick = SVGBrick.fromJSON(SVGBrick.getJSONFromSVG(path))
 
     @Slot(str)
@@ -129,7 +125,7 @@ class Brick(QObject):
 
     @Slot(str, result=bool)
     def exists(self, path):
-        path = path.replace(FILE_STUB, "")
+        path = path.replace(OSDefs.FILE_STUB, "")
         return os.path.exists(path)
 
     @Slot(str)

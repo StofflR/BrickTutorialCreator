@@ -14,10 +14,8 @@ import shutil
 
 from sys import platform
 
-if platform == "linux" or platform == "linux2" or platform == "darwin":
-    FILE_STUB = "file://"
-else:
-    FILE_STUB = "file:///"
+import OSDefs
+
 
 QML_IMPORT_NAME = "LanguageManager"
 QML_IMPORT_MAJOR_VERSION = 1
@@ -31,14 +29,14 @@ class LanguageManager(QObject):
 
     @Slot(str)
     def newLanguage(self, newLanguage):
-        file_path = self._path.replace(FILE_STUB, "") + "/" + newLanguage
+        file_path = self._path.replace(OSDefs.FILE_STUB, "") + "/" + newLanguage
         logging.debug("Created new directory: " + file_path)
         os.makedirs(file_path, exist_ok=True)
         self.languagesChanged.emit()
 
     @Slot(str)
     def delete(self, language):
-        file_path = self._path.replace(FILE_STUB, "") + "/" + language
+        file_path = self._path.replace(OSDefs.FILE_STUB, "") + "/" + language
         shutil.rmtree(file_path)
         self.languagesChanged.emit()
 
@@ -48,7 +46,7 @@ class LanguageManager(QObject):
 
     def _getLanguages(self):
         result = []
-        file_path = self._path.replace(FILE_STUB, "")
+        file_path = self._path.replace(OSDefs.FILE_STUB, "")
         for root, dirs, files in os.walk(file_path):
             if dirs not in result:
                 result += dirs
@@ -62,7 +60,7 @@ class LanguageManager(QObject):
 
     def _getSourceModel(self):
         result = []
-        file_path = self._path.replace(FILE_STUB, "")
+        file_path = self._path.replace(OSDefs.FILE_STUB, "")
 
         if not file_path or not os.path.isdir(file_path):
             return result
@@ -90,4 +88,4 @@ class LanguageManager(QObject):
 
     @Slot(str, result=bool)
     def exists(self, file):
-        return os.path.isfile(file.replace(FILE_STUB, ""))
+        return os.path.isfile(file.replace(OSDefs.FILE_STUB, ""))
