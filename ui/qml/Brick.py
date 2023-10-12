@@ -7,6 +7,7 @@ import json
 
 from sys import platform
 import OSDefs
+
 QML_IMPORT_NAME = "Brick"
 QML_IMPORT_MAJOR_VERSION = 1
 

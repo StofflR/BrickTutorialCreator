@@ -2,7 +2,7 @@ import os
 
 from PySide6.QtCore import Slot, QObject, Property, Signal
 from PySide6.QtQml import QmlElement
-from PySide6.QtGui import QImage, QPainter
+from PySide6.QtGui import QImage, QPainter, QColor
 from modules.SVGBrick import SVGBrick
 from typing import Dict, List
 import logging
@@ -118,6 +118,8 @@ class TutorialManager(QObject):
         return filename
 
     def generateTutorial(self):
+        del self.tutorial
+        self.tutorial = None
         if self.ccby:
             self.addBrick(OSDefs.FILE_STUB + os.getcwd() + "/resources/ccbysa.svg")
         self.bricks[self.modelVal[0]].savePNG(
@@ -139,6 +141,7 @@ class TutorialManager(QObject):
                 tutorial.height() + b.height() - int(tutorial.width() / 55),
                 QImage.Format_RGBA32FPx4,
             )
+            target.fill(QColor(0, 0, 0, 0))
             painter = QPainter(target)
             painter.drawImage(0, 0, tutorial)
             painter.drawImage(0, tutorial.height() - int(tutorial.width() / 55), b)
