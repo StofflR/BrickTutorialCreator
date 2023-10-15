@@ -59,6 +59,7 @@ Item {
         height: root.height - tutorialName.height
         TutorialManager {
             id: tutorialManager
+            onCcByChanged: addCCBYSorting.checked = tutorialManager.enableCCBY
         }
         Keys.enabled: true
         Keys.onDeletePressed: {

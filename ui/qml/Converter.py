@@ -2,6 +2,7 @@ from PySide6.QtCore import Slot, QObject
 from PySide6.QtQml import QmlElement
 from modules.SVGBrick import SVGBrick
 from modules.BatchBrickUpdater import BatchBrickUpdater
+from qml.TutorialManager import TutorialManager
 
 import logging
 import os
@@ -47,6 +48,23 @@ class Converter(QObject):
                 SVGBrick.fromJSON(json.load(open(element))).savePNG(
                     element.replace(".json", ".png")
                 )
+        return count
+
+    @Slot(str, result=int)
+    def fromTutorialtoPNG(self, path):
+        path = path.replace(OSDefs.FILE_STUB, "")
+        count = 0
+        for element in os.listdir(path):
+            if ".json" in element:
+                element = path + "/" + element
+                try:
+                    tutorialManager = TutorialManager()
+                    tutorialManager.fromJSON(element)
+                    tutorialManager.saveTutorial(element.replace(".json", ".png"))
+                    count += 1
+                    logging.debug(f"Converted: {element}")
+                except Exception as e:
+                    logging.warning(f"Couldn't convert: {element}")
         return count
 
     @Slot(str, result=int)

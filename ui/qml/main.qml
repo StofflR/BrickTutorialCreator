@@ -93,6 +93,18 @@ ApplicationWindow {
                     color: parent.highlighted ? AppStyle.color.light : AppStyle.color.window
                 }
             }
+            MenuItem {
+                contentItem: Text {
+                    text: qsTr("Convert Folder (Tutorial → PNG)")
+                    font.family: "Roboto"
+                    font.pointSize: AppStyle.pointsizeSpacing
+                    color: AppStyle.color.text
+                }
+                onTriggered: brickConverter.fromTutorialtoPNG()
+                background: Rectangle {
+                    color: parent.highlighted ? AppStyle.color.light : AppStyle.color.window
+                }
+            }
             MenuSeparator {}
             MenuItem {
                 contentItem: Text {
@@ -131,7 +143,8 @@ ApplicationWindow {
     ConverterManager {
         id: brickConverter
         anchors.centerIn: layout
-        onConverted: value => root.updateStatusMessage("INFO: Converted " + value)
+        onConverted: value => root.updateStatusMessage(
+                         "INFO: Converted " + value)
     }
     StackLayout {
         id: layout

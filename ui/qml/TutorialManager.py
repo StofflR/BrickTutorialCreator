@@ -59,9 +59,16 @@ class TutorialManager(QObject):
     @Slot(str)
     def toJSON(self, path):
         content = []
+
+        if self.ccby:
+            self.addBrick(OSDefs.FILE_STUB + os.getcwd() + "/resources/ccbysa.svg")
+
         for brick in self.modelVal:
             content.append(self.bricks[brick].toJSON())
-        print(path)
+
+        if self.ccby:
+            self.removeBrick(len(self.bricks) - 1)
+
         pre, _ = os.path.splitext(path.replace(OSDefs.FILE_STUB, ""))
         f = open(pre + ".json", "w")
         f.write(json.dumps(content))
@@ -83,6 +90,17 @@ class TutorialManager(QObject):
             brick_path = OSDefs.FILE_STUB + svg_brick.getWorkingBrick()
             self.modelVal.append(brick_path)
             self.bricks[brick_path] = svg_brick
+
+        json_text = SVGBrick.getJSONFromSVG(os.getcwd() + "/resources/ccbysa.svg")
+        brick = SVGBrick.fromJSON(json_text)
+        if brick.contentPlain() == svg_brick.contentPlain():
+            self._setCCBY(True)
+            self.modelVal.pop()
+            self.bricks.pop(brick_path)
+        else:
+            self._setCCBY(False)
+
+        self.ccByChanged.emit()
         self.modelChanged.emit()
 
         filename_w_ext = os.path.basename(path.replace(OSDefs.FILE_STUB, ""))

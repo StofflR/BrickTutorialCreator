@@ -27,6 +27,8 @@ Item {
         onAccepted: {
             if (mode === "SP")
                 converted(converter.fromSVGtoPNG(folder))
+            if (mode === "TP")
+                converted(converter.fromTutorialtoPNG(folder))
             if (mode === "JP")
                 converted(converter.fromJSONtoPNG(folder))
             if (mode === "JS")
@@ -43,6 +45,10 @@ Item {
     }
     function fromJSONtoPNG() {
         folderDialog.mode = "JP"
+        folderDialog.open()
+    }
+    function fromTutorialtoPNG() {
+        folderDialog.mode = "TP"
         folderDialog.open()
     }
     function fromJSONtoSVG() {
