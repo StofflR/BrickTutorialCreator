@@ -80,6 +80,12 @@ class TutorialManager(QObject):
         self.generateTutorial()
         self.tutorial.save(pre + ".png")
 
+    @Slot()
+    def clear(self):
+        self.modelVal.clear()
+        self.bricks.clear()
+        self.modelChanged.emit()
+
     @Slot(str, result=str)
     def fromJSON(self, path):
         self.modelVal.clear()

@@ -42,6 +42,7 @@ Item {
         onClicked: exportPathDialog.open()
         anchors.left: tutorialName.right
         anchors.top: tutorialName.top
+        width: (sourceButtons.width - AppStyle.spacing) / 2
         FolderDialog {
             id: exportPathDialog
             onAccepted: {
@@ -139,7 +140,7 @@ Item {
                     IconButton {
                         FileDialog {
                             id: brickSaveDialog
-                            folder: tutorialName.folderPath
+                            folder: fileStub + tutorialName.folderPath
                             nameFilters: ["Any (*.json *.png)", "PNG files(*.png)", "JSON files (*.json)"]
                             fileMode: FileDialog.SaveFile
                             onAccepted: {
@@ -166,7 +167,7 @@ Item {
                     IconButton {
                         FileDialog {
                             id: brickOpenDialog
-                            folder: tutorialName.folderPath
+                            folder: fileStub + tutorialName.folderPath
                             nameFilters: ["Any (*.svg *.json)", "SVG files (*.svg)", "JSON files (*.json)"]
                             fileMode: FileDialog.OpenFiles
                             onAccepted: {
@@ -218,7 +219,7 @@ Item {
                     IconButton {
                         FileDialog {
                             id: fileOpenDialog
-                            folder: tutorialName.folderPath
+                            folder: fileStub + tutorialName.folderPath
                             nameFilters: ["JSON files (*.json)"]
                             fileMode: FileDialog.OpenFile
                             defaultSuffix: "json"
@@ -236,6 +237,17 @@ Item {
                         ToolTip.visible: hovered
                         ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
                         ToolTip.text: qsTr("Load tutorial from JSON")
+                    }
+                    IconButton {
+                        icon.source: "qrc:/bricks/resources/delete_black_24dp.svg"
+                        width: height
+                        enabled: tutorialManager.model.length > 0
+                                 && tutorialName.field.text
+                        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                        onPressed: tutorialManager.clear()
+                        ToolTip.visible: hovered
+                        ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+                        ToolTip.text: qsTr("Clear Tutorial")
                     }
                 }
             }
