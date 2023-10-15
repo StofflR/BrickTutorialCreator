@@ -15,6 +15,11 @@ Rectangle {
     anchors.fill: parent
     anchors.margins: AppStyle.spacing
     color: AppStyle.color.window
+
+    MouseArea {
+        anchors.fill: root
+        onClicked: root.forceActiveFocus()
+    }
     ButtonField {
         id: path
         button_label: qsTr("Set export to …")
@@ -51,47 +56,6 @@ Rectangle {
         anchors.left: parent.left
         anchors.topMargin: AppStyle.spacing
         spinbox.onValueChanged: edtiableBrick.update(true)
-    }
-    LabelDoubleSpinBox {
-        label: qsTr("X")
-        id: xPos
-        labelWidth: width / 6
-        spinbox.from: 1
-        spinbox.value: 43
-        spinbox.to: 300
-        spinbox.editable: true
-        width: parent.width / 4
-        anchors.top: path.bottom
-        anchors.left: contentScale.right
-        anchors.topMargin: AppStyle.spacing
-        spinbox.onValueChanged: edtiableBrick.update(true)
-    }
-    LabelDoubleSpinBox {
-        label: qsTr("Y")
-        id: yPos
-        labelWidth: width / 6
-        spinbox.from: 1
-        spinbox.value: 33
-        spinbox.to: 200
-        spinbox.editable: true
-        width: parent.width / 4
-        anchors.top: path.bottom
-        anchors.left: xPos.right
-        anchors.topMargin: AppStyle.spacing
-        spinbox.onValueChanged: edtiableBrick.update(true)
-    }
-    Label {
-        width: parent.width / 8
-        height: AppStyle.defaultHeight
-        id: saveLabel
-        text: qsTr("Save as")
-        font.family: "Roboto"
-        font.pointSize: AppStyle.pointsizeSpacing
-        anchors.top: yPos.top
-        anchors.left: yPos.right
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        elide: Text.ElideRight
     }
     Rectangle {
         id: svg
@@ -158,29 +122,77 @@ Rectangle {
         color: AppStyle.color.midlight
         radius: 5
     }
-    MouseArea{
-        anchors.fill: root
-        onClicked: root.forceActiveFocus()
-    }
 
+    Button {
+        text: qsTr("Reset Default")
+        id: defaultButton
+        width: parent.width / 4
+        anchors.top: path.bottom
+        anchors.left: contentScale.right
+        anchors.topMargin: AppStyle.spacing
+        onClicked: {
+            xSlider.value = xSlider.defaultValue
+            ySlider.value = ySlider.defaultValue
+            contentScale.spinbox.value = 100
+        }
+    }
+    Slider {
+        id: xSlider
+        width: root.width
+        anchors.bottom: edtiableBrick.top
+        anchors.left: edtiableBrick.left
+        anchors.right: edtiableBrick.right
+        from: 1
+        to: 347
+        property int defaultValue: 43
+        value: defaultValue
+    }
+    Slider {
+        id: ySlider
+        anchors.left: root.left
+        anchors.bottom: edtiableBrick.bottom
+        anchors.top: edtiableBrick.top
+        from: 60
+        to: 15
+        orientation: Qt.Vertical
+        property int defaultValue: 33
+        value: defaultValue
+    }
     EditableBrick {
         id: edtiableBrick
-
+        onAvailableSizeChanged: {
+            if (availableSize == "0h") {
+                ySlider.from = 0
+                ySlider.to = 0
+            }
+            if (availableSize == "1h") {
+                ySlider.from = 60
+                ySlider.to = 15
+            }
+            if (availableSize == "2h") {
+                ySlider.from = 85
+                ySlider.to = 15
+            }
+            if (availableSize == "3h") {
+                ySlider.from = 110
+                ySlider.to = 15
+            }
+        }
         Binding on contentScale {
             when: contentScale.spinbox.value
             value: contentScale.spinbox.value
         }
         Binding on xPos {
-            when: xPos.spinbox.value
-            value: xPos.spinbox.value
+            when: xSlider.value
+            value: xSlider.value
         }
         Binding on yPos {
-            when: yPos.spinbox.value
-            value: yPos.spinbox.value
+            when: ySlider.value
+            value: ySlider.value
         }
 
         anchors.right: parent.right
-        anchors.left: parent.left
+        anchors.left: ySlider.right
         anchors.bottom: bottomPadding.top
         onStatusChanged: root.updateStatusMessage(edtiableBrick.status)
         modified: true
