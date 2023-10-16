@@ -36,8 +36,12 @@ Image {
     signal dataChanged
     signal save
     asynchronous: true
+    smooth: true
+    cache: true
     property bool loading: false
-
+    Brick {
+        id: modifyableBrick
+    }
     function loadFromFile(currentFile) {
         {
             if (!currentFile)
@@ -56,9 +60,7 @@ Image {
     }
     fillMode: Image.PreserveAspectFit
     source: previewContent.cursorVisible ? baseFolder + "/" + brickPath : brickImg
-    Brick {
-        id: modifyableBrick
-    }
+
     onDataChanged: {
         if (!brickPath || !brickColor || !availableSize || !xPos || !yPos
                 || !contentScale || loading) {
@@ -97,7 +99,7 @@ Image {
             return "<p style=\"line-height:75%;letter-spacing:-1px;padding-left:-20px;white-space:pre;\">" + data + "</p>"
         }
         onTextChanged: cursorPosition = previewContent.cursorPosition
-        wrapMode: TextArea
+        wrapMode: TextEdit.WordWrap
 
         cursorVisible: previewContent.cursorVisible
         textFormat: TextEdit.RichText
@@ -125,7 +127,7 @@ Image {
                                      0, previewContent.cursorPosition).split(
                                      /\n/).length - 1
         property real scale: svgPreview.paintedWidth * contentScale / 35000
-        wrapMode: TextArea
+        wrapMode: TextEdit.WordWrap
         font: textView.font
         opacity: text ? 0 : 1
         cursorVisible: false

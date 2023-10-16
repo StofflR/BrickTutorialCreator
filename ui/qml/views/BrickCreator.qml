@@ -48,9 +48,9 @@ Rectangle {
     LabelDoubleSpinBox {
         label: qsTr("Content scale")
         id: contentScale
-        spinbox.from: 1
+        spinbox.from: 25
         spinbox.to: 300
-        spinbox.editable: true
+        spinbox.value: 100
         width: parent.width / 2
         anchors.top: path.bottom
         anchors.left: parent.left
@@ -75,7 +75,7 @@ Rectangle {
     Rectangle {
         width: parent.width / 6
         anchors.top: contentScale.bottom
-        anchors.left: yPos.left
+        anchors.left: root.left
         height: AppStyle.defaultHeight
         color: AppStyle.color.window
         CheckBox {
@@ -136,30 +136,9 @@ Rectangle {
             contentScale.spinbox.value = 100
         }
     }
-    Slider {
-        id: xSlider
-        width: root.width
-        anchors.bottom: edtiableBrick.top
-        anchors.left: edtiableBrick.left
-        anchors.right: edtiableBrick.right
-        from: 1
-        to: 347
-        property int defaultValue: 43
-        value: defaultValue
-    }
-    Slider {
-        id: ySlider
-        anchors.left: root.left
-        anchors.bottom: edtiableBrick.bottom
-        anchors.top: edtiableBrick.top
-        from: 60
-        to: 15
-        orientation: Qt.Vertical
-        property int defaultValue: 33
-        value: defaultValue
-    }
     EditableBrick {
         id: edtiableBrick
+        asynchronous: false
         onAvailableSizeChanged: {
             if (availableSize == "0h") {
                 ySlider.from = 0
@@ -193,6 +172,7 @@ Rectangle {
 
         anchors.right: parent.right
         anchors.left: ySlider.right
+        anchors.leftMargin: AppStyle.spacing / 2
         anchors.bottom: bottomPadding.top
         onStatusChanged: root.updateStatusMessage(edtiableBrick.status)
         modified: true
@@ -220,6 +200,30 @@ Rectangle {
             statusText += " to " + textMetrics.text
             root.updateStatusMessage(statusText)
         }
+    }
+    Slider {
+        id: xSlider
+        width: root.width
+        anchors.bottom: edtiableBrick.top
+        anchors.left: edtiableBrick.left
+        anchors.right: edtiableBrick.right
+        anchors.margins: AppStyle.spacing / 2
+        from: 1
+        to: 345
+        property int defaultValue: 43
+        value: defaultValue
+    }
+    Slider {
+        id: ySlider
+        anchors.left: root.left
+        anchors.bottom: edtiableBrick.bottom
+        anchors.top: edtiableBrick.top
+        anchors.margins: AppStyle.spacing / 2
+        from: 60
+        to: 15
+        orientation: Qt.Vertical
+        property int defaultValue: 33
+        value: defaultValue
     }
 
     Rectangle {

@@ -129,6 +129,8 @@
         "base/brick_violet_2h.svg",
         "base/brick_cyan_2h.ai",
         "qml/style/AppStyle.qml",
-        "qml/main.qml"
+        "qml/main.qml",
+        "qml/assets/Slider.qml",
+        "qml/assets/LabelSlider.qml"
     ]
 }

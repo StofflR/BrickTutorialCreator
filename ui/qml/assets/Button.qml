@@ -25,9 +25,9 @@ T.Button {
         implicitWidth: parent.width
         implicitHeight: parent.height
         opacity: enabled ? 1 : 0.3
-        border.color: dangerButton ? "red" :  Qt.darker(AppStyle.color.window)
+        border.color: dangerButton ? "red" : Qt.darker(AppStyle.color.window)
         border.width: 1
         radius: 2
-        color: AppStyle.color.light
+        color: control.pressed ? AppStyle.color.highlight : AppStyle.color.light
     }
 }

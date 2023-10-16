@@ -18,7 +18,7 @@ T.Button {
         implicitWidth: AppStyle.defaultHeight
         opacity: enabled ? 1 : 0.3
         border.color: Qt.darker(AppStyle.color.window)
-        color: AppStyle.color.light
+        color: control.pressed ? AppStyle.color.highlight : AppStyle.color.light
         border.width: 1
         radius: 2
     }
