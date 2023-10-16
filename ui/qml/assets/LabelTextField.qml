@@ -11,6 +11,7 @@ Item {
     height: AppStyle.defaultHeight
     property var label: qsTr("Label")
     property alias field: field
+    property alias text: label
     Label {
         width: item.width / 2 - AppStyle.spacing
         height: item.height
