@@ -29,7 +29,7 @@ Item {
 
         MouseArea {
             id: area
-            anchors.fill: tutorialName.label
+            anchors.fill: tutorialName
             hoverEnabled: true
             ToolTip.delay: 1000
             ToolTip.timeout: 5000

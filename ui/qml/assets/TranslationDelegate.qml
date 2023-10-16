@@ -55,7 +55,7 @@ ItemDelegate {
         fillMode: Image.PreserveAspectFit
     }
 
-    MouseArea{
+    MouseArea {
         anchors.fill: root
         onClicked: root.forceActiveFocus()
     }

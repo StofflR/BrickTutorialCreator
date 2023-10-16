@@ -65,7 +65,7 @@ if __name__ == "__main__":
     )
 
     engine = QQmlApplicationEngine()
-    engine.load("./qml/main.qml")
+
     fontStyles = QFontDatabase.styles("Roboto")
     assert "Light" in fontStyles
     assert "Bold" in fontStyles
@@ -82,6 +82,8 @@ if __name__ == "__main__":
     engine.rootContext().setContextProperty(
         "baseFolder", QUrl.fromLocalFile(os.getcwd()).toString() + r"/base"
     )
+    engine.load("./qml/main.qml")
+
     if not engine.rootObjects():
         sys.exit(-1)
 

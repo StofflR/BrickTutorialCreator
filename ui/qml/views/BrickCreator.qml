@@ -45,22 +45,10 @@ Rectangle {
         }
     }
 
-    LabelDoubleSpinBox {
-        label: qsTr("Content scale")
-        id: contentScale
-        spinbox.from: 25
-        spinbox.to: 300
-        spinbox.value: 100
-        width: parent.width / 2
-        anchors.top: path.bottom
-        anchors.left: parent.left
-        anchors.topMargin: AppStyle.spacing
-        spinbox.onValueChanged: edtiableBrick.update(true)
-    }
     Rectangle {
         id: svg
         width: parent.width / 6
-        anchors.top: contentScale.bottom
+        anchors.bottom: contentScale.top
         anchors.left: parent.left
         height: AppStyle.defaultHeight
         color: AppStyle.color.window
@@ -74,7 +62,7 @@ Rectangle {
     }
     Rectangle {
         width: parent.width / 6
-        anchors.top: contentScale.bottom
+        anchors.bottom: contentScale.top
         anchors.left: root.left
         height: AppStyle.defaultHeight
         color: AppStyle.color.window
@@ -89,7 +77,7 @@ Rectangle {
     Rectangle {
         id: json
         width: parent.width / 6
-        anchors.top: contentScale.bottom
+        anchors.bottom: contentScale.top
         anchors.left: svg.right
         height: AppStyle.defaultHeight
         color: AppStyle.color.window
@@ -104,7 +92,7 @@ Rectangle {
     Rectangle {
         id: png
         width: parent.width / 6
-        anchors.top: contentScale.bottom
+        anchors.bottom: contentScale.top
         anchors.left: json.right
         height: AppStyle.defaultHeight
         color: AppStyle.color.window
@@ -122,18 +110,31 @@ Rectangle {
         color: AppStyle.color.midlight
         radius: 5
     }
+    LabelSlider {
+        label: qsTr("Content scale")
+        id: contentScale
+        slider.from: 25
+        slider.to: 300
+        slider.value: 100
+        width: parent.width / 2
+        anchors.bottom: xSlider.top
+        anchors.left: parent.left
+        anchors.topMargin: AppStyle.spacing
+        slider.onValueChanged: edtiableBrick.dataChanged()
+    }
 
     Button {
         text: qsTr("Reset Default")
         id: defaultButton
         width: parent.width / 4
-        anchors.top: path.bottom
+        anchors.bottom: xSlider.top
         anchors.left: contentScale.right
         anchors.topMargin: AppStyle.spacing
         onClicked: {
             xSlider.value = xSlider.defaultValue
             ySlider.value = ySlider.defaultValue
-            contentScale.spinbox.value = 100
+            contentScale.slider.value = 100
+            edtiableBrick.update(true)
         }
     }
     EditableBrick {
@@ -158,8 +159,8 @@ Rectangle {
             }
         }
         Binding on contentScale {
-            when: contentScale.spinbox.value
-            value: contentScale.spinbox.value
+            when: contentScale.slider.value
+            value: contentScale.slider.value
         }
         Binding on xPos {
             when: xSlider.value
@@ -212,6 +213,7 @@ Rectangle {
         to: 345
         property int defaultValue: 43
         value: defaultValue
+        onValueChanged: edtiableBrick.dataChanged()
     }
     Slider {
         id: ySlider
@@ -224,6 +226,7 @@ Rectangle {
         orientation: Qt.Vertical
         property int defaultValue: 33
         value: defaultValue
+        onValueChanged: edtiableBrick.dataChanged()
     }
 
     Rectangle {

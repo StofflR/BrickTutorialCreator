@@ -68,7 +68,8 @@ Popup {
             content.push(targetPreview.brickContent)
 
         console.log("updating file: " + batchDialog.brickPath)
-        var target = targetPreview.brick.saveSVG(converter.getOutputPath(files[index]))
+        var target = targetPreview.brick.saveSVG(converter.getOutputPath(
+                                                     files[index]))
         converted(index + "/" + files.length + " : " + target)
     }
     function finish(count) {
@@ -101,8 +102,8 @@ Popup {
             height: 200
         }
 
-        MouseArea{
-            anchors.fill: batchDialog
+        MouseArea {
+            anchors.fill: layout
             onClicked: batchDialog.forceActiveFocus()
         }
         EditableBrick {

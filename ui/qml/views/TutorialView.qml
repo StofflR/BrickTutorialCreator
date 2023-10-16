@@ -19,7 +19,7 @@ DelegateModel {
 
         MouseArea {
             id: dragArea
-            z: parent.z + dragArea.DelegateModel.itemsIndex
+            z: dragArea.DelegateModel.itemsIndex
             width: parent ? parent.width : 0
             height: content.height - (width / 55) > 0 ? content.height - (width / 55) : 0
             property bool held: false
