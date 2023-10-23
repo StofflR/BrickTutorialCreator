@@ -142,6 +142,7 @@ class Brick(QObject):
     def cleanFileName(self, filename):
         return cleanFileName(filename)
 
+
 def cleanFileName(filename):
     name = filename.replace(".svg", "").replace(".png", "").replace(".json", "")
     for key, value in forbidden_characters.items():
