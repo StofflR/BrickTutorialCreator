@@ -12,8 +12,10 @@ ApplicationWindow {
     id: root
     width: 960
     height: 640
-    minimumWidth: 500
-    minimumHeight: 500
+    minimumWidth: 600
+    minimumHeight: Math.max(
+                       500,
+                       brickCreator.minimumHeight + menuBar.height + statusbar.height)
     visible: true
     title: qsTr("Brick Creator")
     font.family: "Roboto"
@@ -155,6 +157,7 @@ ApplicationWindow {
         onCurrentIndexChanged: translator.update()
         Item {
             BrickCreator {
+                id: brickCreator
                 onUpdateStatusMessage: text => root.updateStatusMessage(text)
             }
         }

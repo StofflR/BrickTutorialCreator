@@ -11,17 +11,18 @@ import "../font"
 import "../views"
 import "../style"
 
-Popup {
+Item {
     id: colorSelector
-    anchors.centerIn: Overlay.overlay
-    width: 400
-    height: 200 + header.height + addNewColor.height + 2 * AppStyle.spacing
-
+    implicitWidth: 400
+    implicitHeight: 200 + header.height + addNewColor.height + 2 * AppStyle.spacing
+    property double listViewHeight: colorSelector.height - header.height
     ColorManager {
         id: manager
     }
     signal baseChanged(string color, string baseFile, string size)
     signal selectionChanged(string base, string type, string background, string shade, string border, string size)
+
+    property alias ok_button: ok
 
     onSelectionChanged: (base, type, background, shade, border, size) => {
                             if (!base || !background || !shade || !border
@@ -90,7 +91,7 @@ Popup {
         id: colorList
         anchors.top: header.bottom
         width: colorSelector.width * 2 / 3
-        height: 200
+        height: colorSelector.listViewHeight
         model: AppStyle.colorSchemes
         clip: true
 
@@ -165,14 +166,33 @@ Popup {
             }
         }
     }
+    Rectangle {
+        id: headerSize
+        anchors.left: sizeList.left
+        height: backText.height
+        color: AppStyle.color.window
+        width: sizeList.width
+        Text {
+            text: "Size"
+            width: headerSize.width
+            anchors.fill: headerSize
+            font: lightRoboto
+            color: AppStyle.color.text
+            horizontalAlignment: Text.AlignHCenter
+        }
+    }
     ListView {
         id: sizeList
         width: colorSelector.width / 3 - 2 * AppStyle.spacing
-        height: colorSelector.height
+        height: colorSelector.listViewHeight
         anchors.left: colorList.right
-        anchors.margins: AppStyle.spacing
+        anchors.top: headerSize.bottom
+        anchors.leftMargin: AppStyle.spacing
+        clip: true
 
-        interactive: false
+        ScrollBar.vertical: ScrollBar {
+            active: true
+        }
 
         model: [{
                 "text": "1h",
@@ -201,18 +221,6 @@ Popup {
             }]
         property string brickType
         property string brickSize
-
-        header: ItemDelegate {
-            width: sizeList.width
-            enabled: false
-            Text {
-                text: "Size"
-                width: sizeList.width
-                font: lightRoboto
-                color: AppStyle.color.text
-                horizontalAlignment: Text.AlignHCenter
-            }
-        }
         delegate: ItemDelegate {
             id: sizeDelegate
             height: sizeText.height
@@ -251,6 +259,7 @@ Popup {
 
     IconButton {
         id: addNewColor
+        visible: false
         anchors.margins: AppStyle.spacing
         anchors.top: colorList.bottom
         icon.source: "qrc:/bricks/resources/add_circle_black_24dp.svg"

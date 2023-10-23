@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import Qt.labs.platform 1.1
+import QtQuick.Layouts
 
 import Brick 1.0
 
@@ -15,94 +16,73 @@ Rectangle {
     anchors.fill: parent
     anchors.margins: AppStyle.spacing
     color: AppStyle.color.window
+    property int minimumHeight: path.height + 50 + svg_check.height + edtiableBrick.height
+                                + xSlider.height + bottomPadding.height
+                                + contentScale.height + 6 * AppStyle.spacing
 
     MouseArea {
         anchors.fill: root
         onClicked: root.forceActiveFocus()
     }
-    ButtonField {
+    LabelTextField {
+        id: brickName
+        anchors.top: root.top
+        property string folderPath: tempFolder.replace(fileStub, "")
+        width: root.width / 2
+        label: "Name:"
+        field.text: "new_brick"
+        field.enabled: autoSave.checked
+        field.validator: RegularExpressionValidator {
+            regularExpression: /\w+/
+        }
+        field.hoverEnabled: true
+        field.ToolTip.delay: 1000
+        field.ToolTip.timeout: 5000
+        field.ToolTip.visible: brickName.field.hovered
+        field.ToolTip.text: brickName.folderPath
+    }
+    IconButton {
         id: path
-        button_label: qsTr("Set export to …")
-        field.placeholderText: qsTr("Select export path …")
-        field.width: parent.width * 3 / 4 - AppStyle.spacing
-        button.width: parent.width / 4 - AppStyle.spacing
-        field.text: textMetrics.elidedText
-        field.readOnly: true
-        button.onPressed: folderDialog.open()
+        icon.source: "qrc:/bricks/resources/folder_open_black_24dp.svg"
+        anchors.left: brickName.right
+        anchors.top: root.top
+        onPressed: folderDialog.open()
+        hoverEnabled: true
+        ToolTip.delay: 1000
+        ToolTip.timeout: 5000
+        ToolTip.visible: path.hovered
+        ToolTip.text: "Set export path …"
     }
     FolderDialog {
         id: folderDialog
-        folder: tempFolder
-        TextMetrics {
-            id: textMetrics
-            font.family: "Roboto"
-            elide: Text.ElideLeft
-            elideWidth: path.field.width
-            text: folderDialog.folder
-        }
-        onAccepted: {
-            textMetrics.text = folder
-        }
+        folder: tempFolder.replace(fileStub, "")
+        onAccepted: brickName.folderPath = folder
     }
 
-    Rectangle {
-        id: svg
-        width: parent.width / 6
-        anchors.bottom: contentScale.top
-        anchors.left: parent.left
-        height: AppStyle.defaultHeight
-        color: AppStyle.color.window
-        CheckBox {
-            id: svg_check
-            text: "SVG"
-            font.pointSize: AppStyle.pointsizeSpacing
-            anchors.fill: parent
-            checked: true
-        }
+    CheckBox {
+        id: svg_check
+        text: "SVG"
+        anchors.bottom: path.bottom
+        anchors.left: path.right
+        anchors.leftMargin: AppStyle.spacing
+        checked: true
     }
-    Rectangle {
-        width: parent.width / 6
-        anchors.bottom: contentScale.top
-        anchors.left: root.left
+
+    CheckBox {
+        id: json_check
+        text: "JSON"
+        anchors.bottom: svg_check.bottom
+        anchors.left: svg_check.right
         height: AppStyle.defaultHeight
-        color: AppStyle.color.window
-        CheckBox {
-            id: autoSave
-            text: "Auto-Save"
-            font.pointSize: AppStyle.pointsizeSpacing
-            anchors.fill: parent
-            checked: false
-        }
+        checked: true
     }
-    Rectangle {
-        id: json
-        width: parent.width / 6
-        anchors.bottom: contentScale.top
-        anchors.left: svg.right
-        height: AppStyle.defaultHeight
-        color: AppStyle.color.window
-        CheckBox {
-            id: json_check
-            text: "JSON"
-            font.pointSize: AppStyle.pointsizeSpacing
-            anchors.fill: parent
-            checked: true
-        }
-    }
-    Rectangle {
-        id: png
-        width: parent.width / 6
-        anchors.bottom: contentScale.top
-        anchors.left: json.right
-        height: AppStyle.defaultHeight
-        color: AppStyle.color.window
-        CheckBox {
-            id: png_check
-            text: "PNG"
-            font.pointSize: AppStyle.pointsizeSpacing
-            anchors.fill: parent
-            checked: true
-        }
+
+    CheckBox {
+        id: png_check
+        text: "PNG"
+        anchors.left: json_check.right
+        anchors.bottom: svg_check.bottom
+        checked: true
     }
 
     Rectangle {
@@ -137,9 +117,41 @@ Rectangle {
             edtiableBrick.update(true)
         }
     }
+    CheckBox {
+        id: autoSave
+        text: "Auto-Save"
+        font.pointSize: AppStyle.pointsizeSpacing
+        anchors.leftMargin: AppStyle.spacing
+        anchors.bottom: xSlider.top
+        anchors.left: defaultButton.right
+        height: AppStyle.defaultHeight
+        checked: false
+        onCheckedChanged: {
+            if (!autoSave.checked) {
+                brickName.field.text = edtiableBrick.brick.cleanFileName(
+                            edtiableBrick.content.text)
+            }
+            if (!brickName.field.text)
+                brickName.field.text = "new_brick"
+        }
+    }
+    Loader {
+        id: editor
+        anchors.bottom: defaultButton.top
+        anchors.left: root.left
+        anchors.top: path.bottom
+        anchors.right: root.right
+        anchors.margins: AppStyle.spacing
+        sourceComponent: edtiableBrick.editor
+        Component.onCompleted: {
+            item.ok_button.visible = false
+        }
+    }
+
     EditableBrick {
         id: edtiableBrick
         asynchronous: false
+        colorButton.visible: false
         onAvailableSizeChanged: {
             if (availableSize == "0h") {
                 ySlider.from = 0
@@ -170,6 +182,28 @@ Rectangle {
             when: ySlider.value
             value: ySlider.value
         }
+        Timer {
+            id: autoSaveTimeout
+            interval: 500
+            onTriggered: {
+                edtiableBrick.dataChanged()
+                edtiableBrick.save()
+            }
+        }
+        content.onTextChanged: {
+            if (!autoSave.checked) {
+                brickName.field.text = edtiableBrick.brick.cleanFileName(
+                            content.text)
+            } else {
+                dataChanged()
+                save()
+                autoSaveTimeout.running = true
+            }
+        }
+        content.onEditingFinished: {
+            dataChanged()
+            save()
+        }
 
         anchors.right: parent.right
         anchors.left: ySlider.right
@@ -181,24 +215,23 @@ Rectangle {
 
         function saveBrick() {
             var statusText = "INFO: Saved brick(s) as: "
-            var filename = edtiableBrick.brick.fileName()
-            if (!filename || !modified && edtiableBrick.brickColor.search(
-                        "collapsed") < 0)
+            var filename = brickName.field.text
+            if (!filename || !brickName.folderPath)
                 return
             if (svg_check.checked) {
-                edtiableBrick.brick.saveSVG(textMetrics.text)
+                edtiableBrick.brick.saveSVG(brickName.folderPath, filename)
                 statusText += filename + ".svg "
             }
             if (json_check.checked) {
-                edtiableBrick.brick.saveJSON(textMetrics.text)
+                edtiableBrick.brick.saveJSON(brickName.folderPath, filename)
                 statusText += filename + ".json "
             }
             if (png_check.checked) {
-                edtiableBrick.brick.savePNG(textMetrics.text)
+                edtiableBrick.brick.savePNG(brickName.folderPath, filename)
                 statusText += filename + ".png "
             }
             modified = false
-            statusText += " to " + textMetrics.text
+            statusText += " to " + brickName.folderPath
             root.updateStatusMessage(statusText)
         }
     }

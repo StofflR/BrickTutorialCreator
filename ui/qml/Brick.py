@@ -95,10 +95,6 @@ class Brick(QObject):
             return QUrl.fromLocalFile(workingBrick).toString()
         return ""
 
-    @Slot(str, result=str)
-    def localPath(self, path):
-        return QUrl(path).toLocalFile()
-
     @Slot(result=str)
     def fileName(self):
         # clean multi, leading/tailing whitespaces
@@ -107,22 +103,25 @@ class Brick(QObject):
     @Slot(str, result=str)
     @Slot(str, str, result=str)
     def saveSVG(self, path, filename=None):
+        path = path.replace(OSDefs.FILE_STUB, "")
         if not filename:
             filename = self.fileName()
-        filename = cleanFileName(filename)
-        os.makedirs(self.localPath(path), exist_ok=True)
-        target = self.localPath(path) + "/" + filename + ".svg"
+        print(path)
+        filename = self.cleanFileName(filename)
+        os.makedirs(path, exist_ok=True)
+        target = path + "/" + filename + ".svg"
         self.brick.save(target)
         return target
 
     @Slot(str)
     @Slot(str, str)
     def savePNG(self, path, filename=None):
+        path = path.replace(OSDefs.FILE_STUB, "")
         if not filename:
             filename = self.fileName()
         filename = cleanFileName(filename)
-        os.makedirs(self.localPath(path), exist_ok=True)
-        self.brick.savePNG(self.localPath(path) + "/" + filename + ".png")
+        os.makedirs(path, exist_ok=True)
+        self.brick.savePNG(path + "/" + filename + ".png")
 
     @Slot(str, result=bool)
     def exists(self, path):
@@ -132,12 +131,16 @@ class Brick(QObject):
     @Slot(str)
     @Slot(str, str)
     def saveJSON(self, path, filename=None):
+        path = path.replace(OSDefs.FILE_STUB, "")
         if not filename:
             filename = self.fileName()
         filename = cleanFileName(filename)
-        os.makedirs(self.localPath(path), exist_ok=True)
-        self.brick.toJSON(self.localPath(path) + "/" + filename + ".json")
+        os.makedirs(path, exist_ok=True)
+        self.brick.toJSON(path + "/" + filename + ".json")
 
+    @Slot(str, result=str)
+    def cleanFileName(self, filename):
+        return cleanFileName(filename)
 
 def cleanFileName(filename):
     name = filename.replace(".svg", "").replace(".png", "").replace(".json", "")

@@ -31,6 +31,8 @@ Image {
     property alias clearButton: clearButton
     property alias colorButton: colorButton
 
+    property alias editor: selectorComponent
+
     property alias content: previewContent
 
     signal dataChanged
@@ -61,7 +63,7 @@ Image {
     fillMode: Image.PreserveAspectFit
     source: previewContent.cursorVisible ? baseFolder + "/" + brickPath : brickImg
 
-    onDataChanged: {
+    function updateBrick() {
         if (!brickPath || !brickColor || !availableSize || !xPos || !yPos
                 || !contentScale || loading) {
             return
@@ -70,6 +72,9 @@ Image {
                                     brickContent, contentScale, xPos, yPos)
         brickImg = modifyableBrick.path()
     }
+
+    onDataChanged: updateBrick()
+
     TextArea {
         id: textView
         Binding on cursorPosition {
@@ -221,8 +226,33 @@ Image {
         }
     }
     IconButton {
+        Popup {
+            id: popup
+
+            anchors.centerIn: Overlay.overlay
+            Loader {
+                id: selector
+                sourceComponent: selectorComponent
+            }
+        }
+
+        id: colorButton
+        anchors.top: svgPreview.top
+        anchors.right: clearButton.left
+        anchors.margins: enabled ? AppStyle.spacing : 0
+        visible: enabled
+        opacity: enabled ? 0.7 : 0.3
+        width: visible ? AppStyle.defaultHeight / 2 : 0
+        height: visible ? width : 0
+        icon.source: "qrc:/bricks/resources/create_black_24dp.svg"
+        ToolTip.visible: hovered
+        ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+        ToolTip.text: qsTr("Edit visuals of current brick!")
+        onPressed: popup.open()
+    }
+    Component {
+        id: selectorComponent
         ColorSelector {
-            id: selector
             onBaseChanged: (selectedColor, selectedPath, selectedSize) => {
                                if (!selectedColor || !selectedPath
                                    || !selectedSize) {
@@ -236,18 +266,5 @@ Image {
                                svgPreview.dataChanged()
                            }
         }
-        id: colorButton
-        anchors.top: svgPreview.top
-        anchors.right: clearButton.left
-        anchors.margins: enabled ? AppStyle.spacing : 0
-        visible: enabled
-        opacity: enabled ? 0.7 : 0.3
-        width: visible ? AppStyle.defaultHeight / 2 : 0
-        height: visible ? width : 0
-        icon.source: "qrc:/bricks/resources/create_black_24dp.svg"
-        ToolTip.visible: hovered
-        ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-        ToolTip.text: qsTr("Edit visuals of current brick!")
-        onPressed: selector.open()
     }
 }

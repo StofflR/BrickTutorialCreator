@@ -26,16 +26,11 @@ Item {
         field.validator: RegularExpressionValidator {
             regularExpression: /\w+/
         }
-
-        MouseArea {
-            id: area
-            anchors.fill: tutorialName
-            hoverEnabled: true
-            ToolTip.delay: 1000
-            ToolTip.timeout: 5000
-            ToolTip.visible: area.containsMouse || tutorialName.field.hovered
-            ToolTip.text: tutorialName.folderPath
-        }
+        field.hoverEnabled: true
+        field.ToolTip.delay: 1000
+        field.ToolTip.timeout: 5000
+        field.ToolTip.visible: tutorialName.field.hovered
+        field.ToolTip.text: tutorialName.folderPath
     }
     Button {
         text: "Change export path ..."
