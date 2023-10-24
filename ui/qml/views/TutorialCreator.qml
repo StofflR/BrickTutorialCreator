@@ -4,9 +4,10 @@ import Qt.labs.platform 1.1
 import QtQuick.Layouts 1.15
 import QtQml.Models 2.1
 import QtQuick 2.15
-import "../assets"
-import "../font"
-import "../views"
+
+import "../views/interface"
+import "../assets/simple"
+import "../assets/combined"
 import "../style"
 
 import TutorialManager 1.0

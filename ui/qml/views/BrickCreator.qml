@@ -5,9 +5,9 @@ import QtQuick.Layouts
 
 import Brick 1.0
 
-import "../assets"
-import "../font"
-import "../views"
+import "../assets/simple"
+import "../assets/combined"
+import "../views/interface"
 import "../style"
 
 Rectangle {

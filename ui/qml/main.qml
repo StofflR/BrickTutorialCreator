@@ -6,6 +6,7 @@ import QtQuick.Layouts 2.15
 import "assets"
 import "font"
 import "views"
+import "views/interface"
 import "style"
 
 ApplicationWindow {

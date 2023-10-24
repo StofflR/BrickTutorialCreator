@@ -4,17 +4,17 @@ from PySide6.QtCore import QUrl, Qt
 from PySide6.QtQuick import QQuickWindow, QSGRendererInterface
 from PySide6.QtGui import QGuiApplication, QFontDatabase, QIcon, QFont
 from PySide6.QtQml import QQmlApplicationEngine, qmlRegisterType, QQmlDebuggingEnabler
-from qml import Brick
-from qml import TutorialManager
-from qml import TutorialSourceManager
-from qml import LanguageManager
-from qml import Converter
-from qml import ColorManager
+from modules.interface.TutorialManager import TutorialManager
+from modules.interface.TutorialSourceManager import TutorialSourceManager
+from modules.interface.LanguageManager import LanguageManager
+from modules.interface.Converter import Converter
+from modules.interface.ColorManager import ColorManager
+from modules.interface.Brick import Brick
 
 import resources_rc
 import logging
 import shutil
-import OSDefs
+import modules.OSDefs as OSDefs
 
 if __name__ == "__main__":
     os.environ["QT_FONT_DPI"] = "96"
@@ -38,29 +38,30 @@ if __name__ == "__main__":
     app.setWindowIcon(QIcon("./resources/icon.svg"))
 
     # sapp.applicationDisplayName("Brick Designer")
-    qmlRegisterType(Brick.Brick, "Brick", 1, 0, "Brick")
+    qmlRegisterType(Brick, "Brick", 1, 0, "Brick")
     qmlRegisterType(
-        TutorialManager.TutorialManager, "TutorialManager", 1, 0, "TutorialManager"
+        TutorialManager, "TutorialManager", 1, 0, "TutorialManager"
     )
     qmlRegisterType(
-        LanguageManager.LanguageManager, "LanguageManager", 1, 0, "LanguageManager"
+        LanguageManager, "LanguageManager", 1, 0, "LanguageManager"
     )
     qmlRegisterType(
-        TutorialSourceManager.TutorialSourceManager,
+        TutorialSourceManager,
         "TutorialSourceManager",
         1,
         0,
         "TutorialSourceManager",
     )
-    qmlRegisterType(Converter.Converter, "Converter", 1, 0, "Converter")
-    qmlRegisterType(ColorManager.ColorManager, "ColorManager", 1, 0, "ColorManager")
+    qmlRegisterType(Converter, "Converter", 1, 0, "Converter")
+    qmlRegisterType(Converter, "Converter", 1, 0, "Converter")
+    qmlRegisterType(ColorManager, "ColorManager", 1, 0, "ColorManager")
 
     assert (
-        QFontDatabase.addApplicationFont(os.getcwd() + "/qml/font/Roboto-Bold.ttf")
+        QFontDatabase.addApplicationFont(os.getcwd() + "/resources/fonts/Roboto-Bold.ttf")
         != -1
     )
     assert (
-        QFontDatabase.addApplicationFont(os.getcwd() + "/qml/font/Roboto-Light.ttf")
+        QFontDatabase.addApplicationFont(os.getcwd() + "/resources/fonts/Roboto-Light.ttf")
         != -1
     )
 

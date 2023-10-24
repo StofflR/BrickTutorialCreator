@@ -4,9 +4,9 @@ import Qt.labs.platform 1.1
 import LanguageManager 1.0
 import Brick 1.0
 
-import "../assets"
-import "../font"
-import "../views"
+import "../assets/simple"
+import "../assets/combined"
+import "../views/interface"
 import "../style"
 
 Item {
