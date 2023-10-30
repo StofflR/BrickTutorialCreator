@@ -8,24 +8,10 @@ T.Button {
     text: qsTr("Button")
     height: AppStyle.defaultHeight
     property bool dangerButton: false
-    contentItem: Text {
-        text: control.text
-        font.family: "Roboto"
-        font.pointSize: AppStyle.pointsizeSpacing
-        opacity: enabled ? 1.0 : 0.3
-        color: dangerButton ? control.down ? "lightcoral" : "red" : AppStyle.color.text
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        elide: Text.ElideRight
-    }
 
-    background: Rectangle {
-        implicitWidth: parent.width
-        implicitHeight: parent.height
-        opacity: enabled ? 1 : 0.3
-        border.color: dangerButton ? "red" : Qt.darker(AppStyle.color.window)
-        border.width: 1
-        radius: 2
-        color: control.pressed ? AppStyle.color.highlight : AppStyle.color.light
-    }
+    font.family: "Roboto"
+    font.pointSize: AppStyle.pointsizeSpacing
+
+    background.implicitWidth: parent.width
+    background.implicitHeight: parent.height
 }

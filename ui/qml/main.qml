@@ -40,11 +40,8 @@ ApplicationWindow {
                     text: qsTr("Help")
                     font.family: "Roboto"
                     font.pointSize: AppStyle.pointsizeSpacing
-                    color: AppStyle.color.text
                 }
-                background: Rectangle {
-                    color: parent.highlighted ? AppStyle.color.light : AppStyle.color.window
-                }
+                background: Rectangle {}
             }
 
             MenuItem {
@@ -52,12 +49,9 @@ ApplicationWindow {
                     text: qsTr("About")
                     font.family: "Roboto"
                     font.pointSize: AppStyle.pointsizeSpacing
-                    color: AppStyle.color.text
                 }
                 onTriggered: about.open()
-                background: Rectangle {
-                    color: parent.highlighted ? AppStyle.color.light : AppStyle.color.window
-                }
+                background: Rectangle {}
             }
             MenuSeparator {}
             MenuItem {
@@ -65,48 +59,36 @@ ApplicationWindow {
                     text: qsTr("Convert Folder (JSON → SVG)")
                     font.family: "Roboto"
                     font.pointSize: AppStyle.pointsizeSpacing
-                    color: AppStyle.color.text
                 }
                 onTriggered: brickConverter.fromJSONtoSVG()
-                background: Rectangle {
-                    color: parent.highlighted ? AppStyle.color.light : AppStyle.color.window
-                }
+                background: Rectangle {}
             }
             MenuItem {
                 contentItem: Text {
                     text: qsTr("Convert Folder (SVG → PNG)")
                     font.family: "Roboto"
                     font.pointSize: AppStyle.pointsizeSpacing
-                    color: AppStyle.color.text
                 }
                 onTriggered: brickConverter.fromSVGtoPNG()
-                background: Rectangle {
-                    color: parent.highlighted ? AppStyle.color.light : AppStyle.color.window
-                }
+                background: Rectangle {}
             }
             MenuItem {
                 contentItem: Text {
                     text: qsTr("Convert Folder (JSON → PNG)")
                     font.family: "Roboto"
                     font.pointSize: AppStyle.pointsizeSpacing
-                    color: AppStyle.color.text
                 }
                 onTriggered: brickConverter.fromJSONtoPNG()
-                background: Rectangle {
-                    color: parent.highlighted ? AppStyle.color.light : AppStyle.color.window
-                }
+                background: Rectangle {}
             }
             MenuItem {
                 contentItem: Text {
                     text: qsTr("Convert Folder (Tutorial → PNG)")
                     font.family: "Roboto"
                     font.pointSize: AppStyle.pointsizeSpacing
-                    color: AppStyle.color.text
                 }
                 onTriggered: brickConverter.fromTutorialtoPNG()
-                background: Rectangle {
-                    color: parent.highlighted ? AppStyle.color.light : AppStyle.color.window
-                }
+                background: Rectangle {}
             }
             MenuSeparator {}
             MenuItem {
@@ -114,12 +96,9 @@ ApplicationWindow {
                     text: qsTr("Update existing bricks")
                     font.family: "Roboto"
                     font.pointSize: AppStyle.pointsizeSpacing
-                    color: AppStyle.color.text
                 }
                 onTriggered: brickConverter.updateExisting()
-                background: Rectangle {
-                    color: parent.highlighted ? AppStyle.color.light : AppStyle.color.window
-                }
+                background: Rectangle {}
             }
         }
     }
@@ -182,13 +161,13 @@ ApplicationWindow {
         anchors.bottom: parent.bottom
         height: 20
         width: parent.width
-        color: AppStyle.color.window
+        color: palette.window
+
         RowLayout {
             anchors.fill: parent
             Label {
                 height: statusbar.height
                 text: root.statusText
-                color: AppStyle.color.text
             }
         }
     }

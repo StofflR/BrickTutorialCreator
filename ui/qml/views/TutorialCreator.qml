@@ -67,10 +67,9 @@ Item {
         }
         onVisibleChanged: proxyModel.selectedIndex = -1
 
-        Rectangle {
+        Item {
             width: parent.width / 2
             height: item.height
-            color: AppStyle.color.window
             ScrollView {
                 id: scrollview
                 clip: true
@@ -118,19 +117,17 @@ Item {
                 }
             }
         }
-        Rectangle {
+        Item {
             anchors.right: parent.right
             width: parent.width / 2
             height: parent.height
-            color: AppStyle.color.window
-            Rectangle {
+            Item {
                 id: control
                 height: parent.height
                 width: AppStyle.defaultHeight
                 anchors.top: parent.top
                 anchors.left: parent.left
                 anchors.margins: AppStyle.spacing
-                color: AppStyle.color.window
                 ColumnLayout {
                     width: parent.width
                     IconButton {
@@ -247,8 +244,7 @@ Item {
                     }
                 }
             }
-            Rectangle {
-                color: AppStyle.color.window
+            Item {
                 anchors.fill: availableSourceScrollview
             }
 
@@ -287,8 +283,8 @@ Item {
                         }
                     }
                     highlight: Rectangle {
-                        color: AppStyle.color.mid
                         radius: 5
+                        color: palette.midlight
                     }
                     focus: true
                     model: ListModel {
@@ -300,14 +296,13 @@ Item {
                 id: manager
             }
 
-            Rectangle {
+            Item {
                 id: sourceButtons
                 anchors.left: control.right
                 anchors.top: parent.top
                 anchors.right: parent.right
                 anchors.margins: AppStyle.spacing
                 height: addPathButton.height + enableForeign.height + AppStyle.spacing
-                color: AppStyle.color.window
                 Button {
                     id: addPathButton
                     anchors.left: sourceButtons.left
@@ -362,13 +357,12 @@ Item {
                 }
             }
 
-            Rectangle {
+            Item {
                 id: optionField
                 anchors.top: availableSourceScrollview.bottom
                 anchors.left: control.right
                 anchors.right: parent.right
                 anchors.margins: AppStyle.spacing
-                color: AppStyle.color.window
                 height: refreshButton.height
                 Field {
                     anchors.left: optionField.left

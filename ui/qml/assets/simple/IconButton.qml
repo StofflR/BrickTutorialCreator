@@ -10,14 +10,10 @@ T.Button {
     font.family: "Roboto"
     font.pointSize: AppStyle.pointsizeSpacing
     opacity: enabled ? 1.0 : 0.3
-    icon.color: AppStyle.color.text
-    background: Rectangle {
-        implicitHeight: AppStyle.defaultHeight
-        implicitWidth: AppStyle.defaultHeight
-        opacity: enabled ? 1 : 0.3
-        border.color: Qt.darker(AppStyle.color.window)
-        color: control.pressed ? AppStyle.color.highlight : AppStyle.color.light
-        border.width: 1
-        radius: 2
-    }
+
+    icon.color: control.checked
+                || control.highlighted ? control.palette.brightText : control.flat
+                                         && !control.down ? (control.visualFocus ? control.palette.highlight : control.palette.windowText) : control.palette.buttonText
+    background.implicitHeight: AppStyle.defaultHeight
+    background.implicitWidth: AppStyle.defaultHeight
 }

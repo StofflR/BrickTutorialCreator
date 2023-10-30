@@ -21,6 +21,7 @@ DelegateModel {
             width: parent ? parent.width : 0
             height: content.height - (width / 55) > 0 ? content.height - (width / 55) : 0
             property bool held: false
+
             pressAndHoldInterval: 1
             drag.target: held ? content : undefined
             drag.axis: Drag.YAxis
@@ -47,8 +48,8 @@ DelegateModel {
                 Rectangle {
                     width: 10
                     height: image.height - image.width * 0.018
-                    color: Qt.lighter(AppStyle.color.highlight)
                     opacity: dragArea.DelegateModel.itemsIndex === visualModel.selectedIndex ? 1 : 0
+                    color: palette.base
                     anchors.left: image.right
                     anchors.margins: 5
                     radius: 5

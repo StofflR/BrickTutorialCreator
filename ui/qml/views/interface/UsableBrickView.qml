@@ -21,11 +21,10 @@ Item {
             id: view
             anchors.fill: parent
             clip: true
-            delegate: Rectangle {
+            delegate: Item {
                 id: source
                 width: view.width
                 height: expand ? sourceImage.height + recta.height : sourceImage.height
-                color: AppStyle.color.window
                 property bool expand: false
 
                 MouseArea {
@@ -41,11 +40,6 @@ Item {
                                          root.addBrick(sourceImage.source)
                                      }
 
-                    Rectangle {
-                        anchors.fill: sourceImage
-                        color: AppStyle.color.midlight
-                        radius: 5
-                    }
                     Image {
                         id: sourceImage
                         fillMode: Image.PreserveAspectFit
@@ -60,13 +54,12 @@ Item {
                         source: (groupedView ? baseFolder + "/" : fileStub) + view.model[index].path
                     }
                 }
-                Rectangle {
+                Item {
                     id: recta
                     width: view.width
                     anchors.top: mouseArea.bottom
                     anchors.left: mouseArea.left
                     height: expand ? viewExpand.contentHeight + 2 * AppStyle.spacing : 0
-                    color: AppStyle.color.window
 
                     ListView {
                         id: viewExpand
@@ -78,7 +71,6 @@ Item {
                             id: sourceExpand
                             width: viewExpand.width
                             height: sourceImageExpand.height
-                            color: AppStyle.color.midlight
                             radius: 5
 
                             Image {
@@ -100,19 +92,17 @@ Item {
             model: availableBricks
         }
     }
-    Rectangle {
+    Item {
         id: name
         anchors.left: scrollview.left
         width: view.width
         anchors.margins: AppStyle.spacing
         height: text.height + AppStyle.spacing
-        color: AppStyle.color.window
-        Text {
+        Label {
             id: text
             anchors.left: name.left
             anchors.verticalCenter: name.verticalCenter
             text: qsTr("Available Bricks")
-            color: AppStyle.color.text
         }
     }
 }

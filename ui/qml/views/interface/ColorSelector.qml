@@ -49,13 +49,12 @@ Item {
         id: header
         width: colorSelector.width * 2 / 3
         height: backText.height
-        color: AppStyle.color.window
+        color: palette.midlight
         Text {
             id: backText
             text: "Back"
             width: header.width / 5
             font: lightRoboto
-            color: AppStyle.color.text
             horizontalAlignment: Text.AlignHCenter
         }
         Text {
@@ -64,7 +63,6 @@ Item {
             anchors.left: backText.right
             width: header.width / 5
             font: lightRoboto
-            color: AppStyle.color.text
             horizontalAlignment: Text.AlignHCenter
         }
         Text {
@@ -73,7 +71,6 @@ Item {
             anchors.left: shadeText.right
             width: header.width / 5
             font: lightRoboto
-            color: AppStyle.color.text
             horizontalAlignment: Text.AlignHCenter
         }
         Text {
@@ -81,7 +78,6 @@ Item {
             width: header.width * 2 / 5
             anchors.left: borderText.right
             font: lightRoboto
-            color: AppStyle.color.text
             horizontalAlignment: Text.AlignHCenter
         }
     }
@@ -127,10 +123,9 @@ Item {
                                                sizeList.brickSize)
                                }
             background: Rectangle {
-                color: selected ? Qt.lighter(
-                                      AppStyle.color.window) : AppStyle.color.window
                 height: delegate.height
                 width: delegate.width
+                color: selected ? palette.base : palette.window
             }
 
             Rectangle {
@@ -159,7 +154,6 @@ Item {
                 width: delegate.width * 2 / 5
                 anchors.left: border.right
                 font: lightRoboto
-                color: AppStyle.color.text
                 horizontalAlignment: Text.AlignHCenter
             }
         }
@@ -168,14 +162,13 @@ Item {
         id: headerSize
         anchors.left: sizeList.left
         height: backText.height
-        color: AppStyle.color.window
         width: sizeList.width
+        color: palette.midlight
         Text {
             text: "Size"
             width: headerSize.width
             anchors.fill: headerSize
             font: lightRoboto
-            color: AppStyle.color.text
             horizontalAlignment: Text.AlignHCenter
         }
     }
@@ -239,17 +232,15 @@ Item {
                                }
 
             background: Rectangle {
-                color: selected ? Qt.lighter(
-                                      AppStyle.color.window) : AppStyle.color.window
                 height: sizeText.height
                 width: sizeList.width
+                color: selected ? palette.base : palette.window
             }
             Text {
                 id: sizeText
                 text: modelData.text
                 width: sizeList.width
                 font: lightRoboto
-                color: AppStyle.color.text
                 horizontalAlignment: Text.AlignHCenter
             }
         }

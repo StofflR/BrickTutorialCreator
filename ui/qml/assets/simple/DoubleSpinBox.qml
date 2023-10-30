@@ -32,15 +32,11 @@ T.SpinBox {
         width: height / 2
         implicitWidth: AppStyle.defaultHeight
         implicitHeight: AppStyle.defaultHeight
-        color: spinbox.up.pressed ? Qt.darker(
-                                        AppStyle.color.window) : AppStyle.color.window
-        border.color: Qt.darker(AppStyle.color.window)
 
         Text {
             text: "+"
             font.family: "Roboto"
             font.pointSize: spinbox.font.pointSize * 2
-            color: AppStyle.color.text
             anchors.fill: parent
             fontSizeMode: Text.Fit
             horizontalAlignment: Text.AlignHCenter
@@ -54,39 +50,20 @@ T.SpinBox {
         width: height / 2
         implicitWidth: AppStyle.defaultHeight
         implicitHeight: AppStyle.defaultHeight
-        color: spinbox.down.pressed ? Qt.darker(
-                                          AppStyle.color.window) : AppStyle.color.window
-        border.color: Qt.darker(AppStyle.color.window)
 
         Text {
             text: "-"
             font.family: "Roboto"
             font.pointSize: spinbox.font.pointSize * 2
-            color: AppStyle.color.text
             anchors.fill: parent
             fontSizeMode: Text.Fit
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
         }
     }
-    contentItem: TextInput {
-        anchors.right: up.indicator.left
-        anchors.left: down.indicator.right
-        horizontalAlignment: Qt.AlignHCenter
-        verticalAlignment: Qt.AlignVCenter
-        text: spinbox.displayText
-        font.family: "Roboto"
-        font.pointSize: AppStyle.pointsizeSpacing
-        color: AppStyle.color.text
-        readOnly: !spinbox.editable
-        inputMethodHints: Qt.ImhFormattedNumbersOnly
-    }
-    background: Rectangle {
-        implicitWidth: 120
-        implicitHeight: AppStyle.defaultHeight
-        border.color: Qt.darker(AppStyle.color.window)
-        border.width: spinbox.visualFocus ? 2 : 1
-        radius: 2
-        color: AppStyle.color.light
-    }
+    contentItem.horizontalAlignment: Qt.AlignHCenter
+    contentItem.verticalAlignment: Qt.AlignVCenter
+
+    background.implicitWidth: 120
+    background.implicitHeight: AppStyle.defaultHeight
 }

@@ -34,13 +34,13 @@ ItemDelegate {
     }
     Rectangle {
         anchors.fill: sourceImage
-        color: AppStyle.color.midlight
         radius: 5
+        color: palette.midlight
     }
     Rectangle {
         anchors.fill: target
-        color: AppStyle.color.midlight
         radius: 5
+        color: palette.midlight
     }
 
     Image {

@@ -19,11 +19,10 @@ Item {
     }
     anchors.fill: parent
     width: parent.width
-    Rectangle {
+    Item {
         id: layout
         width: parent.width
         height: path.height + addLanguage.height + 20
-        color: AppStyle.color.window
         ButtonField {
             id: path
             button_label: "Translation folder"
@@ -107,21 +106,21 @@ Item {
             focus: true
             contentItem: Rectangle {
                 anchors.fill: parent
+                color: palette.window
+
                 Text {
                     anchors.centerIn: parent
                     text: "WARNING!\nRemoving: " + languageManager.currentLanguage
                           + " will delete all associated files with the translation!\nDo you wish to continue anyway?"
                     font: lightRoboto
-                    color: AppStyle.color.text
                 }
-                color: AppStyle.color.window
                 Rectangle {
                     id: deleteButtons
                     width: parent.width / 2
                     height: AppStyle.defaultHeight + AppStyle.spacing
                     anchors.left: parent.left
                     anchors.bottom: parent.bottom
-                    color: AppStyle.color.window
+                    color: palette.window
                     Button {
                         width: parent.width / 2
                         dangerButton: true
@@ -143,7 +142,6 @@ Item {
                     height: AppStyle.defaultHeight + AppStyle.spacing
                     anchors.left: deleteButtons.right
                     anchors.bottom: parent.bottom
-                    color: AppStyle.color.window
                     Button {
                         width: parent.width / 2
                         text: "Abort"
@@ -178,14 +176,13 @@ Item {
         cacheBuffer: visible ? 400 : 0
     }
 
-    Rectangle {
+    Item {
         id: bottomLayout
         visible: false
         height: visible ? label.height + svgPreview.height : 0
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        color: AppStyle.color.window
 
         Label {
             id: label

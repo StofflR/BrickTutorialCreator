@@ -10,12 +10,6 @@ TextArea {
     font.pointSize: AppStyle.pointsizeSpacing
     leftInset: -AppStyle.spacing
     wrapMode: TextEdit.WordWrap
-    background: Rectangle {
-        implicitWidth: AppStyle.defaultWidth
-        implicitHeight: AppStyle.defaultHeight
-        color: AppStyle.color.light
-        border.color: Qt.darker(AppStyle.color.window)
-        border.width: 1
-        radius: 2
-    }
+    background.implicitWidth: AppStyle.defaultWidth
+    background.implicitHeight: AppStyle.defaultHeight
 }

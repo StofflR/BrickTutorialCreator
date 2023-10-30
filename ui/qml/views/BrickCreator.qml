@@ -10,16 +10,14 @@ import "../assets/combined"
 import "../views/interface"
 import "../style"
 
-Rectangle {
+Item {
     id: root
     signal updateStatusMessage(string text)
     anchors.fill: parent
     anchors.margins: AppStyle.spacing
-    color: AppStyle.color.window
     property int minimumHeight: path.height + 50 + svg_check.height + edtiableBrick.height
                                 + xSlider.height + bottomPadding.height
                                 + contentScale.height + 6 * AppStyle.spacing
-
     MouseArea {
         anchors.fill: root
         onClicked: root.forceActiveFocus()
@@ -87,7 +85,7 @@ Rectangle {
 
     Rectangle {
         anchors.fill: edtiableBrick
-        color: AppStyle.color.midlight
+        color: palette.midlight
         radius: 5
     }
     LabelSlider {
@@ -264,6 +262,8 @@ Rectangle {
 
     Rectangle {
         id: bottomPadding
+        color: AppStyle.color.base
+
         height: edtiableBrick.brickColor.search(
                     "collapsed") > -1 ? AppStyle.defaultHeight * 2 : 0
         anchors.bottom: parent.bottom

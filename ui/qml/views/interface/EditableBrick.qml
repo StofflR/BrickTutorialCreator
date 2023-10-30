@@ -43,6 +43,7 @@ Image {
     Brick {
         id: modifyableBrick
     }
+
     function loadFromFile(currentFile) {
         {
             if (!currentFile)
