@@ -22,7 +22,7 @@ Image {
     property bool modified: false
     property bool disable: false
 
-    property string status
+    property string statusText
 
     property alias brick: modifyableBrick
     property alias saveButton: saveButton
@@ -57,7 +57,7 @@ Image {
             svgPreview.yPos = modifyableBrick.posY()
             svgPreview.brickColor = modifyableBrick.brickColor()
             svgPreview.loading = false
-            svgPreview.status = "INFO: Loaded " + currentFile
+            svgPreview.statusText = "INFO: Loaded " + currentFile
         }
     }
     fillMode: Image.PreserveAspectFit
@@ -179,7 +179,7 @@ Image {
         onPressed: {
             previewContent.text = ""
             dataChanged()
-            status = "INFO: Cleared brick content!"
+            statusText = "INFO: Cleared brick content!"
         }
     }
     IconButton {

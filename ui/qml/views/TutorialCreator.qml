@@ -302,7 +302,7 @@ Item {
                 anchors.top: parent.top
                 anchors.right: parent.right
                 anchors.margins: AppStyle.spacing
-                height: addPathButton.height + enableForeign.height + AppStyle.spacing
+                height: 2*AppStyle.defaultHeight + AppStyle.spacing
                 Button {
                     id: addPathButton
                     anchors.left: sourceButtons.left
