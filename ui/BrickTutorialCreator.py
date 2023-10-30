@@ -39,12 +39,8 @@ if __name__ == "__main__":
 
     # sapp.applicationDisplayName("Brick Designer")
     qmlRegisterType(Brick, "Brick", 1, 0, "Brick")
-    qmlRegisterType(
-        TutorialManager, "TutorialManager", 1, 0, "TutorialManager"
-    )
-    qmlRegisterType(
-        LanguageManager, "LanguageManager", 1, 0, "LanguageManager"
-    )
+    qmlRegisterType(TutorialManager, "TutorialManager", 1, 0, "TutorialManager")
+    qmlRegisterType(LanguageManager, "LanguageManager", 1, 0, "LanguageManager")
     qmlRegisterType(
         TutorialSourceManager,
         "TutorialSourceManager",
@@ -57,11 +53,15 @@ if __name__ == "__main__":
     qmlRegisterType(ColorManager, "ColorManager", 1, 0, "ColorManager")
 
     assert (
-        QFontDatabase.addApplicationFont(os.getcwd() + "/resources/fonts/Roboto-Bold.ttf")
+        QFontDatabase.addApplicationFont(
+            os.getcwd() + "/resources/fonts/Roboto-Bold.ttf"
+        )
         != -1
     )
     assert (
-        QFontDatabase.addApplicationFont(os.getcwd() + "/resources/fonts/Roboto-Light.ttf")
+        QFontDatabase.addApplicationFont(
+            os.getcwd() + "/resources/fonts/Roboto-Light.ttf"
+        )
         != -1
     )
 

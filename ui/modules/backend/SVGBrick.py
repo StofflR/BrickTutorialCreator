@@ -17,7 +17,9 @@ class SVGBrick(SVGBrickModifier):
         x=DEFAULT_X,
         y=DEFAULT_Y,
     ):
-        SVGBrickModifier.__init__(self, base_type, content, size, path, scaling_factor, x, y)
+        SVGBrickModifier.__init__(
+            self, base_type, content, size, path, scaling_factor, x, y
+        )
         self.addContent()
 
     def getWorkingBrick(self):
