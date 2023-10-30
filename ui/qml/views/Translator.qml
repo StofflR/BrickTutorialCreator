@@ -61,7 +61,7 @@ Item {
             anchors.left: path.right
             anchors.right: addLanguage.left
             anchors.margins: AppStyle.spacing
-            comboBox.model: languageManager.languages
+            comboBox.model: languageManager?.languages
             comboBox.onModelChanged: comboBox.currentIndex = -1
         }
         LabelTextField {
@@ -110,7 +110,7 @@ Item {
 
                 Text {
                     anchors.centerIn: parent
-                    text: "WARNING!\nRemoving: " + languageManager.currentLanguage
+                    text: "WARNING!\nRemoving: " + languageManager?.currentLanguage
                           + " will delete all associated files with the translation!\nDo you wish to continue anyway?"
                     font: lightRoboto
                 }

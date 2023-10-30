@@ -97,7 +97,7 @@ Item {
                     model: TutorialView {
                         onFocus: item.forceActiveFocus()
                         id: proxyModel
-                        model: tutorialManager.model
+                        model: tutorialManager?.model
                         onModelUpdated: {
                             var updatedModel = []
                             for (var i = 0; i < proxyModel.items.count; i++)
@@ -105,7 +105,8 @@ Item {
                                                       i).model.modelData)
                             if (updatedModel == [])
                                 return
-                            tutorialManager.model = updatedModel
+                            if (tutorialManager)
+                                tutorialManager.model = updatedModel
                         }
                     }
                     moveDisplaced: Transition {
@@ -149,7 +150,7 @@ Item {
                         }
                         icon.source: "qrc:/bricks/resources/save_black_24dp.svg"
                         width: height
-                        enabled: tutorialManager.model.length > 0
+                        enabled: tutorialManager?.model?.length > 0
                                  && tutorialName.field.text
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                         onPressed: brickSaveDialog.open()
@@ -181,7 +182,7 @@ Item {
                         icon.source: "qrc:/bricks/resources/text_snippet_black_24dp.svg"
                         width: height
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                        enabled: tutorialManager.model.length > 0
+                        enabled: tutorialManager?.model?.length > 0
                                  && tutorialName.field.text
                         onPressed: {
                             tutorialManager.toJSON(currentFile)
@@ -198,7 +199,7 @@ Item {
                         icon.source: "qrc:/bricks/resources/image_black.svg"
                         width: height
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                        enabled: tutorialManager.model.length > 0
+                        enabled: tutorialManager?.model?.length > 0
                                  && tutorialName.field.text
                         onPressed: {
                             tutorialManager.toPNG(currentFile)
@@ -234,7 +235,7 @@ Item {
                     IconButton {
                         icon.source: "qrc:/bricks/resources/delete_black_24dp.svg"
                         width: height
-                        enabled: tutorialManager.model.length > 0
+                        enabled: tutorialManager?.model?.length > 0
                                  && tutorialName.field.text
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                         onPressed: tutorialManager.clear()
@@ -302,7 +303,7 @@ Item {
                 anchors.top: parent.top
                 anchors.right: parent.right
                 anchors.margins: AppStyle.spacing
-                height: 2*AppStyle.defaultHeight + AppStyle.spacing
+                height: 2 * AppStyle.defaultHeight + AppStyle.spacing
                 Button {
                     id: addPathButton
                     anchors.left: sourceButtons.left
@@ -384,7 +385,7 @@ Item {
                 anchors.left: control.right
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
-                availableBricks: manager.model
+                availableBricks: manager?.model
                 groupedView: enableSorting.checked
                 onAddBrick: file => {
                                 tutorialManager.addBrick(file)

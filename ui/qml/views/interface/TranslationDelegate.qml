@@ -23,7 +23,7 @@ ItemDelegate {
         var folder = targetFolder
         var targetPath = sourceFolder + "/" + folder + "/" + sourcePath
         var source = sourceFolder + "/" + sourcePath
-        if (languageManager.exists(targetPath)) {
+        if (languageManager ?? languageManager.exists(targetPath)) {
             return target.loadFromFile(targetPath)
         }
         if (folder != "") {

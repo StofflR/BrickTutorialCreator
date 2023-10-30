@@ -49,15 +49,15 @@ Item {
         id: header
         width: colorSelector.width * 2 / 3
         height: backText.height
-        color: palette.midlight
-        Text {
+        color: palette.base
+        Label {
             id: backText
             text: "Back"
             width: header.width / 5
             font: lightRoboto
             horizontalAlignment: Text.AlignHCenter
         }
-        Text {
+        Label {
             id: shadeText
             text: "Shade"
             anchors.left: backText.right
@@ -65,7 +65,7 @@ Item {
             font: lightRoboto
             horizontalAlignment: Text.AlignHCenter
         }
-        Text {
+        Label {
             id: borderText
             text: "Border"
             anchors.left: shadeText.right
@@ -73,7 +73,7 @@ Item {
             font: lightRoboto
             horizontalAlignment: Text.AlignHCenter
         }
-        Text {
+        Label {
             text: "Name"
             width: header.width * 2 / 5
             anchors.left: borderText.right
@@ -125,7 +125,7 @@ Item {
             background: Rectangle {
                 height: delegate.height
                 width: delegate.width
-                color: selected ? palette.base : palette.window
+                color: selected ? palette.midlight : palette.window
             }
 
             Rectangle {
@@ -148,7 +148,7 @@ Item {
                 height: name.height
                 color: "#" + modelData.border
             }
-            Text {
+            Label {
                 id: name
                 text: modelData.name
                 width: delegate.width * 2 / 5
@@ -163,8 +163,8 @@ Item {
         anchors.left: sizeList.left
         height: backText.height
         width: sizeList.width
-        color: palette.midlight
-        Text {
+        color: palette.base
+        Label {
             text: "Size"
             width: headerSize.width
             anchors.fill: headerSize
@@ -234,9 +234,9 @@ Item {
             background: Rectangle {
                 height: sizeText.height
                 width: sizeList.width
-                color: selected ? palette.base : palette.window
+                color: selected ? palette.midlight : palette.window
             }
-            Text {
+            Label {
                 id: sizeText
                 text: modelData.text
                 width: sizeList.width
