@@ -8,6 +8,7 @@ import "font"
 import "views"
 import "views/interface"
 import "style"
+import "views/dialogs"
 
 ApplicationWindow {
     id: root
@@ -41,7 +42,6 @@ ApplicationWindow {
                     font.family: "Roboto"
                     font.pointSize: AppStyle.pointsizeSpacing
                 }
-                background: Rectangle {}
             }
 
             MenuItem {
@@ -51,8 +51,8 @@ ApplicationWindow {
                     font.pointSize: AppStyle.pointsizeSpacing
                 }
                 onTriggered: about.open()
-                background: Rectangle {}
             }
+
             MenuSeparator {}
             MenuItem {
                 contentItem: Text {
@@ -61,7 +61,6 @@ ApplicationWindow {
                     font.pointSize: AppStyle.pointsizeSpacing
                 }
                 onTriggered: brickConverter.fromJSONtoSVG()
-                background: Rectangle {}
             }
             MenuItem {
                 contentItem: Text {
@@ -70,7 +69,6 @@ ApplicationWindow {
                     font.pointSize: AppStyle.pointsizeSpacing
                 }
                 onTriggered: brickConverter.fromSVGtoPNG()
-                background: Rectangle {}
             }
             MenuItem {
                 contentItem: Text {
@@ -79,7 +77,6 @@ ApplicationWindow {
                     font.pointSize: AppStyle.pointsizeSpacing
                 }
                 onTriggered: brickConverter.fromJSONtoPNG()
-                background: Rectangle {}
             }
             MenuItem {
                 contentItem: Text {
@@ -88,7 +85,6 @@ ApplicationWindow {
                     font.pointSize: AppStyle.pointsizeSpacing
                 }
                 onTriggered: brickConverter.fromTutorialtoPNG()
-                background: Rectangle {}
             }
             MenuSeparator {}
             MenuItem {
@@ -98,7 +94,6 @@ ApplicationWindow {
                     font.pointSize: AppStyle.pointsizeSpacing
                 }
                 onTriggered: brickConverter.updateExisting()
-                background: Rectangle {}
             }
         }
     }
@@ -184,16 +179,7 @@ ApplicationWindow {
             anchors.fill: parent
         }
     }
-    Popup {
+    HelpPopup {
         id: help
-        x: 100
-        y: 100
-        width: root.width - 200
-        height: root.height - 200
-        modal: true
-        focus: true
-        contentItem: Rectangle {
-            anchors.fill: parent
-        }
     }
 }

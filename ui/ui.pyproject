@@ -43,6 +43,11 @@
         "qml/assets/combined/LabelDoubleSpinBox.qml",
         "qml/assets/combined/LabelSlider.qml",
         "qml/assets/combined/LabelTextField.qml",
-        "resources.qrc"
-        ]
-        }
+        "resources.qrc",
+        "qml/views/dialogs/HelpPopup.qml",
+        "qml/views/dialogs/help/HelpSelection.qml",
+        "qml/views/dialogs/help/brick/BrickHelp.qml",
+        "qml/views/dialogs/help/tutorial/TutorialHelp.qml",
+        "qml/views/dialogs/help/translator/TranslatorHelp.qml"
+    ]
+}
