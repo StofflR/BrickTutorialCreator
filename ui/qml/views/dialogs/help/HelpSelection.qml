@@ -3,9 +3,11 @@ import QtQuick.Layouts
 import QtQuick.Controls
 
 Item {
+    id: root
     width: parent.width
     height: parent.height
     property var model: brickStack
+    signal clicked(int target)
     ColumnLayout {
         anchors.fill: parent
         Label {
@@ -17,19 +19,28 @@ Item {
             Layout.fillHeight: true
             Button {
                 text: "BrickCreator"
-                onClicked: model = brickStack
+                onClicked: {
+                    model = brickStack
+                    root.clicked(0)
+                }
                 Layout.fillWidth: true
                 Layout.fillHeight: true
             }
             Button {
                 text: "Translator"
-                onClicked: model = translatorStack
+                onClicked: {
+                    model = translatorStack
+                    root.clicked(0)
+                }
                 Layout.fillWidth: true
                 Layout.fillHeight: true
             }
             Button {
                 text: "TutorialCreator"
-                onClicked: model = tutorialStack
+                onClicked: {
+                    model = tutorialStack
+                    root.clicked(0)
+                }
                 Layout.fillWidth: true
                 Layout.fillHeight: true
             }
