@@ -47,6 +47,10 @@
         "qml/views/dialogs/HelpPopup.qml",
         "qml/views/dialogs/help/HelpSelection.qml",
         "qml/views/dialogs/help/brick/BrickHelp.qml",
+        "qml/views/dialogs/help/brick/BrickHelpName.qml",
+        "qml/views/dialogs/help/brick/BrickHelpBrick.qml",
+        "qml/views/dialogs/help/brick/BrickHelpColor.qml",
+        "qml/views/dialogs/help/brick/BrickHelpSave.qml",
         "qml/views/dialogs/help/tutorial/TutorialHelp.qml",
         "qml/views/dialogs/help/translator/TranslatorHelp.qml"
     ]

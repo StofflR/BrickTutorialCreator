@@ -2,31 +2,55 @@ import QtQuick 2.15
 import QtQuick.Layouts
 import QtQuick.Controls
 
-Rectangle {
+Item {
     width: parent.width
-    height: 100
-    color: "red"
+    height: parent.height
     property var model: brickStack
-    RowLayout {
-        Button {
-            text: "BrickCreator"
-            onClicked: model = brickStack
+    ColumnLayout {
+        anchors.fill: parent
+        Label {
+            text: "Help selection:"
+            Layout.fillWidth: true
         }
-
-        Button {
-            text: "Translator"
-            onClicked: model = translatorStack
-        }
-
-        Button {
-            text: "TutorialCreator"
-            onClicked: model = tutorialStack
+        RowLayout {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Button {
+                text: "BrickCreator"
+                onClicked: model = brickStack
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+            }
+            Button {
+                text: "Translator"
+                onClicked: model = translatorStack
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+            }
+            Button {
+                text: "TutorialCreator"
+                onClicked: model = tutorialStack
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+            }
         }
     }
     ListModel {
         id: brickStack
         ListElement {
             source: "../dialogs/help/brick/BrickHelp.qml"
+        }
+        ListElement {
+            source: "../dialogs/help/brick/BrickHelpName.qml"
+        }
+        ListElement {
+            source: "../dialogs/help/brick/BrickHelpSave.qml"
+        }
+        ListElement {
+            source: "../dialogs/help/brick/BrickHelpColor.qml"
+        }
+        ListElement {
+            source: "../dialogs/help/brick/BrickHelpBrick.qml"
         }
     }
     ListModel {

@@ -40,4 +40,11 @@
         <file>resources/base_3h.svg</file>
         <file>base/base_0h_collapsed.svg</file>
     </qresource>
+    <qresource prefix="/help">
+        <file>resources/help/brick_creator.png</file>
+        <file>resources/help/brick_creator_brick.png</file>
+        <file>resources/help/brick_creator_color.png</file>
+        <file>resources/help/brick_creator_name.png</file>
+        <file>resources/help/brick_creator_save.png</file>
+    </qresource>
 </RCC>
