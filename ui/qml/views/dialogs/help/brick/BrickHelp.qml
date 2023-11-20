@@ -15,8 +15,6 @@ HelpFrame {
     }
     MouseArea {
         id: name
-        //color: "transparent"
-        //border.color: "red"
         y: frame.height / 20
         width: frame.width / 1.82
         height: frame.height / 10
@@ -27,8 +25,6 @@ HelpFrame {
     }
     MouseArea {
         id: edit
-        //color: "transparent"
-        //border.color: "yellow"
         anchors.top: name.bottom
         y: frame.height / 20
         width: frame.width
@@ -40,8 +36,6 @@ HelpFrame {
     }
     MouseArea {
         id: brick
-        // color: "transparent"
-        // border.color: "green"
         anchors.top: edit.bottom
         y: frame.height / 20
         width: frame.width
@@ -53,8 +47,6 @@ HelpFrame {
     }
     MouseArea {
         id: save
-        // color: "transparent"
-        //border.color: "orange"
         y: frame.height / 20
         anchors.left: name.right
         width: frame.width - name.width
@@ -66,8 +58,6 @@ HelpFrame {
     }
     MouseArea {
         id: save2
-        //color: "transparent"
-        // border.color: "blue"
         y: frame.height / 20
         anchors.right: brick.right
         anchors.top: brick.top
