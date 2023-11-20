@@ -7,6 +7,7 @@ Item {
     FontLoader {
         id: bold
         source: "Roboto-Bold.ttf"
+        
     }
     FontLoader {
         id: light

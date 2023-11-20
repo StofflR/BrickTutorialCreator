@@ -46,5 +46,13 @@
         <file>resources/help/brick_creator_color.png</file>
         <file>resources/help/brick_creator_name.png</file>
         <file>resources/help/brick_creator_save.png</file>
+        <file>resources/help/tutorial.png</file>
+        <file>resources/help/tutorial_available_bricks.png</file>
+        <file>resources/help/tutorial_brick_filter.png</file>
+        <file>resources/help/tutorial_bricks.png</file>
+        <file>resources/help/tutorial_controls.png</file>
+        <file>resources/help/tutorial_name.png</file>
+        <file>resources/help/tutorial_paths.png</file>
+        <file>resources/help/tutorial_tutorial.png</file>
     </qresource>
 </RCC>

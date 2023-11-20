@@ -6,7 +6,7 @@ import ".."
 HelpFrame {
     image: Component {
         Image {
-            source: "qrc:/help/resources/help/brick_creator.png"
+            source: "qrc:/help/resources/help/tutorial_paths.png"
         }
     }
 }

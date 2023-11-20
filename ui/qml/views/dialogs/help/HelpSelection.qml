@@ -75,5 +75,26 @@ Item {
         ListElement {
             source: "../dialogs/help/tutorial/TutorialHelp.qml"
         }
+        ListElement {
+            source: "../dialogs/help/tutorial/TutorialHelpAvailableBrick.qml"
+        }
+        ListElement {
+            source: "../dialogs/help/tutorial/TutorialHelpBrickFilter.qml"
+        }
+        ListElement {
+            source: "../dialogs/help/tutorial/TutorialHelpBricks.qml"
+        }
+        ListElement {
+            source: "../dialogs/help/tutorial/TutorialHelpControls.qml"
+        }
+        ListElement {
+            source: "../dialogs/help/tutorial/TutorialHelpName.qml"
+        }
+        ListElement {
+            source: "../dialogs/help/tutorial/TutorialHelpPaths.qml"
+        }
+        ListElement {
+            source: "../dialogs/help/tutorial/TutorialHelpTutorial.qml"
+        }
     }
 }
