@@ -48,7 +48,7 @@ if __name__ == "__main__":
         0,
         "TutorialSourceManager",
     )
-    
+
     qmlRegisterType(Converter, "Converter", 1, 0, "Converter")
     qmlRegisterType(Converter, "Converter", 1, 0, "Converter")
     qmlRegisterType(ColorManager, "ColorManager", 1, 0, "ColorManager")
