@@ -1,0 +1,26 @@
+<svg id="Ebene_1" data-name="Ebene 1" xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 348.181 13">
+    <defs>
+        <style>
+            .cls-1{fill:none;}.cls-2,.cls-3{fill:#f99761;}.cls-3{opacity:0.75;}.cls-4{fill:#383838;}.cls-5,.cls-8{fill:#fff;}.cls-5{opacity:0.4;}.cls-6{opacity:0.5;}.cls-7{clip-path:url(#clip-path);}.cls-8{opacity:0.05;}.cls-9{fill:#a86d45;}.cls-10{clip-path:url(#clip-path-2);}.cls-11{clip-path:url(#clip-path-3);}</style>
+        <clipPath id="clip-path" transform="translate(0.181 11)">
+            <rect class="cls-1" x="8.5" y="16.5" width="29" height="5" />
+        </clipPath>
+        <clipPath id="clip-path-2" transform="translate(0.181 11)">
+            <rect class="cls-1" x="8.5" y="22.5" width="29" height="5" />
+        </clipPath>
+        <clipPath id="clip-path-3" transform="translate(0.181 11)">
+            <rect class="cls-1" x="8.5" y="28.5" width="29" height="5" />
+        </clipPath>
+    </defs>
+    
+    <polygon class="cls-8"
+        points="32.455 5.988 12.955 5.988 12.029 3.938 0.181 3.938 0.181 7.875 11.181 7.875 12.931 12 32.431 12 34.181 7.875 348.181 7.875 348.181 4.102 348.181 3.938 33.332 3.938 32.455 5.988" />
+    <polygon class="cls-8"
+        points="32.431 4.063 12.931 4.063 11.207 0 0.181 0 0.181 3.875 11.181 3.875 12.931 8 32.431 8 34.181 3.875 348.181 3.875 348.181 0.102 348.181 0 34.154 0 32.431 4.063" />
+    <polygon class="cls-2"
+        points="32.281 6.199 12.781 6.199 11 2.118 0 2.118 0 6.056 11 6.056 12.75 10.181 32.25 10.181 34 6.056 348 6.056 348 2.283 348 2.118 34 2.118 32.281 6.199" />
+    <polygon id="highlight" class="cls-5"
+        points="34.181 1.938 32.431 6.063 12.931 6.063 11.181 1.938 0.181 1.938 0.181 3.538 11.181 3.538 12.931 7.563 32.431 7.563 34.181 3.538 348.181 3.538 348.181 2.102 348.181 1.938 34.181 1.938" />
+    
+</svg>

@@ -2,71 +2,98 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 2.15
-import QtWebEngine 1.10
 
 import "assets"
 import "font"
 import "views"
+import "views/interface"
 import "style"
+import "views/dialogs"
 
 ApplicationWindow {
     id: root
     width: 960
     height: 640
-    minimumWidth: 500
-    minimumHeight: 500
+    minimumWidth: 600
+    minimumHeight: Math.max(
+                       500,
+                       brickCreator.minimumHeight + menuBar.height + statusbar.height)
     visible: true
     title: qsTr("Brick Creator")
-    font.family: Font.boldFont ? Font.boldFont : -1
-    font.pointSize: AppStyle.spacing * 8 / 6
+    font.family: "Roboto"
+    font.pointSize: AppStyle.pointsizeSpacing
     property string statusText: ""
     function updateStatusMessage(text) {
         statusText = text
     }
 
     menuBar: MenuBar {
+
         Menu {
             id: file
-            title: qsTr("&File")
-            font.family: Font.boldFont ? Font.boldFont : -1
-            font.pointSize: AppStyle.spacing * 8 / 6
+            title: qsTr("File")
+            font.family: "Roboto"
+            font.pointSize: AppStyle.pointsizeSpacing
 
             MenuItem {
-                text: qsTr("&Help")
-                font.family: Font.boldFont ? Font.boldFont : -1
-                font.pointSize: AppStyle.spacing * 8 / 6
-                onTriggered: {
-                    help.open()
+                onTriggered: help.open()
+                contentItem: Text {
+                    text: qsTr("Help")
+                    font.family: "Roboto"
+                    font.pointSize: AppStyle.pointsizeSpacing
                 }
             }
 
             MenuItem {
-                text: qsTr("&About")
-                font.family: Font.boldFont ? Font.boldFont : -1
-                font.pointSize: AppStyle.spacing * 8 / 6
-
-                onTriggered: {
-                    about.open()
+                contentItem: Text {
+                    text: qsTr("About")
+                    font.family: "Roboto"
+                    font.pointSize: AppStyle.pointsizeSpacing
                 }
+                onTriggered: about.open()
             }
+
             MenuSeparator {}
             MenuItem {
-                text: qsTr("&Convert Folder (JSON → SVG)")
-                font.family: Font.boldFont ? Font.boldFont : -1
-                font.pointSize: AppStyle.spacing * 8 / 6
+                contentItem: Text {
+                    text: qsTr("Convert Folder (JSON → SVG)")
+                    font.family: "Roboto"
+                    font.pointSize: AppStyle.pointsizeSpacing
+                }
                 onTriggered: brickConverter.fromJSONtoSVG()
             }
             MenuItem {
-                text: qsTr("&Convert Folder (SVG → PNG)")
-                font.family: Font.boldFont ? Font.boldFont : -1
-                font.pointSize: AppStyle.spacing * 8 / 6
+                contentItem: Text {
+                    text: qsTr("Convert Folder (SVG → PNG)")
+                    font.family: "Roboto"
+                    font.pointSize: AppStyle.pointsizeSpacing
+                }
                 onTriggered: brickConverter.fromSVGtoPNG()
             }
             MenuItem {
-                text: qsTr("&Convert Folder (JSON → PNG)")
-                font.family: Font.boldFont ? Font.boldFont : -1
-                font.pointSize: AppStyle.spacing * 8 / 6
+                contentItem: Text {
+                    text: qsTr("Convert Folder (JSON → PNG)")
+                    font.family: "Roboto"
+                    font.pointSize: AppStyle.pointsizeSpacing
+                }
                 onTriggered: brickConverter.fromJSONtoPNG()
+            }
+            MenuItem {
+                contentItem: Text {
+                    text: qsTr("Convert Folder (Tutorial → PNG)")
+                    font.family: "Roboto"
+                    font.pointSize: AppStyle.pointsizeSpacing
+                }
+                onTriggered: brickConverter.fromTutorialtoPNG()
+            }
+            MenuSeparator {}
+            MenuItem {
+                contentItem: Text {
+                    text: qsTr("Update existing bricks")
+                    font.family: "Roboto"
+                    font.pointSize: AppStyle.pointsizeSpacing
+                }
+                onTriggered: brickConverter.updateExisting()
             }
         }
     }
@@ -92,10 +119,12 @@ ApplicationWindow {
     }
     ConverterManager {
         id: brickConverter
-        onConverted: count => root.updateStatusMessage(
-                         "INFO: Converted " + count + " files!")
+        anchors.centerIn: layout
+        onConverted: value => root.updateStatusMessage(
+                         "INFO: Converted " + value)
     }
     StackLayout {
+        id: layout
         width: parent.width
         currentIndex: bar.currentIndex
         anchors.top: bar.bottom
@@ -103,6 +132,7 @@ ApplicationWindow {
         onCurrentIndexChanged: translator.update()
         Item {
             BrickCreator {
+                id: brickCreator
                 onUpdateStatusMessage: text => root.updateStatusMessage(text)
             }
         }
@@ -114,6 +144,7 @@ ApplicationWindow {
         }
         Item {
             TutorialCreator {
+                id: creator
                 width: parent.width
                 height: parent.height - 20
                 onUpdateStatusMessage: text => root.updateStatusMessage(text)
@@ -125,6 +156,8 @@ ApplicationWindow {
         anchors.bottom: parent.bottom
         height: 20
         width: parent.width
+        color: palette.window
+
         RowLayout {
             anchors.fill: parent
             Label {
@@ -144,26 +177,9 @@ ApplicationWindow {
         focus: true
         contentItem: Rectangle {
             anchors.fill: parent
-            WebEngineView {
-                anchors.fill: parent
-                url: "qrc:/about.html"
-            }
         }
     }
-    Popup {
+    HelpPopup {
         id: help
-        x: 100
-        y: 100
-        width: root.width - 200
-        height: root.height - 200
-        modal: true
-        focus: true
-        contentItem: Rectangle {
-            anchors.fill: parent
-            WebEngineView {
-                anchors.fill: parent
-                url: "qrc:/help.html"
-            }
-        }
     }
 }

@@ -2,23 +2,25 @@ import sys
 import os
 from PySide6.QtCore import QUrl, Qt
 from PySide6.QtQuick import QQuickWindow, QSGRendererInterface
-from PySide6.QtWebEngineQuick import QtWebEngineQuick
-from PySide6.QtGui import QGuiApplication, QFontDatabase, QIcon
-from PySide6.QtQml import QQmlApplicationEngine, qmlRegisterType , QQmlDebuggingEnabler
-from qml import BrickManager
-from qml import Brick
-from qml import TutorialManager
-from qml import TutorialSourceManager
-from qml import LanguageManager
-from qml import Converter
+from PySide6.QtGui import QGuiApplication, QFontDatabase, QIcon, QFont
+from PySide6.QtQml import QQmlApplicationEngine, qmlRegisterType, QQmlDebuggingEnabler
+from modules.interface.TutorialManager import TutorialManager
+from modules.interface.TutorialSourceManager import TutorialSourceManager
+from modules.interface.LanguageManager import LanguageManager
+from modules.interface.Converter import Converter
+from modules.interface.ColorManager import ColorManager
+from modules.interface.Brick import Brick
+
 import resources_rc
 import logging
 import shutil
-debug = QQmlDebuggingEnabler()
-if __name__ == "__main__":
+import modules.OSDefs as OSDefs
 
+if __name__ == "__main__":
+    os.environ["QT_FONT_DPI"] = "96"
     folder = os.path.join(os.getcwd() + r"/resources/tmp")
-    logging.debug("Leftover tmp files form: "+folder)
+    logging.debug("Leftover tmp files form: " + folder)
+    os.makedirs(folder, exist_ok=True)
     for filename in os.listdir(folder):
         file_path = os.path.join(folder, filename)
         try:
@@ -27,35 +29,64 @@ if __name__ == "__main__":
             elif os.path.isdir(file_path):
                 shutil.rmtree(file_path)
         except Exception as e:
-            print('Failed to delete %s. Reason: %s' % (file_path, e))
+            print("Failed to delete %s. Reason: %s" % (file_path, e))
 
-
-    sys.argv += ['--style', 'Fusion']
+    sys.argv += ["--style", "Fusion"]
     QGuiApplication.setAttribute(Qt.AA_ShareOpenGLContexts, True)
     QQuickWindow.setGraphicsApi(QSGRendererInterface.OpenGLRhi)
-    QtWebEngineQuick.initialize()
     app = QGuiApplication(sys.argv)
     app.setWindowIcon(QIcon("./resources/icon.svg"))
 
-    #sapp.applicationDisplayName("Brick Designer")
-    qmlRegisterType(Brick.Brick, 'Brick', 1, 0, 'Brick')
-    qmlRegisterType(BrickManager.BrickManager, 'BrickManager', 1, 0, 'BrickManager')
-    qmlRegisterType(TutorialManager.TutorialManager, 'TutorialManager', 1, 0, 'TutorialManager')
-    qmlRegisterType(LanguageManager.LanguageManager, 'LanguageManager', 1, 0, 'LanguageManager')
-    qmlRegisterType(TutorialSourceManager.TutorialSourceManager, 'TutorialSourceManager', 1, 0, 'TutorialSourceManager')
-    qmlRegisterType(Converter.Converter, 'Converter', 1, 0, 'Converter')
+    # sapp.applicationDisplayName("Brick Designer")
+    qmlRegisterType(Brick, "Brick", 1, 0, "Brick")
+    qmlRegisterType(TutorialManager, "TutorialManager", 1, 0, "TutorialManager")
+    qmlRegisterType(LanguageManager, "LanguageManager", 1, 0, "LanguageManager")
+    qmlRegisterType(
+        TutorialSourceManager,
+        "TutorialSourceManager",
+        1,
+        0,
+        "TutorialSourceManager",
+    )
 
-    QFontDatabase.addApplicationFont(QUrl.fromLocalFile(
-        os.getcwd()).toString() + "/qml/font/Roboto-Bold.ttf")
-    QFontDatabase.addApplicationFont(QUrl.fromLocalFile(
-        os.getcwd()).toString() + "/qml/font/Roboto-Light.ttf")
+    qmlRegisterType(Converter, "Converter", 1, 0, "Converter")
+    qmlRegisterType(Converter, "Converter", 1, 0, "Converter")
+    qmlRegisterType(ColorManager, "ColorManager", 1, 0, "ColorManager")
+
+    assert (
+        QFontDatabase.addApplicationFont(
+            os.getcwd() + "/resources/fonts/Roboto-Bold.ttf"
+        )
+        != -1
+    )
+    assert (
+        QFontDatabase.addApplicationFont(
+            os.getcwd() + "/resources/fonts/Roboto-Light.ttf"
+        )
+        != -1
+    )
+
     engine = QQmlApplicationEngine()
-    engine.load("./qml/main.qml")
+
+    fontStyles = QFontDatabase.styles("Roboto")
+    assert "Light" in fontStyles
+    assert "Bold" in fontStyles
+
+    for style in fontStyles:
+        font = QFontDatabase.font("Roboto", style, 12)
+        assert font
+        engine.rootContext().setContextProperty(style.lower() + "Roboto", font)
+
     engine.rootContext().setContextProperty(
-        "tempFolder", QUrl.fromLocalFile(os.getcwd()).toString() + r"/resources/out")
+        "tempFolder", QUrl.fromLocalFile(os.getcwd()).toString() + r"/resources/out"
+    )
+    engine.rootContext().setContextProperty("fileStub", OSDefs.FILE_STUB)
+    engine.rootContext().setContextProperty(
+        "baseFolder", QUrl.fromLocalFile(os.getcwd()).toString() + r"/base"
+    )
+    engine.load("./qml/main.qml")
+
     if not engine.rootObjects():
         sys.exit(-1)
 
     sys.exit(app.exec())
-
-
