@@ -30,14 +30,18 @@ data["colors"] = [
     "transparent_black",
 ]
 
+
 def compare_images(img1, img2):
     # Convert images to grayscale if needed
     image1 = skimage.io.imread(img1)
     image2 = skimage.io.imread(img2)
     # Calculate SSIM
-    ssim_value, _ = skimage.metrics.structural_similarity(image1, image2, full=True, data_range=1.0, win_size=3)
-    print("comparing: ",img1, img2, ssim_value)
+    ssim_value, _ = skimage.metrics.structural_similarity(
+        image1, image2, full=True, data_range=1.0, win_size=3
+    )
+    print("comparing: ", img1, img2, ssim_value)
     return ssim_value
+
 
 def test_bricks():
     for size in data["sizes"]:
