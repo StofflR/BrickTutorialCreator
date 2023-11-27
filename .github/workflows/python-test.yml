@@ -6,11 +6,28 @@ name: python-test
 on: [push, pull_request]
 
 jobs:
-  build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-        matrix:
-            os: [windows-latest] # ubuntu-latest, macos-latest, 
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4.1.1
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4.7.1
+      with:
+        python-version: 3.9
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest scikit-image pyside6
+    - name: Install ubuntu deps
+      run: |
+        sudo apt-get install -y libgl1-mesa-dev
+    - name: Test with pytest
+      run: |
+        cd ui
+        pytest ..
+  job2:
+    runs-on: windows-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.1
