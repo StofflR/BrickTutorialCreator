@@ -11,7 +11,7 @@ from tests.initializers import initQt
 initQt()
 
 data = {}
-data["sizes"] = ["1h", "2h", "3h"]
+data["sizes"] = ["0h"]
 data["colors"] = [
     "cyan",
     "dark_blue",
@@ -43,12 +43,13 @@ def compare_images(img1, img2):
     return ssim_value
 
 
-def test_bricks():
+def test_bricks():  
+    initQt()
     for size in data["sizes"]:
         for brick_type in data["colors"]:
-            brick_path = f"brick_{brick_type}_{size}.svg"
+            brick_path = f"brick_{brick_type}_{size}_collapsed.svg"
             ref_path = path.join(
-                getcwd(), r"tests\\ref\\" + f"{brick_type}_{size}" + ".png"
+                getcwd(), r"tests\\ref\\" + f"{brick_type}_{size}_collapsed" + ".png"
             )
             brick = SVGBrick(
                 base_type=brick_type,
@@ -61,8 +62,7 @@ def test_bricks():
             )
             created_path = brick.working_brick_.replace(".svg", ".png")
             brick.savePNG(path=created_path)
-            assert compare_images(ref_path, created_path) > 0.8
-
+            assert compare_images(ref_path, created_path) > 0.95
 
 if __name__ == "__main__":
     test_bricks()

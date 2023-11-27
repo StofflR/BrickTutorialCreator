@@ -1,6 +1,8 @@
 from PySide6.QtGui import QGuiApplication
 import sys
 
-
+app=None
 def initQt():
-    app = QGuiApplication(sys.argv)
+    global app
+    if not app:
+        app = QGuiApplication(sys.argv)
