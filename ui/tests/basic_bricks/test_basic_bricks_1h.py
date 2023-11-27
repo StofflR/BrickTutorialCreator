@@ -2,9 +2,7 @@ import pytest
 import sys
 from os import getcwd, path
 
-import scipy
-import numpy
-import cv2
+import skimage
 
 sys.path.insert(0, getcwd())
 from modules.backend.SVGBrick import SVGBrick
@@ -32,24 +30,14 @@ data["colors"] = [
     "transparent_black",
 ]
 
-
-def difference(img_a, img_b):
-    img1 = cv2.imread(img_a, cv2.IMREAD_GRAYSCALE)
-    img2 = cv2.imread(img_b, cv2.IMREAD_GRAYSCALE)
-    norm1, norm2 = compare_images(img1, img2)
-    print(norm1, norm2)
-    return 0
-
 def compare_images(img1, img2):
-    # normalize to compensate for exposure difference, this may be unnecessary
-    # consider disabling it
-    img1 = numpy.normalize(img1)
-    img2 = numpy.normalize(img2)
-    # calculate the difference and its norms
-    diff = img1 - img2  # elementwise for scipy arrays
-    m_norm = scipy.sum(scipy.abs(diff))  # Manhattan norm
-    z_norm = scipy.linalg.norm(diff.ravel(), 0)  # Zero norm
-    return (m_norm, z_norm)
+    # Convert images to grayscale if needed
+    image1 = skimage.io.imread(img1)
+    image2 = skimage.io.imread(img2)
+    # Calculate SSIM
+    ssim_value, _ = skimage.metrics.structural_similarity(image1, image2, full=True, data_range=1.0, win_size=3)
+    print("comparing: ",img1, img2, ssim_value)
+    return ssim_value
 
 def test_bricks():
     for size in data["sizes"]:
@@ -69,7 +57,7 @@ def test_bricks():
             )
             created_path = brick.working_brick_.replace(".svg", ".png")
             brick.savePNG(path=created_path)
-            assert difference(ref_path, created_path) < 0.1
+            assert compare_images(ref_path, created_path) > 0.8
 
 
 if __name__ == "__main__":
