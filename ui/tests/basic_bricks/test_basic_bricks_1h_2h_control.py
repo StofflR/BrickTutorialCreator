@@ -60,7 +60,7 @@ def test_bricks():
             )
             created_path = brick.working_brick_.replace(".svg", ".png")
             brick.savePNG(path=created_path)
-            assert compare_images(ref_path, created_path) > 0.95
+            assert compare_images(ref_path, created_path) > 0.995
 
 
 if __name__ == "__main__":
