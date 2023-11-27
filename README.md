@@ -1,4 +1,4 @@
-[![python-test](https://github.com/StofflR/BrickTutorialCreator/actions/workflows/python-test.yml/badge.svg?branch=develop&event=release)](https://github.com/StofflR/BrickTutorialCreator/actions/workflows/python-test.yml)
+[![python-test](https://github.com/StofflR/BrickTutorialCreator/actions/workflows/python-test.yml/badge.svg?branch=develop&event=push)](https://github.com/StofflR/BrickTutorialCreator/actions/workflows/python-test.yml)
 # Brick Creator
 
 The application can be run either using the [precompiled executables](https://github.com/StofflR/BrickTutorialCreator/releases), via QtCreator and Qt for Python or [Python3](https://doc.qt.io/qtforpython/quickstart.html).
