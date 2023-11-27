@@ -10,14 +10,8 @@ from tests.initializers import initQt
 
 data = {}
 data["sizes"] = ["1h"]
-data["colors"] = [
-    "cyan"
-]
-data["content"] = [
-    "basic brick",
-    "basic *dropdown*",
-    "basic $variable$"
-]
+data["colors"] = ["cyan"]
+data["content"] = ["basic brick", "basic *dropdown*", "basic $variable$"]
 
 
 def compare_images(img1, img2):
@@ -39,7 +33,10 @@ def test_bricks():
             for content in data["content"]:
                 brick_path = f"brick_{brick_type}_{size}.svg"
                 ref_path = path.join(
-                    getcwd(), r"tests\\ref\\" + f"{brick_type}_{size}_{content.replace('*', '').replace('$', '').replace(' ','_')}" + ".png"
+                    getcwd(),
+                    r"tests\\ref\\"
+                    + f"{brick_type}_{size}_{content.replace('*', '').replace('$', '').replace(' ','_')}"
+                    + ".png",
                 )
                 brick = SVGBrick(
                     base_type=brick_type,

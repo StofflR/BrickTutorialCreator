@@ -33,4 +33,3 @@ def initQt():
         font = QFontDatabase.font("Roboto", style, 12)
         assert font
         engine.rootContext().setContextProperty(style.lower() + "Roboto", font)
-
