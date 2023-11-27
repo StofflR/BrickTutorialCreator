@@ -43,7 +43,7 @@ def compare_images(img1, img2):
     return ssim_value
 
 
-def test_bricks():  
+def test_bricks():
     initQt()
     for size in data["sizes"]:
         for brick_type in data["colors"]:
@@ -63,6 +63,7 @@ def test_bricks():
             created_path = brick.working_brick_.replace(".svg", ".png")
             brick.savePNG(path=created_path)
             assert compare_images(ref_path, created_path) > 0.95
+
 
 if __name__ == "__main__":
     test_bricks()

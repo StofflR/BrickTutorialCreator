@@ -62,5 +62,6 @@ def test_bricks():
             brick.savePNG(path=created_path)
             assert compare_images(ref_path, created_path) > 0.95
 
+
 if __name__ == "__main__":
     test_bricks()
