@@ -6,7 +6,7 @@ name: python-test
 on: [push, pull_request]
 
 jobs:
-  job1:
+  job_ubuntu:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -23,7 +23,7 @@ jobs:
       run: |
         cd ui
         pytest ..
-  job2:
+  job_windows:
     runs-on: windows-latest
     steps:
     - name: Checkout
