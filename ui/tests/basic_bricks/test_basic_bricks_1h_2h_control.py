@@ -47,7 +47,7 @@ def test_bricks():
         for brick_type in data["colors"]:
             brick_path = f"brick_{brick_type}_{size}_control.svg"
             ref_path = path.join(
-                getcwd(), r"tests\\ref\\" + f"{brick_type}_{size}_control" + ".png"
+                getcwd(), r"tests/ref/" + f"{brick_type}_{size}_control" + ".png"
             )
             brick = SVGBrick(
                 base_type=brick_type,

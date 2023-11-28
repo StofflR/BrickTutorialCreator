@@ -34,7 +34,7 @@ def test_bricks():
                 brick_path = f"brick_{brick_type}_{size}.svg"
                 ref_path = path.join(
                     getcwd(),
-                    r"tests\\ref\\"
+                    r"tests/ref/"
                     + f"{brick_type}_{size}_{content.replace('*', '').replace('$', '').replace(' ','_')}"
                     + ".png",
                 )

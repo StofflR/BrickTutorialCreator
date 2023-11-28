@@ -2,9 +2,11 @@ from PySide6.QtGui import QGuiApplication, QFontDatabase
 from PySide6.QtQml import QQmlApplicationEngine
 import os
 import sys
-
+app = None
 def initQt():
-    app = QGuiApplication()
+    global app
+    if not app:
+        app = QGuiApplication()
     QFontDatabase.addApplicationFont(
         os.getcwd() + "/resources/fonts/Roboto-Bold.ttf"
     )
