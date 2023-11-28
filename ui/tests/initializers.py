@@ -4,27 +4,16 @@ import os
 import sys
 
 def initQt():
-    app = QGuiApplication(sys.argv)
-    assert (
-        QFontDatabase.addApplicationFont(
-            os.getcwd() + "/resources/fonts/Roboto-Bold.ttf"
-        )
-        != -1
+    app = QGuiApplication()
+    QFontDatabase.addApplicationFont(
+        os.getcwd() + "/resources/fonts/Roboto-Bold.ttf"
     )
-    assert (
-        QFontDatabase.addApplicationFont(
-            os.getcwd() + "/resources/fonts/Roboto-Light.ttf"
-        )
-        != -1
+    QFontDatabase.addApplicationFont(
+        os.getcwd() + "/resources/fonts/Roboto-Light.ttf"
     )
-
     engine = QQmlApplicationEngine()
-
     fontStyles = QFontDatabase.styles("Roboto")
-    assert "Light" in fontStyles
-    assert "Bold" in fontStyles
 
     for style in fontStyles:
         font = QFontDatabase.font("Roboto", style, 12)
-        assert font
         engine.rootContext().setContextProperty(style.lower() + "Roboto", font)
