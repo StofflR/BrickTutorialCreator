@@ -3,13 +3,8 @@ from PySide6.QtQml import QQmlApplicationEngine
 import os
 import sys
 
-app = None
-
-
 def initQt():
-    global app
-    if not app:
-        app = QGuiApplication(sys.argv)
+    app = QGuiApplication(sys.argv)
     assert (
         QFontDatabase.addApplicationFont(
             os.getcwd() + "/resources/fonts/Roboto-Bold.ttf"
