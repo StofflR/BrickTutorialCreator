@@ -15,6 +15,8 @@ def compare_images(img1, img2):
     # Convert images to grayscale if needed
     image1 = skimage.io.imread(img1)
     image2 = skimage.io.imread(img2)
+    image2 = image2.resize(image1.shape)
+    assert image1.shape == image2.shape
     # Calculate SSIM
     ssim_value, _ = skimage.metrics.structural_similarity(
         image1, image2, full=True, data_range=1.0, win_size=3
@@ -41,7 +43,12 @@ def test_all_bricks():
                 try:
                     assert compare_images(created_path, reference_path) > 0.995
                 except Exception as e:
-                    warnings.warn(UserWarning(f"Image comparison failed for {created_path} and {reference_path}"))
+                    warnings.warn(
+                        UserWarning(
+                            f"Image comparison failed for {created_path} and {reference_path} with {str(e)}"
+                        )
+                    )
+
 
 
 if __name__ == "__main__":
