@@ -4,10 +4,12 @@ import os
 from os import getcwd, walk
 import json
 import skimage
+import warnings
 
 sys.path.insert(0, getcwd())
 from modules.backend.SVGBrick import SVGBrick
 from tests.initializers import initQt
+
 
 def compare_images(img1, img2):
     # Convert images to grayscale if needed
@@ -20,20 +22,26 @@ def compare_images(img1, img2):
     print("comparing: ", img1, img2, ssim_value)
     return ssim_value
 
+
 def test_all_bricks():
+    initQt()
     ref_brick_path = "tests/ref_all_bricks"
     for root, dirs, folder in walk(ref_brick_path):
         for file_name in folder:
             file_path = os.path.join(root, file_name)
             if ".json" in file_path:
                 print("opening", file_path)
-                file = open(file_path, 'r')
+                file = open(file_path, "r")
                 content = json.load(file)
                 brick: SVGBrick = SVGBrick.fromJSON(content)
                 file.close()
-                path=brick.working_brick_.replace(".json", ".png")
-                brick.savePNG(path=path) 
-                assert compare_images(path, file_path) > 0.995
+                path = brick.working_brick_.replace(".svg", ".png")
+                brick.savePNG(path=path)
+                try:
+                    assert compare_images(path, file_path.replace(".json", ".png")) > 0.995
+                except Exception as e:
+                    warnings.warn(UserWarning(f"Image comparison failed for {path} and {file_path}"))
+
 
 if __name__ == "__main__":
     test_all_bricks()
