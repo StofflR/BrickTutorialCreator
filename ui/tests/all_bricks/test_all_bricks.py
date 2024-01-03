@@ -35,12 +35,13 @@ def test_all_bricks():
                 content = json.load(file)
                 brick: SVGBrick = SVGBrick.fromJSON(content)
                 file.close()
-                path = brick.working_brick_.replace(".svg", ".png")
-                brick.savePNG(path=path)
+                created_path = brick.working_brick_.replace(".svg", ".png")
+                brick.savePNG(path=created_path)
+                reference_path = file_path.replace(".json", ".png")
                 try:
-                    assert compare_images(path, file_path.replace(".json", ".png")) > 0.995
+                    assert compare_images(created_path, reference_path) > 0.995
                 except Exception as e:
-                    warnings.warn(UserWarning(f"Image comparison failed for {path} and {file_path}"))
+                    warnings.warn(UserWarning(f"Image comparison failed for {created_path} and {reference_path}"))
 
 
 if __name__ == "__main__":
