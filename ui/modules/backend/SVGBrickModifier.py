@@ -161,9 +161,7 @@ class SVGBrickModifier:
             + DROPDOWN_OFFSET
         )
 
-        # y += (LINE_HEIGHT + 2*LINE_OFF) * self.scaling_factor
-
-        # y += (LINE_HEIGHT + 2*LINE_OFF) * self.scaling_factor
+        y += LINE_OFF * self.scaling_factor
         if len(segments) > 2:
             return segments[2], x, y
         return None, x, y
@@ -179,17 +177,17 @@ class SVGBrickModifier:
                 + ","
                 + str(y)
                 + " "
-                + str(x + FONT_SIZE)
+                + str(x + FONT_SIZE / 4)
                 + ","
                 + str(y)
                 + " "
-                + str(x + (FONT_SIZE / 2))
+                + str(x + (FONT_SIZE / 8))
                 + ","
-                + str(y + FONT_SIZE),
+                + str(y + FONT_SIZE / 4),
                 "id": "triangle",
                 "stroke": "white",
                 "fill": "white",
-                "stroke-width": "1",
+                "stroke-width": "0.5",
             },
         )
 

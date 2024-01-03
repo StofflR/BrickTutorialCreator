@@ -10,7 +10,7 @@ NORMAL = "normal"
 
 FONT_SIZE = 12
 LINE_OFF = 3
-LINE_HEIGHT = 7
+LINE_HEIGHT = 8
 
 DEFAULT_WIDTH = 350
 DEFAULT_X = 43
@@ -37,4 +37,7 @@ FORBIDDEN_FILE_NAME_CHARS = {
     r"$": "",
     r".": "",
     r"=": "_eq_",
+    "\n": "_",
+    "\t": "_",
+    r"%": "_pct_",
 }
