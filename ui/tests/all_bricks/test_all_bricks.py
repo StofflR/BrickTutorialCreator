@@ -15,7 +15,7 @@ def compare_images(img1, img2):
     # Convert images to grayscale if needed
     image1 = skimage.io.imread(img1)
     image2 = skimage.io.imread(img2)
-    image2 = image2.resize(image1.shape)
+    #image2_res = image2.resize(image1.shape)
     assert image1.shape == image2.shape
     # Calculate SSIM
     ssim_value, _ = skimage.metrics.structural_similarity(
@@ -48,7 +48,7 @@ def test_all_bricks():
                             f"Image comparison failed for {created_path} and {reference_path} with {str(e)}"
                         )
                     )
-
+                del brick
 
 
 if __name__ == "__main__":
