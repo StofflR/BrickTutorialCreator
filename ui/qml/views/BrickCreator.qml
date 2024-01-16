@@ -200,8 +200,15 @@ Item {
         }
         content.onEditingFinished: {
             dataChanged()
-            save()
         }
+        Keys.onPressed: event => {
+                            if (event.matches(StandardKey.Save)) {
+                                saveBrick()
+                            }
+                            if (event.key == Qt.Key_Escape) {
+                                root.forceActiveFocus()
+                            }
+                        }
 
         anchors.right: parent.right
         anchors.left: ySlider.right
