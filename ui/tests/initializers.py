@@ -10,8 +10,18 @@ def initQt():
     global app
     if not app:
         app = QGuiApplication()
-    QFontDatabase.addApplicationFont(os.getcwd() + "/resources/fonts/Roboto-Bold.ttf")
-    QFontDatabase.addApplicationFont(os.getcwd() + "/resources/fonts/Roboto-Light.ttf")
+        assert (
+            QFontDatabase.addApplicationFont(
+                os.getcwd() + "/resources/fonts/Roboto-Bold.ttf"
+            )
+            != -1
+        )
+        assert (
+            QFontDatabase.addApplicationFont(
+                os.getcwd() + "/resources/fonts/Roboto-Light.ttf"
+            )
+            != -1
+        )
     engine = QQmlApplicationEngine()
     fontStyles = QFontDatabase.styles("Roboto")
 
