@@ -148,8 +148,14 @@ Image {
         id: selection
         color: "darkgrey"
         opacity: 0.25
-        visible: previewContent.selectionEnd != previewContent.selectionStart
-        onVisibleChanged: {
+        property int textViewSelection: textView.selectionEnd - textView.selectionStart
+        property int previewContentSelection: previewContent.selectionEnd
+                                              - previewContent.selectionStart
+
+        visible: textViewSelection != 0 || previewContentSelection != 0
+        onPreviewContentSelectionChanged: updateBox()
+        onTextViewSelectionChanged: updateBox()
+        function updateBox() {
             var startRectView = textView.positionToRectangle(
                         previewContent.selectionStart)
             var endRectView = textView.positionToRectangle(
