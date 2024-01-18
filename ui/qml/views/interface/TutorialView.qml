@@ -78,7 +78,15 @@ DelegateModel {
 
             DropArea {
                 anchors.fill: parent
+                onDropped: function (drop) {
+                    for (const url of drop.urls) {
+                        tutorialManager.addBrick(url)
+                    }
+                }
                 onEntered: drag => {
+                               if (drag.hasUrls) {
+                                   return
+                               }
                                visualModel.items.move(
                                    drag.source.DelegateModel.itemsIndex,
                                    dragArea.DelegateModel.itemsIndex)

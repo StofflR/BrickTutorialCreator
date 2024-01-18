@@ -1,6 +1,6 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import Qt.labs.platform 1.1
+import QtQuick
+import QtQuick.Controls
+import Qt.labs.platform
 import QtQuick.Layouts
 
 import Brick 1.0
@@ -148,6 +148,14 @@ Item {
 
     EditableBrick {
         id: edtiableBrick
+        DropArea {
+            anchors.fill: parent
+            onDropped: function (drop) {
+                for (const url of drop.urls) {
+                    edtiableBrick.loadFromFile(url)
+                }
+            }
+        }
         asynchronous: false
         colorButton.visible: false
         onAvailableSizeChanged: {
