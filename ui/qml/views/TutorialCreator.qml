@@ -1,9 +1,8 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import Qt.labs.platform 1.1
-import QtQuick.Layouts 1.15
-import QtQml.Models 2.1
-import QtQuick 2.15
+import QtQuick
+import QtQuick.Controls
+import Qt.labs.platform
+import QtQuick.Layouts
+import QtQml.Models
 
 import "../views/interface"
 import "../assets/simple"
@@ -66,7 +65,14 @@ Item {
             }
         }
         onVisibleChanged: proxyModel.selectedIndex = -1
-
+        DropArea {
+            anchors.fill: parent
+            onDropped: function (drop) {
+                for (const url of drop.urls) {
+                    tutorialManager.addBrick(url)
+                }
+            }
+        }
         Item {
             width: parent.width / 2
             height: item.height
@@ -85,6 +91,7 @@ Item {
                 ScrollBar.vertical.policy: ScrollBar.AsNeeded
                 ListView {
                     id: timeline
+
                     signal remove(int index)
                     onRemove: index => {
                                   tutorialManager.removeBrick(index)

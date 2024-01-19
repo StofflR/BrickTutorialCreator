@@ -1,0 +1,1 @@
+{"base_type": "red", "content": "Send web request to\n$'https://catrobat.at/joke/$\nand store answer in\n*inner loop*", "size": "2h", "path": "brick_red_2h.svg", "scaling_factor": 1.0, "x": 43, "y": 33}

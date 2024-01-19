@@ -47,7 +47,7 @@ def test_bricks():
         for brick_type in data["colors"]:
             brick_path = f"brick_{brick_type}_{size}_control.svg"
             ref_path = path.join(
-                getcwd(), r"tests\\ref\\" + f"{brick_type}_{size}_control" + ".png"
+                getcwd(), r"tests/ref/" + f"{brick_type}_{size}_control" + ".png"
             )
             brick = SVGBrick(
                 base_type=brick_type,
@@ -60,7 +60,7 @@ def test_bricks():
             )
             created_path = brick.working_brick_.replace(".svg", ".png")
             brick.savePNG(path=created_path)
-            assert compare_images(ref_path, created_path) > 0.95
+            assert compare_images(ref_path, created_path) > 0.995
 
 
 if __name__ == "__main__":

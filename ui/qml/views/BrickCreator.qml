@@ -1,6 +1,6 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import Qt.labs.platform 1.1
+import QtQuick
+import QtQuick.Controls
+import Qt.labs.platform
 import QtQuick.Layouts
 
 import Brick 1.0
@@ -22,6 +22,13 @@ Item {
         anchors.fill: root
         onClicked: root.forceActiveFocus()
     }
+    Keys.onPressed: event => {
+                        if (event.matches(StandardKey.Save)) {
+                            saveBrick()
+                        } else if (event.matches(StandardKey.SelectAll)) {
+                            edtiableBrick.selectAll()
+                        }
+                    }
     LabelTextField {
         id: brickName
         anchors.top: root.top
@@ -148,6 +155,14 @@ Item {
 
     EditableBrick {
         id: edtiableBrick
+        DropArea {
+            anchors.fill: parent
+            onDropped: function (drop) {
+                for (const url of drop.urls) {
+                    edtiableBrick.loadFromFile(url)
+                }
+            }
+        }
         asynchronous: false
         colorButton.visible: false
         onAvailableSizeChanged: {
@@ -200,8 +215,17 @@ Item {
         }
         content.onEditingFinished: {
             dataChanged()
-            save()
         }
+        Keys.onPressed: event => {
+                            if (event.matches(StandardKey.Save)) {
+                                root.forceActiveFocus()
+                                saveBrick()
+                            } else if (event.matches(StandardKey.Cancel)) {
+                                root.forceActiveFocus()
+                            } else if (event.matches(StandardKey.SelectAll)) {
+                                edtiableBrick.selectAll()
+                            }
+                        }
 
         anchors.right: parent.right
         anchors.left: ySlider.right

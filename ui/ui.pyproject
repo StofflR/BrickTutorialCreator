@@ -69,7 +69,15 @@
         "qml/views/dialogs/help/tutorial/TutorialHelpName.qml",
         "qml/views/dialogs/help/tutorial/TutorialHelpPaths.qml",
         "qml/views/dialogs/help/tutorial/TutorialHelpTutorial.qml",
-        "qml/views/dialogs/help/tutorial/TutorialHelp.qml"
-
+        "qml/views/dialogs/help/tutorial/TutorialHelp.qml",
+        "tests/initializers.py",
+        "tests/all_bricks/generate_all_bricks.py",
+        "tests/all_bricks/test_all_bricks.py",
+        "tests/basic_bricks/test_basic_bricks_0h.py",
+        "tests/basic_bricks/test_basic_bricks_1h_2h_3h.py",
+        "tests/basic_bricks/test_basic_bricks_1h_2h_control.py",
+        "tests/content/test_content_1h.py",
+        "tests/converter/test_convert.py",
+        "tests/tutorial/test_tutoral_simple.py"
     ]
 }

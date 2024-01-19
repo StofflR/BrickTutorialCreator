@@ -105,13 +105,17 @@ class SVGBrick(SVGBrickModifier):
         with open(path, "w") as file:
             file.write(filedata)
 
-    def savePNG(self, path="", width=1920):
+    def savePNG(self, path="", width=1920, height=None):
         renderer = QSvgRenderer(path.replace(".png", ".svg"))
-
-        image = QImage(path.replace(".png", ".svg")).scaledToWidth(
-            width, Qt.SmoothTransformation
-        )
-
+        image = None
+        if height == None:
+            image = QImage(path.replace(".png", ".svg")).scaledToWidth(
+                width, Qt.SmoothTransformation
+            )
+        else:
+            image = QImage(path.replace(".png", ".svg")).scaled(
+                width, height, mode=Qt.SmoothTransformation
+            )
         painter = QPainter(image)
         renderer.render(painter)
         del painter  # painter doesn't get deleted properly

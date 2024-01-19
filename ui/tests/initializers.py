@@ -1,4 +1,6 @@
-from PySide6.QtGui import QGuiApplication
+from PySide6.QtGui import QGuiApplication, QFontDatabase
+from PySide6.QtQml import QQmlApplicationEngine
+import os
 import sys
 
 app = None
@@ -7,4 +9,22 @@ app = None
 def initQt():
     global app
     if not app:
-        app = QGuiApplication(sys.argv)
+        app = QGuiApplication()
+        assert (
+            QFontDatabase.addApplicationFont(
+                os.getcwd() + "/resources/fonts/Roboto-Bold.ttf"
+            )
+            != -1
+        )
+        assert (
+            QFontDatabase.addApplicationFont(
+                os.getcwd() + "/resources/fonts/Roboto-Light.ttf"
+            )
+            != -1
+        )
+    engine = QQmlApplicationEngine()
+    fontStyles = QFontDatabase.styles("Roboto")
+
+    for style in fontStyles:
+        font = QFontDatabase.font("Roboto", style, 12)
+        engine.rootContext().setContextProperty(style.lower() + "Roboto", font)

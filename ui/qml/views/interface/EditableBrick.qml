@@ -43,6 +43,10 @@ Image {
     Brick {
         id: modifyableBrick
     }
+    function selectAll() {
+        textView.selectAll()
+        previewContent.forceActiveFocus()
+    }
 
     function loadFromFile(currentFile) {
         {
@@ -77,12 +81,16 @@ Image {
 
     TextArea {
         id: textView
+        persistentSelection: true
         Binding on cursorPosition {
             when: previewContent.cursorPosition
             value: previewContent.cursorPosition
         }
         visible: previewContent.cursorVisible
         anchors.fill: previewContent
+
+        onSelectedTextChanged: previewContent.select(textView.selectionStart,
+                                                     textView.selectionEnd)
         text: {
             var data = previewContent.getText(0, previewContent.length)
             while (data.indexOf("<") !== -1) {
@@ -119,6 +127,7 @@ Image {
 
     TextArea {
         id: previewContent
+        persistentSelection: true
         text: ""
         placeholderText: "<b>Click to modify content!<\b>"
         anchors.left: svgPreview.left
@@ -128,9 +137,7 @@ Image {
         anchors.leftMargin: (svgPreview.xPos - 4) * svgPreview.paintedWidth / 350
         anchors.topMargin: (svgPreview.yPos - 4) * svgPreview.paintedWidth / 350
                            - 13 * previewContent.scale
-        property int cursorLine: previewContent.text.substring(
-                                     0, previewContent.cursorPosition).split(
-                                     /\n/).length - 1
+
         property real scale: svgPreview.paintedWidth * contentScale / 35000
         wrapMode: TextEdit.WordWrap
         font: textView.font
@@ -141,15 +148,49 @@ Image {
             textChanged.connect(svgPreview.dataChanged)
         }
     }
+    Rectangle {
+        id: selection
+        color: "darkgrey"
+        opacity: 0.25
+        property int textViewSelection: textView.selectionEnd - textView.selectionStart
+        property int previewContentSelection: previewContent.selectionEnd
+                                              - previewContent.selectionStart
+
+        visible: textViewSelection != 0 || previewContentSelection != 0
+        onPreviewContentSelectionChanged: updateBox()
+        onTextViewSelectionChanged: updateBox()
+        function updateBox() {
+            var startRectView = textView.positionToRectangle(
+                        previewContent.selectionStart)
+            var endRectView = textView.positionToRectangle(
+                        previewContent.selectionEnd)
+
+            selection.x = startRectView.x + previewContent.x
+            selection.y = startRectView.y + previewContent.y
+            selection.height = startRectView.height
+            selection.width = endRectView.x - startRectView.x
+        }
+    }
+
     MouseArea {
         anchors.fill: previewContent
-        onReleased: mouseEvent => {
-                        previewContent.cursorPosition = textView.positionAt(
-                            mouseEvent.x, mouseEvent.y)
-                        previewContent.forceActiveFocus()
-                    }
-        onClicked: {
+        property int pressedAt
+
+        onPressed: function (mouseEvent) {
+            pressedAt = textView.positionAt(mouseEvent.x, mouseEvent.y)
+            previewContent.cursorPosition = pressedAt
+            previewContent.forceActiveFocus()
             modified = true
+        }
+        onDoubleClicked: {
+            textView.selectWord()
+        }
+        onReleased: function (mouseEvent) {
+            var position = textView.positionAt(mouseEvent.x, mouseEvent.y)
+            if (position != pressedAt) {
+                textView.select(Math.min(position, pressedAt),
+                                Math.max(position, pressedAt))
+            }
         }
     }
 
