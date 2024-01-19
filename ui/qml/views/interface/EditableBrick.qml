@@ -148,27 +148,68 @@ Image {
             textChanged.connect(svgPreview.dataChanged)
         }
     }
-    Rectangle {
-        id: selection
-        color: "darkgrey"
-        opacity: 0.25
-        property int textViewSelection: textView.selectionEnd - textView.selectionStart
-        property int previewContentSelection: previewContent.selectionEnd
-                                              - previewContent.selectionStart
+    Repeater {
+        id: repeaterModel
+        model: previewContent.lineCount
+        property var lines: previewContent.text.split("\n")
+        Rectangle {
+            id: selection
+            color: "darkgrey"
+            opacity: 0.25
+            property int textViewSelection: textView.selectionEnd - textView.selectionStart
+            property int previewContentSelection: previewContent.selectionEnd
+                                                  - previewContent.selectionStart
 
-        visible: textViewSelection != 0 || previewContentSelection != 0
-        onPreviewContentSelectionChanged: updateBox()
-        onTextViewSelectionChanged: updateBox()
-        function updateBox() {
-            var startRectView = textView.positionToRectangle(
-                        previewContent.selectionStart)
-            var endRectView = textView.positionToRectangle(
-                        previewContent.selectionEnd)
+            visible: textViewSelection != 0 || previewContentSelection != 0
+            onPreviewContentSelectionChanged: updateBox()
+            onTextViewSelectionChanged: updateBox()
+            function updateBox() {
+                var startPosition = 0
+                for (var i = 0; i < index; i++)
+                    startPosition += repeaterModel.lines[i].length + 1
 
-            selection.x = startRectView.x + previewContent.x
-            selection.y = startRectView.y + previewContent.y
-            selection.height = startRectView.height
-            selection.width = endRectView.x - startRectView.x
+                var lineStart = textView.positionToRectangle(startPosition)
+                var lineEnd = textView.positionToRectangle(
+                            startPosition + repeaterModel.lines[index].length)
+
+                var startRectView = textView.positionToRectangle(
+                            previewContent.selectionStart)
+
+                var endRectView = textView.positionToRectangle(
+                            previewContent.selectionEnd)
+                selection.visible = false
+
+                if (lineStart.y < startRectView.y
+                        || lineStart.y > endRectView.y) {
+                    return
+                }
+
+                if (startRectView.y == endRectView.y) {
+                    selection.visible = true
+                    selection.x = startRectView.x + previewContent.x
+                    selection.y = startRectView.y + previewContent.y
+                    selection.height = startRectView.height
+                    selection.width = endRectView.x - startRectView.x
+                } else if (startRectView.y == lineStart.y) {
+                    selection.visible = true
+                    selection.x = startRectView.x + previewContent.x
+                    selection.y = startRectView.y + previewContent.y
+                    selection.height = startRectView.height
+                    selection.width = lineEnd.x - startRectView.x
+                } else if (endRectView.y == lineEnd.y) {
+                    selection.visible = true
+                    selection.x = lineStart.x + previewContent.x
+                    selection.y = lineStart.y + previewContent.y
+                    selection.height = lineStart.height
+                    selection.width = endRectView.x - lineStart.x
+                } else {
+                    selection.visible = true
+                    selection.x = lineStart.x + previewContent.x
+                    selection.y = lineStart.y + previewContent.y
+                    selection.height = lineStart.height
+                    selection.width = lineEnd.x - lineStart.x
+                }
+            }
         }
     }
 
