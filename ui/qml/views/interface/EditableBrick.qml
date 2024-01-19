@@ -43,6 +43,10 @@ Image {
     Brick {
         id: modifyableBrick
     }
+    function selectAll() {
+        textView.selectAll()
+        previewContent.forceActiveFocus()
+    }
 
     function loadFromFile(currentFile) {
         {

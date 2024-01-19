@@ -22,6 +22,13 @@ Item {
         anchors.fill: root
         onClicked: root.forceActiveFocus()
     }
+    Keys.onPressed: event => {
+                        if (event.matches(StandardKey.Save)) {
+                            saveBrick()
+                        } else if (event.matches(StandardKey.SelectAll)) {
+                            edtiableBrick.selectAll()
+                        }
+                    }
     LabelTextField {
         id: brickName
         anchors.top: root.top
@@ -211,10 +218,12 @@ Item {
         }
         Keys.onPressed: event => {
                             if (event.matches(StandardKey.Save)) {
-                                saveBrick()
-                            }
-                            if (event.key == Qt.Key_Escape) {
                                 root.forceActiveFocus()
+                                saveBrick()
+                            } else if (event.matches(StandardKey.Cancel)) {
+                                root.forceActiveFocus()
+                            } else if (event.matches(StandardKey.SelectAll)) {
+                                edtiableBrick.selectAll()
                             }
                         }
 
