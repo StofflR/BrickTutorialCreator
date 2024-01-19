@@ -8,6 +8,7 @@ sys.path.insert(0, getcwd())
 from modules.backend.SVGBrick import SVGBrick
 from tests.initializers import initQt
 import json
+import modules.ConstDefs as Const
 
 
 def iterate_files(folder_path) -> None:
@@ -20,7 +21,14 @@ def iterate_files(folder_path) -> None:
                 content = json.load(file)
                 brick: SVGBrick = SVGBrick.fromJSON(content)
                 file.close()
-                brick.savePNG(path=file_path.replace(".json", ".png"))
+                height = Const.PNG_HEIGHT_1H
+                if "2h" in content["path"] and "control" in content["path"]:
+                    height = Const.PNG_HEIGHT_2H_CONTROL
+                elif "2h" in content["path"]:
+                    height = Const.PNG_HEIGHT_2H
+                elif "3h" in content["path"]:
+                    height = Const.PNG_HEIGHT_3H
+                brick.savePNG(path=file_path.replace(".json", ".png"),width=Const.PNG_WIDTH,height=height)
                 brick.save(path=file_path.replace(".json", ".svg"))
 
 
