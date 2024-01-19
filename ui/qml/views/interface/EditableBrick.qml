@@ -163,6 +163,14 @@ Image {
             visible: textViewSelection != 0 || previewContentSelection != 0
             onPreviewContentSelectionChanged: updateBox()
             onTextViewSelectionChanged: updateBox()
+            function select(start, end) {
+                selection.visible = true
+                selection.x = start.x + previewContent.x
+                selection.y = start.y + previewContent.y
+                selection.height = start.height
+                selection.width = end.x - start.x
+            }
+
             function updateBox() {
                 var startPosition = 0
                 for (var i = 0; i < index; i++)
@@ -185,29 +193,13 @@ Image {
                 }
 
                 if (startRectView.y == endRectView.y) {
-                    selection.visible = true
-                    selection.x = startRectView.x + previewContent.x
-                    selection.y = startRectView.y + previewContent.y
-                    selection.height = startRectView.height
-                    selection.width = endRectView.x - startRectView.x
+                    select(startRectView, endRectView)
                 } else if (startRectView.y == lineStart.y) {
-                    selection.visible = true
-                    selection.x = startRectView.x + previewContent.x
-                    selection.y = startRectView.y + previewContent.y
-                    selection.height = startRectView.height
-                    selection.width = lineEnd.x - startRectView.x
+                    select(startRectView, lineEnd)
                 } else if (endRectView.y == lineEnd.y) {
-                    selection.visible = true
-                    selection.x = lineStart.x + previewContent.x
-                    selection.y = lineStart.y + previewContent.y
-                    selection.height = lineStart.height
-                    selection.width = endRectView.x - lineStart.x
+                    select(lineStart, endRectView)
                 } else {
-                    selection.visible = true
-                    selection.x = lineStart.x + previewContent.x
-                    selection.y = lineStart.y + previewContent.y
-                    selection.height = lineStart.height
-                    selection.width = lineEnd.x - lineStart.x
+                    select(lineStart, lineEnd)
                 }
             }
         }
