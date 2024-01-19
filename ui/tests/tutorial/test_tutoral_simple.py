@@ -61,10 +61,15 @@ def test_bricks():
                 x=43,
                 y=33,
             )
-            tutorialManager.addBrick(brick.working_brick_)    
+            tutorialManager.addBrick(brick.working_brick_)
         tutorialManager.toPNG(f"resources/tmp/tutorial_simple_{size}.png")
-        assert compare_images(f"resources/tmp/tutorial_simple_{size}.png", f"tests/ref/ref_tutorial_simple_{size}.png") > 0.995
-
+        assert (
+            compare_images(
+                f"resources/tmp/tutorial_simple_{size}.png",
+                f"tests/ref/ref_tutorial_simple_{size}.png",
+            )
+            > 0.995
+        )
 
 
 if __name__ == "__main__":
