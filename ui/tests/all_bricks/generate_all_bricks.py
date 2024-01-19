@@ -28,7 +28,11 @@ def iterate_files(folder_path) -> None:
                     height = Const.PNG_HEIGHT_2H
                 elif "3h" in content["path"]:
                     height = Const.PNG_HEIGHT_3H
-                brick.savePNG(path=file_path.replace(".json", ".png"),width=Const.PNG_WIDTH,height=height)
+                brick.savePNG(
+                    path=file_path.replace(".json", ".png"),
+                    width=Const.PNG_WIDTH,
+                    height=height,
+                )
                 brick.save(path=file_path.replace(".json", ".svg"))
 
 

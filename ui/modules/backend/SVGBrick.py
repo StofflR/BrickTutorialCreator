@@ -107,7 +107,7 @@ class SVGBrick(SVGBrickModifier):
 
     def savePNG(self, path="", width=1920, height=None):
         renderer = QSvgRenderer(path.replace(".png", ".svg"))
-        image=None
+        image = None
         if height == None:
             image = QImage(path.replace(".png", ".svg")).scaledToWidth(
                 width, Qt.SmoothTransformation
