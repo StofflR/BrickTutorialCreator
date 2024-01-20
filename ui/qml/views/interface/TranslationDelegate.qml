@@ -17,7 +17,7 @@ ItemDelegate {
     required property int index
 
     height: source.height > 0 ? source.height : target.height
-    width: parent.width
+    width: parent?.width
     Image {
         id: source
         asynchronous: true

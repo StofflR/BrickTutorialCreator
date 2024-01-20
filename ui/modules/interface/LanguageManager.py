@@ -17,66 +17,32 @@ class LanguageManager(QObject):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self._path = ""
-
-    @Slot(str)
-    def newLanguage(self, newLanguage):
-        file_path = self._path.replace(OSDefs.FILE_STUB, "") + "/" + newLanguage
-        logging.debug("Created new directory: " + file_path)
-        os.makedirs(file_path, exist_ok=True)
-        self.languagesChanged.emit()
-
-    @Slot(str)
-    def delete(self, language):
-        file_path = self._path.replace(OSDefs.FILE_STUB, "") + "/" + language
-        shutil.rmtree(file_path)
-        self.languagesChanged.emit()
+        self._model = []
 
     @Signal
-    def languagesChanged(self):
+    def modelChanged(self):
         pass
 
-    def _getLanguages(self):
-        result = []
-        file_path = self._path.replace(OSDefs.FILE_STUB, "")
-        for root, dirs, files in os.walk(file_path):
-            if dirs not in result:
-                result += dirs
-        return result
-
-    languages = Property(list, _getLanguages, notify=languagesChanged)
+    def _getModel(self):
+        return self._model
 
     @Signal
-    def sourceModelChanged(self):
+    def sourceFolderChanged(self):
         pass
 
-    def _getSourceModel(self):
-        result = []
-        file_path = self._path.replace(OSDefs.FILE_STUB, "")
+    @Slot()
+    def refreshModel(self):
+        self._setSourceFolder(self._path)
 
-        if not file_path or not os.path.isdir(file_path):
-            return result
+    def _setSourceFolder(self, folder):
+        self._path = "".join(folder)
+        self._model.clear()
+        for root, dirs, files in os.walk(self._path):
+            for file_name in files:
+                file_path = os.path.join(root, file_name)
+                if ".svg" in file_path:
+                    self.model.append({"sourcePath": OSDefs.FILE_STUB+os.path.join(root,file_name), "sourceFile": file_name})
+        self.modelChanged.emit()
 
-        for element in os.listdir(file_path):
-            if ".svg" in element:  # or ".json" in element:
-                result.append(element)
-        return result
-
-    sourceModel = Property(list, _getSourceModel, notify=sourceModelChanged)
-
-    @Signal
-    def pathChanged(self):
-        pass
-
-    def _setPath(self, value):
-        self._path = value
-        self.languagesChanged.emit()
-        self.sourceModelChanged.emit()
-
-    def _getPath(self):
-        return self._path
-
-    path = Property(str, _getPath, _setPath, notify=pathChanged)
-
-    @Slot(str, result=bool)
-    def exists(self, file):
-        return os.path.isfile(file.replace(OSDefs.FILE_STUB, ""))
+    sourceFolder = Property(list, fset=_setSourceFolder, notify=sourceFolderChanged)
+    model = Property(list, fget=_getModel, notify=modelChanged)

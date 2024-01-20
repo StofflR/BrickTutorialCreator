@@ -24,40 +24,23 @@ Item {
 
     FolderDialog {
         id: folderDialog
-        property string mode
-        onAccepted: {
-            if (mode === "SP")
-                converted(converter.fromSVGtoPNG(folder))
-            if (mode === "TP")
-                converted(converter.fromTutorialtoPNG(folder))
-            if (mode === "JP")
-                converted(converter.fromJSONtoPNG(folder))
-            if (mode === "JS")
-                converted(cwonverter.fromJSONtoSVG(folder))
-            if (mode === "UP") {
-                batchBrickDialog.targetPath = folder
-                batchBrickDialog.convert(converter.updateExisting(folder))
-            }
-        }
+        property var mode
+        onAccepted: converted(folderDialog.mode(folderDialog.folder))
     }
     function fromSVGtoPNG() {
-        folderDialog.mode = "SP"
+        folderDialog.mode = converter.fromSVGtoPNG
         folderDialog.open()
     }
     function fromJSONtoPNG() {
-        folderDialog.mode = "JP"
+        folderDialog.mode = converter.fromJSONtoPNG
         folderDialog.open()
     }
     function fromTutorialtoPNG() {
-        folderDialog.mode = "TP"
+        folderDialog.mode = converter.fromTutorialtoPNG
         folderDialog.open()
     }
     function fromJSONtoSVG() {
-        folderDialog.mode = "JS"
-        folderDialog.open()
-    }
-    function updateExisting() {
-        folderDialog.mode = "UP"
+        folderDialog.mode = converter.fromJSONtoSVG
         folderDialog.open()
     }
 }

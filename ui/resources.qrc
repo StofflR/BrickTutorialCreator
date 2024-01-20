@@ -30,6 +30,8 @@
         <file>resources/icon.png</file>
         <file>resources/image_black.svg</file>
         <file>resources/splitscreen.svg</file>
+        <file>resources/download.svg</file>
+        <file>resources/upload.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>help.html</file>

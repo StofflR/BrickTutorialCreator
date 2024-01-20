@@ -24,7 +24,7 @@ Item {
     }
     Keys.onPressed: event => {
                         if (event.matches(StandardKey.Save)) {
-                            saveBrick()
+                            edtiableBrick.saveBrick()
                         } else if (event.matches(StandardKey.SelectAll)) {
                             edtiableBrick.selectAll()
                         }
