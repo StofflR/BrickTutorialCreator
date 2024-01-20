@@ -29,6 +29,7 @@
         <file>resources/icon.svg</file>
         <file>resources/icon.png</file>
         <file>resources/image_black.svg</file>
+        <file>resources/splitscreen.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>help.html</file>

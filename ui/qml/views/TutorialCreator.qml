@@ -14,10 +14,13 @@ import TutorialSourceManager 1.0
 
 Item {
     id: root
+    width: parent.width
+    anchors.margins: AppStyle.spacing
+    anchors.fill: parent
+
     LabelTextField {
         id: tutorialName
         anchors.top: root.top
-        anchors.topMargin: AppStyle.spacing
         property string folderPath: tempFolder.replace(fileStub, "")
         width: root.width / 2
         label: "Name:"

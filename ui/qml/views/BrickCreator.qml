@@ -46,6 +46,11 @@ Item {
         field.ToolTip.visible: brickName.field.hovered
         field.ToolTip.text: brickName.folderPath
     }
+    FolderDialog {
+        id: folderDialog
+        folder: tempFolder.replace(fileStub, "")
+        onAccepted: brickName.folderPath = folder
+    }
     IconButton {
         id: path
         icon.source: "qrc:/bricks/resources/folder_open_black_24dp.svg"
@@ -57,11 +62,6 @@ Item {
         ToolTip.timeout: 5000
         ToolTip.visible: path.hovered
         ToolTip.text: "Set export path …"
-    }
-    FolderDialog {
-        id: folderDialog
-        folder: tempFolder.replace(fileStub, "")
-        onAccepted: brickName.folderPath = folder
     }
 
     CheckBox {
@@ -222,8 +222,6 @@ Item {
                                 saveBrick()
                             } else if (event.matches(StandardKey.Cancel)) {
                                 root.forceActiveFocus()
-                            } else if (event.matches(StandardKey.SelectAll)) {
-                                edtiableBrick.selectAll()
                             }
                         }
 
