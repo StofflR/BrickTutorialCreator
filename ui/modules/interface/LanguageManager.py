@@ -41,7 +41,13 @@ class LanguageManager(QObject):
             for file_name in files:
                 file_path = os.path.join(root, file_name)
                 if ".svg" in file_path:
-                    self.model.append({"sourcePath": OSDefs.FILE_STUB+os.path.join(root,file_name), "sourceFile": file_name})
+                    self.model.append(
+                        {
+                            "sourcePath": OSDefs.FILE_STUB
+                            + os.path.join(root, file_name),
+                            "sourceFile": file_name,
+                        }
+                    )
         self.modelChanged.emit()
 
     sourceFolder = Property(list, fset=_setSourceFolder, notify=sourceFolderChanged)
