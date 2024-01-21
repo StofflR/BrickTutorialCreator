@@ -133,7 +133,7 @@ Item {
     }
     CheckBox {
         id: keepFilename
-        anchors.left: singleViewRadio.right
+        anchors.top: singleViewRadio.bottom
         text: "Keep filename"
         checked: true
     }
@@ -142,7 +142,7 @@ Item {
         icon.source: "qrc:/bricks/resources/refresh_black_24dp.svg"
         onPressed: languageManager.refreshModel()
         anchors.left: keepFilename.right
-        anchors.top: root.top
+        anchors.top: singleViewRadio.bottom
         hoverEnabled: true
         ToolTip.delay: 1000
         ToolTip.timeout: 5000
@@ -150,16 +150,24 @@ Item {
         ToolTip.text: "Reload files"
         autoExclusive: true
     }
+    CheckBox {
+        id: recursive
+        anchors.left: refresh.right
+        anchors.top: singleViewRadio.bottom
+        text: "Load files recursive"
+        checked: false
+    }
     LanguageManager {
         id: languageManager
         sourceFolder: brickName.folderPath
         targetFolder: brickName.field.text
+        loadRecursive: recursive.checked
     }
 
     ListView {
         id: translationList
         width: parent.width
-        anchors.top: singleViewRadio.bottom
+        anchors.top: refresh.bottom
         anchors.margins: AppStyle.spacing
         anchors.bottom: parent.bottom
 

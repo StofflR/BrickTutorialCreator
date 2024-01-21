@@ -19,6 +19,7 @@ class LanguageManager(QObject):
         self._path = ""
         self._target = ""
         self._model = []
+        self._recursive = False
 
     @Signal
     def modelChanged(self):
@@ -51,7 +52,7 @@ class LanguageManager(QObject):
         self._path = folder.replace(OSDefs.FILE_STUB, "")
         self._model.clear()
         for root, dirs, files in os.walk(self._path):
-            if root in self._path:
+            if root in self._path or self._recursive:
                 for file_name in files:
                     file_path = os.path.join(root, file_name)
                     if ".svg" in file_path:
@@ -68,6 +69,20 @@ class LanguageManager(QObject):
                         )
         self.modelChanged.emit()
 
+
+    @Signal
+    def loadRecursiveChanged(self):
+        pass
+
+    def _getRecursive(self):
+        return self._recursive
+
+    def _setRecursive(self, recursive):
+        self._recursive = recursive
+        self._setSourceFolder(self._path)
+        self.loadRecursiveChanged.emit()
+
+    loadRecursive = Property(bool,fget=_getRecursive, fset=_setRecursive, notify=loadRecursiveChanged)
     sourceFolder = Property(str, fset=_setSourceFolder, notify=sourceFolderChanged)
     model = Property(list, fget=_getModel, notify=modelChanged)
     targetFolder = Property(
