@@ -69,7 +69,6 @@ class LanguageManager(QObject):
                         )
         self.modelChanged.emit()
 
-
     @Signal
     def loadRecursiveChanged(self):
         pass
@@ -82,7 +81,9 @@ class LanguageManager(QObject):
         self._setSourceFolder(self._path)
         self.loadRecursiveChanged.emit()
 
-    loadRecursive = Property(bool,fget=_getRecursive, fset=_setRecursive, notify=loadRecursiveChanged)
+    loadRecursive = Property(
+        bool, fget=_getRecursive, fset=_setRecursive, notify=loadRecursiveChanged
+    )
     sourceFolder = Property(str, fset=_setSourceFolder, notify=sourceFolderChanged)
     model = Property(list, fget=_getModel, notify=modelChanged)
     targetFolder = Property(
