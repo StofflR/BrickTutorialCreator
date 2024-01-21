@@ -63,11 +63,13 @@ class LanguageManager(QObject):
                                 "sourcePath": OSDefs.FILE_STUB
                                 + os.path.join(root, file_name),
                                 "sourceFile": file_name,
-                                "targetPath": targetPath
+                                "targetPath": targetPath,
                             }
                         )
         self.modelChanged.emit()
 
     sourceFolder = Property(str, fset=_setSourceFolder, notify=sourceFolderChanged)
     model = Property(list, fget=_getModel, notify=modelChanged)
-    targetFolder = Property(str,fget=_getTargetFolder, fset=_setTargetFolder, notify=targetFolderChanged)
+    targetFolder = Property(
+        str, fget=_getTargetFolder, fset=_setTargetFolder, notify=targetFolderChanged
+    )

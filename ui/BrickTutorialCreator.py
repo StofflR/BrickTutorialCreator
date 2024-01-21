@@ -81,7 +81,8 @@ if __name__ == "__main__":
         "tempFolder", QUrl.fromLocalFile(os.getcwd()).toString() + r"/resources/out"
     )
     engine.rootContext().setContextProperty(
-        "exportFolder", QUrl.fromLocalFile(os.getcwd()).toString() + r"/resources/out/export"
+        "exportFolder",
+        QUrl.fromLocalFile(os.getcwd()).toString() + r"/resources/out/export",
     )
     engine.rootContext().setContextProperty("fileStub", OSDefs.FILE_STUB)
     engine.rootContext().setContextProperty(
