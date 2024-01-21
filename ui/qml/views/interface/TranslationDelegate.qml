@@ -10,11 +10,19 @@ ItemDelegate {
     id: root
     required property string sourcePath
     required property string sourceFile
+    required property string targetFolder
     required property string targetPath
 
     required property bool keepName
     required property bool split
     required property int index
+
+    onTargetFolderChanged: {
+        if (targetPath == "")
+            target.loadFromFile(sourcePath)
+        else
+            target.loadFromFile(targetPath)
+    }
 
     height: source.height > 0 ? source.height : target.height
     width: parent?.width
@@ -42,9 +50,9 @@ ItemDelegate {
 
         function saveBrick() {
             if (keepName) {
-                target.brick.saveSVG(targetPath, sourceFile)
+                target.brick.saveSVG(targetFolder, sourceFile)
             } else {
-                target.brick.saveSVG(targetPath)
+                target.brick.saveSVG(targetFolder)
             }
             modified = false
         }
@@ -57,10 +65,5 @@ ItemDelegate {
                                 saveBrick()
                             }
                         }
-
-        Component.onCompleted: {
-            target.loadFromFile(sourcePath)
-            saveBrick()
-        }
     }
 }

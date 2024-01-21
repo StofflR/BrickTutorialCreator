@@ -25,7 +25,7 @@ Item {
         property string folderPath: tempFolder.replace(fileStub, "")
         width: root.width / 2
         label: "Target folder:"
-        field.text: tempFolder
+        field.text: exportFolder.replace(fileStub, "")
         field.validator: RegularExpressionValidator {
             regularExpression: /\w+/
         }
@@ -153,6 +153,7 @@ Item {
     LanguageManager {
         id: languageManager
         sourceFolder: brickName.folderPath
+        targetFolder: brickName.field.text
     }
 
     ListView {
@@ -166,11 +167,11 @@ Item {
         model: languageManager.model
         delegate: TranslationDelegate {
             split: splitViewRadio.checked
-            sourcePath: translationList.model[index]["sourcePath"]
             keepName: keepFilename.checked
-
+            sourcePath: translationList.model[index]["sourcePath"]
             sourceFile: translationList.model[index]["sourceFile"]
-            targetPath: brickName.field.text
+            targetFolder: languageManager.targetFolder
+            targetPath: translationList.model[index]["targetPath"]
         }
     }
 }
