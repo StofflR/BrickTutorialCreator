@@ -9,8 +9,20 @@ DEF_BASE = os.path.join(os.getcwd(), "base")
 VARIABLE = "var"
 DROPDOWN = "drop"
 TEXT = "text"
-BOLD = "bold"
-NORMAL = "normal"
+
+OP_KEY_NEWLINE = "\n"
+OP_KEY_END = "\0"
+OP_KEY_DROPDOWN = "*"
+OP_KEY_VARIABLE = "$"
+
+LINE_ID = "var_line"
+TRIANGLE_ID = "triangle"
+JSON_ID = "json"
+
+BRICK_TAG = "brick"
+POLYGON_TAG = "polygon"
+LINE_TAG = "line"
+TEXT_TAG = "text"
 
 FONT_SIZE = 12
 LINE_OFF = 3
@@ -31,10 +43,20 @@ PNG_HEIGHT_2H_CONTROL = 524
 PNG_HEIGHT_2H = 530
 PNG_HEIGHT_3H = 657
 
+BOLD = "bold"
+NORMAL = "normal"
+
+STYLE_LIGHT = "Light"
+STYLE_BOLD = "Bold"
+
 RES_PATH = {BOLD: "/qml/font/Roboto-Bold.ttf", NORMAL: "/qml/font/Roboto-Light.ttf"}
 FAMILY_NAME = {BOLD: "Roboto", NORMAL: "Roboto"}
 
 LEN_SCALAR = {BOLD: 1.1, NORMAL: 1.1}
+
+HEX_DARK_BLUE = "#274383"
+HEX_WHITE = "#FFFFFF"
+HEX_BLACK = "#000000"
 
 FORBIDDEN_FILE_NAME_CHARS = {
     r" ": "_",
@@ -46,7 +68,6 @@ FORBIDDEN_FILE_NAME_CHARS = {
     "\\n": "",
     "\\": "",
     "//": "",
-    "/": "",
     r"|": "",
     r"?": "",
     r"*": "",

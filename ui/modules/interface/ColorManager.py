@@ -23,8 +23,6 @@ class ColorManager(QObject):
                 filedata.replace("BACKGROUND", background)
                 .replace("SHADE", shade)
                 .replace("BORDER", border)
-                .replace("ns0:", "")
-                .replace(":ns0", "")
             )
         with open(os.getcwd() + "/base/" + path, "w") as file:
             file.write(filedata)

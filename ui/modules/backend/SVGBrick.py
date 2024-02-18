@@ -23,18 +23,34 @@ class SVGBrick(SVGBrickModifier):
         )
         self.addContent()
 
+    def __del__(self):
+        """
+        Delete the temporary file created on object destruction!
+        """
+        logging.debug("Deleting: " + self.working_brick_)
+        if os.path.exists(self.working_brick_):
+            os.remove(self.working_brick_)
+            logging.debug("Working brick: " + self.contentPlain() + " deleted")
+
     def getWorkingBrick(self) -> str:
         """
-        return str
-        The current temp working directory of the brick.
+        The current temp working directory of the brick
+        Returns
+        -------
+        the current working directory string
         """
         return self.working_brick_
 
     @staticmethod
-    def getJSONFromSVG(path) -> str:
+    def getJSONFromSVG(path: str) -> str:
         """
-        return str
-        The current temp working directory of the brick.
+        Get the JSON representation of a SVGBrick svg
+        Parameters
+        ----------
+        path: the path containing the svg file
+        Returns
+        -------
+        the json representation of the brick
         """
 
         svg = Tree.parse(open(path, "r"))
@@ -52,8 +68,13 @@ class SVGBrick(SVGBrickModifier):
     @classmethod
     def fromJSON(cls, json_text: Dict):
         """
-        return SVGBrick
         Create a SVGBrick from a given json
+        Parameters
+        ----------
+        json_text: the json representation of the SVG Brick to be created
+        Returns
+        -------
+        An SVG Brick from the given json representation
         """
 
         def getAttr(text, attr, default_value):
@@ -71,9 +92,13 @@ class SVGBrick(SVGBrickModifier):
 
     def toJSON(self, path="") -> str:
         """
-        return str
-        param path if a path is provided, the JSON is stored in the given file
         Create a json string from the current brick settings
+        Parameters
+        ----------
+        path: if a path is provided, the JSON is stored in the given file
+        Returns
+        -------
+        the JSON representation of the SVG Brick
         """
         if path != "":
             path = extendFileExtension(path, ".json")
@@ -85,9 +110,6 @@ class SVGBrick(SVGBrickModifier):
 
     def addContent(self) -> None:
         """
-
-        Returns
-        -------
         Adds the given content to the svg file and saves it
         """
         self.parse(self.content, self.x, self.y)
@@ -95,11 +117,10 @@ class SVGBrick(SVGBrickModifier):
 
     def contentPlain(self, for_system=False) -> str:
         """
-
+        Get a plain text representation of the current SVG Brick
         Parameters
         ----------
-        for_system : boolean toggle, if true removes forbidden characters of the operating file system
-
+        for_system: boolean toggle, if true removes forbidden characters of the operating file system
         Returns
         -------
         the plain text representation of the content with special characters removed
@@ -119,11 +140,7 @@ class SVGBrick(SVGBrickModifier):
         Store the current brick ath the given path. If no path is specified, the working_brick_ path is used.
         Parameters
         ----------
-        path : The path where the file should be saved to.
-
-        Returns
-        -------
-
+        path: The path where the file should be saved to
         """
         if path == "":
             path = self.working_brick_
@@ -133,16 +150,12 @@ class SVGBrick(SVGBrickModifier):
 
     def savePNG(self, path, width=1920, height=None) -> None:
         """
-        create a PNG of the current brick
+        Create a PNG of the current brick
         Parameters
         ----------
         path : str target where the brick should be stored
-        width : width of the image (delault=1920)
+        width : width of the image (default=1920)
         height : height of the image (default=None) image is scaled according to default brick height
-
-        Returns
-        -------
-
         """
         assert path != ""
         path = extendFileExtension(path, ".png")
@@ -164,35 +177,40 @@ class SVGBrick(SVGBrickModifier):
 
     def parse(self, content: str, x=DEFAULT_X, y=DEFAULT_Y) -> None:  #
         """
-        pasres the content of the brick to format the svg
+        Parses the content of the brick to format the svg
         Parameters
         ----------
-        content : content to be paresed
+        content : content to be parsed
         x : starting x coordinate
         y : starting y coordinate
-
-        Returns
-        -------
-
         """
-        if content is None:
+        if content is None or content == "":
             return
 
-        for index, _ in enumerate(content):
-            if content[index] in self.operations.keys():
-                line, x, y = self.operations[content[index]](content, x, y)
+        for index, letter in enumerate(content):
+            if letter in self.operations.keys():
+                line, x, y = self.operations[letter](content, x, y)
                 return self.parse(line, x, y)
 
         if content is not None:
             self.addString(content, x, y)
         self.addDescription()
 
+    def addDescription(self) -> None:
+        """
+        Add JSON representation of the current brick to the svg
+        """
+        sub_element = Tree.SubElement(
+            self.tree_.getroot(), "desc", {"id": JSON_ID, "tag": BRICK_TAG}
+        )
+        sub_element.text = self.JSON()
+
     def JSON(self) -> str:
         """
-        create a json representation of the curren brick
+        Create a json representation of the curren brick
         Returns
         -------
-
+        string of JSON representation
         """
         return json.dumps(
             {
