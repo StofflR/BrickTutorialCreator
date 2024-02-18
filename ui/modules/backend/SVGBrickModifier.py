@@ -1,23 +1,15 @@
 import logging
 import os
-import random
-import string
 import sys
 import xml.etree.ElementTree as Tree
+
+Tree.register_namespace("", "http://www.w3.org/2000/svg")
 from PySide6.QtGui import QFontMetrics, QFont, QFontDatabase
 import math
 
-from modules.ConstDefs import *
-from modules.OSDefs import *
+from modules.Utility import *
 
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
-
-
-def randomString(digits):
-    return "".join(
-        random.SystemRandom().choice(string.ascii_letters + string.digits)
-        for _ in range(digits)
-    )
 
 
 class SVGBrickModifier:
@@ -32,7 +24,7 @@ class SVGBrickModifier:
         y=DEFAULT_Y,
     ):
         self.base_type = base_type
-        self.working_brick_ = ""
+        self.working_brick_ = DEF_TMP + randomString(10) + ".svg"
         self.scaling_factor = scaling_factor
         self.content = content.replace("\t", "")
         self.path = path

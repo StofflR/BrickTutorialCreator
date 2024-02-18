@@ -21,7 +21,7 @@ Item {
     LabelTextField {
         id: tutorialName
         anchors.top: root.top
-        property string folderPath: tempFolder.replace(fileStub, "")
+        property string folderPath: resourcesOutFolder.replace(fileStub, "")
         width: root.width / 2
         label: "Name:"
         field.text: "new_tutorial"

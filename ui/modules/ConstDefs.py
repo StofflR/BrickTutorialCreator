@@ -1,7 +1,11 @@
-from os import getcwd
+import os
 
-DEF_RESOURCE = getcwd() + "/resources/"
-DEF_TMP = DEF_RESOURCE + "tmp/"
+DEF_RESOURCE = os.path.join(os.getcwd(), "resources")
+DEF_RESOURCE_OUT = os.path.join(DEF_RESOURCE, "out")
+DEF_RESOURCE_OUT_EXPORT = os.path.join(DEF_RESOURCE_OUT, "export")
+DEF_TMP = os.path.join(DEF_RESOURCE, "tmp")
+DEF_BASE = os.path.join(os.getcwd(), "base")
+
 VARIABLE = "var"
 DROPDOWN = "drop"
 TEXT = "text"

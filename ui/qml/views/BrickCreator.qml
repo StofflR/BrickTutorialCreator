@@ -32,7 +32,7 @@ Item {
     LabelTextField {
         id: brickName
         anchors.top: root.top
-        property string folderPath: tempFolder.replace(fileStub, "")
+        property string folderPath: resourcesOutFolder.replace(fileStub, "")
         width: root.width / 2
         label: "Name:"
         field.text: "new_brick"
@@ -48,7 +48,7 @@ Item {
     }
     FolderDialog {
         id: folderDialog
-        folder: tempFolder.replace(fileStub, "")
+        folder: resourcesOutFolder.replace(fileStub, "")
         onAccepted: brickName.folderPath = folder
     }
     IconButton {

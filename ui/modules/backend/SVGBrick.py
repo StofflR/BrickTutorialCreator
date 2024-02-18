@@ -4,6 +4,7 @@ from modules.backend.SVGBrickModifier import *
 from PySide6.QtGui import QImage, QPainter
 from PySide6.QtSvg import QSvgRenderer
 from PySide6.QtCore import Qt
+from modules.Utility import *
 
 
 class SVGBrick(SVGBrickModifier):
@@ -22,11 +23,20 @@ class SVGBrick(SVGBrickModifier):
         )
         self.addContent()
 
-    def getWorkingBrick(self):
+    def getWorkingBrick(self) -> str:
+        """
+        return str
+        The current temp working directory of the brick.
+        """
         return self.working_brick_
 
     @staticmethod
-    def getJSONFromSVG(path):
+    def getJSONFromSVG(path) -> str:
+        """
+        return str
+        The current temp working directory of the brick.
+        """
+
         svg = Tree.parse(open(path, "r"))
         json_text = ""
         for element in svg.getroot():
@@ -36,49 +46,64 @@ class SVGBrick(SVGBrickModifier):
                 and element.attrib["id"] == "json"
             ):
                 json_text = element.text
-        if json_text == "":
-            return json_text
-        return json.loads(json_text)
+
+        return json_text if json_text == "" else json.loads(json_text)
 
     @classmethod
     def fromJSON(cls, json_text: Dict):
-        try:
-            x = DEFAULT_X if "x" not in json_text.keys() else json_text["x"]
-            y = DEFAULT_Y if "y" not in json_text.keys() else json_text["y"]
-            return cls(
-                json_text["base_type"],
-                json_text["content"],
-                json_text["size"],
-                json_text["path"],
-                json_text["scaling_factor"],
-                x,
-                y,
-            )
-        except Exception as e:
-            logging.warning(e)
-            logging.info("created empty brick")
-            return cls("", "", 1, "", 1)
+        """
+        return SVGBrick
+        Create a SVGBrick from a given json
+        """
 
-    def toJSON(self, path=""):
-        json_text = self.JSON()
+        def getAttr(text, attr, default_value):
+            return default_value if attr not in text.keys() else text[attr]
+
+        return cls(
+            getAttr(json_text, "base_type", ""),
+            getAttr(json_text, "content", ""),
+            getAttr(json_text, "size", 1),
+            getAttr(json_text, "path", ""),
+            getAttr(json_text, "scaling_factor", 1),
+            getAttr(json_text, "x", DEFAULT_X),
+            getAttr(json_text, "y", DEFAULT_Y),
+        )
+
+    def toJSON(self, path="") -> str:
+        """
+        return str
+        param path if a path is provided, the JSON is stored in the given file
+        Create a json string from the current brick settings
+        """
         if path != "":
-            if ".json" not in path:
-                path += ".json"
+            path = extendFileExtension(path, ".json")
             logging.debug("Dumping JSON to: " + path)
             file = open(path, "w")
-            file.write(json_text)
+            file.write(self.JSON())
             file.close()
-        return json_text
+        return self.JSON()
 
-    def addContent(self):
-        if not os.path.isdir(DEF_TMP):
-            os.makedirs(DEF_TMP)
-        self.working_brick_ = DEF_TMP + randomString(10) + ".svg"
+    def addContent(self) -> None:
+        """
 
+        Returns
+        -------
+        Adds the given content to the svg file and saves it
+        """
         self.parse(self.content, self.x, self.y)
         self.save()
 
-    def contentPlain(self, for_system=False):
+    def contentPlain(self, for_system=False) -> str:
+        """
+
+        Parameters
+        ----------
+        for_system : boolean toggle, if true removes forbidden characters of the operating file system
+
+        Returns
+        -------
+        the plain text representation of the content with special characters removed
+        """
         content = self.content
         if "collapsed" in self.base_type:
             content += self.base_type
@@ -89,40 +114,67 @@ class SVGBrick(SVGBrickModifier):
                 content = content.replace(key, value)
         return content
 
-    def save(self, path=""):
+    def save(self, path="") -> None:
+        """
+        Store the current brick ath the given path. If no path is specified, the working_brick_ path is used.
+        Parameters
+        ----------
+        path : The path where the file should be saved to.
+
+        Returns
+        -------
+
+        """
         if path == "":
             path = self.working_brick_
-        if ".svg" not in path:
-            path += ".svg"
-
+        path = extendFileExtension(path, ".svg")
         logging.debug("Brick saved to: " + path)
         self.tree_.write(path)
 
-        # TODO find better solution
-        with open(path, "r") as file:
-            filedata = file.read()
-            filedata = filedata.replace("ns0:", "").replace(":ns0", "")
-        with open(path, "w") as file:
-            file.write(filedata)
+    def savePNG(self, path, width=1920, height=None) -> None:
+        """
+        create a PNG of the current brick
+        Parameters
+        ----------
+        path : str target where the brick should be stored
+        width : width of the image (delault=1920)
+        height : height of the image (default=None) image is scaled according to default brick height
 
-    def savePNG(self, path="", width=1920, height=None):
+        Returns
+        -------
+
+        """
+        assert path != ""
+        path = extendFileExtension(path, ".png")
         renderer = QSvgRenderer(path.replace(".png", ".svg"))
-        image = None
-        if height == None:
-            image = QImage(path.replace(".png", ".svg")).scaledToWidth(
-                width, Qt.SmoothTransformation
-            )
-        else:
-            image = QImage(path.replace(".png", ".svg")).scaled(
+        image = (
+            QImage(path.replace(".png", ".svg")).scaled(
                 width, height, mode=Qt.SmoothTransformation
             )
+            if height
+            else QImage(path.replace(".png", ".svg")).scaledToWidth(
+                width, Qt.SmoothTransformation
+            )
+        )
         painter = QPainter(image)
         renderer.render(painter)
         del painter  # painter doesn't get deleted properly
         image.save(path, quality=100)
         logging.debug("Brick saved to: " + path)
 
-    def parse(self, content: str, x=DEFAULT_X, y=DEFAULT_Y):
+    def parse(self, content: str, x=DEFAULT_X, y=DEFAULT_Y) -> None:  #
+        """
+        pasres the content of the brick to format the svg
+        Parameters
+        ----------
+        content : content to be paresed
+        x : starting x coordinate
+        y : starting y coordinate
+
+        Returns
+        -------
+
+        """
         if content is None:
             return
 
@@ -135,7 +187,13 @@ class SVGBrick(SVGBrickModifier):
             self.addString(content, x, y)
         self.addDescription()
 
-    def JSON(self):
+    def JSON(self) -> str:
+        """
+        create a json representation of the curren brick
+        Returns
+        -------
+
+        """
         return json.dumps(
             {
                 "base_type": self.base_type,

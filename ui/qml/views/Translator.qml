@@ -22,7 +22,7 @@ Item {
     LabelTextField {
         id: brickName
         anchors.top: root.top
-        property string folderPath: tempFolder.replace(fileStub, "")
+        property string folderPath: resourcesOutFolder.replace(fileStub, "")
         width: root.width / 2
         label: "Target folder:"
         field.text: exportFolder.replace(fileStub, "")
@@ -40,7 +40,7 @@ Item {
     FolderDialog {
         id: folderDialog
         property bool source: false
-        folder: tempFolder.replace(fileStub, "")
+        folder: resourcesOutFolder.replace(fileStub, "")
         onAccepted: if (source) {
                         brickName.folderPath = folder
                     } else {

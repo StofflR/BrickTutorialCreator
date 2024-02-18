@@ -259,7 +259,7 @@ Image {
     IconButton {
         FileDialog {
             id: brickOpenDialog
-            folder: tempFolder
+            folder: resourcesOutFolder
             nameFilters: ["Any (*.svg *.json)", "SVG files (*.svg)", "JSON files (*.json)"]
             fileMode: FileDialog.OpenFiles
             onAccepted: loadFromFile(currentFile)
