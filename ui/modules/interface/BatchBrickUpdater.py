@@ -1,5 +1,6 @@
+import os
 import re
-import os, sys
+import sys
 
 
 class BatchBrickUpdater:
@@ -165,11 +166,9 @@ class BatchBrickUpdater:
     if __name__ == "__main__":
         from PySide6.QtCore import QUrl, Qt
         from PySide6.QtQuick import QQuickWindow, QSGRendererInterface
-        from PySide6.QtGui import QGuiApplication, QFontDatabase, QIcon
+        from PySide6.QtGui import QGuiApplication, QFontDatabase
         from PySide6.QtQml import (
             QQmlApplicationEngine,
-            qmlRegisterType,
-            QQmlDebuggingEnabler,
         )
 
         QGuiApplication.setAttribute(Qt.AA_ShareOpenGLContexts, True)

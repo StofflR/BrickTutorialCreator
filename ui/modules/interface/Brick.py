@@ -137,7 +137,7 @@ class Brick(SVGBrick, QObject):
         ----------
         path: to the json file
         """
-        path = path.replace(OSDefs.FILE_STUB, "")
+        path = removeFileStub(path)
         self.updateFromJSON(SVGBrick.fromJSON(json.load(open(path))))
 
     @Slot(str)
@@ -148,7 +148,7 @@ class Brick(SVGBrick, QObject):
         ----------
         path: to the svg file
         """
-        path = path.replace(OSDefs.FILE_STUB, "")
+        path = removeFileStub(path)
         self.updateFromJSON(SVGBrick.getJSONFromSVG(path))
 
     @Slot(str)
@@ -211,7 +211,7 @@ class Brick(SVGBrick, QObject):
         -------
         string of the target path and filename
         """
-        path = path.replace(OSDefs.FILE_STUB, "")
+        path = removeFileStub(path)
         os.makedirs(path, exist_ok=True)
         target = os.path.join(path, self._getFileName(filename, SVG_EXT))
         self.save(target)
@@ -227,7 +227,7 @@ class Brick(SVGBrick, QObject):
         path: the path to store the SVG
         filename: the filename to use (if none is provided it is generated from the content)
         """
-        path = path.replace(OSDefs.FILE_STUB, "")
+        path = removeFileStub(path)
         os.makedirs(path, exist_ok=True)
         SVGBrick.savePNG(self, os.path.join(path, self._getFileName(filename, PNG_EXT)))
 
@@ -242,7 +242,7 @@ class Brick(SVGBrick, QObject):
         -------
         boolean if path exists
         """
-        path = path.replace(OSDefs.FILE_STUB, "")
+        path = removeFileStub(path)
         return os.path.exists(path)
 
     @Slot(str)
@@ -258,7 +258,7 @@ class Brick(SVGBrick, QObject):
         -------
         string of the target path and filename
         """
-        path = path.replace(OSDefs.FILE_STUB, "")
+        path = removeFileStub(path)
         os.makedirs(path, exist_ok=True)
         self.toJSON(os.path.join(path, self._getFileName(filename, JSON_EXT)))
 

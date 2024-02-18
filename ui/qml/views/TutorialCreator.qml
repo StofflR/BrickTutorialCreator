@@ -72,7 +72,7 @@ Item {
             anchors.fill: parent
             onDropped: function (drop) {
                 for (const url of drop.urls) {
-                    tutorialManager.addBrick(url)
+                    tutorialManager.addBrick(decodeURIComponent(url))
                 }
             }
         }
@@ -187,8 +187,8 @@ Item {
                         ToolTip.text: qsTr("Add existing brick")
                     }
                     IconButton {
-                        property string currentFile: tutorialName.folderPath + "/"
-                                                     + tutorialName.field.text
+                        property string currentFile: decodeURIComponent(tutorialName.folderPath + "/"
+                                                     + tutorialName.field.text)
                         icon.source: "qrc:/bricks/resources/text_snippet_black_24dp.svg"
                         width: height
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
@@ -204,8 +204,8 @@ Item {
                         ToolTip.text: qsTr("Save tutorial to JSON")
                     }
                     IconButton {
-                        property string currentFile: tutorialName.folderPath + "/"
-                                                     + tutorialName.field.text
+                        property string currentFile: decodeURIComponent(tutorialName.folderPath + "/"
+                                                     + tutorialName.field.text)
                         icon.source: "qrc:/bricks/resources/image_black.svg"
                         width: height
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
@@ -398,7 +398,7 @@ Item {
                 availableBricks: manager?.model
                 groupedView: enableSorting.checked
                 onAddBrick: file => {
-                                tutorialManager.addBrick(file)
+                                tutorialManager.addBrick(decodeURIComponent(file))
                             }
             }
             FolderDialog {

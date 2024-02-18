@@ -172,13 +172,13 @@ Item {
         anchors.bottom: parent.bottom
 
         clip: true
-        model: languageManager.model
+        model: languageManager?.model
         delegate: TranslationDelegate {
             split: splitViewRadio.checked
             keepName: keepFilename.checked
             sourcePath: translationList.model[index]["sourcePath"]
             sourceFile: translationList.model[index]["sourceFile"]
-            targetFolder: languageManager.targetFolder
+            targetFolder: languageManager?.targetFolder
             targetPath: translationList.model[index]["targetPath"]
         }
     }

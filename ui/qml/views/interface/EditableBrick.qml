@@ -65,7 +65,7 @@ Image {
         }
     }
     fillMode: Image.PreserveAspectFit
-    source: previewContent.cursorVisible ? baseFolder + "/" + brickPath : brickImg
+    source: decodeURIComponent(previewContent.cursorVisible ? baseFolder + "/" + brickPath : brickImg)
 
     function updateBrick() {
         if (!brickPath || !brickColor || !availableSize || !xPos || !yPos

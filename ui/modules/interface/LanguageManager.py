@@ -2,6 +2,7 @@ from PySide6.QtCore import Slot, QObject, Property, Signal, QUrl
 from PySide6.QtQml import QmlElement
 from modules.ConstDefs import *
 import modules.OSDefs as OSDefs
+from modules.Utility import removeFileStub, addFileStub
 
 QML_IMPORT_NAME = "LanguageManager"
 QML_IMPORT_MAJOR_VERSION = 1
@@ -32,7 +33,7 @@ class LanguageManager(QObject):
         pass
 
     def _setTargetFolder(self, folder):
-        self._target = folder.replace(OSDefs.FILE_STUB, "")
+        self._target = removeFileStub(folder)
         self._setSourceFolder(self._path)
         self.targetFolderChanged.emit()
 
@@ -44,7 +45,7 @@ class LanguageManager(QObject):
         self._setSourceFolder(self._path)
 
     def _setSourceFolder(self, folder):
-        self._path = folder.replace(OSDefs.FILE_STUB, "")
+        self._path = removeFileStub(folder)
         self._model.clear()
         for root, dirs, files in os.walk(self._path):
             if root in self._path or self._recursive:
@@ -56,8 +57,9 @@ class LanguageManager(QObject):
                             targetPath = ""
                         self.model.append(
                             {
-                                "sourcePath": OSDefs.FILE_STUB
-                                + os.path.join(root, file_name),
+                                "sourcePath": addFileStub(
+                                    os.path.join(root, file_name)
+                                ),
                                 "sourceFile": file_name,
                                 "targetPath": targetPath,
                             }

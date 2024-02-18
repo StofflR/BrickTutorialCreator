@@ -43,7 +43,7 @@ class SVGBrick(SVGBrickModifier):
         return self.working_brick_
 
     @staticmethod
-    def getJSONFromSVG(path: str) -> str:
+    def getJSONFromSVG(path: str) -> dict:
         """
         Get the JSON representation of a SVGBrick svg
         Parameters

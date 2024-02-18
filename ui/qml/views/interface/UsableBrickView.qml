@@ -51,7 +51,7 @@ Item {
                             font.pointSize: 12
                             text: "Click to " + (expand ? "collapse" : "expand") + "!"
                         }
-                        source: (groupedView ? baseFolder + "/" : fileStub) + view.model[index].path
+                        source: decodeURIComponent((groupedView ? baseFolder + "/" : fileStub) + view.model[index].path)
                     }
                 }
                 Item {

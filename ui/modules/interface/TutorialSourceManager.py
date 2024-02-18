@@ -3,11 +3,17 @@ from PySide6.QtQml import QmlElement
 from modules.backend.SVGBrick import SVGBrick
 import logging
 from modules.ConstDefs import *
-import modules.OSDefs as OSDefs
-
+from modules.Utility import removeFileStub
 
 QML_IMPORT_NAME = "TutorialSourceManager"
 QML_IMPORT_MAJOR_VERSION = 1
+
+
+def addSorted(resources, brick):
+    for color in resources:
+        if color["path"] == brick["base_path"]:
+            return color["elements"].append(brick)
+    resources.append({"path": brick["base_path"], "elements": [brick]})
 
 
 @QmlElement
@@ -21,7 +27,7 @@ class TutorialSourceManager(QObject):
         self.typeModel = {}
         self.filter = ""
 
-    def isBrick(self, file: str):
+    def isBrick(self, file: str) -> dict | bool:
         is_brick = '<desc id="json" tag="brick">' in open(file, "r").read()
         if is_brick:
             return SVGBrick.getJSONFromSVG(file)
@@ -29,7 +35,7 @@ class TutorialSourceManager(QObject):
         if self.allowForeignVal:
             try:
                 return SVGBrick.getJSONFromSVG(file)
-            except Exception as e:
+            except Exception as _:
                 logging.debug("Cloud not load svg: " + file)
         return False
 
@@ -38,7 +44,7 @@ class TutorialSourceManager(QObject):
         unique_resources = []
         files = os.listdir(path)
         for file in files:
-            file = path + "/" + file
+            file = os.path.join(path, file)
             if SVG_EXT in file:
                 brick_data = self.isBrick(file)
                 if brick_data:
@@ -51,7 +57,7 @@ class TutorialSourceManager(QObject):
                         "content" in brick.keys() and self.filter in brick["content"]
                     ):
                         if self.enableSorting:
-                            self.addSorted(resources, brick)
+                            addSorted(resources, brick)
                             unique_resources = resources.copy()
                         else:
                             resources.append(brick)
@@ -59,15 +65,9 @@ class TutorialSourceManager(QObject):
                                 unique_resources.append(brick)
         return resources, unique_resources
 
-    def addSorted(self, resources, brick):
-        for color in resources:
-            if color["path"] == brick["base_path"]:
-                return color["elements"].append(brick)
-        resources.append({"path": brick["base_path"], "elements": [brick]})
-
     @Slot(str, result=None)
     def addPath(self, path):
-        path = path.replace(OSDefs.FILE_STUB, "")
+        path = removeFileStub(path)
 
         if path in self.paths.keys():
             return
@@ -89,7 +89,7 @@ class TutorialSourceManager(QObject):
 
     @Slot(str, result=None)
     def removePath(self, path):
-        path = path.replace(OSDefs.FILE_STUB, "")
+        path = removeFileStub(path)
         self.paths.pop(path, None)
         self.refresh()
 

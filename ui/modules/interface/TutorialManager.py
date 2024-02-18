@@ -9,6 +9,7 @@ import logging
 import json
 import modules.OSDefs as OSDefs
 from modules.ConstDefs import *
+from modules.Utility import addFileStub, removeFileStub
 
 QML_IMPORT_NAME = "TutorialManager"
 QML_IMPORT_MAJOR_VERSION = 1
@@ -36,18 +37,16 @@ class TutorialManager(QObject):
     def ccByChanged(self):
         pass
 
-    enableCCBY = Property(bool, _getCCBY, _setCCBY, notify=ccByChanged)
-
     @Slot(str)
     @Slot(str, int)
     def addBrick(self, path, index=None):
         if JSON_EXT not in path:
-            json_text = SVGBrick.getJSONFromSVG(path.replace(OSDefs.FILE_STUB, ""))
+            json_text = SVGBrick.getJSONFromSVG(removeFileStub(path))
         else:
-            json_text = json.load(open(path.replace(OSDefs.FILE_STUB, "")))
+            json_text = json.load(open(removeFileStub(path)))
         brick = SVGBrick.fromJSON(json_text)
         if JSON_EXT in path:
-            path = OSDefs.FILE_STUB + brick.getWorkingBrick()
+            path = addFileStub(brick.getWorkingBrick())
 
         if not index:
             self.modelVal.append(path)
@@ -62,7 +61,7 @@ class TutorialManager(QObject):
         content = []
 
         if self.ccby:
-            self.addBrick(OSDefs.FILE_STUB + os.getcwd() + "/resources/ccbysa.svg")
+            self.addBrick(os.path.join(addFileStub(DEF_RESOURCE), "ccbysa.svg"))
 
         for brick in self.modelVal:
             content.append(self.bricks[brick].toJSON())
@@ -70,14 +69,14 @@ class TutorialManager(QObject):
         if self.ccby:
             self.removeBrick(len(self.bricks) - 1)
 
-        pre, _ = os.path.splitext(path.replace(OSDefs.FILE_STUB, ""))
+        pre, _ = os.path.splitext(removeFileStub(path))
         f = open(pre + JSON_EXT, "w")
         f.write(json.dumps(content))
         f.close()
 
     @Slot(str)
     def toPNG(self, path):
-        pre, _ = os.path.splitext(path.replace(OSDefs.FILE_STUB, ""))
+        pre, _ = os.path.splitext(removeFileStub(path))
         self.generateTutorial()
         self.tutorial.save(pre + PNG_EXT)
 
@@ -91,14 +90,14 @@ class TutorialManager(QObject):
     def fromJSON(self, path):
         self.modelVal.clear()
         self.bricks.clear()
-        content = json.load(open(path.replace(OSDefs.FILE_STUB, "")))
+        content = json.load(open(removeFileStub(path)))
         for element in content:
             svg_brick = SVGBrick.fromJSON(json.loads(element))
-            brick_path = OSDefs.FILE_STUB + svg_brick.getWorkingBrick()
+            brick_path = addFileStub(svg_brick.getWorkingBrick())
             self.modelVal.append(brick_path)
             self.bricks[brick_path] = svg_brick
 
-        json_text = SVGBrick.getJSONFromSVG(os.getcwd() + "/resources/ccbysa.svg")
+        json_text = SVGBrick.getJSONFromSVG(os.path.join(DEF_RESOURCE, "ccbysa.svg"))
         brick = SVGBrick.fromJSON(json_text)
         if brick.contentPlain() == svg_brick.contentPlain():
             self._setCCBY(True)
@@ -110,7 +109,7 @@ class TutorialManager(QObject):
         self.ccByChanged.emit()
         self.modelChanged.emit()
 
-        filename_w_ext = os.path.basename(path.replace(OSDefs.FILE_STUB, ""))
+        filename_w_ext = os.path.basename(removeFileStub(path))
         filename, file_extension = os.path.splitext(filename_w_ext)
         return filename
 
@@ -127,7 +126,7 @@ class TutorialManager(QObject):
 
     @Slot(str, result=str)
     def saveTutorial(self, path):
-        pre, ext = os.path.splitext(path.replace(OSDefs.FILE_STUB, ""))
+        pre, ext = os.path.splitext(removeFileStub(path))
         _, error = os.path.splitext(pre)
         if error:
             return None
@@ -146,10 +145,10 @@ class TutorialManager(QObject):
         del self.tutorial
         self.tutorial = None
         if self.ccby:
-            self.addBrick(OSDefs.FILE_STUB + os.getcwd() + "/resources/ccbysa.svg")
+            self.addBrick(os.path.join(addFileStub(DEF_RESOURCE), "ccbysa.svg"))
         self.bricks[self.modelVal[0]].savePNG(
             path=self.bricks[self.modelVal[0]].working_brick_.replace(SVG_EXT, PNG_EXT),
-            width=640,
+            width=PNG_WIDTH_TUTORIAL,
         )
         tutorial = QImage(
             self.bricks[self.modelVal[0]].working_brick_.replace(SVG_EXT, PNG_EXT)
@@ -158,7 +157,7 @@ class TutorialManager(QObject):
         for brick in self.modelVal[1::]:
             self.bricks[brick].savePNG(
                 path=self.bricks[brick].working_brick_.replace(SVG_EXT, PNG_EXT),
-                width=640,
+                width=PNG_WIDTH_TUTORIAL,
             )
             b = QImage(self.bricks[brick].working_brick_.replace(SVG_EXT, PNG_EXT))
             target = QImage(
@@ -182,4 +181,5 @@ class TutorialManager(QObject):
     def modelChanged(self):
         pass
 
+    enableCCBY = Property(bool, _getCCBY, _setCCBY, notify=ccByChanged)
     model = Property(list, _getModel, _updateModel, notify=modelChanged)
