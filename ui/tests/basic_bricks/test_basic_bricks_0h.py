@@ -7,6 +7,7 @@ import skimage
 sys.path.insert(0, getcwd())
 from modules.backend.SVGBrick import SVGBrick
 from tests.initializers import initQt
+import modules.ConstDefs as Const
 
 initQt()
 
@@ -61,7 +62,7 @@ def test_bricks():
                 y=33,
             )
             created_path = brick.working_brick_.replace(".svg", ".png")
-            brick.savePNG(path=created_path)
+            brick.savePNG(path=created_path, width=Const.PNG_WIDTH, height=Const.PNG_HEIGHT_0H)
             assert compare_images(ref_path, created_path) > 0.995
 
 

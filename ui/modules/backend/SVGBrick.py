@@ -12,7 +12,7 @@ class SVGBrick(SVGBrickModifier):
         self,
         base_type: str,
         content: str,
-        size: int,
+        size: str,
         path: str,
         scaling_factor=1,
         x=DEFAULT_X,
@@ -78,13 +78,13 @@ class SVGBrick(SVGBrickModifier):
         """
 
         def getAttr(text, attr, default_value):
-            return default_value if attr not in text.keys() else text[attr]
+            return default_value if text == "" or attr not in text.keys() else text[attr]
 
         return cls(
             getAttr(json_text, "base_type", ""),
             getAttr(json_text, "content", ""),
             getAttr(json_text, "size", 1),
-            getAttr(json_text, "path", ""),
+            getAttr(json_text, "path", DEF_BASE_BRICK),
             getAttr(json_text, "scaling_factor", 1),
             getAttr(json_text, "x", DEFAULT_X),
             getAttr(json_text, "y", DEFAULT_Y),
@@ -185,7 +185,7 @@ class SVGBrick(SVGBrickModifier):
         y : starting y coordinate
         """
         if content is None or content == "":
-            return
+            return self.addDescription()
 
         for index, letter in enumerate(content):
             if letter in self.operations.keys():

@@ -30,7 +30,7 @@ class SVGBrickModifier:
         self,
         base_type: str,
         content: str,
-        size: int,
+        size: str,
         path: str,
         scaling_factor=1,
         x=DEFAULT_X,
