@@ -12,7 +12,7 @@ class Brick:
 
 
 class ResourceManager:
-    def __init__(self, path=DEFAULT_PATH, file_type=".svg"):
+    def __init__(self, path=DEFAULT_PATH, file_type=SVG_EXT):
         self.path = path
         self.base_bricks = []
         if file_type != "":
@@ -37,7 +37,7 @@ class ResourceManager:
                 colors.append(color)
                 self.base_bricks.append(Brick(color, {size: file}))
 
-    def loadAvailable(self, path, file_type=".svg", file_op=None):
+    def loadAvailable(self, path, file_type=SVG_EXT, file_op=None):
         if file_op is None:
             file_op = self.brick_op
         self.base_bricks.clear()

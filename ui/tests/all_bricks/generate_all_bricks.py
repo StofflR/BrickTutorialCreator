@@ -2,20 +2,19 @@ import pytest
 import sys
 from os import getcwd, path, walk
 
-import skimage
-
 sys.path.insert(0, getcwd())
 from modules.backend.SVGBrick import SVGBrick
 from tests.initializers import initQt
 import json
 import modules.ConstDefs as Const
+from modules.ConstDefs import *
 
 
 def iterate_files(folder_path) -> None:
     for root, dirs, files in walk(folder_path):
         for file_name in files:
             file_path = path.join(root, file_name)
-            if ".json" in file_path:
+            if JSON_EXT in file_path:
                 print("opening", file_path)
                 file = open(file_path, "r")
                 content = json.load(file)
@@ -29,11 +28,11 @@ def iterate_files(folder_path) -> None:
                 elif "3h" in content["path"]:
                     height = Const.PNG_HEIGHT_3H
                 brick.savePNG(
-                    path=file_path.replace(".json", ".png"),
+                    path=file_path.replace(JSON_EXT, PNG_EXT),
                     width=Const.PNG_WIDTH,
                     height=height,
                 )
-                brick.save(path=file_path.replace(".json", ".svg"))
+                brick.save(path=file_path.replace(JSON_EXT, SVG_EXT))
 
 
 if __name__ == "__main__":

@@ -205,7 +205,7 @@ class BatchBrickUpdater:
                 data["color"],
                 content,
                 data["height"].replace("h", ""),
-                "brick_" + data["color"] + "_" + data["height"] + ".svg",
+                "brick_" + data["color"] + "_" + data["height"] + SVG_EXT,
             )
             os.chdir("..")
             target_path = (

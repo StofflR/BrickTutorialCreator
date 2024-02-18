@@ -1,6 +1,5 @@
 import sys
-import os
-from PySide6.QtCore import QUrl, Qt
+from PySide6.QtCore import Qt
 from PySide6.QtQuick import QQuickWindow, QSGRendererInterface
 from PySide6.QtGui import QGuiApplication, QFontDatabase, QIcon, QFont
 from PySide6.QtQml import QQmlApplicationEngine, qmlRegisterType, QQmlDebuggingEnabler
@@ -13,7 +12,6 @@ from modules.interface.Brick import Brick
 
 import resources_rc
 import logging
-import shutil
 import modules.OSDefs as OSDefs
 from modules.ConstDefs import *
 from modules.Utility import generateRequiredFolders, clearFolder, addFileStub

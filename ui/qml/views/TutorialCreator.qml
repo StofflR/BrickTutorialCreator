@@ -95,11 +95,11 @@ Item {
                 ListView {
                     id: timeline
 
-                    signal remove(int index)
-                    onRemove: index => {
-                                  tutorialManager.removeBrick(index)
-                                  proxyModel.selectedIndex = -1
-                              }
+                    signal removeAt(int index)
+                    onRemoveAt: index => {
+                                    tutorialManager.removeBrick(index)
+                                    proxyModel.selectedIndex = -1
+                                }
                     snapMode: ListView.SnapToItem
                     anchors.topMargin: AppStyle.spacing
                     anchors.fill: scrollview
@@ -197,7 +197,7 @@ Item {
                         onPressed: {
                             tutorialManager.toJSON(currentFile)
                             root.updateStatusMessage(
-                                        "INFO: Saved tutorial to " + currentFile + ".json")
+                                        "INFO: Saved tutorial to " + currentFile + JSON_EXT)
                         }
                         ToolTip.visible: hovered
                         ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval

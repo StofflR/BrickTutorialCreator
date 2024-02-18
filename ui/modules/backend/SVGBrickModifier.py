@@ -4,9 +4,12 @@ import xml.etree.ElementTree as Tree
 from PySide6.QtGui import QFontMetrics, QFont, QFontDatabase
 import math
 from modules.Utility import *
+from modules.ConstDefs import *
 
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
-Tree.register_namespace("", "http://www.w3.org/2000/svg")
+Tree.register_namespace(
+    "", "http://www.w3.org/2000/svg"
+)  # removes default ns0 namespace
 
 DEFAULT = "default"
 TRANSPARENT = "transparent"
@@ -31,20 +34,22 @@ class SVGBrickModifier:
         content: str,
         size: str,
         path: str,
-        scaling_factor=1,
+        scaling_factor=1.0,
         x=DEFAULT_X,
         y=DEFAULT_Y,
     ):
         self.base_type = base_type
         self.scaling_factor = scaling_factor
         self.content = content
-        self.path = path
+        self.path = path if SVG_EXT in path else DEF_BASE_BRICK
         self.size = size
         self.x = x
         self.y = y
 
-        self.working_brick_ = os.path.join(DEF_TMP, randomString(10) + ".svg")
-        self.tree_ = Tree.parse(open(os.path.join(DEF_BASE, self.path), "r"))
+        self.working_brick_ = os.path.join(DEF_TMP, randomString(10) + SVG_EXT)
+        self.tree_: Tree
+        self.tree_ = None
+        self.resetSVG()
 
         self.operations = {
             OP_KEY_NEWLINE: self.addLineBreak,
@@ -52,6 +57,18 @@ class SVGBrickModifier:
             OP_KEY_DROPDOWN: self.addDropdown,
             OP_KEY_VARIABLE: self.addVariable,
         }
+
+    def resetSVG(self) -> None:
+        """
+        Reset the current SVG Brick and change the working brick path
+        Note: QMLImage buffers images, therefore a different path is needed!
+        """
+        if os.path.exists(self.working_brick_):
+            os.remove(self.working_brick_)
+            logging.debug("Working brick: " + self.working_brick_)
+        self.working_brick_ = os.path.join(DEF_TMP, randomString(10) + SVG_EXT)
+        logging.debug("New working brick: " + self.working_brick_)
+        self.tree_ = Tree.parse(open(os.path.join(DEF_BASE, self.path), "r"))
 
     def textColor(self) -> str:
         """

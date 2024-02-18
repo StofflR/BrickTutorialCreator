@@ -55,7 +55,7 @@ Image {
             modifyableBrick.fromFile(currentFile)
             svgPreview.loading = true
             previewContent.text = modifyableBrick.brickContent()
-            svgPreview.brickImg = modifyableBrick.path()
+            svgPreview.brickImg = modifyableBrick.workingPath()
             svgPreview.brickPath = modifyableBrick.basePath()
             svgPreview.xPos = modifyableBrick.posX()
             svgPreview.yPos = modifyableBrick.posY()
@@ -72,9 +72,9 @@ Image {
                 || !contentScale || loading) {
             return
         }
-        modifyableBrick.updateBrick(brickColor, brickPath, availableSize,
-                                    brickContent, contentScale, xPos, yPos)
-        brickImg = modifyableBrick.path()
+        modifyableBrick.updateBrick(brickColor, brickContent, availableSize,
+                                    brickPath, contentScale, xPos, yPos)
+        brickImg = modifyableBrick.workingPath()
     }
 
     onDataChanged: updateBrick()

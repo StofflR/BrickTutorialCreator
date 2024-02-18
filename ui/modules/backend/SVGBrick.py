@@ -5,15 +5,16 @@ from PySide6.QtGui import QImage, QPainter
 from PySide6.QtSvg import QSvgRenderer
 from PySide6.QtCore import Qt
 from modules.Utility import *
+from modules.ConstDefs import *
 
 
 class SVGBrick(SVGBrickModifier):
     def __init__(
         self,
-        base_type: str,
-        content: str,
-        size: str,
-        path: str,
+        base_type="",
+        content="",
+        size="1h",
+        path=DEF_BASE_BRICK,
         scaling_factor=1,
         x=DEFAULT_X,
         y=DEFAULT_Y,
@@ -76,16 +77,10 @@ class SVGBrick(SVGBrickModifier):
         -------
         An SVG Brick from the given json representation
         """
-
-        def getAttr(text, attr, default_value):
-            return (
-                default_value if text == "" or attr not in text.keys() else text[attr]
-            )
-
         return cls(
             getAttr(json_text, "base_type", ""),
             getAttr(json_text, "content", ""),
-            getAttr(json_text, "size", 1),
+            getAttr(json_text, "size", "1h"),
             getAttr(json_text, "path", DEF_BASE_BRICK),
             getAttr(json_text, "scaling_factor", 1),
             getAttr(json_text, "x", DEFAULT_X),
@@ -103,19 +98,20 @@ class SVGBrick(SVGBrickModifier):
         the JSON representation of the SVG Brick
         """
         if path != "":
-            path = extendFileExtension(path, ".json")
+            path = extendFileExtension(path, JSON_EXT)
             logging.debug("Dumping JSON to: " + path)
             file = open(path, "w")
             file.write(self.JSON())
             file.close()
         return self.JSON()
 
-    def addContent(self) -> None:
+    def addContent(self, save=True) -> None:
         """
         Adds the given content to the svg file and saves it
         """
         self.parse(self.content, self.x, self.y)
-        self.save()
+        if save:
+            self.save()
 
     def contentPlain(self, for_system=False) -> str:
         """
@@ -146,7 +142,7 @@ class SVGBrick(SVGBrickModifier):
         """
         if path == "":
             path = self.working_brick_
-        path = extendFileExtension(path, ".svg")
+        path = extendFileExtension(path, SVG_EXT)
         logging.debug("Brick saved to: " + path)
         self.tree_.write(path)
 
@@ -160,14 +156,14 @@ class SVGBrick(SVGBrickModifier):
         height : height of the image (default=None) image is scaled according to default brick height
         """
         assert path != ""
-        path = extendFileExtension(path, ".png")
-        renderer = QSvgRenderer(path.replace(".png", ".svg"))
+        path = extendFileExtension(path, PNG_EXT)
+        renderer = QSvgRenderer(path.replace(PNG_EXT, SVG_EXT))
         image = (
-            QImage(path.replace(".png", ".svg")).scaled(
+            QImage(path.replace(PNG_EXT, SVG_EXT)).scaled(
                 width, height, mode=Qt.SmoothTransformation
             )
             if height
-            else QImage(path.replace(".png", ".svg")).scaledToWidth(
+            else QImage(path.replace(PNG_EXT, SVG_EXT)).scaledToWidth(
                 width, Qt.SmoothTransformation
             )
         )

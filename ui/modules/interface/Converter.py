@@ -1,8 +1,9 @@
-from PySide6.QtCore import Slot, QObject
+from PySide6.QtCore import Slot, QObject, QUrl
 from PySide6.QtQml import QmlElement
 from modules.backend.SVGBrick import SVGBrick
 from modules.interface.BatchBrickUpdater import BatchBrickUpdater
 from modules.interface.TutorialManager import TutorialManager
+from modules.ConstDefs import *
 
 import logging
 import os
@@ -29,11 +30,11 @@ class Converter(QObject):
         path = path.replace(OSDefs.FILE_STUB, "")
         count = 0
         for element in os.listdir(path):
-            if ".json" in element:
+            if JSON_EXT in element:
                 count += 1
                 element = path + "/" + element
                 SVGBrick.fromJSON(json.load(open(element))).save(
-                    element.replace(".json", ".svg")
+                    element.replace(JSON_EXT, SVG_EXT)
                 )
         return count
 
@@ -42,11 +43,11 @@ class Converter(QObject):
         path = path.replace(OSDefs.FILE_STUB, "")
         count = 0
         for element in os.listdir(path):
-            if ".json" in element:
+            if JSON_EXT in element:
                 count += 1
                 element = path + "/" + element
                 SVGBrick.fromJSON(json.load(open(element))).savePNG(
-                    element.replace(".json", ".png")
+                    element.replace(JSON_EXT, PNG_EXT)
                 )
         return count
 
@@ -55,12 +56,12 @@ class Converter(QObject):
         path = path.replace(OSDefs.FILE_STUB, "")
         count = 0
         for element in os.listdir(path):
-            if ".json" in element:
+            if JSON_EXT in element:
                 element = path + "/" + element
                 try:
                     tutorialManager = TutorialManager()
                     tutorialManager.fromJSON(element)
-                    tutorialManager.saveTutorial(element.replace(".json", ".png"))
+                    tutorialManager.saveTutorial(element.replace(JSON_EXT, PNG_EXT))
                     count += 1
                     logging.debug(f"Converted: {element}")
                 except Exception as e:
@@ -72,11 +73,11 @@ class Converter(QObject):
         path = path.replace(OSDefs.FILE_STUB, "")
         count = 0
         for element in os.listdir(path):
-            if ".svg" in element:
+            if SVG_EXT in element:
                 count += 1
                 element = path + "/" + element
                 SVGBrick.fromJSON(SVGBrick.getJSONFromSVG(element)).savePNG(
-                    element.replace(".svg", ".png")
+                    element.replace(SVG_EXT, PNG_EXT)
                 )
         return count
 
@@ -86,7 +87,7 @@ class Converter(QObject):
         file_set = []
         for dir_, _, files in os.walk(path):
             for file_name in files:
-                if ".svg" in file_name:
+                if SVG_EXT in file_name:
                     rel_dir = os.path.relpath(dir_, path)
                     rel_file = os.path.join(rel_dir, file_name)
                     file_set.append(os.path.join(path, rel_file))
@@ -106,7 +107,7 @@ class Converter(QObject):
             self.data["content"] = self.content
             self.data["size"] = self.data["height"]
             self.data["path"] = (
-                "brick_" + self.data["color"] + "_" + self.data["height"] + ".svg"
+                "brick_" + self.data["color"] + "_" + self.data["height"] + SVG_EXT
             )
 
     @Slot(str, result=bool)
@@ -130,20 +131,13 @@ class Converter(QObject):
             result = self.data["size"].replace("h", "")
         if type == "path":
             result = (
-                "brick_" + self.data["base_type"] + "_" + self.data["size"] + ".svg"
+                "brick_" + self.data["base_type"] + "_" + self.data["size"] + SVG_EXT
             )
         return result
-
-    @Slot(str)
-    def removeNS0(self, path):
-        path = path.replace(OSDefs.FILE_STUB, "").replace("%5C.%5C", "/")
-        file = open(path, "r")
-        content = "".join(file.read()).replace("ns0:", "").replace(":ns0", "")
-        file = open(path, "w")
-        file.write(content)
-        file.close()
 
     @Slot(str, result=str)
     def getOutputPath(self, file):
         print("File is:", os.path.dirname(file) + "/converted")
-        return OSDefs.FILE_STUB + os.path.dirname(file) + "/converted"
+        return os.path.join(
+            os.path.join(OSDefs.FILE_STUB, os.path.dirname(file)), "/converted"
+        )

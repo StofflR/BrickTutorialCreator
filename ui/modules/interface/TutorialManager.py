@@ -8,6 +8,7 @@ from typing import Dict, List
 import logging
 import json
 import modules.OSDefs as OSDefs
+from modules.ConstDefs import *
 
 QML_IMPORT_NAME = "TutorialManager"
 QML_IMPORT_MAJOR_VERSION = 1
@@ -40,12 +41,12 @@ class TutorialManager(QObject):
     @Slot(str)
     @Slot(str, int)
     def addBrick(self, path, index=None):
-        if ".json" not in path:
+        if JSON_EXT not in path:
             json_text = SVGBrick.getJSONFromSVG(path.replace(OSDefs.FILE_STUB, ""))
         else:
             json_text = json.load(open(path.replace(OSDefs.FILE_STUB, "")))
         brick = SVGBrick.fromJSON(json_text)
-        if ".json" in path:
+        if JSON_EXT in path:
             path = OSDefs.FILE_STUB + brick.getWorkingBrick()
 
         if not index:
@@ -70,7 +71,7 @@ class TutorialManager(QObject):
             self.removeBrick(len(self.bricks) - 1)
 
         pre, _ = os.path.splitext(path.replace(OSDefs.FILE_STUB, ""))
-        f = open(pre + ".json", "w")
+        f = open(pre + JSON_EXT, "w")
         f.write(json.dumps(content))
         f.close()
 
@@ -78,7 +79,7 @@ class TutorialManager(QObject):
     def toPNG(self, path):
         pre, _ = os.path.splitext(path.replace(OSDefs.FILE_STUB, ""))
         self.generateTutorial()
-        self.tutorial.save(pre + ".png")
+        self.tutorial.save(pre + PNG_EXT)
 
     @Slot()
     def clear(self):
@@ -132,10 +133,10 @@ class TutorialManager(QObject):
             return None
         print(pre, ext)
         if "png" in ext:
-            logging.debug("Saving Tutorial to: " + pre + ".png")
+            logging.debug("Saving Tutorial to: " + pre + PNG_EXT)
             self.toPNG(pre)
         elif "json" in ext:
-            logging.debug("Saving Tutorial to: " + pre + ".json")
+            logging.debug("Saving Tutorial to: " + pre + JSON_EXT)
             self.toJSON(pre)
         filename_w_ext = os.path.basename(pre)
         filename, file_extension = os.path.splitext(filename_w_ext)
@@ -147,19 +148,19 @@ class TutorialManager(QObject):
         if self.ccby:
             self.addBrick(OSDefs.FILE_STUB + os.getcwd() + "/resources/ccbysa.svg")
         self.bricks[self.modelVal[0]].savePNG(
-            path=self.bricks[self.modelVal[0]].working_brick_.replace(".svg", ".png"),
+            path=self.bricks[self.modelVal[0]].working_brick_.replace(SVG_EXT, PNG_EXT),
             width=640,
         )
         tutorial = QImage(
-            self.bricks[self.modelVal[0]].working_brick_.replace(".svg", ".png")
+            self.bricks[self.modelVal[0]].working_brick_.replace(SVG_EXT, PNG_EXT)
         )
 
         for brick in self.modelVal[1::]:
             self.bricks[brick].savePNG(
-                path=self.bricks[brick].working_brick_.replace(".svg", ".png"),
+                path=self.bricks[brick].working_brick_.replace(SVG_EXT, PNG_EXT),
                 width=640,
             )
-            b = QImage(self.bricks[brick].working_brick_.replace(".svg", ".png"))
+            b = QImage(self.bricks[brick].working_brick_.replace(SVG_EXT, PNG_EXT))
             target = QImage(
                 tutorial.width(),
                 tutorial.height() + b.height() - int(tutorial.width() / 55),

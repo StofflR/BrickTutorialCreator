@@ -4,13 +4,17 @@ DEF_RESOURCE = os.path.join(os.getcwd(), "resources")
 DEF_RESOURCE_OUT = os.path.join(DEF_RESOURCE, "out")
 DEF_RESOURCE_OUT_EXPORT = os.path.join(DEF_RESOURCE_OUT, "export")
 DEF_TMP = os.path.join(DEF_RESOURCE, "tmp")
-DEF_BASE = os.path.join(os.getcwd(), "base")
 
+DEF_BASE = os.path.join(os.getcwd(), "base")
 DEF_BASE_BRICK = os.path.join(DEF_BASE, "brick_blue_1h.svg")
 
 VARIABLE = "var"
 DROPDOWN = "drop"
 TEXT = "text"
+
+SVG_EXT = ".svg"
+PNG_EXT = ".png"
+JSON_EXT = ".json"
 
 OP_KEY_NEWLINE = "\n"
 OP_KEY_END = "\0"

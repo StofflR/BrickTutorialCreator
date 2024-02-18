@@ -1,12 +1,8 @@
-import os
-
 from PySide6.QtCore import Slot, QObject, Property, Signal
 from PySide6.QtQml import QmlElement
 from modules.backend.SVGBrick import SVGBrick
 import logging
-
-from sys import platform
-
+from modules.ConstDefs import *
 import modules.OSDefs as OSDefs
 
 
@@ -43,7 +39,7 @@ class TutorialSourceManager(QObject):
         files = os.listdir(path)
         for file in files:
             file = path + "/" + file
-            if ".svg" in file:
+            if SVG_EXT in file:
                 brick_data = self.isBrick(file)
                 if brick_data:
                     brick = {"path": file, "is_brick": True}

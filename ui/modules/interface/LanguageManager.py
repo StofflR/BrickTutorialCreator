@@ -1,11 +1,6 @@
-from PySide6.QtCore import Slot, QObject, Property, Signal
+from PySide6.QtCore import Slot, QObject, Property, Signal, QUrl
 from PySide6.QtQml import QmlElement
-import os
-import logging
-import shutil
-
-from sys import platform
-
+from modules.ConstDefs import *
 import modules.OSDefs as OSDefs
 
 QML_IMPORT_NAME = "LanguageManager"
@@ -55,7 +50,7 @@ class LanguageManager(QObject):
             if root in self._path or self._recursive:
                 for file_name in files:
                     file_path = os.path.join(root, file_name)
-                    if ".svg" in file_path:
+                    if SVG_EXT in file_path:
                         targetPath = os.path.join(self._target, file_name)
                         if not os.path.isfile(targetPath):
                             targetPath = ""

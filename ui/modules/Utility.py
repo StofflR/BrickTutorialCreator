@@ -1,4 +1,4 @@
-from modules.OSDefs import *
+import modules.OSDefs as OSDefs
 from modules.ConstDefs import *
 import os
 import shutil
@@ -66,7 +66,7 @@ def removeFileStub(path: str) -> str:
     return str
     Removes the operating system dependant file stub
     """
-    return path.replace(FILE_STUB, "")
+    return path.replace(OSDefs.FILE_STUB, "")
 
 
 def addFileStub(path: str) -> str:
@@ -74,7 +74,7 @@ def addFileStub(path: str) -> str:
     return str
     Add the operating system dependant file stub if not present
     """
-    return path if FILE_STUB in path else FILE_STUB + path
+    return path if OSDefs.FILE_STUB in path else OSDefs.FILE_STUB + path
 
 
 def isFileType(path, file_extension) -> bool:
@@ -92,3 +92,34 @@ def extendFileExtension(path, file_extension) -> str:
     """
     assert path != "" and file_extension != ""
     return path if isFileType(path, file_extension) else path + file_extension
+
+
+def getAttr(text, attr, default_value):
+    """
+    Retrieve attribute from dict or return default value
+    Parameters
+    ----------
+    text: dict to retrieve attribute from
+    attr: attribute to be retrieved
+    default_value: default value to be returned
+    Returns
+    -------
+    the attribute if present or the default value
+    """
+    return default_value if text == "" or attr not in text.keys() else text[attr]
+
+
+def cleanFileName(filename: str) -> str:
+    """
+    Remove forbidden characters from text
+    Parameters
+    ----------
+    filename: the filename where forbidden chars should be removed
+    Returns
+    -------
+    string without forbidden characters
+    """
+    name = filename.replace(SVG_EXT, "").replace(PNG_EXT, "").replace(JSON_EXT, "")
+    for key, value in FORBIDDEN_FILE_NAME_CHARS.items():
+        name = name.replace(key, value)
+    return name
