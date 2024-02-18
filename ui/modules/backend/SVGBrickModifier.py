@@ -25,7 +25,6 @@ TEXT_STYLE = {
 
 
 class SVGBrickModifier:
-
     def __init__(
         self,
         base_type: str,

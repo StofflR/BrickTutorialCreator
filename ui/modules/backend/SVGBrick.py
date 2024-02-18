@@ -78,7 +78,9 @@ class SVGBrick(SVGBrickModifier):
         """
 
         def getAttr(text, attr, default_value):
-            return default_value if text == "" or attr not in text.keys() else text[attr]
+            return (
+                default_value if text == "" or attr not in text.keys() else text[attr]
+            )
 
         return cls(
             getAttr(json_text, "base_type", ""),
