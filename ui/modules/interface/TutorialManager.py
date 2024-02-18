@@ -27,19 +27,16 @@ class TutorialManager(QObject):
         self.tutorial = None
         self.ccby = False
 
-    def _getCCBY(self):
-        return self.ccby
-
-    def _setCCBY(self, value):
-        self.ccby = value
-
-    @Signal
-    def ccByChanged(self):
-        pass
-
     @Slot(str)
     @Slot(str, int)
     def addBrick(self, path, index=None):
+        """
+        Slot to add bricks to the tutorial. If no index is given, the brick is appended.
+        Parameters
+        ----------
+        path: path of the brick to be added
+        index: index of where to insert the brick
+        """
         if JSON_EXT not in path:
             json_text = SVGBrick.getJSONFromSVG(removeFileStub(path))
         else:
@@ -58,6 +55,12 @@ class TutorialManager(QObject):
 
     @Slot(str)
     def toJSON(self, path):
+        """
+        Save the tutorial as a JSON file.
+        Parameters
+        ----------
+        path: path where to store the JSON file
+        """
         content = []
 
         if self.ccby:
@@ -76,20 +79,36 @@ class TutorialManager(QObject):
 
     @Slot(str)
     def toPNG(self, path):
+        """
+        Save the tutorial as a PNG file.
+        Parameters
+        ----------
+        path: path where to store the PNG file
+        """
         pre, _ = os.path.splitext(removeFileStub(path))
         self.generateTutorial()
         self.tutorial.save(pre + PNG_EXT)
 
     @Slot()
     def clear(self):
+        """
+        Resetting and clearing the tutorial.
+        """
         self.modelVal.clear()
         self.bricks.clear()
         self.modelChanged.emit()
 
     @Slot(str, result=str)
     def fromJSON(self, path):
+        """
+        Load a tutorial from a JSON file.
+        Parameters
+        ----------
+        path: file from where to load the tutorial
+        """
         self.modelVal.clear()
         self.bricks.clear()
+
         content = json.load(open(removeFileStub(path)))
         for element in content:
             svg_brick = SVGBrick.fromJSON(json.loads(element))
@@ -97,6 +116,7 @@ class TutorialManager(QObject):
             self.modelVal.append(brick_path)
             self.bricks[brick_path] = svg_brick
 
+        # restore ccby status
         json_text = SVGBrick.getJSONFromSVG(os.path.join(DEF_RESOURCE, "ccbysa.svg"))
         brick = SVGBrick.fromJSON(json_text)
         if brick.contentPlain() == svg_brick.contentPlain():
@@ -115,33 +135,45 @@ class TutorialManager(QObject):
 
     @Slot(int)
     def removeBrick(self, index):
+        """
+        Remove brick from the tutorial at the given index.
+        Parameters
+        ----------
+        index: index of the brick to be removed
+        """
         path = self.modelVal.pop(index)
         if path not in self.model:
             self.bricks.pop(path)
         self.modelChanged.emit()
 
-    @Slot(list)
-    def _updateModel(self, model):
-        self.modelVal = model
-
     @Slot(str, result=str)
     def saveTutorial(self, path):
-        pre, ext = os.path.splitext(removeFileStub(path))
+        """
+        Store the tutorial to the given path.
+        Parameters
+        ----------
+        path: path to save the tutorial to
+        """
+        path = removeFileStub(path)
+        pre, _ = os.path.splitext(path)
         _, error = os.path.splitext(pre)
         if error:
             return None
-        print(pre, ext)
-        if "png" in ext:
-            logging.debug("Saving Tutorial to: " + pre + PNG_EXT)
+        if PNG_EXT in path:
             self.toPNG(pre)
-        elif "json" in ext:
-            logging.debug("Saving Tutorial to: " + pre + JSON_EXT)
+        elif JSON_EXT in path:
             self.toJSON(pre)
+        else:
+            return logging.debug("Could not save Tutorial to: " + path)
+        logging.debug("Saving Tutorial to: " + path)
         filename_w_ext = os.path.basename(pre)
         filename, file_extension = os.path.splitext(filename_w_ext)
         return filename
 
     def generateTutorial(self):
+        """
+        Create tutorial from all bricks added
+        """
         del self.tutorial
         self.tutorial = None
         if self.ccby:
@@ -174,12 +206,28 @@ class TutorialManager(QObject):
             self.removeBrick(len(self.bricks) - 1)
         self.tutorial = tutorial
 
+    """Property getters, setters and notifiers"""
+
     def _getModel(self):
         return self.modelVal
+
+    def _getCCBY(self):
+        return self.ccby
+
+    @Slot(list)
+    def _setModel(self, model):
+        self.modelVal = model
+
+    def _setCCBY(self, value):
+        self.ccby = value
 
     @Signal
     def modelChanged(self):
         pass
 
+    @Signal
+    def ccByChanged(self):
+        pass
+
     enableCCBY = Property(bool, _getCCBY, _setCCBY, notify=ccByChanged)
-    model = Property(list, _getModel, _updateModel, notify=modelChanged)
+    model = Property(list, _getModel, _setModel, notify=modelChanged)

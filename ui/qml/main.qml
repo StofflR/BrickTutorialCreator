@@ -83,7 +83,7 @@ ApplicationWindow {
                     font.family: "Roboto"
                     font.pointSize: AppStyle.pointsizeSpacing
                 }
-                onTriggered: brickConverter.fromTutorialtoPNG()
+                onTriggered: brickConverter.fromTutorialToPNG()
             }
             MenuSeparator {}
             MenuItem {

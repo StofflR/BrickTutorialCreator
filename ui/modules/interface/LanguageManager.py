@@ -17,34 +17,20 @@ class LanguageManager(QObject):
         self._model = []
         self._recursive = False
 
-    @Signal
-    def modelChanged(self):
-        pass
-
-    def _getModel(self):
-        return self._model
-
-    @Signal
-    def sourceFolderChanged(self):
-        pass
-
-    @Signal
-    def targetFolderChanged(self):
-        pass
-
-    def _setTargetFolder(self, folder):
-        self._target = removeFileStub(folder)
-        self._setSourceFolder(self._path)
-        self.targetFolderChanged.emit()
-
-    def _getTargetFolder(self):
-        return self._target
-
     @Slot()
     def refreshModel(self):
+        """
+        Refresh the model
+        """
         self._setSourceFolder(self._path)
 
     def _setSourceFolder(self, folder):
+        """
+        Set the source folder of the model. Resets all the available bricks.
+        Parameters
+        ----------
+        folder: folder of the model to be loaded
+        """
         self._path = removeFileStub(folder)
         self._model.clear()
         for root, dirs, files in os.walk(self._path):
@@ -66,17 +52,42 @@ class LanguageManager(QObject):
                         )
         self.modelChanged.emit()
 
-    @Signal
-    def loadRecursiveChanged(self):
-        pass
+    """Property getters, setters and notifiers"""
 
-    def _getRecursive(self):
-        return self._recursive
+    def _setTargetFolder(self, folder):
+        self._target = removeFileStub(folder)
+        self._setSourceFolder(self._path)
+        self.targetFolderChanged.emit()
 
     def _setRecursive(self, recursive):
         self._recursive = recursive
         self._setSourceFolder(self._path)
         self.loadRecursiveChanged.emit()
+
+    def _getModel(self):
+        return self._model
+
+    def _getRecursive(self):
+        return self._recursive
+
+    def _getTargetFolder(self):
+        return self._target
+
+    @Signal
+    def loadRecursiveChanged(self):
+        pass
+
+    @Signal
+    def modelChanged(self):
+        pass
+
+    @Signal
+    def sourceFolderChanged(self):
+        pass
+
+    @Signal
+    def targetFolderChanged(self):
+        pass
 
     loadRecursive = Property(
         bool, fget=_getRecursive, fset=_setRecursive, notify=loadRecursiveChanged

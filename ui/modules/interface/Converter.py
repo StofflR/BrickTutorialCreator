@@ -1,10 +1,7 @@
 import json
 import logging
-
 from PySide6.QtCore import QObject, Slot
 from PySide6.QtQml import QmlElement
-
-import modules.OSDefs as OSDefs
 from modules.backend.SVGBrick import SVGBrick
 from modules.ConstDefs import *
 from modules.Utility import removeFileStub, addFileStub
@@ -49,7 +46,7 @@ class Converter(QObject):
         return count
 
     @Slot(str, result=int)
-    def fromTutorialtoPNG(self, path):
+    def fromTutorialToPNG(self, path):
         path = removeFileStub(path)
         count = 0
         for element in os.listdir(path):
@@ -62,7 +59,7 @@ class Converter(QObject):
                     count += 1
                     logging.debug(f"Converted: {element}")
                 except Exception as _:
-                    logging.warning(f"Couldn't convert: {element}")
+                    logging.warning(f"Could not convert: {element}")
         return count
 
     @Slot(str, result=int)
@@ -109,6 +106,15 @@ class Converter(QObject):
 
     @Slot(str, result=bool)
     def isBrick(self, file):
+        """
+        Check if the given file is a brick
+        Parameters
+        ----------
+        file: file to be checked
+        Returns
+        -------
+        boolean whether the file is a brick or not
+        """
         if not file:
             return False
         file = removeFileStub(file)
@@ -118,15 +124,24 @@ class Converter(QObject):
         return result
 
     @Slot(str, result=str)
-    def getData(self, type):
+    def getData(self, data_type):
+        """
+        retrieve the selected datatype from the converter
+        Parameters
+        ----------
+        data_type: the data type to be returned
+        Returns
+        -------
+        the requested data data type data
+        """
         result = ""
-        if type == "base_type":
-            result = self.data[type]
-        if type == "content":
+        if data_type == "base_type":
+            result = self.data[data_type]
+        if data_type == "content":
             result = self.content
-        if type == "size":
+        if data_type == "size":
             result = self.data["size"].replace("h", "")
-        if type == "path":
+        if data_type == "path":
             result = (
                 "brick_" + self.data["base_type"] + "_" + self.data["size"] + SVG_EXT
             )
@@ -134,5 +149,13 @@ class Converter(QObject):
 
     @Slot(str, result=str)
     def getOutputPath(self, file):
-        print("File is:", os.path.dirname(file) + "/converted")
+        """
+        Get path for converted file output
+        Parameters
+        ----------
+        file: filepath of the current file
+        Returns
+        -------
+        string of the folder for converted file output
+        """
         return os.path.join(addFileStub(os.path.dirname(file)), "/converted")
