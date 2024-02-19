@@ -157,11 +157,79 @@ Item {
         text: "Load files recursive"
         checked: false
     }
+    Label {
+        id: loadLabel
+        height: AppStyle.defaultHeight
+        anchors.left: recursive.right
+        font.family: "Roboto"
+        anchors.top: singleViewRadio.bottom
+        anchors.leftMargin: AppStyle.spacing
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        elide: Text.ElideRight
+        text: "Load: "
+    }
+    CheckBox {
+        id: svg_load
+        text: "SVG"
+        anchors.top: singleViewRadio.bottom
+        anchors.left: loadLabel.right
+        anchors.leftMargin: AppStyle.spacing
+        checked: true
+    }
+
+    CheckBox {
+        id: json_load
+        text: "JSON"
+        anchors.top: singleViewRadio.bottom
+        anchors.left: svg_load.right
+        height: AppStyle.defaultHeight
+        checked: false
+    }
+    Label {
+        id: saveLabel
+        height: AppStyle.defaultHeight
+        anchors.left: json_load.right
+        font.family: "Roboto"
+        anchors.top: singleViewRadio.bottom
+        anchors.leftMargin: AppStyle.spacing
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        elide: Text.ElideRight
+        text: "Save: "
+    }
+    CheckBox {
+        id: svg_save
+        text: "SVG"
+        anchors.top: singleViewRadio.bottom
+        anchors.left: saveLabel.right
+        anchors.leftMargin: AppStyle.spacing
+        checked: true
+    }
+
+    CheckBox {
+        id: json_save
+        text: "JSON"
+        anchors.top: singleViewRadio.bottom
+        anchors.left: svg_save.right
+        height: AppStyle.defaultHeight
+        checked: false
+    }
+
+    CheckBox {
+        id: png_save
+        text: "PNG"
+        anchors.top: singleViewRadio.bottom
+        anchors.left: json_save.right
+        checked: false
+    }
     LanguageManager {
         id: languageManager
         sourceFolder: brickName.folderPath
         targetFolder: brickName.field.text
         loadRecursive: recursive.checked
+        loadSVG: svg_load.checked
+        loadJSON: json_load.checked
     }
 
     ListView {
@@ -180,6 +248,9 @@ Item {
             sourceFile: translationList.model[index]["sourceFile"]
             targetFolder: languageManager?.targetFolder
             targetPath: translationList.model[index]["targetPath"]
+            saveSVG: svg_save.checked
+            savePNG: png_save.checked
+            saveJSON: json_save.checked
         }
     }
 }

@@ -17,6 +17,10 @@ ItemDelegate {
     required property bool split
     required property int index
 
+    required property bool saveSVG
+    required property bool savePNG
+    required property bool saveJSON
+
     onTargetFolderChanged: {
         if (targetPath == "")
             target.loadFromFile(sourcePath)
@@ -50,9 +54,19 @@ ItemDelegate {
 
         function saveBrick() {
             if (keepName) {
-                target.brick.saveSVG(targetFolder, sourceFile)
+                if (saveSVG)
+                    target.brick.saveSVG(targetFolder, sourceFile)
+                if (savePNG)
+                    target.brick.savePNG(targetFolder, sourceFile)
+                if (saveJSON)
+                    target.brick.saveJSON(targetFolder, sourceFile)
             } else {
-                target.brick.saveSVG(targetFolder)
+                if (saveSVG)
+                    target.brick.saveSVG(targetFolder)
+                if (savePNG)
+                    target.brick.savePNG(targetFolder)
+                if (saveJSON)
+                    target.brick.saveJSON(targetFolder)
             }
             modified = false
         }

@@ -21,6 +21,15 @@ class Converter(QObject):
 
     @Slot(str, result=int)
     def fromJSONtoSVG(self, path):
+        """
+        Convert json bricks to svg bricks for the given folder
+        Parameters
+        ----------
+        path: folder to be converted
+        Returns
+        -------
+        number of elements converted
+        """
         path = removeFileStub(path)
         count = 0
         for element in os.listdir(path):
@@ -34,6 +43,15 @@ class Converter(QObject):
 
     @Slot(str, result=int)
     def fromJSONtoPNG(self, path):
+        """
+        Convert json bricks to png bricks for the given folder
+        Parameters
+        ----------
+        path: folder to be converted
+        Returns
+        -------
+        number of elements converted
+        """
         path = removeFileStub(path)
         count = 0
         for element in os.listdir(path):
@@ -47,6 +65,15 @@ class Converter(QObject):
 
     @Slot(str, result=int)
     def fromTutorialToPNG(self, path):
+        """
+        Convert json tutorials to png tutorials for the given folder
+        Parameters
+        ----------
+        path: folder to be converted
+        Returns
+        -------
+        number of elements converted
+        """
         path = removeFileStub(path)
         count = 0
         for element in os.listdir(path):
@@ -64,6 +91,15 @@ class Converter(QObject):
 
     @Slot(str, result=int)
     def fromSVGtoPNG(self, path):
+        """
+        Convert all svg bricks in a folder to a png bricks.
+        Parameters
+        ----------
+        path: folder to be converted
+        Returns
+        -------
+        number of elements converted
+        """
         path = removeFileStub(path)
         count = 0
         for element in os.listdir(path):
@@ -77,6 +113,15 @@ class Converter(QObject):
 
     @Slot(str, result=type([]))
     def updateExisting(self, path):
+        """
+        Retrieve all available svg's for updating
+        Parameters
+        ----------
+        path: folder to be checked
+        Returns
+        -------
+        list of potential bricks to be updated
+        """
         path = removeFileStub(path)
         file_set = []
         for dir_, _, files in os.walk(path):
@@ -89,6 +134,12 @@ class Converter(QObject):
 
     @Slot(str)
     def convert(self, file):
+        """
+        Convert a 'legacy' brick to the newest version
+        Parameters
+        ----------
+        file: file to be converted to a up to date brick
+        """
         doc = open(file, "r")
         is_brick = '<desc id="json" tag="brick">' in doc.read()
         doc.close()
