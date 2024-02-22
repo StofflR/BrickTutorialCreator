@@ -28,7 +28,7 @@ if __name__ == "__main__":
     app = QGuiApplication(sys.argv)
     app.setWindowIcon(QIcon("./resources/icon.svg"))
 
-    # sapp.applicationDisplayName("Brick Designer")
+    # register custom Python classes for use in QML
     qmlRegisterType(Brick, "Brick", 1, 0, "Brick")
     qmlRegisterType(TutorialManager, "TutorialManager", 1, 0, "TutorialManager")
     qmlRegisterType(LanguageManager, "LanguageManager", 1, 0, "LanguageManager")
@@ -39,11 +39,11 @@ if __name__ == "__main__":
         0,
         "TutorialSourceManager",
     )
-
     qmlRegisterType(Converter, "Converter", 1, 0, "Converter")
     qmlRegisterType(Converter, "Converter", 1, 0, "Converter")
     qmlRegisterType(ColorManager, "ColorManager", 1, 0, "ColorManager")
 
+    # load fonts
     assert (
         QFontDatabase.addApplicationFont(
             os.getcwd() + "/resources/fonts/Roboto-Bold.ttf"
@@ -68,6 +68,7 @@ if __name__ == "__main__":
         assert font
         engine.rootContext().setContextProperty(style.lower() + "Roboto", font)
 
+    # register constant paths as variables for use in qml
     engine.rootContext().setContextProperty(
         "resourcesOutFolder", addFileStub(DEF_RESOURCE_OUT)
     )
