@@ -62,10 +62,12 @@ Image {
             svgPreview.brickColor = modifyableBrick.brickColor()
             svgPreview.loading = false
             svgPreview.statusText = "INFO: Loaded " + currentFile
+            updateBrick()
         }
     }
     fillMode: Image.PreserveAspectFit
-    source: decodeURIComponent(previewContent.cursorVisible ? baseFolder + "/" + brickPath : brickImg)
+    source: decodeURIComponent(
+                previewContent.cursorVisible ? baseFolder + "/" + brickPath : brickImg)
 
     function updateBrick() {
         if (!brickPath || !brickColor || !availableSize || !xPos || !yPos
