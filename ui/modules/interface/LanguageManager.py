@@ -21,6 +21,7 @@ class LanguageManager(QObject):
         self._loadSVG = True
         self._loadJSON = False
         self._JSONBricks = []
+
     @Slot()
     def refreshModel(self):
         """
@@ -42,13 +43,17 @@ class LanguageManager(QObject):
             if root in self._path or self._recursive:
                 for file_name in files:
                     file_path = os.path.join(root, file_name)
-                    if (SVG_EXT in file_path and self._loadSVG) or (JSON_EXT in file_path and self._loadJSON):
+                    if (SVG_EXT in file_path and self._loadSVG) or (
+                        JSON_EXT in file_path and self._loadJSON
+                    ):
                         targetPath = os.path.join(self._target, file_name)
                         if not os.path.isfile(targetPath):
                             targetPath = ""
                         source_path = os.path.join(root, file_name)
                         if JSON_EXT in file_name and self._loadJSON:
-                            brick = SVGBrick.fromJSON(json.load(open(os.path.join(root, file_name))))
+                            brick = SVGBrick.fromJSON(
+                                json.load(open(os.path.join(root, file_name)))
+                            )
                             self._JSONBricks.append(brick)
                             source_path = brick.getWorkingBrick()
                         self.model.append(
@@ -71,9 +76,11 @@ class LanguageManager(QObject):
         self._recursive = recursive
         self._setSourceFolder(self._path)
         self.loadRecursiveChanged.emit()
+
     def _setLoadSVG(self, value):
         self._loadSVG = value
         self.refreshModel()
+
     def _setLoadJSON(self, value):
         self._loadJSON = value
         self.refreshModel()
