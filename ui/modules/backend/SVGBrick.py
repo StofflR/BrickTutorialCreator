@@ -19,6 +19,7 @@ class SVGBrick(SVGBrickModifier):
         x=DEFAULT_X,
         y=DEFAULT_Y,
     ):
+        self.toBeRemoved_ = []
         SVGBrickModifier.__init__(
             self, base_type, content, size, path, scaling_factor, x, y
         )
@@ -173,7 +174,7 @@ class SVGBrick(SVGBrickModifier):
         image.save(path, quality=100)
         logging.debug("Brick saved to: " + path)
 
-    def parse(self, content: str, x=DEFAULT_X, y=DEFAULT_Y) -> None:  #
+    def parse(self, content: str, x=DEFAULT_X, y=DEFAULT_Y) -> None:
         """
         Parses the content of the brick to format the svg
         Parameters

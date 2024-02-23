@@ -1,11 +1,10 @@
-from PySide6.QtCore import Slot, QObject, QUrl
+from PySide6.QtCore import Slot, QObject, QUrl, Property, Signal
 from PySide6.QtQml import QmlElement
+
 from modules.backend.SVGBrick import SVGBrick
 import json
 from modules.Utility import *
 from modules.ConstDefs import *
-import modules.OSDefs as OSDefs
-from math import isclose
 
 QML_IMPORT_NAME = "Brick"
 QML_IMPORT_MAJOR_VERSION = 1
@@ -14,35 +13,89 @@ QML_IMPORT_MAJOR_VERSION = 1
 @QmlElement
 class Brick(SVGBrick, QObject):
     def __init__(self, parent=None):
+        self.toBeRemoved_ = []
         SVGBrick.__init__(self)
         QObject.__init__(self, parent)
 
-    @Slot(None, result=str)
-    def brickContent(self):
-        """
-        Returns
-        -------
-        The SVG Brick content to be displayed (contains modifier)
-        """
+    @Signal
+    def _updateBrick(self):
+        return
+
+    @Signal
+    def _contentChanged(self):
+        return
+    def _getBaseType(self):
+        return self.base_type
+
+    def _setBaseType(self, base_type):
+        self.base_type = base_type
+        self.resetSVG()
+        self._updateBrick.emit()
+
+    def _getContent(self):
         return self.content
 
-    @Slot(None, result=int)
-    def posX(self):
-        """
-        Returns
-        -------
-        The SVG Brick content x position
-        """
+    def _setContent(self, value):
+        self.content = value
+        self.resetSVG()
+        self._updateBrick.emit()
+
+
+    def _getSize(self):
+        return self.size
+
+    def _setSize(self, value):
+        self.size = value
+        self.resetSVG()
+        self._updateBrick.emit()
+    def _getPath(self):
+        return self.path
+
+    def _setPath(self, value):
+        self.path = value
+        self.resetSVG()
+        self._updateBrick.emit()
+
+    def _getScalingFactor(self):
+        return self.scaling_factor
+
+    def _setScalingFactor(self, value):
+        self.scaling_factor = value
+        self.resetSVG()
+        self._updateBrick.emit()
+
+    def _getXPos(self):
         return self.x
 
-    @Slot(None, result=int)
-    def posY(self):
-        """
-        Returns
-        -------
-        The SVG Brick content y position
-        """
+    def _setXPos(self, value):
+        self.x = value
+        self.resetSVG()
+        self._updateBrick.emit()
+
+    def _getYPos(self):
         return self.y
+
+    def _setYPos(self, value):
+        self.y = value
+        self.resetSVG()
+        self._updateBrick.emit()
+
+    baseType = Property(
+        str, fget=_getBaseType, fset=_setBaseType, notify=_updateBrick)
+    brickContent = Property(
+        str, fget=_getContent, fset=_setContent, notify=_contentChanged)
+    brickSize = Property(
+        str, fget=_getSize, fset=_setSize, notify=_updateBrick)
+    brickPath = Property(
+        str, fget=_getPath, fset=_setPath, notify=_updateBrick)
+    scalingFactor = Property(
+        float, fget=_getScalingFactor, fset=_setScalingFactor, notify=_updateBrick)
+    xPos = Property(
+        float, fget=_getXPos, fset=_setXPos, notify=_updateBrick)
+    yPos = Property(
+        float, fget=_getYPos, fset=_setYPos, notify=_updateBrick)
+
+    contentChanged = Signal()
 
     @Slot(None, result=str)
     def basePath(self):
@@ -58,59 +111,18 @@ class Brick(SVGBrick, QObject):
             control = "_control"
         return "brick_" + base_brick + "_" + str(self.size) + control + SVG_EXT
 
-    @Slot(None, result=str)
-    def brickColor(self):
-        """
-        Returns
-        -------
-        The SVG Brick color scheme
-        """
-        return self.base_type
+    def _getFullBasePath(self) -> str:
+        return addFileStub(os.path.join(DEF_BASE, self.basePath()))
 
-    @Slot(str, str, str, str, int, int, int)
-    def updateBrick(
-        self,
-        base_type,
-        content,
-        size,
-        path,
-        scaling_factor=1.0,
-        x=DEFAULT_X,
-        y=DEFAULT_Y,
-    ):
-        """
-        Update the SVG Brick and its contents
-        Parameters
-        ----------
-        base_type: base color scheme
-        content: content to be displayed (contains special characters)
-        size: brick size e.g. 1h
-        path: path of the base brick
-        scaling_factor: the content scaling factor
-        x: x position
-        y: y position
-        """
-        modified = False
+    fullBasePath = Property(
+        str, fget=_getFullBasePath, notify=_updateBrick)
 
-        modified |= self.base_type != base_type or self.content != content
-        self.content = content
-        self.base_type = base_type
 
-        modified |= not isclose(self.scaling_factor, scaling_factor / 100)
-        self.scaling_factor = scaling_factor / 100
 
-        path = path if SVG_EXT in path else DEF_BASE_BRICK
-        modified |= self.path != path
-        self.path = path
-
-        modified |= self.y != y or self.x != x or self.size != size
-        self.size = size
-        self.x = x
-        self.y = y
-
-        if modified:
-            self.resetSVG()
-            self.addContent()
+    @Slot()
+    def resetSVG(self) -> None:
+        SVGBrick.resetSVG(self)
+        self.addContent()
 
     def updateFromJSON(self, json_text):
         """
@@ -119,15 +131,14 @@ class Brick(SVGBrick, QObject):
         ----------
         json_text: the json text to update the brick with
         """
-        self.updateBrick(
-            getAttr(json_text, "base_type", ""),
-            getAttr(json_text, "content", ""),
-            getAttr(json_text, "size", "1h"),
-            getAttr(json_text, "path", DEF_BASE_BRICK),
-            float(getAttr(json_text, "scaling_factor", 1)),
-            float(getAttr(json_text, "x", DEFAULT_X)),
-            float(getAttr(json_text, "y", DEFAULT_Y)),
-        )
+        self.base_type = getAttr(json_text, "base_type", "")
+        self.content = getAttr(json_text, "content", "")
+        self.size = getAttr(json_text, "size", "1h")
+        self.path = getAttr(json_text, "path", DEF_BASE_BRICK)
+        self.scaling_factor = float(getAttr(json_text, "scaling_factor", 1))
+        self.x = float(getAttr(json_text, "x", DEFAULT_X))
+        self.y = float(getAttr(json_text, "y", DEFAULT_Y))
+
 
     @Slot(str)
     def fromJSON(self, path):
@@ -139,6 +150,9 @@ class Brick(SVGBrick, QObject):
         """
         path = removeFileStub(path)
         self.updateFromJSON(SVGBrick.fromJSON(json.load(open(path))))
+        self.resetSVG()
+        self.contentChanged.emit()
+        self._updateBrick.emit()
 
     @Slot(str)
     def fromSVG(self, path):
@@ -150,6 +164,9 @@ class Brick(SVGBrick, QObject):
         """
         path = removeFileStub(path)
         self.updateFromJSON(SVGBrick.getJSONFromSVG(path))
+        self.resetSVG()
+        self.contentChanged.emit()
+        self._updateBrick.emit()
 
     @Slot(str)
     def fromFile(self, path):
@@ -175,10 +192,8 @@ class Brick(SVGBrick, QObject):
         if content != self.content:
             self.content = content
             self.resetSVG()
-            self.addContent()
 
-    @Slot(None, result=str)
-    def workingPath(self):
+    def _workingPath(self):
         """
         Returns the QML path to the working brick
         Returns
@@ -186,6 +201,10 @@ class Brick(SVGBrick, QObject):
 
         """
         return QUrl.fromLocalFile(self.getWorkingBrick()).toString()
+
+    workingPath = Property(
+        str, fget=_workingPath, notify=_updateBrick)
+
 
     @Slot(result=str)
     def fileName(self):

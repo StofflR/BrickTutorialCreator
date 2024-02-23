@@ -113,7 +113,7 @@ Popup {
             height: sourcePreview.paintedHeight
             loadButton.enabled: false
             saveButton.enabled: false
-            modified: true
+
             IconButton {
                 id: customButton
                 anchors.top: targetPreview.clearButton.bottom

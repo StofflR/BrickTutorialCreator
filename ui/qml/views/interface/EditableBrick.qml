@@ -10,16 +10,9 @@ import "../../style"
 
 Image {
     id: svgPreview
-    property string brickImg: "qrc:/bricks/base/brick_blue_1h.svg"
-    property int xPos: 43
-    property int yPos: 33
-    property int contentScale: 100
-    readonly property string brickContent: previewContent.text
-    property string availableSize: "1h"
-    property string brickPath: "brick_blue_1h.svg"
-    property string brickColor: "blue"
 
-    property bool modified: false
+    readonly property string brickContent: previewContent.text
+
     property bool disable: false
 
     property string statusText
@@ -31,55 +24,31 @@ Image {
     property alias colorButton: colorButton
 
     property alias editor: selectorComponent
-
     property alias content: previewContent
 
-    signal dataChanged
     signal save
+    brick.onContentChanged: previewContent.text = modifyableBrick.brickContent
+    source: decodeURIComponent(
+                previewContent.cursorVisible ? modifyableBrick?.fullBasePath : modifyableBrick?.workingPath)
+
     asynchronous: true
     smooth: true
     cache: true
-    property bool loading: false
+
     Brick {
         id: modifyableBrick
+        brickContent: previewContent.text
     }
+
     function selectAll() {
         textView.selectAll()
         previewContent.forceActiveFocus()
     }
 
     function loadFromFile(currentFile) {
-        {
-            if (!currentFile)
-                return
-            modifyableBrick.fromFile(currentFile)
-            svgPreview.loading = true
-            previewContent.text = modifyableBrick.brickContent()
-            svgPreview.brickImg = modifyableBrick.workingPath()
-            svgPreview.brickPath = modifyableBrick.basePath()
-            svgPreview.xPos = modifyableBrick.posX()
-            svgPreview.yPos = modifyableBrick.posY()
-            svgPreview.brickColor = modifyableBrick.brickColor()
-            svgPreview.loading = false
-            svgPreview.statusText = "INFO: Loaded " + currentFile
-            updateBrick()
-        }
+        modifyableBrick.fromFile(currentFile)
     }
     fillMode: Image.PreserveAspectFit
-    source: decodeURIComponent(
-                previewContent.cursorVisible ? baseFolder + "/" + brickPath : brickImg)
-
-    function updateBrick() {
-        if (!brickPath || !brickColor || !availableSize || !xPos || !yPos
-                || !contentScale || loading) {
-            return
-        }
-        modifyableBrick.updateBrick(brickColor, brickContent, availableSize,
-                                    brickPath, contentScale, xPos, yPos)
-        brickImg = modifyableBrick.workingPath()
-    }
-
-    onDataChanged: updateBrick()
 
     TextArea {
         id: textView
@@ -90,7 +59,6 @@ Image {
         }
         visible: previewContent.cursorVisible
         anchors.fill: previewContent
-
         onSelectedTextChanged: previewContent.select(textView.selectionStart,
                                                      textView.selectionEnd)
         text: {
@@ -121,8 +89,8 @@ Image {
         font.family: "Roboto"
         font.letterSpacing: -1
         font.bold: true
-        color: brickColor.lastIndexOf(
-                   "white") == -1 ? "white" : brickColor.lastIndexOf(
+        color: modifyableBrick?.baseType?.lastIndexOf(
+                   "white") == -1 ? "white" : modifyableBrick?.baseType?.lastIndexOf(
                                         "transparent") == -1 ? "blue" : "black"
         font.pointSize: 12 * previewContent.scale <= 0 ? 12 : 12 * previewContent.scale
     }
@@ -134,21 +102,17 @@ Image {
         placeholderText: "<b>Click to modify content!<\b>"
         anchors.left: svgPreview.left
         anchors.top: svgPreview.top
-        width: svgPreview.width - svgPreview.xPos
-        height: svgPreview.height - svgPreview.yPos
-        anchors.leftMargin: (svgPreview.xPos - 4) * svgPreview.paintedWidth / 350
-        anchors.topMargin: (svgPreview.yPos - 4) * svgPreview.paintedWidth / 350
-                           - 13 * previewContent.scale
+        width: svgPreview.width - modifyableBrick.xPos
+        height: svgPreview.height - modifyableBrick.yPos
+        anchors.leftMargin: (modifyableBrick.xPos - 4) * svgPreview.paintedWidth / 350
+        anchors.topMargin: (modifyableBrick.yPos - 4) * svgPreview.paintedWidth
+                           / 350 - 13 * previewContent.scale
 
-        property real scale: svgPreview.paintedWidth * contentScale / 35000
+        property real scale: svgPreview.paintedWidth * modifyableBrick.scalingFactor / 350
         wrapMode: TextEdit.WordWrap
         font: textView.font
         opacity: text ? 0 : 1
         cursorVisible: false
-        onCursorVisibleChanged: dataChanged()
-        Component.onCompleted: {
-            textChanged.connect(svgPreview.dataChanged)
-        }
     }
     Repeater {
         id: repeaterModel
@@ -215,7 +179,6 @@ Image {
             pressedAt = textView.positionAt(mouseEvent.x, mouseEvent.y)
             previewContent.cursorPosition = pressedAt
             previewContent.forceActiveFocus()
-            modified = true
         }
         onDoubleClicked: {
             textView.selectWord()
@@ -227,16 +190,6 @@ Image {
                                 Math.max(position, pressedAt))
             }
         }
-    }
-
-    Component.onCompleted: {
-        availableSizeChanged.connect(svgPreview.dataChanged)
-        xPosChanged.connect(svgPreview.dataChanged)
-        yPosChanged.connect(svgPreview.dataChanged)
-        contentScaleChanged.connect(svgPreview.dataChanged)
-        availableSizeChanged.connect(svgPreview.dataChanged)
-        brickPathChanged.connect(svgPreview.dataChanged)
-        brickColorChanged.connect(svgPreview.dataChanged)
     }
 
     IconButton {
@@ -304,7 +257,6 @@ Image {
     IconButton {
         Popup {
             id: popup
-
             anchors.centerIn: Overlay.overlay
             Loader {
                 id: selector
@@ -334,12 +286,9 @@ Image {
                                    || !selectedSize) {
                                    return
                                }
-                               svgPreview.loading = true
-                               brickColor = selectedColor
-                               brickPath = selectedPath
-                               availableSize = selectedSize
-                               svgPreview.loading = false
-                               svgPreview.dataChanged()
+                               modifyableBrick.baseType = selectedColor
+                               modifyableBrick.brickPath = selectedPath
+                               modifyableBrick.brickSize = selectedSize
                            }
         }
     }

@@ -21,12 +21,16 @@ ItemDelegate {
     required property bool savePNG
     required property bool saveJSON
 
-    onTargetFolderChanged: {
-        if (targetPath == "")
-            target.loadFromFile(sourcePath)
-        else
-            target.loadFromFile(targetPath)
+    property bool enabled: false
+
+    function loadBrick() {
+        if (root.sourcePath != "" && root.enabled)
+            target.loadFromFile(
+                        (root.targetPath == "") ? root.sourcePath : root.targetPath)
     }
+
+    onTargetFolderChanged: loadBrick()
+    onEnabledChanged: loadBrick()
 
     height: source.height > 0 ? source.height : target.height
     width: parent?.width
@@ -50,8 +54,6 @@ ItemDelegate {
         saveButton.enabled: false
         clearButton.enabled: false
 
-        content.onCursorVisibleChanged: saveBrick()
-
         function saveBrick() {
             if (keepName) {
                 if (saveSVG)
@@ -68,8 +70,9 @@ ItemDelegate {
                 if (saveJSON)
                     target.brick.saveJSON(targetFolder)
             }
-            modified = false
         }
+        Component.onCompleted: root.enabled = true
+
         Keys.onPressed: event => {
                             if (event.matches(StandardKey.Save)) {
                                 root.forceActiveFocus()
