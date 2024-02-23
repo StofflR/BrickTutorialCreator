@@ -35,7 +35,7 @@ class TutorialSourceManager(QObject):
         self.typeModel = {}
         self.filter = ""
 
-    def isBrick(self, file: str): # -> dict | bool:
+    def isBrick(self, file: str):  # -> dict | bool:
         """
         Check if a given file is a brick
         Parameters

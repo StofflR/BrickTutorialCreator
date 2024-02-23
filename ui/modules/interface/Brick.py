@@ -24,6 +24,7 @@ class Brick(SVGBrick, QObject):
     @Signal
     def _contentChanged(self):
         return
+
     def _getBaseType(self):
         return self.base_type
 
@@ -40,7 +41,6 @@ class Brick(SVGBrick, QObject):
         self.resetSVG()
         self._updateBrick.emit()
 
-
     def _getSize(self):
         return self.size
 
@@ -48,6 +48,7 @@ class Brick(SVGBrick, QObject):
         self.size = value
         self.resetSVG()
         self._updateBrick.emit()
+
     def _getPath(self):
         return self.path
 
@@ -80,20 +81,17 @@ class Brick(SVGBrick, QObject):
         self.resetSVG()
         self._updateBrick.emit()
 
-    baseType = Property(
-        str, fget=_getBaseType, fset=_setBaseType, notify=_updateBrick)
+    baseType = Property(str, fget=_getBaseType, fset=_setBaseType, notify=_updateBrick)
     brickContent = Property(
-        str, fget=_getContent, fset=_setContent, notify=_contentChanged)
-    brickSize = Property(
-        str, fget=_getSize, fset=_setSize, notify=_updateBrick)
-    brickPath = Property(
-        str, fget=_getPath, fset=_setPath, notify=_updateBrick)
+        str, fget=_getContent, fset=_setContent, notify=_contentChanged
+    )
+    brickSize = Property(str, fget=_getSize, fset=_setSize, notify=_updateBrick)
+    brickPath = Property(str, fget=_getPath, fset=_setPath, notify=_updateBrick)
     scalingFactor = Property(
-        float, fget=_getScalingFactor, fset=_setScalingFactor, notify=_updateBrick)
-    xPos = Property(
-        float, fget=_getXPos, fset=_setXPos, notify=_updateBrick)
-    yPos = Property(
-        float, fget=_getYPos, fset=_setYPos, notify=_updateBrick)
+        float, fget=_getScalingFactor, fset=_setScalingFactor, notify=_updateBrick
+    )
+    xPos = Property(float, fget=_getXPos, fset=_setXPos, notify=_updateBrick)
+    yPos = Property(float, fget=_getYPos, fset=_setYPos, notify=_updateBrick)
 
     contentChanged = Signal()
 
@@ -114,10 +112,7 @@ class Brick(SVGBrick, QObject):
     def _getFullBasePath(self) -> str:
         return addFileStub(os.path.join(DEF_BASE, self.basePath()))
 
-    fullBasePath = Property(
-        str, fget=_getFullBasePath, notify=_updateBrick)
-
-
+    fullBasePath = Property(str, fget=_getFullBasePath, notify=_updateBrick)
 
     @Slot()
     def resetSVG(self) -> None:
@@ -138,7 +133,6 @@ class Brick(SVGBrick, QObject):
         self.scaling_factor = float(getAttr(json_text, "scaling_factor", 1))
         self.x = float(getAttr(json_text, "x", DEFAULT_X))
         self.y = float(getAttr(json_text, "y", DEFAULT_Y))
-
 
     @Slot(str)
     def fromJSON(self, path):
@@ -202,9 +196,7 @@ class Brick(SVGBrick, QObject):
         """
         return QUrl.fromLocalFile(self.getWorkingBrick()).toString()
 
-    workingPath = Property(
-        str, fget=_workingPath, notify=_updateBrick)
-
+    workingPath = Property(str, fget=_workingPath, notify=_updateBrick)
 
     @Slot(result=str)
     def fileName(self):
