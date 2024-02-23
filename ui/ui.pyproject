@@ -3,6 +3,7 @@
         "BrickTutorialCreator.py",
         "modules/ConstDefs.py",
         "modules/OSDefs.py",
+        "modules/Utility.py",
         "modules/interface/BatchBrickUpdater.py",
         "modules/interface/Brick.py",
         "modules/interface/ColorManager.py",

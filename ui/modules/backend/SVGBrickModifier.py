@@ -1,4 +1,5 @@
 import logging
+import os
 import sys
 import xml.etree.ElementTree as Tree
 from PySide6.QtGui import QFontMetrics, QFont, QFontDatabase
@@ -50,7 +51,7 @@ class SVGBrickModifier:
         self.tree_: Tree
         self.tree_ = None
         self.resetSVG()
-
+        self.toBeRemoved_ = []
         self.operations = {
             OP_KEY_NEWLINE: self.addLineBreak,
             OP_KEY_END: self.addString,
@@ -63,9 +64,16 @@ class SVGBrickModifier:
         Reset the current SVG Brick and change the working brick path
         Note: QMLImage buffers images, therefore a different path is needed!
         """
-        if os.path.exists(self.working_brick_):
-            os.remove(self.working_brick_)
-            logging.debug("Working brick: " + self.working_brick_)
+        while len(self.toBeRemoved_) > 0:
+            path = self.toBeRemoved_[0]
+            self.toBeRemoved_.pop(0)
+            if os.path.exists(path):
+                os.remove(path)
+
+            logging.debug("Working brick: " + self.working_brick_ + " removed")
+        if self.working_brick_ and os.path.exists(self.working_brick_):
+            self.toBeRemoved_.append(self.working_brick_)
+            logging.debug("Working brick: " + self.working_brick_ + " to be removed")
         self.working_brick_ = os.path.join(DEF_TMP, randomString(10) + SVG_EXT)
         logging.debug("New working brick: " + self.working_brick_)
         self.tree_ = Tree.parse(open(os.path.join(DEF_BASE, self.path), "r"))

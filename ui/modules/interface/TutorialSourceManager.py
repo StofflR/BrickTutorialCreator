@@ -17,10 +17,11 @@ def addSorted(resources: list, brick: dict) -> None:
     resources: available resources
     brick: brick to be added based on color
     """
+    base_path = os.path.join(DEF_BASE, brick["base_path"])
     for color in resources:
-        if color["path"] == brick["base_path"]:
+        if color["path"] == base_path:
             return color["elements"].append(brick)
-    resources.append({"path": brick["base_path"], "elements": [brick]})
+    resources.append({"path": base_path, "elements": [brick]})
 
 
 @QmlElement

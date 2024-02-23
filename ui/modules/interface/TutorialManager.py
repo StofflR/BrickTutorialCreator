@@ -29,7 +29,7 @@ class TutorialManager(QObject):
 
     @Slot(str)
     @Slot(str, int)
-    def addBrick(self, path, index=None):
+    def addBrick(self, path, index=-1):
         """
         Slot to add bricks to the tutorial. If no index is given, the brick is appended.
         Parameters
@@ -45,7 +45,7 @@ class TutorialManager(QObject):
         if JSON_EXT in path:
             path = addFileStub(brick.getWorkingBrick())
 
-        if not index:
+        if index == -1:
             self.modelVal.append(path)
         else:
             self.modelVal.insert(index, path)
