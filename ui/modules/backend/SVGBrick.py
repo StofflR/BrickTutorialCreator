@@ -147,6 +147,11 @@ class SVGBrick(SVGBrickModifier):
         logging.debug("Brick saved to: " + path)
         self.tree_.write(path)
 
+        for path in self.toBeRemoved_:
+            if os.path.exists(path):
+                os.remove(path)
+        self.toBeRemoved_.clear()
+
     def savePNG(self, path, width=1920, height=None) -> None:
         """
         Create a PNG of the current brick

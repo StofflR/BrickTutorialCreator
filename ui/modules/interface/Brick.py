@@ -114,9 +114,8 @@ class Brick(SVGBrick, QObject):
 
     fullBasePath = Property(str, fget=_getFullBasePath, notify=_updateBrick)
 
-    @Slot()
     def resetSVG(self) -> None:
-        SVGBrick.resetSVG(self)
+        self.reset()
         self.addContent()
 
     def updateFromJSON(self, json_text):

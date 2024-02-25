@@ -102,13 +102,13 @@ Image {
         placeholderText: "<b>Click to modify content!<\b>"
         anchors.left: svgPreview.left
         anchors.top: svgPreview.top
-        width: svgPreview.width - modifyableBrick.xPos
-        height: svgPreview.height - modifyableBrick.yPos
-        anchors.leftMargin: (modifyableBrick.xPos - 4) * svgPreview.paintedWidth / 350
-        anchors.topMargin: (modifyableBrick.yPos - 4) * svgPreview.paintedWidth
+        width: svgPreview.width - modifyableBrick?.xPos
+        height: svgPreview.height - modifyableBrick?.yPos
+        anchors.leftMargin: (modifyableBrick?.xPos - 4) * svgPreview.paintedWidth / 350
+        anchors.topMargin: (modifyableBrick?.yPos - 4) * svgPreview.paintedWidth
                            / 350 - 13 * previewContent.scale
 
-        property real scale: svgPreview.paintedWidth * modifyableBrick.scalingFactor / 350
+        property real scale: svgPreview.paintedWidth * modifyableBrick?.scalingFactor / 350
         wrapMode: TextEdit.WordWrap
         font: textView.font
         opacity: text ? 0 : 1
@@ -249,7 +249,7 @@ Image {
         ToolTip.visible: hovered
         ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
         ToolTip.text: qsTr("Save the current brick!")
-        onPressed: {
+        onReleased: {
             saveButton.forceActiveFocus()
             save()
         }
