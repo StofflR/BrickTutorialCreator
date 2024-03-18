@@ -57,5 +57,7 @@
         <file>resources/help/tutorial_name.png</file>
         <file>resources/help/tutorial_paths.png</file>
         <file>resources/help/tutorial_tutorial.png</file>
+        <file>resources/help/translator_extended.png</file>
+        <file>resources/help/translator_normal.png</file>
     </qresource>
 </RCC>

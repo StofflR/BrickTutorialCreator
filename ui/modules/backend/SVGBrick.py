@@ -30,6 +30,7 @@ class SVGBrick(SVGBrickModifier):
         Delete the temporary file created on object destruction!
         """
         logging.debug("Deleting: " + self.working_brick_)
+        self.cleanup()
         if os.path.exists(self.working_brick_):
             os.remove(self.working_brick_)
             logging.debug("Working brick: " + self.contentPlain() + " deleted")
@@ -147,10 +148,18 @@ class SVGBrick(SVGBrickModifier):
         logging.debug("Brick saved to: " + path)
         self.tree_.write(path)
 
-        for path in self.toBeRemoved_:
-            if os.path.exists(path):
+        self.cleanup()
+
+    def cleanup(self):
+      failed = []
+      for path in self.toBeRemoved_:
+          if os.path.exists(path):
+              try:
                 os.remove(path)
-        self.toBeRemoved_.clear()
+              except Exception as e:
+                failed.append(path)
+      self.toBeRemoved_.clear()
+      self.toBeRemoved_.extend(failed)
 
     def savePNG(self, path, width=1920, height=None) -> None:
         """

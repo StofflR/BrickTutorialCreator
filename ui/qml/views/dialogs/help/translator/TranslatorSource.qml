@@ -13,20 +13,20 @@ HelpFrame {
                               infotext.close()
     image: Component {
         Image {
-            source: "qrc:/help/resources/help/tutorial.png"
+            source: "qrc:/help/resources/help/translator_normal.png"
         }
     }
     MouseArea {
         id: element
-        Rectangle {
-            color: "transparent"
-            border.color: "yellow"
-            anchors.fill: parent
-        }
-        y: frame.height / 8
-        width: frame.width / 2
-        height: frame.height / 2
+        y: frame.height / 20
+        width: frame.width / 1.66
+        height: frame.height / 10
         hoverEnabled: true
+        Rectangle {
+            anchors.fill: parent
+            border.color: "yellow"
+            color: "transparent"
+        }
     }
     Popup {
         id: infotext
@@ -41,7 +41,15 @@ HelpFrame {
         height: frame.height * 0.8
         ColumnLayout {
             Text {
-                text: "Tutorial bricks can be rearanged by drag and drop!<br>Inserting new bricks by double clicking inserts them at the current selection!<br>Bricks can be removed by pressing 'Delete' on the keyboard!"
+                text: "Use buttons to select the source and target folder of the translation!"
+                color: palette.windowText
+            }
+            Text {
+                text: "<b>Note:</b> By default the source folder is ./resources/out and the target folder is ./resources/out/export"
+                color: palette.windowText
+            }
+            Text {
+                text: "<b>Note:</b> If the source and target folder, the modified files will be overwritten!"
                 color: palette.windowText
             }
         }

@@ -13,21 +13,26 @@ HelpFrame {
                               infotext.close()
     image: Component {
         Image {
-            source: "qrc:/help/resources/help/tutorial.png"
+            source: "qrc:/help/resources/help/translator_normal.png"
         }
     }
     MouseArea {
+        id: source
+        y: frame.height / 20
+        width: frame.width / 1.66
+        height: frame.height / 10
+    }
+    MouseArea {
         id: element
-        Rectangle {
-            color: "transparent"
-            border.color: "yellow"
-            anchors.fill: parent
-        }
-        x: frame.width / 2
-        y: frame.height / 7
-        width: frame.width / 15
-        height: frame.height / 2
+        anchors.top: source.bottom
+        width: frame.width * 0.9
+        height: frame.height / 10
         hoverEnabled: true
+        Rectangle {
+            anchors.fill: parent
+            border.color: "yellow"
+            color: "transparent"
+        }
     }
     Popup {
         id: infotext
@@ -42,27 +47,19 @@ HelpFrame {
         height: frame.height * 0.8
         ColumnLayout {
             Text {
-                text: "Save tutorial as PNG or JSON File!"
+                text: "Keep filename: Enabeling this option keeps the source file name.<br>If it is unchecked the name is generated from the brick content!"
                 color: palette.windowText
             }
             Text {
-                text: "Add an existing brick to the tutorial!"
+                text: "Load files recursive: Enabeling this options checks for bricks in subdirectories and adds them to the editing list!"
                 color: palette.windowText
             }
             Text {
-                text: "Save tutorial as JSON file!"
+                text: "Load SVG/JSON: Specifies which file formats should be laoded!"
                 color: palette.windowText
             }
             Text {
-                text: "Save tutorial as PNG file!"
-                color: palette.windowText
-            }
-            Text {
-                text: "Load the tutorial from a JSON file!"
-                color: palette.windowText
-            }
-            Text {
-                text: "Clear the tutorial!"
+                text: "Save SVG/JSON/PNG: Specifies which file format the output files should have!"
                 color: palette.windowText
             }
         }

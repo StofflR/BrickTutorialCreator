@@ -11,22 +11,31 @@ HelpFrame {
                               infotext.open()
                           else
                               infotext.close()
+    property bool toggle: true
     image: Component {
         Image {
-            source: "qrc:/help/resources/help/tutorial.png"
+            source: toggle ? "qrc:/help/resources/help/translator_extended.png" : "qrc:/help/resources/help/translator_normal.png"
         }
     }
     MouseArea {
+        id: source
+        y: frame.height / 20
+        width: frame.width / 1.66
+        height: frame.height / 10
+    }
+    MouseArea {
         id: element
-        Rectangle {
-            color: "transparent"
-            border.color: "yellow"
-            anchors.fill: parent
-        }
-        y: frame.height / 8
-        width: frame.width / 2
-        height: frame.height / 2
+        y: frame.height / 20
+        anchors.left: source.right
+        width: frame.width / 5
+        height: frame.height / 10
         hoverEnabled: true
+        onClicked: toggle = !toggle
+        Rectangle {
+            anchors.fill: parent
+            border.color: "yellow"
+            color: "transparent"
+        }
     }
     Popup {
         id: infotext
@@ -41,7 +50,11 @@ HelpFrame {
         height: frame.height * 0.8
         ColumnLayout {
             Text {
-                text: "Tutorial bricks can be rearanged by drag and drop!<br>Inserting new bricks by double clicking inserts them at the current selection!<br>Bricks can be removed by pressing 'Delete' on the keyboard!"
+                text: "Use buttons to switch between source-target view and target-only view!"
+                color: palette.windowText
+            }
+            Text {
+                text: "<b>Note:</b> Click to toggle!"
                 color: palette.windowText
             }
         }
