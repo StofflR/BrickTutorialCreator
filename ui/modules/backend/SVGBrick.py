@@ -151,15 +151,15 @@ class SVGBrick(SVGBrickModifier):
         self.cleanup()
 
     def cleanup(self):
-      failed = []
-      for path in self.toBeRemoved_:
-          if os.path.exists(path):
-              try:
-                os.remove(path)
-              except Exception as e:
-                failed.append(path)
-      self.toBeRemoved_.clear()
-      self.toBeRemoved_.extend(failed)
+        failed = []
+        for path in self.toBeRemoved_:
+            if os.path.exists(path):
+                try:
+                    os.remove(path)
+                except Exception as e:
+                    failed.append(path)
+        self.toBeRemoved_.clear()
+        self.toBeRemoved_.extend(failed)
 
     def savePNG(self, path, width=1920, height=None) -> None:
         """
