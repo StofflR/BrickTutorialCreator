@@ -29,6 +29,7 @@ output_folder = os.path.join(os.getcwd(), "drawable")
 if not os.path.isdir(output_folder):
     os.mkdir(output_folder)
 
+
 def generate_bricks():
     initQt()
     for size in data["sizes"]:
@@ -52,7 +53,10 @@ def generate_bricks():
                 height = Const.PNG_HEIGHT_2H
             elif "3h" in size:
                 height = Const.PNG_HEIGHT_3H
-            export_path = os.path.join(output_folder, brick_path.replace(SVG_EXT, PNG_EXT))
+            export_path = os.path.join(
+                output_folder, brick_path.replace(SVG_EXT, PNG_EXT)
+            )
             brick.savePNG(export_path, width=Const.PNG_WIDTH, height=height)
+
 
 generate_bricks()

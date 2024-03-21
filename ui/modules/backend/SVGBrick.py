@@ -12,14 +12,14 @@ from modules.ConstDefs import *
 
 class SVGBrick(SVGBrickModifier):
     def __init__(
-            self,
-            base_type="",
-            content="",
-            size="1h",
-            path=DEF_BASE_BRICK,
-            scaling_factor=1,
-            x=DEFAULT_X,
-            y=DEFAULT_Y,
+        self,
+        base_type="",
+        content="",
+        size="1h",
+        path=DEF_BASE_BRICK,
+        scaling_factor=1,
+        x=DEFAULT_X,
+        y=DEFAULT_Y,
     ):
         self.toBeRemoved_ = []
         SVGBrickModifier.__init__(
@@ -62,9 +62,9 @@ class SVGBrick(SVGBrickModifier):
         json_text = ""
         for element in svg.getroot():
             if (
-                    hasattr(element, "attrib")
-                    and "id" in element.attrib.keys()
-                    and element.attrib["id"] == "json"
+                hasattr(element, "attrib")
+                and "id" in element.attrib.keys()
+                and element.attrib["id"] == "json"
             ):
                 json_text = element.text
 
