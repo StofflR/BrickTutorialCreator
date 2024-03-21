@@ -1,5 +1,7 @@
 import json
 from typing import Dict
+
+from modules import ConstDefs
 from modules.backend.SVGBrickModifier import *
 from PySide6.QtGui import QImage, QPainter
 from PySide6.QtSvg import QSvgRenderer
@@ -10,14 +12,14 @@ from modules.ConstDefs import *
 
 class SVGBrick(SVGBrickModifier):
     def __init__(
-        self,
-        base_type="",
-        content="",
-        size="1h",
-        path=DEF_BASE_BRICK,
-        scaling_factor=1,
-        x=DEFAULT_X,
-        y=DEFAULT_Y,
+            self,
+            base_type="",
+            content="",
+            size="1h",
+            path=DEF_BASE_BRICK,
+            scaling_factor=1,
+            x=DEFAULT_X,
+            y=DEFAULT_Y,
     ):
         self.toBeRemoved_ = []
         SVGBrickModifier.__init__(
@@ -60,9 +62,9 @@ class SVGBrick(SVGBrickModifier):
         json_text = ""
         for element in svg.getroot():
             if (
-                hasattr(element, "attrib")
-                and "id" in element.attrib.keys()
-                and element.attrib["id"] == "json"
+                    hasattr(element, "attrib")
+                    and "id" in element.attrib.keys()
+                    and element.attrib["id"] == "json"
             ):
                 json_text = element.text
 
@@ -161,7 +163,7 @@ class SVGBrick(SVGBrickModifier):
         self.toBeRemoved_.clear()
         self.toBeRemoved_.extend(failed)
 
-    def savePNG(self, path, width=1920, height=None) -> None:
+    def savePNG(self, path, width=ConstDefs.PNG_WIDTH, height=None) -> None:
         """
         Create a PNG of the current brick
         Parameters
@@ -172,20 +174,16 @@ class SVGBrick(SVGBrickModifier):
         """
         assert path != ""
         path = extendFileExtension(path, PNG_EXT)
-        renderer = QSvgRenderer(path.replace(PNG_EXT, SVG_EXT))
-        image = (
-            QImage(path.replace(PNG_EXT, SVG_EXT)).scaled(
-                width, height, mode=Qt.SmoothTransformation
-            )
-            if height
-            else QImage(path.replace(PNG_EXT, SVG_EXT)).scaledToWidth(
-                width, Qt.SmoothTransformation
-            )
-        )
+        renderer = QSvgRenderer(self.working_brick_)
+        if height is None:
+            height = getHeight(self.size, self.base_type)
+        scale = width / PNG_WIDTH
+        image = QImage(width * scale, height * scale, QImage.Format_ARGB32)
+
         painter = QPainter(image)
         renderer.render(painter)
-        del painter  # painter doesn't get deleted properly
         image.save(path, quality=100)
+        del painter  # painter doesn't get deleted properly
         logging.debug("Brick saved to: " + path)
 
     def parse(self, content: str, x=DEFAULT_X, y=DEFAULT_Y) -> None:

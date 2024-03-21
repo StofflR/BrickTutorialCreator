@@ -59,6 +59,16 @@ def generateRequiredFolders():
         os.makedirs(DEF_RESOURCE_OUT_EXPORT)
     if not os.path.isdir(DEF_TMP):
         os.makedirs(DEF_TMP)
+    if not os.path.isfile(DEF_BASE_BRICK):
+        with open(os.path.join(DEF_RESOURCE, "base_1h.svg"), "r") as file:
+            filedata = file.read()
+            filedata = (
+                filedata.replace("BACKGROUND", "408ac5")
+                .replace("SHADE", "27567c")
+                .replace("BORDER", "383838")
+            )
+        with open(DEF_BASE_BRICK, "w") as file:
+            file.write(filedata)
 
 
 def removeFileStub(path: str) -> str:
@@ -123,3 +133,17 @@ def cleanFileName(filename: str) -> str:
     for key, value in FORBIDDEN_FILE_NAME_CHARS.items():
         name = name.replace(key, value)
     return name
+
+
+def getHeight(size: str, base_type: str) -> float:
+    if size == "1h":
+        if "control" in base_type:
+            return PNG_HEIGHT_1H_CONTROL
+        return PNG_HEIGHT_1H
+    if size == "2h":
+        if "control" in base_type:
+            return PNG_HEIGHT_2H_CONTROL
+        return PNG_HEIGHT_2H
+    if size == "3h":
+        return PNG_HEIGHT_3H
+    return PNG_HEIGHT_0H
