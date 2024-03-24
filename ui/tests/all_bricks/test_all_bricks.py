@@ -4,6 +4,7 @@ import os
 from os import getcwd, walk
 import json
 
+sys.path.insert(0, os.getcwd())
 from modules.backend.SVGBrick import SVGBrick
 from tests.initializers import initQt, compareImages
 import modules.ConstDefs as Const
