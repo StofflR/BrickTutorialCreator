@@ -10,6 +10,7 @@ output_folder = os.path.join(os.getcwd(), "tests/ref")
 if not os.path.isdir(output_folder):
     os.mkdir(output_folder)
 
+
 def generate_bricks(data):
     for size in data["sizes"]:
         for brick_type in data["colors"]:
@@ -24,9 +25,11 @@ def generate_bricks(data):
                 y=33,
             )
             export_path = os.path.join(
-                output_folder, brick_path.replace(SVG_EXT, PNG_EXT).replace("brick_","")
+                output_folder,
+                brick_path.replace(SVG_EXT, PNG_EXT).replace("brick_", ""),
             )
             brick.savePNG(export_path)
+
 
 def generate_control_bricks(data):
     for size in data["sizes"]:
@@ -42,9 +45,11 @@ def generate_control_bricks(data):
                 y=33,
             )
             export_path = os.path.join(
-                output_folder, brick_path.replace(SVG_EXT, PNG_EXT).replace("brick_","")
+                output_folder,
+                brick_path.replace(SVG_EXT, PNG_EXT).replace("brick_", ""),
             )
             brick.savePNG(export_path)
+
 
 def generate_collapsed_bricks(data):
     for brick_type in data["colors"]:
@@ -59,9 +64,10 @@ def generate_collapsed_bricks(data):
             y=33,
         )
         export_path = os.path.join(
-            output_folder, brick_path.replace(SVG_EXT, PNG_EXT).replace("brick_","")
+            output_folder, brick_path.replace(SVG_EXT, PNG_EXT).replace("brick_", "")
         )
         brick.savePNG(export_path)
+
 
 data = {}
 data["colors"] = [

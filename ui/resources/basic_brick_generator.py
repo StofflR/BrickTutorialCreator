@@ -20,6 +20,7 @@ def crop_width(image_path, new_width, output):
     img_crop = img.crop(img_area)
     img_crop.save(output)
 
+
 def generate_bricks(data):
     for size in data["sizes"]:
         for brick_type in data["colors"]:
@@ -34,21 +35,22 @@ def generate_bricks(data):
                 y=33,
             )
 
-            #height = Const.PNG_HEIGHT_1H
-            height=66
-            width=81
-            export_width = Const.PNG_WIDTH/Const.PNG_HEIGHT_1H*height
+            # height = Const.PNG_HEIGHT_1H
+            height = 66
+            width = 81
+            export_width = Const.PNG_WIDTH / Const.PNG_HEIGHT_1H * height
             if "2h" in size:
-                height=108
+                height = 108
             #    height = Const.PNG_HEIGHT_2H
             elif "3h" in size:
-                height=142
+                height = 142
             #    height = Const.PNG_HEIGHT_3H
             export_path = os.path.join(
                 output_folder, brick_path.replace(SVG_EXT, PNG_EXT)
             )
             brick.savePNG(export_path, width=export_width, height=height)
             crop_width(export_path, width, export_path.replace("png", "9.png"))
+
 
 def generate_control_bricks(data):
     for size in data["sizes"]:
@@ -63,13 +65,13 @@ def generate_control_bricks(data):
                 x=43,
                 y=33,
             )
-            #height = Const.PNG_HEIGHT_1H
+            # height = Const.PNG_HEIGHT_1H
 
-            height=95
-            width=311
-            export_width = Const.PNG_WIDTH/Const.PNG_HEIGHT_1H*height
+            height = 95
+            width = 311
+            export_width = Const.PNG_WIDTH / Const.PNG_HEIGHT_1H * height
             if "2h" in size:
-                height=134
+                height = 134
             export_path = os.path.join(
                 output_folder, brick_path.replace(SVG_EXT, PNG_EXT)
             )
@@ -94,8 +96,8 @@ data["colors"] = [
     "pink",
     "red",
     "white",
-    #"transparent_white",
-    #"transparent_black",
+    # "transparent_white",
+    # "transparent_black",
 ]
 initQt()
 generate_bricks(data)

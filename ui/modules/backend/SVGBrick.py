@@ -179,7 +179,7 @@ class SVGBrick(SVGBrickModifier):
             scale = width / PNG_WIDTH
             height = getHeight(self.size, self.base_type) * scale
         image = QImage(width, height, QImage.Format_ARGB32)
-        image.fill(QColor(0,0,0,0))
+        image.fill(QColor(0, 0, 0, 0))
         painter = QPainter(image)
         renderer.render(painter)
         image.save(path, quality=100)
