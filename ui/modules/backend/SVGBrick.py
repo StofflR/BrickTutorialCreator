@@ -151,7 +151,6 @@ class SVGBrick(SVGBrickModifier):
         logging.debug("Brick saved to: " + path)
         self.tree_.write(path)
 
-
     def cleanup(self):
         failed = []
         for path in self.toBeRemoved_:
