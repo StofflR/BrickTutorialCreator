@@ -81,14 +81,14 @@ Item {
             "border": white_border
         }, {
             "name": "transparent_white",
-            "color": "FFFFFF",
-            "shade": "00FFFFFF",
-            "border": "00FFFFFF"
+            "color": "ffffffff",
+            "shade": "ffffffff",
+            "border": "ffffffff"
         }, {
             "name": "transparent_black",
-            "color": "000000",
-            "shade": "00FFFFFF",
-            "border": "00FFFFFF"
+            "color": "000000ff",
+            "shade": "000000ff",
+            "border": "000000ff"
         }]
 
     property string blue: "408ac5"

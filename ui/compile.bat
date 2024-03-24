@@ -10,6 +10,7 @@ xcopy.exe .\base\ .\BrickTutorialCreator.dist\base\ /s
 copy .\resources\icon.svg .\BrickTutorialCreator.dist\resources\icon.svg
 copy .\resources\fonts\Roboto-Bold.ttf .\BrickTutorialCreator.dist\resources\fonts\Roboto-Bold.ttf
 copy .\resources\fonts\Roboto-Light.ttf .\BrickTutorialCreator.dist\resources\fonts\Roboto-Light.ttf
+copy .\resources\ccbysa.svg .\BrickTutorialCreator.dist\resources\ccbysa.svg
 
 echo "Zipping Application ..."
 ren BrickTutorialCreator.dist BrickTutorialCreator

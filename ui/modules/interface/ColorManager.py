@@ -1,5 +1,6 @@
 from PySide6.QtCore import Slot, QObject
 from PySide6.QtQml import QmlElement
+from modules.ConstDefs import *
 import os
 
 QML_IMPORT_NAME = "ColorManager"
@@ -13,18 +14,32 @@ class ColorManager(QObject):
 
     @Slot(str, result=bool)
     def exists(self, file):
-        return os.path.isfile(os.getcwd() + "/base/" + file)
+        """
+        Check if file exists
+        Parameters
+        ----------
+        file: file to be checked
+        """
+        return os.path.isfile(os.path.join(DEF_BASE, file))
 
     @Slot(str, str, str, str, str)
     def addBaseType(self, path, background, shade, border, base):
-        with open(os.getcwd() + "/resources/" + base, "r") as file:
+        """
+        Create base brick for color if it is not present
+        Parameters
+        ----------
+        path: base brick file to be stored
+        background: background color
+        shade: shade color
+        border: border color
+        base: reference base brick path
+        """
+        with open(os.path.join(DEF_RESOURCE, base), "r") as file:
             filedata = file.read()
             filedata = (
                 filedata.replace("BACKGROUND", background)
                 .replace("SHADE", shade)
                 .replace("BORDER", border)
-                .replace("ns0:", "")
-                .replace(":ns0", "")
             )
-        with open(os.getcwd() + "/base/" + path, "w") as file:
+        with open(os.path.join(DEF_BASE, path), "w") as file:
             file.write(filedata)

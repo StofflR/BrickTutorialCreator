@@ -14,11 +14,14 @@ import TutorialSourceManager 1.0
 
 Item {
     id: root
+    width: parent.width
+    anchors.margins: AppStyle.spacing
+    anchors.fill: parent
+
     LabelTextField {
         id: tutorialName
         anchors.top: root.top
-        anchors.topMargin: AppStyle.spacing
-        property string folderPath: tempFolder.replace(fileStub, "")
+        property string folderPath: resourcesOutFolder.replace(fileStub, "")
         width: root.width / 2
         label: "Name:"
         field.text: "new_tutorial"
@@ -69,7 +72,7 @@ Item {
             anchors.fill: parent
             onDropped: function (drop) {
                 for (const url of drop.urls) {
-                    tutorialManager.addBrick(url)
+                    tutorialManager.addBrick(decodeURIComponent(url))
                 }
             }
         }
@@ -92,11 +95,11 @@ Item {
                 ListView {
                     id: timeline
 
-                    signal remove(int index)
-                    onRemove: index => {
-                                  tutorialManager.removeBrick(index)
-                                  proxyModel.selectedIndex = -1
-                              }
+                    signal removeAt(int index)
+                    onRemoveAt: index => {
+                                    tutorialManager.removeBrick(index)
+                                    proxyModel.selectedIndex = -1
+                                }
                     snapMode: ListView.SnapToItem
                     anchors.topMargin: AppStyle.spacing
                     anchors.fill: scrollview
@@ -184,8 +187,9 @@ Item {
                         ToolTip.text: qsTr("Add existing brick")
                     }
                     IconButton {
-                        property string currentFile: tutorialName.folderPath + "/"
-                                                     + tutorialName.field.text
+                        property string currentFile: decodeURIComponent(
+                                                         tutorialName.folderPath
+                                                         + "/" + tutorialName.field.text)
                         icon.source: "qrc:/bricks/resources/text_snippet_black_24dp.svg"
                         width: height
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
@@ -194,15 +198,16 @@ Item {
                         onPressed: {
                             tutorialManager.toJSON(currentFile)
                             root.updateStatusMessage(
-                                        "INFO: Saved tutorial to " + currentFile + ".json")
+                                        "INFO: Saved tutorial to " + currentFile + JSON_EXT)
                         }
                         ToolTip.visible: hovered
                         ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
                         ToolTip.text: qsTr("Save tutorial to JSON")
                     }
                     IconButton {
-                        property string currentFile: tutorialName.folderPath + "/"
-                                                     + tutorialName.field.text
+                        property string currentFile: decodeURIComponent(
+                                                         tutorialName.folderPath
+                                                         + "/" + tutorialName.field.text)
                         icon.source: "qrc:/bricks/resources/image_black.svg"
                         width: height
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
@@ -395,7 +400,9 @@ Item {
                 availableBricks: manager?.model
                 groupedView: enableSorting.checked
                 onAddBrick: file => {
-                                tutorialManager.addBrick(file)
+                                tutorialManager.addBrick(
+                                    decodeURIComponent(file),
+                                    proxyModel.selectedIndex)
                             }
             }
             FolderDialog {

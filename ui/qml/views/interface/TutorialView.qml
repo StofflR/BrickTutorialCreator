@@ -44,12 +44,16 @@ DelegateModel {
                     id: image
                     width: content.width - 20
                     source: modelData
+                    fillMode: Image.PreserveAspectFit
+                    sourceSize.width: width
+                    smooth: true
+                    cache: true
                 }
                 Rectangle {
                     width: 10
                     height: image.height - image.width * 0.018
                     opacity: dragArea.DelegateModel.itemsIndex === visualModel.selectedIndex ? 1 : 0
-                    color: palette.base
+                    color: palette.highlight
                     anchors.left: image.right
                     anchors.margins: 5
                     radius: 5

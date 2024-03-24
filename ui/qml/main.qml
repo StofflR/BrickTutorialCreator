@@ -28,7 +28,6 @@ ApplicationWindow {
     }
 
     menuBar: MenuBar {
-
         Menu {
             id: file
             title: qsTr("File")
@@ -84,7 +83,7 @@ ApplicationWindow {
                     font.family: "Roboto"
                     font.pointSize: AppStyle.pointsizeSpacing
                 }
-                onTriggered: brickConverter.fromTutorialtoPNG()
+                onTriggered: brickConverter.fromTutorialToPNG()
             }
             MenuSeparator {}
             MenuItem {
@@ -145,8 +144,6 @@ ApplicationWindow {
         Item {
             TutorialCreator {
                 id: creator
-                width: parent.width
-                height: parent.height - 20
                 onUpdateStatusMessage: text => root.updateStatusMessage(text)
             }
         }
@@ -175,8 +172,12 @@ ApplicationWindow {
         height: root.height - 200
         modal: true
         focus: true
-        contentItem: Rectangle {
-            anchors.fill: parent
+        ColumnLayout {
+            Text {
+                text: "This app has been created by a sloth programmer! <br> If you find issues you can contact me under <a href=\"mailto:it-sloth@pm.me?subject=BrickTutorialCreator:You subject here!\">Send Email</a>! <br>The source code and up-to-date versions can be found under <a href=\"https://github.com/StofflR/BrickTutorialCreator\">github</a>!"
+                color: palette.windowText
+                onLinkActivated: url => Qt.openUrlExternally(url)
+            }
         }
     }
     HelpPopup {

@@ -1,1 +1,66 @@
-<svg xmlns="http://www.w3.org/2000/svg" id="Ebene_1" data-name="Ebene 1" viewBox="0 0 348 96"><defs><style>.cls-1{fill:none;}.cls-2,.cls-3{fill:#383838;}.cls-3{opacity:0.75;}.cls-4{fill:#f24e50;}.cls-5,.cls-8{fill:#fff;}.cls-5{opacity:0.4;}.cls-6{opacity:0.5;}.cls-7{clip-path:url(#clip-path);}.cls-8{opacity:0.05;}.cls-9{fill:#ae2f2f;}.cls-10{clip-path:url(#clip-path-2);}.cls-11{clip-path:url(#clip-path-3);}.cls-12{clip-path:url(#clip-path-4);}.cls-13{clip-path:url(#clip-path-5);}.cls-14{clip-path:url(#clip-path-6);}.cls-15{clip-path:url(#clip-path-7);}</style><clipPath id="clip-path" transform="translate(0 11)"><rect class="cls-1" x="8.5" y="16.5" width="29" height="5" /></clipPath><clipPath id="clip-path-2" transform="translate(0 11)"><rect class="cls-1" x="8.5" y="22.5" width="29" height="5" /></clipPath><clipPath id="clip-path-3" transform="translate(0 11)"><rect class="cls-1" x="8.5" y="28.5" width="29" height="5" /></clipPath><clipPath id="clip-path-4" transform="translate(0 11)"><rect class="cls-1" x="8.5" y="34.5" width="29" height="5" /></clipPath><clipPath id="clip-path-5" transform="translate(0 11)"><rect class="cls-1" x="8.5" y="40.5" width="29" height="5" /></clipPath><clipPath id="clip-path-6" transform="translate(0 11)"><rect class="cls-1" x="8.5" y="46.5" width="29" height="5" /></clipPath><clipPath id="clip-path-7" transform="translate(0 11)"><rect class="cls-1" x="8.5" y="52.5" width="29" height="5" /></clipPath></defs><polygon class="cls-2" points="32.25 6.063 12.75 6.063 11.849 3.938 0 3.938 0 91.875 11 91.875 12.75 96 32.25 96 34 91.875 348 91.875 348 4.102 348 3.938 33.151 3.938 32.25 6.063" /><polygon class="cls-3" points="32.25 4.063 12.75 4.063 11.026 0 0 0 0 87.875 11 87.875 12.75 92 32.25 92 34 87.875 348 87.875 348 0.102 348 0 33.974 0 32.25 4.063" /><polygon class="cls-4" points="32.25 6.063 12.75 6.063 11 1.938 0 1.938 0 89.875 11 89.875 12.75 94 32.25 94 34 89.875 348 89.875 348 2.102 348 1.938 34 1.938 32.25 6.063" /><polygon id="highlight" class="cls-5" points="34 1.938 32.25 6.063 12.75 6.063 11 1.938 0 1.938 0 3.938 11 3.938 12.75 8.063 32.25 8.063 34 3.938 348 3.938 348 2.102 348 1.938 34 1.938" /><g id="lines" class="cls-6"><g id="line"><g class="cls-7"><rect class="cls-8" x="6.138" y="25.22" width="31.458" height="7.952" /><rect class="cls-9" x="6.465" y="26.422" width="31.458" height="2.197" /><rect class="cls-9" x="37.118" y="27.866" width="0.603" height="4.945" /><rect class="cls-9" x="8.234" y="27.745" width="0.603" height="4.945" /></g></g><g id="line-2" data-name="line"><g class="cls-10"><rect class="cls-8" x="6.183" y="31.144" width="31.458" height="7.952" /><rect class="cls-9" x="6.51" y="32.347" width="31.458" height="2.197" /><rect class="cls-9" x="37.163" y="33.79" width="0.603" height="4.945" /><rect class="cls-9" x="8.279" y="33.67" width="0.603" height="4.945" /></g></g><g id="line-3" data-name="line"><g class="cls-11"><rect class="cls-8" x="6.138" y="37.16" width="31.458" height="7.952" /><rect class="cls-9" x="6.465" y="38.362" width="31.458" height="2.197" /><rect class="cls-9" x="37.118" y="39.805" width="0.603" height="4.945" /><rect class="cls-9" x="8.234" y="39.685" width="0.603" height="4.945" /></g></g><g id="line-4" data-name="line"><g class="cls-12"><rect class="cls-8" x="6.183" y="43.084" width="31.458" height="7.952" /><rect class="cls-9" x="6.51" y="44.286" width="31.458" height="2.197" /><rect class="cls-9" x="37.163" y="45.73" width="0.603" height="4.945" /><rect class="cls-9" x="8.279" y="45.609" width="0.603" height="4.945" /></g></g><g id="line-5" data-name="line"><g class="cls-13"><rect class="cls-8" x="6.183" y="49.144" width="31.458" height="7.952" /><rect class="cls-9" x="6.51" y="50.347" width="31.458" height="2.197" /><rect class="cls-9" x="37.163" y="51.79" width="0.603" height="4.945" /><rect class="cls-9" x="8.279" y="51.67" width="0.603" height="4.945" /></g></g><g id="line-6" data-name="line"><g class="cls-14"><rect class="cls-8" x="6.138" y="55.205" width="31.458" height="7.952" /><rect class="cls-9" x="6.465" y="56.407" width="31.458" height="2.197" /><rect class="cls-9" x="37.118" y="57.851" width="0.603" height="4.945" /><rect class="cls-9" x="8.234" y="57.73" width="0.603" height="4.945" /></g></g><g id="line-7" data-name="line"><g class="cls-15"><rect class="cls-8" x="6.138" y="61.084" width="31.458" height="7.952" /><rect class="cls-9" x="6.465" y="62.286" width="31.458" height="2.197" /><rect class="cls-9" x="37.118" y="63.73" width="0.603" height="4.945" /><rect class="cls-9" x="8.234" y="63.609" width="0.603" height="4.945" /></g></g></g><text id="text" x="43px" y="33px" fill="#FFFFFF" fill-opacity="1" font-weight="bold" xml:space="preserve" style="font-family: Roboto;font-size:12.0pt;">Set variable</text><text id="text" x="43px" y="47.0px" fill="#FFFFFF" fill-opacity="1" font-weight="bold" xml:space="preserve" style="font-family: Roboto;font-size:12.0pt;" /><polygon points="326,35.0 329.0,35.0 327.5,38.0" id="triangle" stroke="white" fill="white" stroke-width="0.5" /><text id="drop" x="48.0px" y="47.0px" fill="#FFFFFF" fill-opacity="1" font-weight="normal" xml:space="preserve" style="font-family: Roboto;font-size:10.0pt;">inner loop</text><text id="text" x="113.0px" y="50.0px" fill="#FFFFFF" fill-opacity="1" font-weight="bold" xml:space="preserve" style="font-family: Roboto;font-size:12.0pt;" /><text id="text" x="43px" y="64.0px" fill="#FFFFFF" fill-opacity="1" font-weight="bold" xml:space="preserve" style="font-family: Roboto;font-size:12.0pt;">to </text><text id="text" x="60.0px" y="64.0px" fill="#FFFFFF" fill-opacity="1" font-weight="normal" xml:space="preserve" style="font-family: Roboto;font-size:12.0pt;"> phiro front right sensor </text><line id="var_line" x1="60" y1="67.0" x2="217.0" y2="67.0" stroke="#ffffff" fill="#ffffff" stroke-width="1" /><text id="text" x="217.0px" y="64.0px" fill="#FFFFFF" fill-opacity="1" font-weight="bold" xml:space="preserve" style="font-family: Roboto;font-size:12.0pt;" /><desc id="json" tag="brick">{"base_type": "red", "content": "Set variable\n*inner loop*\nto $phiro front right sensor$", "size": "2h", "path": "brick_red_2h.svg", "scaling_factor": 1.0, "x": 43, "y": 33}</desc></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 348.181 94.748">
+    <style>
+        .background {
+            fill: #f24e50;
+        }
+
+        .border {
+            fill: #383838;
+        }
+
+        .shade {
+            fill: #ae2f2f;
+            stop-color: #000000;
+        }
+    </style>
+    <defs>
+        <linearGradient id="grad1" x1="0%" x2="0%" y1="0%" y2="100%">
+            <stop offset="0%" class="shade" stop-opacity="0.3" />
+            <stop offset="35%" class="shade" stop-opacity="0" />
+        </linearGradient>
+        <linearGradient id="grad2" x1="0%" x2="100%" y1="0%" y2="0%">
+            <stop offset="0%" class="shade" stop-opacity="0.125" />
+            <stop offset="2.5%" class="shade" stop-opacity="0" />
+        </linearGradient>
+        <linearGradient id="grad3" x1="100%" x2="0%" y1="0%" y2="0%">
+            <stop offset="0%" class="shade" stop-opacity="0.125" />
+            <stop offset="2.5%" class="shade" stop-opacity="0" />
+        </linearGradient>
+
+        <g id="tabblock">
+            <g>
+                <rect fill-opacity="0.025" width="25.458" height="6.836" x="10.271" y="22.5" fill="#fff" />
+                <rect width="25.458" height="6.836" x="10.271" y="22.5" fill="url(#grad1)" />
+                <rect width="25.458" height="6.836" x="10.271" y="22.5" fill="url(#grad2)" />
+                <rect width="25.458" height="6.836" x="10.271" y="22.5" fill="url(#grad3)" />
+            </g>
+        </g>
+    </defs>
+    
+    <g viewBox="0 10 348.181 94.748">
+        <path class="background" d="M0,5h348.181v85h-348.181z" />
+    </g>
+    
+    <g viewbox="0 0 351.887 72.748">
+        <path class="background" d="M0,2.000l11,0l1.75,4.125l19.5,0l1.75,-4.125l320,0l0,4.125l-355,0l0,-4.125z" />
+
+        <path class="border" d="M347.736,0l-315.056,0.001l0,0.008l-1.749,4.117l-16.858,0l-1.752,-4.126l-0.019,0.008l0,-0.007l-12.302,0l0,2l10.998,0l1.748,4.115l0.005,-0.002l0,0.012l19.502,0l0,-0.003l0.002,0.001l1.752,-4.123l320,-0.001l0,-2z" />
+        <path fill-opacity="0.4" fill="#fff" d="M347.736,2.063l-313.753,-0.063l0,0.003l-0.008,-0.003l-1.751,4.125l-19.484,0l-1.74,-4.098l0,-0.027l-11,0l0,2l9.665,0l1.753,4.127l0.005,-0.002l22.115,0l0,-0.001l0.008,0.003l1.753,-4.127l320,0.063l0,-2z" stroke-opacity="0.4" />
+    </g>
+    
+    <g viewbox="0 0 348 69">
+        <use y="1" href="#tabblock" />
+        <use y="9" href="#tabblock" />
+        <use y="17.2" href="#tabblock" />
+        <use y="25.2" href="#tabblock" />
+        <use y="33.2" href="#tabblock" />
+        <use y="41.2" href="#tabblock" />
+        <use y="49.7" href="#tabblock" />
+    </g>
+
+    
+    <g viewbox="0 0 351.887 94.748">
+        <path class="background" d="M0,88.661l12.318,-0.004l1.75,4.125l16.857,0.014l1.75,-4.125l12.367,-0.004l-45.042,-0.006z" />
+        <path class="border" d="M347.736,88.657l-315.056,0.001l0,0.008l-1.749,4.117l-16.858,0l-1.752,-4.126l-0.019,0.008l0,-0.007l-12.302,0l0,2l10.998,0l1.748,4.115l0.005,-0.002l0,0.012l19.502,0l0,-0.003l0.002,0.001l1.752,-4.123l317.729,-0.001l0,-2z" />
+    </g>
+<text id="text" x="43px" y="33px" fill="#FFFFFF" fill-opacity="1" font-weight="bold" xml:space="preserve" style="font-family: Roboto;font-size:12.0pt;">Set variable</text><text id="text" x="43px" y="47.0px" fill="#FFFFFF" fill-opacity="1" font-weight="bold" xml:space="preserve" style="font-family: Roboto;font-size:12.0pt;" /><polygon points="326,35.0 329.0,35.0 327.5,38.0" id="triangle" stroke="#FFFFFF" fill="#FFFFFF" stroke-width="0.5" /><text id="drop" x="48.0px" y="47.0px" fill="#FFFFFF" fill-opacity="1" font-weight="normal" xml:space="preserve" style="font-family: Roboto;font-size:10.0pt;">inner loop</text><text id="text" x="102.0px" y="50.0px" fill="#FFFFFF" fill-opacity="1" font-weight="bold" xml:space="preserve" style="font-family: Roboto;font-size:12.0pt;" /><text id="text" x="43px" y="64.0px" fill="#FFFFFF" fill-opacity="1" font-weight="bold" xml:space="preserve" style="font-family: Roboto;font-size:12.0pt;">to </text><text id="text" x="60.0px" y="64.0px" fill="#FFFFFF" fill-opacity="1" font-weight="normal" xml:space="preserve" style="font-family: Roboto;font-size:12.0pt;"> phiro front right sensor </text><line id="var_line" x1="60" y1="67.0" x2="217.0" y2="67.0" stroke="#FFFFFF" fill="#FFFFFF" stroke-width="1" /><desc id="json" tag="brick">{"base_type": "red", "content": "Set variable\n*inner loop*\nto $phiro front right sensor$", "size": "2h", "path": "brick_red_2h.svg", "scaling_factor": 1.0, "x": 43, "y": 33}</desc></svg>

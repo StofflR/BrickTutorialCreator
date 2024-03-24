@@ -103,6 +103,17 @@ Item {
             active: true
         }
 
+        footer: Item {
+            width: colorList.width
+            height: addCustomColorButton.height
+            IconButton {
+                id: addCustomColorButton
+                height: 15
+                anchors.centerIn: parent
+                icon.source: "qrc:/bricks/resources/add_black_24dp.svg"
+                onClicked: console.log("add custom color")
+            }
+        }
         delegate: ItemDelegate {
             id: delegate
             width: colorSelector.width * 2 / 3
@@ -132,21 +143,27 @@ Item {
                 id: background
                 width: delegate.width / 5
                 height: name.height
-                color: "#" + modelData.color
+                color: "#" + (modelData.color.length == 8 ? modelData.color.slice(
+                                                                0,
+                                                                6) : modelData.color)
             }
             Rectangle {
                 id: shade
                 anchors.left: background.right
                 width: delegate.width / 5
                 height: name.height
-                color: "#" + modelData.shade
+                color: "#" + (modelData.shade.length == 8 ? modelData.shade.slice(
+                                                                0,
+                                                                6) : modelData.shade)
             }
             Rectangle {
                 id: border
                 anchors.left: shade.right
                 width: delegate.width / 5
                 height: name.height
-                color: "#" + modelData.border
+                color: "#" + (modelData.border.length == 8 ? modelData.border.slice(
+                                                                 0,
+                                                                 6) : modelData.border)
             }
             Label {
                 id: name

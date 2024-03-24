@@ -1,76 +1,86 @@
-import QtQuick 2.0
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import QtQml.Models 2.1
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import QtQml.Models
 
 import "../../font"
 import "../../style"
 
 ItemDelegate {
     id: root
-    property string sourcePath
-    property string sourceFolder
-    property string targetFolder
-    property alias translationBrick: target
+    required property string sourcePath
+    required property string sourceFile
+    required property string targetFolder
+    required property string targetPath
 
-    width: parent ? parent.width : 0
-    height: target.height + target.height
-            < AppStyle.defaultHeight ? AppStyle.defaultHeight : target.height
+    required property bool keepName
+    required property bool split
+    required property int index
 
-    onTargetFolderChanged: reload()
+    required property bool saveSVG
+    required property bool savePNG
+    required property bool saveJSON
 
-    function reload() {
-        var folder = targetFolder
-        var targetPath = sourceFolder + "/" + folder + "/" + sourcePath
-        var source = sourceFolder + "/" + sourcePath
-        if (languageManager ?? languageManager.exists(targetPath)) {
-            return target.loadFromFile(targetPath)
-        }
-        if (folder != "") {
-            console.log(source)
-            target.loadFromFile(source)
-            target.brick.saveSVG(sourceFolder + "/" + folder, sourcePath)
-        }
-    }
-    Rectangle {
-        anchors.fill: sourceImage
-        radius: 5
-        color: palette.midlight
-    }
-    Rectangle {
-        anchors.fill: target
-        radius: 5
-        color: palette.midlight
+    property bool enabled: false
+
+    function loadBrick() {
+        if (root.sourcePath != "" && root.enabled)
+            target.loadFromFile(
+                        (root.targetPath == "") ? root.sourcePath : root.targetPath)
     }
 
+    onTargetFolderChanged: loadBrick()
+    onEnabledChanged: loadBrick()
+
+    height: source.height > 0 ? source.height : target.height
+    width: parent?.width
     Image {
-        id: sourceImage
-        anchors.left: root.left
-        source: sourceFolder + "/" + sourcePath
-        width: root.width / 2
-        height: target.height
-        ToolTip.visible: hovered
-        ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-        ToolTip.text: sourcePath
+        id: source
+        asynchronous: true
+        width: split ? parent.width / 2 - AppStyle.spacing : 0
+        visible: split
+        source: sourcePath
         fillMode: Image.PreserveAspectFit
-    }
-
-    MouseArea {
-        anchors.fill: root
-        onClicked: root.forceActiveFocus()
+        anchors.left: root.left
+        sourceSize.width: width
+        smooth: true
+        cache: true
     }
     EditableBrick {
         id: target
+        width: split ? parent.width / 2 : parent.width
         anchors.right: root.right
-        width: root.width / 2
         loadButton.enabled: false
         saveButton.enabled: false
         clearButton.enabled: false
-        onDataChanged: if (modified) {
-                           target.brick.saveSVG(
-                                       sourceFolder + "/" + targetFolder,
-                                       sourcePath)
-                           modified = false
-                       }
+
+        function saveBrick() {
+            if (keepName) {
+                if (saveSVG)
+                    target.brick.saveSVG(targetFolder, sourceFile)
+                if (savePNG)
+                    target.brick.savePNG(targetFolder, sourceFile)
+                if (saveJSON)
+                    target.brick.saveJSON(targetFolder, sourceFile)
+            } else {
+                if (saveSVG)
+                    target.brick.saveSVG(targetFolder)
+                if (savePNG)
+                    target.brick.savePNG(targetFolder)
+                if (saveJSON)
+                    target.brick.saveJSON(targetFolder)
+            }
+        }
+        Component.onCompleted: root.enabled = true
+
+        Keys.onPressed: event => {
+                            if (event.matches(StandardKey.Save)) {
+                                root.forceActiveFocus()
+                                saveBrick()
+                            } else if (event.matches(StandardKey.Cancel)) {
+                                root.forceActiveFocus()
+                                saveBrick()
+                            }
+                        }
     }
 }
