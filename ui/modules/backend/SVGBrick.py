@@ -3,7 +3,7 @@ from typing import Dict
 
 from modules import ConstDefs
 from modules.backend.SVGBrickModifier import *
-from PySide6.QtGui import QImage, QPainter
+from PySide6.QtGui import QImage, QPainter, QColor
 from PySide6.QtSvg import QSvgRenderer
 from PySide6.QtCore import Qt
 from modules.Utility import *
@@ -176,14 +176,16 @@ class SVGBrick(SVGBrickModifier):
         path = extendFileExtension(path, PNG_EXT)
         renderer = QSvgRenderer(self.working_brick_)
         if height is None:
-            height = getHeight(self.size, self.base_type)
-        scale = width / PNG_WIDTH
-        image = QImage(width * scale, height * scale, QImage.Format_ARGB32)
-
+            scale = width / PNG_WIDTH
+            height = getHeight(self.size, self.base_type) * scale
+        image = QImage(width, height, QImage.Format_ARGB32)
+        image.fill(QColor(0,0,0,0))
         painter = QPainter(image)
         renderer.render(painter)
         image.save(path, quality=100)
+        del renderer
         del painter  # painter doesn't get deleted properly
+        del image
         logging.debug("Brick saved to: " + path)
 
     def parse(self, content: str, x=DEFAULT_X, y=DEFAULT_Y) -> None:

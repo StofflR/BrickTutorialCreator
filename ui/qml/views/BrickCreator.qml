@@ -159,7 +159,7 @@ Item {
         anchors.left: ySlider.right
         anchors.leftMargin: AppStyle.spacing / 2
         anchors.bottom: bottomPadding.top
-
+        anchors.bottomMargin: brick?.brickSize == "0h" ? 70 : 0
         DropArea {
             anchors.fill: parent
             onDropped: function (drop) {
@@ -170,24 +170,7 @@ Item {
         }
         asynchronous: false
         colorButton.visible: false
-        brick.onBrickSizeChanged: {
-            if (brick.brickSize == "0h") {
-                ySlider.from = 0
-                ySlider.to = 0
-            }
-            if (brick.brickSize == "1h") {
-                ySlider.from = 60
-                ySlider.to = 15
-            }
-            if (brick.brickSize == "2h") {
-                ySlider.from = 85
-                ySlider.to = 15
-            }
-            if (brick.brickSize == "3h") {
-                ySlider.from = 110
-                ySlider.to = 15
-            }
-        }
+
         brick.scalingFactor: contentScale.slider.value / 100
         brick.xPos: xSlider.value
         brick.yPos: ySlider.value
@@ -249,6 +232,7 @@ Item {
         anchors.margins: AppStyle.spacing / 2
         from: 1
         to: 345
+        enabled: edtiableBrick?.brick?.brickSize != "0h"
         property int defaultValue: 43
         value: defaultValue
     }
@@ -258,8 +242,12 @@ Item {
         anchors.bottom: edtiableBrick.bottom
         anchors.top: edtiableBrick.top
         anchors.margins: AppStyle.spacing / 2
-        from: 60
+        from: edtiableBrick?.brick?.brickSize
+              == "0h" ? 110 : edtiableBrick?.brick?.brickSize
+                        == "1h" ? 60 : edtiableBrick?.brick?.brickSize == "2h" ? 85 : 110
+
         to: 15
+        enabled: edtiableBrick?.brick?.brickSize != "0h"
         orientation: Qt.Vertical
         property int defaultValue: 33
         value: defaultValue

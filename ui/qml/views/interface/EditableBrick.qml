@@ -14,9 +14,7 @@ Image {
     readonly property string brickContent: previewContent.text
 
     property bool disable: false
-
     property string statusText
-
     property alias brick: modifyableBrick
     property alias saveButton: saveButton
     property alias loadButton: loadButton
@@ -29,7 +27,7 @@ Image {
     signal save
     brick.onContentChanged: previewContent.text = modifyableBrick.brickContent
     source: decodeURIComponent(
-                previewContent.cursorVisible ? modifyableBrick?.fullBasePath : modifyableBrick?.workingPath)
+                previewContent?.cursorVisible ? modifyableBrick?.fullBasePath : modifyableBrick?.workingPath)
 
     asynchronous: true
     smooth: true
@@ -92,14 +90,25 @@ Image {
         color: modifyableBrick?.baseType?.lastIndexOf(
                    "white") == -1 ? "white" : modifyableBrick?.baseType?.lastIndexOf(
                                         "transparent") == -1 ? "blue" : "black"
+
         font.pointSize: 12 * previewContent.scale <= 0 ? 12 : 12 * previewContent.scale
     }
 
     TextArea {
         id: previewContent
+        property bool contentAddable: modifyableBrick?.brickSize != "0h"
+        property string textBuffer: ""
+        onContentAddableChanged: {
+            if (contentAddable)
+                text = textBuffer
+            else
+                textBuffer = text
+        }
+
         persistentSelection: true
         text: ""
-        placeholderText: "<b>Click to modify content!<\b>"
+        placeholderText: contentAddable ? "<b>Click to modify content!<\b>" : ""
+        enabled: contentAddable
         anchors.left: svgPreview.left
         anchors.top: svgPreview.top
         width: svgPreview.width - modifyableBrick?.xPos
@@ -111,6 +120,8 @@ Image {
         property real scale: svgPreview.paintedWidth * modifyableBrick?.scalingFactor / 350
         wrapMode: TextEdit.WordWrap
         font: textView.font
+        color: textView.color
+        placeholderTextColor: textView.color
         opacity: text ? 0 : 1
         cursorVisible: false
     }
