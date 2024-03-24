@@ -251,6 +251,11 @@ Item {
             saveSVG: svg_save.checked
             savePNG: png_save.checked
             saveJSON: json_save.checked
+            hoverEnabled: true
+            ToolTip.text: translationList.model[index]["sourcePath"].replace(
+                              fileStub, "")
+            ToolTip.visible: hovered
+            ToolTip.delay: 1000
         }
     }
 }

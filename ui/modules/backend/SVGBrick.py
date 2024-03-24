@@ -21,7 +21,6 @@ class SVGBrick(SVGBrickModifier):
         x=DEFAULT_X,
         y=DEFAULT_Y,
     ):
-        self.toBeRemoved_ = []
         SVGBrickModifier.__init__(
             self, base_type, content, size, path, scaling_factor, x, y
         )
@@ -144,13 +143,14 @@ class SVGBrick(SVGBrickModifier):
         ----------
         path: The path where the file should be saved to
         """
+        self.cleanup()
         if path == "":
             path = self.working_brick_
+            self.toBeRemoved_.append(path)
         path = extendFileExtension(path, SVG_EXT)
         logging.debug("Brick saved to: " + path)
         self.tree_.write(path)
 
-        self.cleanup()
 
     def cleanup(self):
         failed = []

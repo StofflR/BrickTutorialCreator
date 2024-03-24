@@ -13,7 +13,6 @@ QML_IMPORT_MAJOR_VERSION = 1
 @QmlElement
 class Brick(SVGBrick, QObject):
     def __init__(self, parent=None):
-        self.toBeRemoved_ = []
         SVGBrick.__init__(self)
         QObject.__init__(self, parent)
 

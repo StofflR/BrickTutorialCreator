@@ -47,10 +47,10 @@ class SVGBrickModifier:
         self.x = x
         self.y = y
 
-        self.working_brick_ = os.path.join(DEF_TMP, randomString(10) + SVG_EXT)
+        self.toBeRemoved_ = []
+        self.working_brick_ = None
         self.tree_: Tree
         self.tree_ = None
-        self.toBeRemoved_ = []
         self.reset()
         self.operations = {
             OP_KEY_NEWLINE: self.addLineBreak,
@@ -64,9 +64,6 @@ class SVGBrickModifier:
         Reset the current SVG Brick and change the working brick path
         Note: QMLImage buffers images, therefore a different path is needed!
         """
-        if self.working_brick_ and os.path.exists(self.working_brick_):
-            self.toBeRemoved_.append(self.working_brick_)
-            logging.debug("To be removed working brick: " + self.working_brick_)
         self.working_brick_ = os.path.join(DEF_TMP, randomString(10) + SVG_EXT)
         logging.debug("New working brick: " + self.working_brick_)
         self.tree_ = Tree.parse(open(os.path.join(DEF_BASE, self.path), "r"))
