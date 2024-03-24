@@ -8,8 +8,24 @@ from tests.initializers import initQt, compareImages
 from modules.ConstDefs import *
 
 data = {}
-data["sizes"] = ["1h"]
-data["colors"] = ["cyan"]
+data["sizes"] = ["1h", "2h", "3h"]
+data["colors"] = [
+    "cyan",
+    "dark_blue",
+    "gold",
+    "dark_green",
+    "green",
+    "light_orange",
+    "olive",
+    "orange",
+    "yellow",
+    "violet",
+    "pink",
+    "red",
+    "white",
+    "transparent_white",
+    "transparent_black",
+]
 data["content"] = ["basic brick", "basic *dropdown*", "basic $variable$"]
 
 

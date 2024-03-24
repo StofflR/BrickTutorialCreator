@@ -42,7 +42,7 @@ def generate_control_bricks(data):
                 y=33,
             )
             export_path = os.path.join(
-                output_folder, brick_path.replace(SVG_EXT, PNG_EXT)
+                output_folder, brick_path.replace(SVG_EXT, PNG_EXT).replace("brick_","")
             )
             brick.savePNG(export_path)
 
@@ -59,7 +59,7 @@ def generate_collapsed_bricks(data):
             y=33,
         )
         export_path = os.path.join(
-            output_folder, brick_path.replace(SVG_EXT, PNG_EXT)
+            output_folder, brick_path.replace(SVG_EXT, PNG_EXT).replace("brick_","")
         )
         brick.savePNG(export_path)
 
