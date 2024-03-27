@@ -6,6 +6,7 @@ DEF_RESOURCE_OUT_EXPORT = os.path.join(DEF_RESOURCE_OUT, "export")
 DEF_TMP = os.path.join(DEF_RESOURCE, "tmp")
 
 DEF_BASE = os.path.join(os.getcwd(), "base")
+DEF_BASE_CUSTOM = os.path.join(os.getcwd(), "custom")
 DEF_BASE_BRICK = os.path.join(DEF_BASE, "brick_blue_1h.svg")
 
 VARIABLE = "var"
@@ -86,3 +87,107 @@ FORBIDDEN_FILE_NAME_CHARS = {
     "\t": "_",
     r"%": "_pct_",
 }
+
+blue = "408ac5"
+blue_shade = "27567c"
+
+cyan = "26a6ae"
+cyan_shade = "2e7078"
+
+dark_blue = "395cab"
+dark_blue_shade = "889dcd"
+
+gold = "95750c"
+gold_shade = "57452c"
+
+dark_green = "305716"
+dark_green_shade = "173718"
+
+green = "6b9c49"
+green_shade = "486822"
+
+light_orange = "f99761"
+light_orange_shade = "a86d45"
+
+olive = "aea626"
+olive_shade = "7e7a30"
+
+orange = "cf5717"
+orange_shade = "7a3a18"
+
+yellow = "fccb41"
+yellow_shade = "aa8832"
+
+violet = "8f4cba"
+violet_shade = "5d2d7c"
+
+pink = "cf7aa6"
+pink_shade = "935e7b"
+
+red = "f24e50"
+red_shade = "ae2f2f"
+
+white = "ffffff"
+white_shade = "a9b4cd"
+white_border = "274383"
+
+default_border = "383838"
+
+colorSchemes = [
+    {"name": "blue", "color": blue, "shade": blue_shade, "border": default_border},
+    {"name": "cyan", "color": cyan, "shade": cyan_shade, "border": default_border},
+    {
+        "name": "dark_blue",
+        "color": dark_blue,
+        "shade": dark_blue_shade,
+        "border": default_border,
+    },
+    {"name": "gold", "color": gold, "shade": gold_shade, "border": default_border},
+    {
+        "name": "dark_green",
+        "color": dark_green,
+        "shade": dark_green_shade,
+        "border": default_border,
+    },
+    {"name": "green", "color": green, "shade": green_shade, "border": default_border},
+    {
+        "name": "light_orange",
+        "color": light_orange,
+        "shade": light_orange_shade,
+        "border": default_border,
+    },
+    {"name": "olive", "color": olive, "shade": olive_shade, "border": default_border},
+    {
+        "name": "orange",
+        "color": orange,
+        "shade": orange_shade,
+        "border": default_border,
+    },
+    {
+        "name": "yellow",
+        "color": yellow,
+        "shade": yellow_shade,
+        "border": default_border,
+    },
+    {
+        "name": "violet",
+        "color": violet,
+        "shade": violet_shade,
+        "border": default_border,
+    },
+    {"name": "pink", "color": pink, "shade": pink_shade, "border": default_border},
+    {"name": "red", "color": red, "shade": red_shade, "border": default_border},
+    {"name": "white", "color": white, "shade": white_shade, "border": white_border},
+    {
+        "name": "transparent_white",
+        "color": "ffffffff",
+        "shade": "ffffffff",
+        "border": "ffffffff",
+    },
+    {
+        "name": "transparent_black",
+        "color": "000000ff",
+        "shade": "000000ff",
+        "border": "000000ff",
+    },
+]

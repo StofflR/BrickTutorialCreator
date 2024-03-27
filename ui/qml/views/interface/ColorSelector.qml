@@ -16,6 +16,8 @@ Item {
     property double listViewHeight: colorSelector.height - header.height
     ColorManager {
         id: manager
+        property int channel: 0
+        property int index: 0
     }
     signal baseChanged(string color, string baseFile, string size)
     signal selectionChanged(string base, string type, string background, string shade, string border, string size)
@@ -34,7 +36,8 @@ Item {
                             var file = "brick_" + base + "_" + size + control + ".svg"
                             var baseFile = "base_" + size + control + ".svg"
 
-                            if (!manager.exists(file)) {
+                            if (!manager.exists(file)
+                                || colorList.currentIndex >= manager.customIndex) {
                                 manager.addBaseType(file, background, shade,
                                                     border, baseFile)
                             }
@@ -86,18 +89,21 @@ Item {
         anchors.top: header.bottom
         width: colorSelector.width * 2 / 3
         height: colorSelector.listViewHeight
-        model: AppStyle.colorSchemes
+        model: manager.model
         clip: true
-
         property string brickColor
         property string brickShade
         property string brickBorder
         property string brickName
 
-        onCurrentIndexChanged: colorSelector.selectionChanged(
-                                   colorList.brickName, sizeList.brickType,
-                                   colorList.brickColor, colorList.brickShade,
-                                   colorList.brickBorder, sizeList.brickSize)
+        onCurrentIndexChanged: {
+            colorSelector.selectionChanged(colorList.brickName,
+                                           sizeList.brickType,
+                                           colorList.brickColor,
+                                           colorList.brickShade,
+                                           colorList.brickBorder,
+                                           sizeList.brickSize)
+        }
 
         ScrollBar.vertical: ScrollBar {
             active: true
@@ -111,7 +117,10 @@ Item {
                 height: 15
                 anchors.centerIn: parent
                 icon.source: "qrc:/bricks/resources/add_black_24dp.svg"
-                onClicked: console.log("add custom color")
+                onClicked: {
+                    manager.addCustomColor()
+                    colorList.currentIndex = colorList.count - 1
+                }
             }
         }
         delegate: ItemDelegate {
@@ -146,6 +155,17 @@ Item {
                 color: "#" + (modelData.color.length == 8 ? modelData.color.slice(
                                                                 0,
                                                                 6) : modelData.color)
+                IconButton {
+                    height: 15
+                    visible: index >= manager.customIndex
+                    anchors.right: parent.right
+                    icon.source: "qrc:/bricks/resources/build_black_24dp.svg"
+                    onClicked: {
+                        manager.channel = 0
+                        manager.index = index
+                        colorDialog.open()
+                    }
+                }
             }
             Rectangle {
                 id: shade
@@ -155,6 +175,17 @@ Item {
                 color: "#" + (modelData.shade.length == 8 ? modelData.shade.slice(
                                                                 0,
                                                                 6) : modelData.shade)
+                IconButton {
+                    height: 15
+                    visible: index >= manager.customIndex
+                    anchors.right: parent.right
+                    icon.source: "qrc:/bricks/resources/build_black_24dp.svg"
+                    onClicked: {
+                        manager.channel = 1
+                        manager.index = index
+                        colorDialog.open()
+                    }
+                }
             }
             Rectangle {
                 id: border
@@ -164,14 +195,33 @@ Item {
                 color: "#" + (modelData.border.length == 8 ? modelData.border.slice(
                                                                  0,
                                                                  6) : modelData.border)
+                IconButton {
+                    height: 15
+                    visible: index >= manager.customIndex
+                    anchors.right: parent.right
+                    icon.source: "qrc:/bricks/resources/build_black_24dp.svg"
+                    onClicked: {
+                        manager.channel = 2
+                        manager.index = index
+                        colorDialog.open()
+                    }
+                }
             }
-            Label {
+            TextEdit {
                 id: name
                 text: modelData.name
                 width: delegate.width * 2 / 5
                 anchors.left: border.right
                 font: lightRoboto
+                enabled: index >= manager.customIndex
                 horizontalAlignment: Text.AlignHCenter
+                onEditingFinished: {
+                    if (manager.setName(index, name.text))
+                        colorList.currentIndex = index
+                }
+                selectByMouse: true
+                onFocusChanged: if (activeFocus)
+                                    colorList.currentIndex = index
             }
         }
     }
@@ -276,8 +326,13 @@ Item {
         anchors.top: colorList.bottom
         icon.source: "qrc:/bricks/resources/done_black_24dp.svg"
     }
-
     ColorDialog {
         id: colorDialog
+        onSelectedColorChanged: {
+            manager.setColor(manager.index, manager.channel,
+                             colorDialog.selectedColor.toString().replace("#",
+                                                                          ""))
+            colorList.currentIndex = manager.index
+        }
     }
 }

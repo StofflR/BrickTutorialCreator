@@ -7,10 +7,8 @@
         .border {
             fill: #383838;
         }
-
         .shade {
-            fill: #2e7078;
-            stop-color: #000000;
+            stop-color: #2e7078;
         }
     </style>
     <defs>
