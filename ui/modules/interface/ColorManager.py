@@ -64,6 +64,12 @@ class ColorManager(QObject):
             file.write(filedata)
 
     def newColor(self):
+        """
+        Create a default custom color based on blue brick.
+        Returns
+        -------
+        a dict containing the color name, background color, shade color and border color
+        """
         return {
             "name": f"new_color_{self.customColors}",
             "color": blue,
@@ -73,12 +79,28 @@ class ColorManager(QObject):
 
     @Slot()
     def addCustomColor(self):
+        """
+        Interface function for adding a default custom color to the base bricks.
+        Returns
+        -------
+        None
+        """
         self._model.append(self.newColor())
         self.customColors = self.customColors + 1
         self.customIndexChanged.emit()
         self.modelChanged.emit()
 
     def addCustomColor_(self, color):
+        """
+        Intern function for adding a custom color defined in a color dict.
+        Parameters
+        ----------
+        color : color dict containing name, color, border and shade information
+
+        Returns
+        -------
+        None
+        """
         self._model.append(color)
         self.customColors = self.customColors + 1
         self.customIndexChanged.emit()
@@ -86,6 +108,16 @@ class ColorManager(QObject):
 
     @Slot()
     def loadCustomBrick(self, path):
+        """
+        Function for loading custom colors from the specified folder.
+        Parameters
+        ----------
+        path : path containing the custom colors
+
+        Returns
+        -------
+        None
+        """
         path = removeFileStub(path)
         for file in os.listdir(path):
             brick_name = (
@@ -107,6 +139,17 @@ class ColorManager(QObject):
                 customColors.append(brick_name)
 
     def loadColor(self, path, name):
+        """
+        Function for getting the color information of an svg and loading it into the custom color model.
+        Parameters
+        ----------
+        path : path to the custom color fole
+        name : name of the custom color
+
+        Returns
+        -------
+        None
+        """
         color = self.newColor()
         color["name"] = name
         content = open(path, "r").read()
@@ -123,16 +166,44 @@ class ColorManager(QObject):
         logging.debug(f"Loaded custom color {name} from: {path}")
 
     def loadCustomBricks(self):
+        """
+        Load custom bricks from the base brick folder.
+        Returns
+        -------
+        None
+        """
         self.loadCustomBrick(DEF_BASE)
 
     @Slot(int, int, str)
     def setColor(self, index, channel, color):
-        print(color)
+        """
+        Function for setting the color in the specified channel of a custom brick.
+        Parameters
+        ----------
+        index : index of the custom color in the model
+        channel : channel to apply the color to
+        color : color to be set
+
+        Returns
+        -------
+        None
+        """
         self._model[index][CHANNELS[channel]] = color
         self.modelChanged.emit()
 
     @Slot(int, str, result=bool)
     def setName(self, index, name):
+        """
+        Setting the name of a custom color at the specified index.
+        Parameters
+        ----------
+        index : index of the color name to be set in the model
+        name : name to be set for te custom color
+
+        Returns
+        -------
+        None
+        """
         name = cleanFileName(name)
         if self._model[index]["name"] != name:
             self._model[index]["name"] = name
