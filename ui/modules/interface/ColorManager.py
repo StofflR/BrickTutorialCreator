@@ -1,3 +1,5 @@
+import logging
+
 from PySide6.QtQml import QmlElement
 from PySide6.QtCore import (
     Slot,
@@ -13,6 +15,7 @@ from PySide6.QtCore import (
 from modules.ConstDefs import *
 from modules.Utility import *
 import os
+import re
 
 QML_IMPORT_NAME = "ColorManager"
 QML_IMPORT_MAJOR_VERSION = 1
@@ -75,15 +78,52 @@ class ColorManager(QObject):
         self.customIndexChanged.emit()
         self.modelChanged.emit()
 
+    def addCustomColor_(self, color):
+        self._model.append(color)
+        self.customColors = self.customColors + 1
+        self.customIndexChanged.emit()
+        self.modelChanged.emit()
+
     @Slot()
     def loadCustomBrick(self, path):
         path = removeFileStub(path)
-        # TODO
+        for file in os.listdir(path):
+            brick_name = (
+                file.replace("_0h", "")
+                .replace("_1h", "")
+                .replace("_2h", "")
+                .replace("_3h", "")
+                .replace(".svg", "")
+                .replace("_control", "")
+                .replace("_collapsed", "")
+                .replace("brick_", "")
+            )
+            colors = []
+            customColors = []
+            for color in colorSchemes:
+                colors.append(color["name"])
+            if brick_name not in colors and brick_name not in customColors:
+                self.loadColor(os.path.join(path, file), brick_name)
+                customColors.append(brick_name)
+
+    def loadColor(self, path, name):
+        color = self.newColor()
+        color["name"] = name
+        content = open(path, "r").read()
+        regex = re.compile(r"border(\W|\D|)*fill: #\w+;")
+        border = regex.search(content).group(0).split("#")[1].replace(";", "")
+        regex = re.compile(r"shade(\W|\D|)*stop-color: #\w+;")
+        shade = regex.search(content).group(0).split("#")[1].replace(";", "")
+        regex = re.compile(r"background(\W|\D|)*fill: #\w+;")
+        background = regex.search(content).group(0).split("#")[1].replace(";", "")
+        color[CHANNELS[0]] = background
+        color[CHANNELS[1]] = shade
+        color[CHANNELS[2]] = border
+        self.addCustomColor_(color)
+        logging.debug(f"Loaded custom color {name} from: {path}")
 
     def loadCustomBricks(self):
-        for filename in os.listdir(DEF_BASE):
-            file_path = os.path.join(DEF_BASE, filename)
-            self.loadCustomBrick(file_path)
+        self.loadCustomBrick(DEF_BASE)
 
     @Slot(int, int, str)
     def setColor(self, index, channel, color):
@@ -97,8 +137,8 @@ class ColorManager(QObject):
         if self._model[index]["name"] != name:
             self._model[index]["name"] = name
             self.modelChanged.emit()
-            return true
-        return false
+            return True
+        return False
 
     def getModel(self):
         return self._model
@@ -106,7 +146,6 @@ class ColorManager(QObject):
     modelChanged = Signal()
     model = Property(list, fget=getModel, notify=modelChanged)
 
-    @staticmethod
     def getCustomIndex(self):
         return len(colorSchemes)
 
