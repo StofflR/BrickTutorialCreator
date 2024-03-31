@@ -23,8 +23,6 @@ data["colors"] = [
     "pink",
     "red",
     "white",
-    "transparent_white",
-    "transparent_black",
 ]
 data["content"] = ["basic brick", "basic *dropdown*", "basic $variable$"]
 

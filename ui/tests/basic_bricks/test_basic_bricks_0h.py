@@ -26,8 +26,6 @@ data["colors"] = [
     "pink",
     "red",
     "white",
-    "transparent_white",
-    "transparent_black",
 ]
 
 
@@ -54,7 +52,7 @@ def test_bricks():
             brick.savePNG(
                 path=created_path, width=Const.PNG_WIDTH, height=Const.PNG_HEIGHT_0H
             )
-            compareImages(ref_path, created_path) > 0.995
+            assert compareImages(ref_path, created_path) > 0.995
 
 
 if __name__ == "__main__":

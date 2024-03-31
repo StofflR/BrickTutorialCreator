@@ -213,6 +213,7 @@ Item {
                 width: delegate.width * 2 / 5
                 anchors.left: border.right
                 font: lightRoboto
+                color: name.palette.windowText
                 enabled: index >= manager.customIndex
                 horizontalAlignment: Text.AlignHCenter
                 onEditingFinished: {
