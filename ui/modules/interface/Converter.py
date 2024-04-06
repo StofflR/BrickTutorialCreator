@@ -1,17 +1,12 @@
-from PySide6.QtCore import Slot, QObject
+import json
+import logging
+from PySide6.QtCore import QObject, Slot
 from PySide6.QtQml import QmlElement
 from modules.backend.SVGBrick import SVGBrick
+from modules.ConstDefs import *
+from modules.Utility import removeFileStub, addFileStub
 from modules.interface.BatchBrickUpdater import BatchBrickUpdater
 from modules.interface.TutorialManager import TutorialManager
-
-import logging
-import os
-import json
-
-from sys import platform
-
-import modules.OSDefs as OSDefs
-
 
 QML_IMPORT_NAME = "Converter"
 QML_IMPORT_MAJOR_VERSION = 1
@@ -26,67 +21,112 @@ class Converter(QObject):
 
     @Slot(str, result=int)
     def fromJSONtoSVG(self, path):
-        path = path.replace(OSDefs.FILE_STUB, "")
+        """
+        Convert json bricks to svg bricks for the given folder
+        Parameters
+        ----------
+        path: folder to be converted
+        Returns
+        -------
+        number of elements converted
+        """
+        path = removeFileStub(path)
         count = 0
         for element in os.listdir(path):
-            if ".json" in element:
+            if JSON_EXT in element:
                 count += 1
-                element = path + "/" + element
+                element = os.path.join(path, element)
                 SVGBrick.fromJSON(json.load(open(element))).save(
-                    element.replace(".json", ".svg")
+                    element.replace(JSON_EXT, SVG_EXT)
                 )
         return count
 
     @Slot(str, result=int)
     def fromJSONtoPNG(self, path):
-        path = path.replace(OSDefs.FILE_STUB, "")
+        """
+        Convert json bricks to png bricks for the given folder
+        Parameters
+        ----------
+        path: folder to be converted
+        Returns
+        -------
+        number of elements converted
+        """
+        path = removeFileStub(path)
         count = 0
         for element in os.listdir(path):
-            if ".json" in element:
+            if JSON_EXT in element:
                 count += 1
-                element = path + "/" + element
+                element = os.path.join(path, element)
                 SVGBrick.fromJSON(json.load(open(element))).savePNG(
-                    element.replace(".json", ".png")
+                    element.replace(JSON_EXT, PNG_EXT)
                 )
         return count
 
     @Slot(str, result=int)
-    def fromTutorialtoPNG(self, path):
-        path = path.replace(OSDefs.FILE_STUB, "")
+    def fromTutorialToPNG(self, path):
+        """
+        Convert json tutorials to png tutorials for the given folder
+        Parameters
+        ----------
+        path: folder to be converted
+        Returns
+        -------
+        number of elements converted
+        """
+        path = removeFileStub(path)
         count = 0
         for element in os.listdir(path):
-            if ".json" in element:
-                element = path + "/" + element
+            if JSON_EXT in element:
+                element = os.path.join(path, element)
                 try:
                     tutorialManager = TutorialManager()
                     tutorialManager.fromJSON(element)
-                    tutorialManager.saveTutorial(element.replace(".json", ".png"))
+                    tutorialManager.saveTutorial(element.replace(JSON_EXT, PNG_EXT))
                     count += 1
                     logging.debug(f"Converted: {element}")
-                except Exception as e:
-                    logging.warning(f"Couldn't convert: {element}")
+                except Exception as _:
+                    logging.warning(f"Could not convert: {element}")
         return count
 
     @Slot(str, result=int)
     def fromSVGtoPNG(self, path):
-        path = path.replace(OSDefs.FILE_STUB, "")
+        """
+        Convert all svg bricks in a folder to a png bricks.
+        Parameters
+        ----------
+        path: folder to be converted
+        Returns
+        -------
+        number of elements converted
+        """
+        path = removeFileStub(path)
         count = 0
         for element in os.listdir(path):
-            if ".svg" in element:
+            if SVG_EXT in element:
                 count += 1
-                element = path + "/" + element
+                element = os.path.join(path, element)
                 SVGBrick.fromJSON(SVGBrick.getJSONFromSVG(element)).savePNG(
-                    element.replace(".svg", ".png")
+                    element.replace(SVG_EXT, PNG_EXT)
                 )
         return count
 
     @Slot(str, result=type([]))
     def updateExisting(self, path):
-        path = path.replace(OSDefs.FILE_STUB, "")
+        """
+        Retrieve all available svg's for updating
+        Parameters
+        ----------
+        path: folder to be checked
+        Returns
+        -------
+        list of potential bricks to be updated
+        """
+        path = removeFileStub(path)
         file_set = []
         for dir_, _, files in os.walk(path):
             for file_name in files:
-                if ".svg" in file_name:
+                if SVG_EXT in file_name:
                     rel_dir = os.path.relpath(dir_, path)
                     rel_file = os.path.join(rel_dir, file_name)
                     file_set.append(os.path.join(path, rel_file))
@@ -94,6 +134,12 @@ class Converter(QObject):
 
     @Slot(str)
     def convert(self, file):
+        """
+        Convert a 'legacy' brick to the newest version
+        Parameters
+        ----------
+        file: file to be converted to a up to date brick
+        """
         doc = open(file, "r")
         is_brick = '<desc id="json" tag="brick">' in doc.read()
         doc.close()
@@ -106,44 +152,61 @@ class Converter(QObject):
             self.data["content"] = self.content
             self.data["size"] = self.data["height"]
             self.data["path"] = (
-                "brick_" + self.data["color"] + "_" + self.data["height"] + ".svg"
+                "brick_" + self.data["color"] + "_" + self.data["height"] + SVG_EXT
             )
 
     @Slot(str, result=bool)
     def isBrick(self, file):
+        """
+        Check if the given file is a brick
+        Parameters
+        ----------
+        file: file to be checked
+        Returns
+        -------
+        boolean whether the file is a brick or not
+        """
         if not file:
             return False
-        file = file.replace(OSDefs.FILE_STUB, "")
+        file = removeFileStub(file)
         doc = open(file, "r")
         result = '<desc id="json" tag="brick">' in doc.read()
         doc.close()
         return result
 
     @Slot(str, result=str)
-    def getData(self, type):
+    def getData(self, data_type):
+        """
+        retrieve the selected datatype from the converter
+        Parameters
+        ----------
+        data_type: the data type to be returned
+        Returns
+        -------
+        the requested data data type data
+        """
         result = ""
-        if type == "base_type":
-            result = self.data[type]
-        if type == "content":
+        if data_type == "base_type":
+            result = self.data[data_type]
+        if data_type == "content":
             result = self.content
-        if type == "size":
+        if data_type == "size":
             result = self.data["size"].replace("h", "")
-        if type == "path":
+        if data_type == "path":
             result = (
-                "brick_" + self.data["base_type"] + "_" + self.data["size"] + ".svg"
+                "brick_" + self.data["base_type"] + "_" + self.data["size"] + SVG_EXT
             )
         return result
 
-    @Slot(str)
-    def removeNS0(self, path):
-        path = path.replace(OSDefs.FILE_STUB, "").replace("%5C.%5C", "/")
-        file = open(path, "r")
-        content = "".join(file.read()).replace("ns0:", "").replace(":ns0", "")
-        file = open(path, "w")
-        file.write(content)
-        file.close()
-
     @Slot(str, result=str)
     def getOutputPath(self, file):
-        print("File is:", os.path.dirname(file) + "/converted")
-        return OSDefs.FILE_STUB + os.path.dirname(file) + "/converted"
+        """
+        Get path for converted file output
+        Parameters
+        ----------
+        file: filepath of the current file
+        Returns
+        -------
+        string of the folder for converted file output
+        """
+        return os.path.join(addFileStub(os.path.dirname(file)), "/converted")

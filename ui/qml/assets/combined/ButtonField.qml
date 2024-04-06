@@ -17,7 +17,7 @@ Item {
         width: item.width / 4 - AppStyle.spacing
         height: item.height
         anchors.top: parent.top
-        anchors.left: parent.left
+        anchors.left: parent.left 
     }
     Field {
         id: field

@@ -1,23 +1,31 @@
 import logging
 import os
-import random
-import string
 import sys
 import xml.etree.ElementTree as Tree
 from PySide6.QtGui import QFontMetrics, QFont, QFontDatabase
 import math
-
+from modules.Utility import *
 from modules.ConstDefs import *
-from modules.OSDefs import *
 
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+Tree.register_namespace(
+    "", "http://www.w3.org/2000/svg"
+)  # removes default ns0 namespace
 
+DEFAULT = "default"
+TRANSPARENT = "transparent"
+WHITE = "white"
 
-def randomString(digits):
-    return "".join(
-        random.SystemRandom().choice(string.ascii_letters + string.digits)
-        for _ in range(digits)
-    )
+TEXT_COLOR = {
+    TRANSPARENT: {DEFAULT: HEX_BLACK, WHITE: HEX_WHITE},
+    WHITE: HEX_DARK_BLUE,
+    DEFAULT: HEX_WHITE,
+}
+
+TEXT_STYLE = {
+    NORMAL: {"weight": QFont.Thin, "style": STYLE_LIGHT},
+    BOLD: {"weight": QFont.DemiBold + 20, "style": STYLE_BOLD},
+}
 
 
 class SVGBrickModifier:
@@ -25,48 +33,70 @@ class SVGBrickModifier:
         self,
         base_type: str,
         content: str,
-        size: int,
+        size: str,
         path: str,
-        scaling_factor=1,
+        scaling_factor=1.0,
         x=DEFAULT_X,
         y=DEFAULT_Y,
     ):
         self.base_type = base_type
-        self.working_brick_ = ""
         self.scaling_factor = scaling_factor
-        self.content = content.replace("\t", "")
-        self.path = path
+        self.content = content
+        self.path = path if SVG_EXT in path else DEF_BASE_BRICK
         self.size = size
         self.x = x
         self.y = y
-        self.tree_ = Tree.parse(open(os.getcwd() + "/base/" + self.path, "r"))
+
+        self.toBeRemoved_ = []
+        self.working_brick_ = None
+        self.tree_: Tree
+        self.tree_ = None
+        self.reset()
         self.operations = {
-            "\n": self.addLineBreak,
-            "\0": self.addString,
-            "*": self.addDropdown,
-            "$": self.addVariable,
+            OP_KEY_NEWLINE: self.addLineBreak,
+            OP_KEY_END: self.addString,
+            OP_KEY_DROPDOWN: self.addDropdown,
+            OP_KEY_VARIABLE: self.addVariable,
         }
 
-    def textColor(self):
-        if "transparent" in self.base_type:
-            if "white" in self.base_type:
-                return "#FFFFFF"
-            return "#000000"
+    def reset(self) -> None:
+        """
+        Reset the current SVG Brick and change the working brick path
+        Note: QMLImage buffers images, therefore a different path is needed!
+        """
+        self.working_brick_ = os.path.join(DEF_TMP, randomString(10) + SVG_EXT)
+        logging.debug("New working brick: " + self.working_brick_)
+        self.tree_ = Tree.parse(open(os.path.join(DEF_BASE, self.path), "r"))
 
-        if "white" in self.base_type:
-            return "#274383"
-        return "#FFFFFF"
+    def textColor(self) -> str:
+        """
+        The text color of the SVG Brick
+        Returns
+        -------
+        The HEX color to be displayed on the SVG Brick
+        """
+        modifier = WHITE if WHITE in self.base_type else DEFAULT
+        return (
+            TEXT_COLOR[TRANSPARENT][modifier]
+            if TRANSPARENT in self.base_type
+            else TEXT_COLOR[modifier]
+        )
 
-    def __del__(self):
-        logging.debug("Deleting: " + self.working_brick_)
-        if os.path.exists(self.working_brick_):
-            os.remove(self.working_brick_)
-            logging.debug("Working brick: " + self.contentPlain() + " deleted")
-
-    def addLineBreakNewLine(self, line: str, x: int, y: int):
-        return self.addLineBreak(line, x, y, "\n")
-
-    def addLineBreak(self, line: str, x: int, y: int, delim="\n"):
+    def addLineBreak(
+        self, line: str, x: int, y: int, delim="\n"
+    ) -> (str, float, float):
+        """
+        Add a line break to the SVG.
+        Parameters
+        ----------
+        line: content to be parsed
+        x: current x position of the parsing
+        y: current y position of the parsing
+        delim: line break delimiter to split the line
+        Returns
+        -------
+        line, x, y: remaining content to be parsed, advanced x, advanced y
+        """
         segments = line.split(delim, 1)
         self.addString(segments[0], x, y)
         return (
@@ -77,13 +107,28 @@ class SVGBrickModifier:
 
     def addString(
         self, line: str, x: int, y: int, svg_id=TEXT, font_weight=BOLD, size=FONT_SIZE
-    ):
-        size = size * self.scaling_factor
-        font_type = "font-family: Roboto;font-size:" + str(size) + "pt;"
+    ) -> (str, float, float):
+        """
+        Add a string to the SVG.
+        Parameters
+        ----------
+        line: content to be parsed
+        x: current x position of the parsing
+        y: current y position of the parsing
+        svg_id: svg id if the string added
+        font_weight: font weight of the displayed string
+        size: size of the displayed string
+        Returns
+        -------
+        the length of the text advance
+        """
+        font_type = (
+            "font-family: Roboto;font-size:" + str(size * self.scaling_factor) + "pt;"
+        )
 
         sub_element = Tree.SubElement(
             self.tree_.getroot(),
-            "text",
+            TEXT_TAG,
             {
                 "id": svg_id,
                 "x": str(x) + "px",
@@ -96,23 +141,34 @@ class SVGBrickModifier:
             },
         )
         sub_element.text = line
-        return self.stringLength(line, size=FONT_SIZE * self.scaling_factor)
+        return self.stringLength(line, size=size * self.scaling_factor)
 
-    def addLine(self, line, x, y):
+    def addLine(self, line, x, y) -> float:
+        """
+        Add a line to the SVG.
+        Parameters
+        ----------
+        line: content to be parsed
+        x: current x position of the parsing
+        y: current y position of the parsing
+        Returns
+        -------
+        float advance in x direction
+        """
         length = self.stringLength(
             line, size=FONT_SIZE * self.scaling_factor, font=NORMAL
         )
         Tree.SubElement(
             self.tree_.getroot(),
-            "line",
+            LINE_TAG,
             {
-                "id": "var_line",
+                "id": LINE_ID,
                 "x1": str(x),
                 "y1": str(y),
                 "x2": str(x + length),
                 "y2": str(y),
-                "stroke": "#ffffff",
-                "fill": "#ffffff",
+                "stroke": HEX_WHITE,
+                "fill": HEX_WHITE,
                 "stroke-width": "1",
             },
         )
@@ -120,25 +176,43 @@ class SVGBrickModifier:
         return x + length
 
     @staticmethod
-    def stringLength(line: str, size=12, font=BOLD):
-        if font == NORMAL:
-            weight = QFont.Thin
-            style = "Light"
-        else:
-            weight = QFont.DemiBold + 20
-            style = "Bold"
-        size = size - 1
+    def stringLength(line: str, size=12, font=BOLD, targetDPI=96) -> float:
+        """
+        Calculate the x advance of a given string on the svg
+        Parameters
+        ----------
+        line: the content of the line
+        size: size of the string
+        font: font of the string
+        targetDPI: dpi resolution to be used
+        Returns
+        -------
+        float advance in x direction
+        """
         metric = QFontMetrics(
-            QFontDatabase.font("Roboto", style, math.ceil(size)),
-            pointSize=math.ceil(size),
-            weight=weight,
+            QFontDatabase.font(
+                FAMILY_NAME[font],
+                TEXT_STYLE[font]["style"],
+                math.ceil(size - 1),
+            ),
+            pointSize=math.ceil(size - 1),
+            weight=TEXT_STYLE[font]["weight"],
         )
-        return (
-            metric.horizontalAdvance(line) / metric.fontDpi() * 96
-        )  # mhh small mac dpi
+        return metric.horizontalAdvance(line) / metric.fontDpi() * targetDPI
 
-    def addVariable(self, line: str, x: int, y: int):
-        segments = line.split("$", 2)
+    def addVariable(self, line: str, x: int, y: int) -> (str, float, float):
+        """
+        Add a variable string to the SVG.
+        Parameters
+        ----------
+        line: content to be parsed
+        x: current x position of the parsing
+        y: current y position of the parsing
+        Returns
+        -------
+        float advance in x direction
+        """
+        segments = line.split(OP_KEY_VARIABLE, 2)
 
         x += self.addString(segments[0], x, y)
 
@@ -148,10 +222,21 @@ class SVGBrickModifier:
 
         if len(segments) > 2:
             return segments[2], x, y
-        return None, x, y
+        return "", x, y
 
     def addDropdown(self, line: str, x: int, y: int):
-        segments = line.split("*", 2)
+        """
+        Add a dropdown string to the SVG.
+        Parameters
+        ----------
+        line: content to be parsed
+        x: current x position of the parsing
+        y: current y position of the parsing
+        Returns
+        -------
+        float advance in x direction
+        """
+        segments = line.split(OP_KEY_DROPDOWN, 2)
         x += self.addString(segments[0], x, y)
         self.addTriangle(DEFAULT_WIDTH, y)
         x += (
@@ -160,48 +245,42 @@ class SVGBrickModifier:
             )
             + DROPDOWN_OFFSET
         )
-
-        # y += (LINE_HEIGHT + 2*LINE_OFF) * self.scaling_factor
-
-        # y += (LINE_HEIGHT + 2*LINE_OFF) * self.scaling_factor
+        y += LINE_OFF * self.scaling_factor
         if len(segments) > 2:
             return segments[2], x, y
-        return None, x, y
+        return "", x, y
 
     def addTriangle(self, x0: int, y0: int):
+        """
+        Add a dropdown triangle to the SVG.
+        Parameters
+        ----------
+        x0: current x position of the parsing
+        y0: current y position of the parsing
+        Returns
+        -------
+        float advance in x direction
+        """
         x = x0 - 2 * FONT_SIZE
         y = y0 - FONT_SIZE
         Tree.SubElement(
             self.tree_.getroot(),
-            "polygon",
+            POLYGON_TAG,
             {
                 "points": str(x)
                 + ","
                 + str(y)
                 + " "
-                + str(x + FONT_SIZE)
+                + str(x + FONT_SIZE / 4)
                 + ","
                 + str(y)
                 + " "
-                + str(x + (FONT_SIZE / 2))
+                + str(x + (FONT_SIZE / 8))
                 + ","
-                + str(y + FONT_SIZE),
-                "id": "triangle",
-                "stroke": "white",
-                "fill": "white",
-                "stroke-width": "1",
+                + str(y + FONT_SIZE / 4),
+                "id": TRIANGLE_ID,
+                "stroke": HEX_WHITE,
+                "fill": HEX_WHITE,
+                "stroke-width": "0.5",
             },
         )
-
-    def addDescription(self):
-        sub_element = Tree.SubElement(
-            self.tree_.getroot(), "desc", {"id": "json", "tag": "brick"}
-        )
-        sub_element.text = self.JSON()
-
-
-def randomString(digits):
-    return "".join(
-        random.SystemRandom().choice(string.ascii_letters + string.digits)
-        for _ in range(digits)
-    )

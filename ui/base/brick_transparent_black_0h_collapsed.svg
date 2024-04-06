@@ -1,3 +1,24 @@
-<svg id="Ebene_1" data-name="Ebene 1" xmlns="http://www.w3.org/2000/svg"
-    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 348.181 13"> 
+<svg xmlns='http://www.w3.org/2000/svg' viewBox="0 0 348.181 13">
+    <style>
+        .background {
+            fill: #000000ff;
+        }
+
+        .border {
+            fill: #000000ff;
+        }
+
+        .shade {
+            fill: #000000ff;
+            stop-color: #000000;
+        }
+    </style>
+    <defs>
+        <g id="bottom" viewbox="0 0 351.887 72.748">
+            <path class="background"
+                d="M0,66.661l12.318,-0.004l1.75,4.125l16.857,0.014l1.75,-4.125l12.367,-0.004l-45.042,-0.006z" />
+            <path class="border"
+                d="M347.736,66.657l-315.056,0.001l0,0.008l-1.749,4.117l-16.858,0l-1.752,-4.126l-0.019,0.008l0,-0.007l-12.302,0l0,2l10.998,0l1.748,4.115l0.005,-0.002l0,0.012l19.502,0l0,-0.003l0.002,0.001l1.752,-4.123l317.729,-0.001l0,-2z" />
+        </g>
+    </defs>
 </svg>

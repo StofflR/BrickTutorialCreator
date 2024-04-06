@@ -10,20 +10,11 @@ import "../../style"
 
 Image {
     id: svgPreview
-    property string brickImg: "qrc:/bricks/base/brick_blue_1h.svg"
-    property int xPos: 43
-    property int yPos: 33
-    property int contentScale: 100
+
     readonly property string brickContent: previewContent.text
-    property string availableSize: "1h"
-    property string brickPath: "brick_blue_1h.svg"
-    property string brickColor: "blue"
 
-    property bool modified: false
     property bool disable: false
-
     property string statusText
-
     property alias brick: modifyableBrick
     property alias saveButton: saveButton
     property alias loadButton: loadButton
@@ -31,58 +22,43 @@ Image {
     property alias colorButton: colorButton
 
     property alias editor: selectorComponent
-
     property alias content: previewContent
 
-    signal dataChanged
     signal save
+    brick.onContentChanged: previewContent.text = modifyableBrick.brickContent
+    source: decodeURIComponent(
+                previewContent?.cursorVisible ? modifyableBrick?.fullBasePath : modifyableBrick?.workingPath)
+
     asynchronous: true
     smooth: true
     cache: true
-    property bool loading: false
+
     Brick {
         id: modifyableBrick
+        brickContent: previewContent.text
+    }
+
+    function selectAll() {
+        textView.selectAll()
+        previewContent.forceActiveFocus()
     }
 
     function loadFromFile(currentFile) {
-        {
-            if (!currentFile)
-                return
-            modifyableBrick.fromFile(currentFile)
-            svgPreview.loading = true
-            previewContent.text = modifyableBrick.brickContent()
-            svgPreview.brickImg = modifyableBrick.path()
-            svgPreview.brickPath = modifyableBrick.basePath()
-            svgPreview.xPos = modifyableBrick.posX()
-            svgPreview.yPos = modifyableBrick.posY()
-            svgPreview.brickColor = modifyableBrick.brickColor()
-            svgPreview.loading = false
-            svgPreview.statusText = "INFO: Loaded " + currentFile
-        }
+        modifyableBrick.fromFile(currentFile)
     }
     fillMode: Image.PreserveAspectFit
-    source: previewContent.cursorVisible ? baseFolder + "/" + brickPath : brickImg
-
-    function updateBrick() {
-        if (!brickPath || !brickColor || !availableSize || !xPos || !yPos
-                || !contentScale || loading) {
-            return
-        }
-        modifyableBrick.updateBrick(brickColor, brickPath, availableSize,
-                                    brickContent, contentScale, xPos, yPos)
-        brickImg = modifyableBrick.path()
-    }
-
-    onDataChanged: updateBrick()
 
     TextArea {
         id: textView
+        persistentSelection: true
         Binding on cursorPosition {
             when: previewContent.cursorPosition
             value: previewContent.cursorPosition
         }
         visible: previewContent.cursorVisible
         anchors.fill: previewContent
+        onSelectedTextChanged: previewContent.select(textView.selectionStart,
+                                                     textView.selectionEnd)
         text: {
             var data = previewContent.getText(0, previewContent.length)
             while (data.indexOf("<") !== -1) {
@@ -111,56 +87,120 @@ Image {
         font.family: "Roboto"
         font.letterSpacing: -1
         font.bold: true
-        color: brickColor.lastIndexOf(
-                   "white") == -1 ? "white" : brickColor.lastIndexOf(
+        color: modifyableBrick?.baseType?.lastIndexOf(
+                   "white") == -1 ? "white" : modifyableBrick?.baseType?.lastIndexOf(
                                         "transparent") == -1 ? "blue" : "black"
+
         font.pointSize: 12 * previewContent.scale <= 0 ? 12 : 12 * previewContent.scale
     }
 
     TextArea {
         id: previewContent
+        property bool contentAddable: modifyableBrick?.brickSize != "0h"
+        property string textBuffer: ""
+        onContentAddableChanged: {
+            if (contentAddable)
+                text = textBuffer
+            else
+                textBuffer = text
+        }
+
+        persistentSelection: true
         text: ""
-        placeholderText: "<b>Click to modify content!<\b>"
+        placeholderText: contentAddable ? "<b>Click to modify content!<\b>" : ""
+        enabled: contentAddable
         anchors.left: svgPreview.left
         anchors.top: svgPreview.top
-        width: svgPreview.width - svgPreview.xPos
-        height: svgPreview.height - svgPreview.yPos
-        anchors.leftMargin: (svgPreview.xPos - 4) * svgPreview.paintedWidth / 350
-        anchors.topMargin: (svgPreview.yPos - 4) * svgPreview.paintedWidth / 350
-                           - 13 * previewContent.scale
-        property int cursorLine: previewContent.text.substring(
-                                     0, previewContent.cursorPosition).split(
-                                     /\n/).length - 1
-        property real scale: svgPreview.paintedWidth * contentScale / 35000
+        width: svgPreview.width - modifyableBrick?.xPos
+        height: svgPreview.height - modifyableBrick?.yPos
+        anchors.leftMargin: (modifyableBrick?.xPos - 4) * svgPreview.paintedWidth / 350
+        anchors.topMargin: (modifyableBrick?.yPos - 4) * svgPreview.paintedWidth
+                           / 350 - 13 * previewContent.scale
+
+        property real scale: svgPreview.paintedWidth * modifyableBrick?.scalingFactor / 350
         wrapMode: TextEdit.WordWrap
         font: textView.font
+        color: textView.color
+        placeholderTextColor: textView.color
         opacity: text ? 0 : 1
         cursorVisible: false
-        onCursorVisibleChanged: dataChanged()
-        Component.onCompleted: {
-            textChanged.connect(svgPreview.dataChanged)
-        }
     }
-    MouseArea {
-        anchors.fill: previewContent
-        onReleased: mouseEvent => {
-                        previewContent.cursorPosition = textView.positionAt(
-                            mouseEvent.x, mouseEvent.y)
-                        previewContent.forceActiveFocus()
-                    }
-        onClicked: {
-            modified = true
+    Repeater {
+        id: repeaterModel
+        model: previewContent.lineCount
+        property var lines: previewContent.text.split("\n")
+        Rectangle {
+            id: selection
+            color: "darkgrey"
+            opacity: 0.25
+            property int textViewSelection: textView.selectionEnd - textView.selectionStart
+            property int previewContentSelection: previewContent.selectionEnd
+                                                  - previewContent.selectionStart
+
+            visible: textViewSelection != 0 || previewContentSelection != 0
+            onPreviewContentSelectionChanged: updateBox()
+            onTextViewSelectionChanged: updateBox()
+            function select(start, end) {
+                selection.visible = true
+                selection.x = start.x + previewContent.x
+                selection.y = start.y + previewContent.y
+                selection.height = start.height
+                selection.width = end.x - start.x
+            }
+
+            function updateBox() {
+                var startPosition = 0
+                for (var i = 0; i < index; i++)
+                    startPosition += repeaterModel.lines[i].length + 1
+
+                var lineStart = textView.positionToRectangle(startPosition)
+                var lineEnd = textView.positionToRectangle(
+                            startPosition + repeaterModel.lines[index].length)
+
+                var startRectView = textView.positionToRectangle(
+                            previewContent.selectionStart)
+
+                var endRectView = textView.positionToRectangle(
+                            previewContent.selectionEnd)
+                selection.visible = false
+
+                if (lineStart.y < startRectView.y
+                        || lineStart.y > endRectView.y) {
+                    return
+                }
+
+                if (startRectView.y == endRectView.y) {
+                    select(startRectView, endRectView)
+                } else if (startRectView.y == lineStart.y) {
+                    select(startRectView, lineEnd)
+                } else if (endRectView.y == lineEnd.y) {
+                    select(lineStart, endRectView)
+                } else {
+                    select(lineStart, lineEnd)
+                }
+            }
         }
     }
 
-    Component.onCompleted: {
-        availableSizeChanged.connect(svgPreview.dataChanged)
-        xPosChanged.connect(svgPreview.dataChanged)
-        yPosChanged.connect(svgPreview.dataChanged)
-        contentScaleChanged.connect(svgPreview.dataChanged)
-        availableSizeChanged.connect(svgPreview.dataChanged)
-        brickPathChanged.connect(svgPreview.dataChanged)
-        brickColorChanged.connect(svgPreview.dataChanged)
+    MouseArea {
+        anchors.fill: previewContent
+        property int pressedAt
+
+        onPressed: function (mouseEvent) {
+            pressedAt = textView.positionAt(mouseEvent.x, mouseEvent.y)
+            previewContent.cursorPosition = pressedAt
+            previewContent.forceActiveFocus()
+        }
+        onDoubleClicked: {
+            textView.selectWord()
+        }
+        onReleased: function (mouseEvent) {
+            var position = textView.positionAt(mouseEvent.x, mouseEvent.y)
+            if (position != pressedAt) {
+                textView.select(Math.min(position, pressedAt),
+                                Math.max(position, pressedAt))
+            }
+        }
     }
 
     IconButton {
@@ -185,7 +225,7 @@ Image {
     IconButton {
         FileDialog {
             id: brickOpenDialog
-            folder: tempFolder
+            folder: resourcesOutFolder
             nameFilters: ["Any (*.svg *.json)", "SVG files (*.svg)", "JSON files (*.json)"]
             fileMode: FileDialog.OpenFiles
             onAccepted: loadFromFile(currentFile)
@@ -220,7 +260,7 @@ Image {
         ToolTip.visible: hovered
         ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
         ToolTip.text: qsTr("Save the current brick!")
-        onPressed: {
+        onReleased: {
             saveButton.forceActiveFocus()
             save()
         }
@@ -228,7 +268,6 @@ Image {
     IconButton {
         Popup {
             id: popup
-
             anchors.centerIn: Overlay.overlay
             Loader {
                 id: selector
@@ -258,12 +297,9 @@ Image {
                                    || !selectedSize) {
                                    return
                                }
-                               svgPreview.loading = true
-                               brickColor = selectedColor
-                               brickPath = selectedPath
-                               availableSize = selectedSize
-                               svgPreview.loading = false
-                               svgPreview.dataChanged()
+                               modifyableBrick.baseType = selectedColor
+                               modifyableBrick.brickPath = selectedPath
+                               modifyableBrick.brickSize = selectedSize
                            }
         }
     }

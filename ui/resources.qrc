@@ -29,6 +29,9 @@
         <file>resources/icon.svg</file>
         <file>resources/icon.png</file>
         <file>resources/image_black.svg</file>
+        <file>resources/splitscreen.svg</file>
+        <file>resources/download.svg</file>
+        <file>resources/upload.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>help.html</file>
@@ -54,5 +57,7 @@
         <file>resources/help/tutorial_name.png</file>
         <file>resources/help/tutorial_paths.png</file>
         <file>resources/help/tutorial_tutorial.png</file>
+        <file>resources/help/translator_extended.png</file>
+        <file>resources/help/translator_normal.png</file>
     </qresource>
 </RCC>

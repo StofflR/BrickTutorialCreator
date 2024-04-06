@@ -69,6 +69,18 @@ Item {
         ListElement {
             source: "../dialogs/help/translator/TranslatorHelp.qml"
         }
+        ListElement {
+            source: "../dialogs/help/translator/TranslatorSource.qml"
+        }
+        ListElement {
+            source: "../dialogs/help/translator/TranslatorViewSettings.qml"
+        }
+        ListElement {
+            source: "../dialogs/help/translator/TranslatorSettings.qml"
+        }
+        ListElement {
+            source: "../dialogs/help/translator/TranslatorView.qml"
+        }
     }
     ListModel {
         id: tutorialStack
