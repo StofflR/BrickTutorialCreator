@@ -34,7 +34,7 @@ Item {
                     width: sourceImage.width
                     height: sourceImage.height
                     onClicked: if (root.groupedView) {
-                                   expand = !expand
+                                   source.expand = !source.expand
                                }
                     onDoubleClicked: if (!root.groupedView) {
                                          root.addBrick(sourceImage.source)
@@ -49,9 +49,10 @@ Item {
                             visible: groupedView
                             font.bold: true
                             font.pointSize: 12
-                            text: "Click to " + (expand ? "collapse" : "expand") + "!"
+                            text: "Click to " + (source.expand ? "collapse" : "expand") + "!"
                         }
-                        source: (groupedView ? baseFolder + "/" : fileStub) + view.model[index].path
+                        source: decodeURIComponent(
+                                    fileStub + view.model[index].path)
                     }
                 }
                 Item {
@@ -59,7 +60,7 @@ Item {
                     width: view.width
                     anchors.top: mouseArea.bottom
                     anchors.left: mouseArea.left
-                    height: expand ? viewExpand.contentHeight + 2 * AppStyle.spacing : 0
+                    height: source.expand ? viewExpand.contentHeight + 2 * AppStyle.spacing : 0
 
                     ListView {
                         id: viewExpand
@@ -72,12 +73,13 @@ Item {
                             width: viewExpand.width
                             height: sourceImageExpand.height
                             radius: 5
-
+                            color: palette.midlight
                             Image {
                                 id: sourceImageExpand
                                 fillMode: Image.PreserveAspectFit
                                 width: recta.width
-                                source: fileStub + viewExpand.model[index].path
+                                source: decodeURIComponent(
+                                            fileStub + viewExpand.model[index].path)
                                 MouseArea {
                                     id: mouseAreaExpand
                                     anchors.fill: sourceImageExpand

@@ -1,6 +1,5 @@
 import sys
-import os
-from PySide6.QtCore import QUrl, Qt
+from PySide6.QtCore import Qt
 from PySide6.QtQuick import QQuickWindow, QSGRendererInterface
 from PySide6.QtGui import QGuiApplication, QFontDatabase, QIcon, QFont
 from PySide6.QtQml import QQmlApplicationEngine, qmlRegisterType, QQmlDebuggingEnabler
@@ -13,23 +12,15 @@ from modules.interface.Brick import Brick
 
 import resources_rc
 import logging
-import shutil
 import modules.OSDefs as OSDefs
+from modules.ConstDefs import *
+from modules.Utility import generateRequiredFolders, clearFolder, addFileStub
 
 if __name__ == "__main__":
     os.environ["QT_FONT_DPI"] = "96"
-    folder = os.path.join(os.getcwd() + r"/resources/tmp")
-    logging.debug("Leftover tmp files form: " + folder)
-    os.makedirs(folder, exist_ok=True)
-    for filename in os.listdir(folder):
-        file_path = os.path.join(folder, filename)
-        try:
-            if os.path.isfile(file_path) or os.path.islink(file_path):
-                os.unlink(file_path)
-            elif os.path.isdir(file_path):
-                shutil.rmtree(file_path)
-        except Exception as e:
-            print("Failed to delete %s. Reason: %s" % (file_path, e))
+    generateRequiredFolders()
+    logging.debug("Leftover tmp files form: " + DEF_TMP)
+    clearFolder(DEF_TMP)
 
     sys.argv += ["--style", "Fusion"]
     QGuiApplication.setAttribute(Qt.AA_ShareOpenGLContexts, True)
@@ -37,7 +28,7 @@ if __name__ == "__main__":
     app = QGuiApplication(sys.argv)
     app.setWindowIcon(QIcon("./resources/icon.svg"))
 
-    # sapp.applicationDisplayName("Brick Designer")
+    # register custom Python classes for use in QML
     qmlRegisterType(Brick, "Brick", 1, 0, "Brick")
     qmlRegisterType(TutorialManager, "TutorialManager", 1, 0, "TutorialManager")
     qmlRegisterType(LanguageManager, "LanguageManager", 1, 0, "LanguageManager")
@@ -48,11 +39,11 @@ if __name__ == "__main__":
         0,
         "TutorialSourceManager",
     )
-
     qmlRegisterType(Converter, "Converter", 1, 0, "Converter")
     qmlRegisterType(Converter, "Converter", 1, 0, "Converter")
     qmlRegisterType(ColorManager, "ColorManager", 1, 0, "ColorManager")
 
+    # load fonts
     assert (
         QFontDatabase.addApplicationFont(
             os.getcwd() + "/resources/fonts/Roboto-Bold.ttf"
@@ -77,16 +68,18 @@ if __name__ == "__main__":
         assert font
         engine.rootContext().setContextProperty(style.lower() + "Roboto", font)
 
+    # register constant paths as variables for use in qml
     engine.rootContext().setContextProperty(
-        "tempFolder", QUrl.fromLocalFile(os.getcwd()).toString() + r"/resources/out"
+        "resourcesOutFolder", addFileStub(DEF_RESOURCE_OUT)
     )
+    engine.rootContext().setContextProperty(
+        "exportFolder", addFileStub(DEF_RESOURCE_OUT_EXPORT)
+    )
+    engine.rootContext().setContextProperty("baseFolder", addFileStub(DEF_BASE))
     engine.rootContext().setContextProperty("fileStub", OSDefs.FILE_STUB)
-    engine.rootContext().setContextProperty(
-        "baseFolder", QUrl.fromLocalFile(os.getcwd()).toString() + r"/base"
-    )
     engine.load("./qml/main.qml")
 
     if not engine.rootObjects():
         sys.exit(-1)
-
-    sys.exit(app.exec())
+    app.exec()
+    clearFolder(DEF_TMP)

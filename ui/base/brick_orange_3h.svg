@@ -1,138 +1,73 @@
-<svg id="Ebene_1" data-name="Ebene 1" xmlns="http://www.w3.org/2000/svg"
-    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 348 119.063">
+<svg xmlns='http://www.w3.org/2000/svg' viewBox="0 0 348.181 94.748">
+    <style>
+        .background {
+            fill: #cf5717;
+        }
+
+        .border {
+            fill: #383838;
+        }
+        .shade {
+            stop-color: #7a3a18;
+        }
+    </style>
     <defs>
-        <style>
-            .cls-1{fill:none;}.cls-2,.cls-3{fill:#383838;}.cls-3{opacity:0.75;}.cls-4{fill:#cf5717;}.cls-5,.cls-8{fill:#fff;}.cls-5{opacity:0.4;}.cls-6{opacity:0.5;}.cls-7{clip-path:url(#clip-path);}.cls-8{opacity:0.05;}.cls-9{fill:#7a3a18;}.cls-10{clip-path:url(#clip-path-2);}.cls-11{clip-path:url(#clip-path-3);}</style>
-        <clipPath id="clip-path" transform="translate(0 10.531)">
-            <rect class="cls-1" x="8.5" y="16.5" width="29" height="5" />
-        </clipPath>
-        <clipPath id="clip-path-2" transform="translate(0 10.531)">
-            <rect class="cls-1" x="8.5" y="22.5" width="29" height="5" />
-        </clipPath>
-        <clipPath id="clip-path-3" transform="translate(0 10.531)">
-            <rect class="cls-1" x="8.5" y="28.5" width="29" height="5" />
-        </clipPath>
-        <clipPath id="clip-path-4" transform="translate(0 10.531)">
-            <rect class="cls-1" x="8.5" y="34.5" width="29" height="5" />
-        </clipPath>
-        <clipPath id="clip-path-5" transform="translate(0 10.531)">
-            <rect class="cls-1" x="8.5" y="40.5" width="29" height="5" />
-        </clipPath>
-        <clipPath id="clip-path-6" transform="translate(0 10.531)">
-            <rect class="cls-1" x="8.5" y="46.5" width="29" height="5" />
-        </clipPath>
-        <clipPath id="clip-path-7" transform="translate(0 10.531)">
-            <rect class="cls-1" x="8.5" y="52.5" width="29" height="5" />
-        </clipPath>
-        <clipPath id="clip-path-8" transform="translate(0 10.531)">
-            <rect class="cls-1" x="8.5" y="58.5" width="29" height="5" />
-        </clipPath>
-        <clipPath id="clip-path-9" transform="translate(0 10.531)">
-            <rect class="cls-1" x="8.5" y="64.5" width="29" height="5" />
-        </clipPath>
-        <clipPath id="clip-path-10" transform="translate(0 10.531)">
-            <rect class="cls-1" x="8.5" y="70.5" width="29" height="5" />
-        </clipPath>
-        <clipPath id="clip-path-11" transform="translate(0 10.531)">
-            <rect class="cls-1" x="8.5" y="76.5" width="29" height="5" />
-        </clipPath>
+        <linearGradient id="grad1" x1="0%" x2="0%" y1="0%" y2="100%">
+            <stop offset="0%" class="shade" stop-opacity="0.3" />
+            <stop offset="35%" class="shade" stop-opacity="0" />
+        </linearGradient>
+        <linearGradient id="grad2" x1="0%" x2="100%" y1="0%" y2="0%">
+            <stop offset="0%" class="shade" stop-opacity="0.125" />
+            <stop offset="2.5%" class="shade" stop-opacity="0" />
+        </linearGradient>
+        <linearGradient id="grad3" x1="100%" x2="0%" y1="0%" y2="0%">
+            <stop offset="0%" class="shade" stop-opacity="0.125" />
+            <stop offset="2.5%" class="shade" stop-opacity="0" />
+        </linearGradient>
+
+        <g id="tabblock">
+            <g>
+                <rect fill-opacity="0.025" width="25.458" height="4.836" x="10.271" y="22.5" fill="#fff" />
+                <rect width="25.458" height="4.836" x="10.271" y="22.5" fill="url(#grad1)" />
+                <rect width="25.458" height="4.836" x="10.271" y="22.5" fill="url(#grad2)" />
+                <rect width="25.458" height="4.836" x="10.271" y="22.5" fill="url(#grad3)" />
+            </g>
+        </g>
     </defs>
-    <polygon class="cls-2"
-        points="32.25 6.063 12.75 6.063 11.849 3.938 0 3.938 0 114.938 11 114.938 12.75 119.063 32.25 119.063 34 114.938 348 114.938 348 4.102 348 3.938 33.151 3.938 32.25 6.063" />
-    <polygon class="cls-3"
-        points="32.25 4.063 12.75 4.063 11.026 0 0 0 0 110.938 11 110.938 12.75 115.063 32.25 115.063 34 110.938 348 110.938 348 0.102 348 0 33.974 0 32.25 4.063" />
-    <polygon class="cls-4"
-        points="32.25 6.094 12.75 6.094 11 1.969 0 1.969 0 112.969 11 112.969 12.75 117.094 32.25 117.094 34 112.969 348 112.969 348 2.134 348 1.969 34 1.969 32.25 6.094" />
-    <polygon id="highlight" class="cls-5"
-        points="34 1.938 32.25 6.063 12.75 6.063 11 1.938 0 1.938 0 3.938 11 3.938 12.75 8.063 32.25 8.063 34 3.938 348 3.938 348 2.102 348 1.938 34 1.938" />
-    <g id="lines" class="cls-6">
-        <g id="line">
-            <g class="cls-7">
-                <rect class="cls-8" x="6.121" y="24.591" width="31.458" height="7.952" />
-                <rect class="cls-9" x="6.448" y="25.793" width="31.458" height="2.197" />
-                <rect class="cls-9" x="37.102" y="27.237" width="0.603" height="4.945" />
-                <rect class="cls-9" x="8.217" y="27.116" width="0.603" height="4.945" />
-            </g>
-        </g>
-        <g id="line-2" data-name="line">
-            <g class="cls-10">
-                <rect class="cls-8" x="6.131" y="30.782" width="31.458" height="7.952" />
-                <rect class="cls-9" x="6.457" y="31.984" width="31.458" height="2.197" />
-                <rect class="cls-9" x="37.111" y="33.427" width="0.603" height="4.945" />
-                <rect class="cls-9" x="8.226" y="33.307" width="0.603" height="4.945" />
-            </g>
-        </g>
-        <g id="line-3" data-name="line">
-            <g class="cls-11">
-                <rect class="cls-8" x="6.185" y="36.709" width="31.458" height="7.952" />
-                <rect class="cls-9" x="6.512" y="37.911" width="31.458" height="2.197" />
-                <rect class="cls-9" x="37.165" y="39.355" width="0.603" height="4.945" />
-                <rect class="cls-9" x="8.281" y="39.234" width="0.603" height="4.945" />
-            </g>
-        </g>
-        <g id="line-4" data-name="line">
-            <g class="cls-12">
-                <rect class="cls-8" x="6.131" y="42.709" width="31.458" height="7.952" />
-                <rect class="cls-9" x="6.457" y="43.911" width="31.458" height="2.197" />
-                <rect class="cls-9" x="37.111" y="45.355" width="0.603" height="4.945" />
-                <rect class="cls-9" x="8.226" y="45.234" width="0.603" height="4.945" />
-            </g>
-        </g>
-        <g id="line-5" data-name="line">
-            <g class="cls-13">
-                <rect class="cls-8" x="6.125" y="48.688" width="31.458" height="7.952" />
-                <rect class="cls-9" x="6.451" y="49.89" width="31.458" height="2.197" />
-                <rect class="cls-9" x="37.105" y="51.334" width="0.603" height="4.945" />
-                <rect class="cls-9" x="8.22" y="51.213" width="0.603" height="4.945" />
-            </g>
-        </g>
-        <g id="line-6" data-name="line">
-            <g class="cls-14">
-                <rect class="cls-8" x="6.176" y="54.691" width="31.458" height="7.952" />
-                <rect class="cls-9" x="6.503" y="55.893" width="31.458" height="2.197" />
-                <rect class="cls-9" x="37.156" y="57.337" width="0.603" height="4.945" />
-                <rect class="cls-9" x="8.272" y="57.216" width="0.603" height="4.945" />
-            </g>
-        </g>
-        <g id="line-7" data-name="line">
-            <g class="cls-15">
-                <rect class="cls-8" x="6.176" y="60.727" width="31.458" height="7.952" />
-                <rect class="cls-9" x="6.503" y="61.929" width="31.458" height="2.197" />
-                <rect class="cls-9" x="37.156" y="63.373" width="0.603" height="4.945" />
-                <rect class="cls-9" x="8.272" y="63.252" width="0.603" height="4.945" />
-            </g>
-        </g>
-        <g id="line-8" data-name="line">
-            <g class="cls-16">
-                <rect class="cls-8" x="6.131" y="66.763" width="31.458" height="7.952" />
-                <rect class="cls-9" x="6.457" y="67.965" width="31.458" height="2.197" />
-                <rect class="cls-9" x="37.111" y="69.409" width="0.603" height="4.945" />
-                <rect class="cls-9" x="8.226" y="69.288" width="0.603" height="4.945" />
-            </g>
-        </g>
-        <g id="line-9" data-name="line">
-            <g class="cls-17">
-                <rect class="cls-8" x="6.221" y="72.781" width="31.458" height="7.952" />
-                <rect class="cls-9" x="6.548" y="73.984" width="31.458" height="2.197" />
-                <rect class="cls-9" x="37.201" y="75.427" width="0.603" height="4.945" />
-                <rect class="cls-9" x="8.317" y="75.306" width="0.603" height="4.945" />
-            </g>
-        </g>
-        <g id="line-10" data-name="line">
-            <g class="cls-18">
-                <rect class="cls-8" x="6.104" y="78.782" width="31.458" height="7.952" />
-                <rect class="cls-9" x="6.43" y="79.984" width="31.458" height="2.197" />
-                <rect class="cls-9" x="37.084" y="81.427" width="0.603" height="4.945" />
-                <rect class="cls-9" x="8.199" y="81.307" width="0.603" height="4.945" />
-            </g>
-        </g>
-        <g id="line-11" data-name="line">
-            <g class="cls-19">
-                <rect class="cls-8" x="6.131" y="84.918" width="31.458" height="7.952" />
-                <rect class="cls-9" x="6.457" y="86.12" width="31.458" height="2.197" />
-                <rect class="cls-9" x="37.111" y="87.563" width="0.603" height="4.945" />
-                <rect class="cls-9" x="8.226" y="87.443" width="0.603" height="4.945" />
-            </g>
-        </g>
+    <!-- middle scalable backround-->
+    <g viewBox="0 10 348.181 94.748">
+        <path class="background" d="M0,5h348.181v85h-348.181z" />
+    </g>
+    <!-- top -->
+    <g viewbox="0 0 351.887 72.748">
+        <path class="background" d="M0,2.000l11,0l1.75,4.125l19.5,0l1.75,-4.125l320,0l0,4.125l-355,0l0,-4.125z" />
+
+        <path class="border"
+            d="M347.736,0l-315.056,0.001l0,0.008l-1.749,4.117l-16.858,0l-1.752,-4.126l-0.019,0.008l0,-0.007l-12.302,0l0,2l10.998,0l1.748,4.115l0.005,-0.002l0,0.012l19.502,0l0,-0.003l0.002,0.001l1.752,-4.123l320,-0.001l0,-2z" />
+        <path fill-opacity="0.4" fill="#fff"
+            d="M347.736,2.063l-313.753,-0.063l0,0.003l-0.008,-0.003l-1.751,4.125l-19.484,0l-1.74,-4.098l0,-0.027l-11,0l0,2l9.665,0l1.753,4.127l0.005,-0.002l22.115,0l0,-0.001l0.008,0.003l1.753,-4.127l320,0.063l0,-2z"
+            stroke-opacity="0.4" />
+    </g>
+    <!-- middle path for bars on the left -->
+    <g viewbox="0 0 348 69">
+        <use y="-5" href="#tabblock" />
+        <use y="1.05" href="#tabblock" />
+        <use y="7.1" href="#tabblock" />
+        <use y="13.15" href="#tabblock" />
+        <use y="19.2" href="#tabblock" />
+        <use y="25.25" href="#tabblock" />
+        <use y="31.3" href="#tabblock" />
+        <use y="37.35" href="#tabblock" />
+        <use y="43.4" href="#tabblock" />
+        <use y="49.45" href="#tabblock" />
+        <use y="55.5" href="#tabblock" />
+    </g>
+
+    <!-- bottom -->
+    <g viewbox="0 0 351.887 94.748">
+        <path class="background"
+            d="M0,88.661l12.318,-0.004l1.75,4.125l16.857,0.014l1.75,-4.125l12.367,-0.004l-45.042,-0.006z" />
+        <path class="border"
+            d="M347.736,88.657l-315.056,0.001l0,0.008l-1.749,4.117l-16.858,0l-1.752,-4.126l-0.019,0.008l0,-0.007l-12.302,0l0,2l10.998,0l1.748,4.115l0.005,-0.002l0,0.012l19.502,0l0,-0.003l0.002,0.001l1.752,-4.123l317.729,-0.001l0,-2z" />
     </g>
 </svg>

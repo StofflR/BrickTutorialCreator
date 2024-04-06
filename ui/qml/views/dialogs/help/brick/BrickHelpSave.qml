@@ -91,7 +91,7 @@ HelpFrame {
         height: frame.height * 0.8
         ColumnLayout {
             Text {
-                text: "<b>Auto-Save:</b> When enabeling this optin the name of the file nolonger updates<br>according to the content of the brick."
+                text: "<b>Auto-Save:</b> When enabeling this optin the name of the file no longer updates<br>according to the content of the brick."
                 color: palette.windowText
             }
             Text {

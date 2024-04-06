@@ -1,1 +1,62 @@
-<svg xmlns="http://www.w3.org/2000/svg" id="Ebene_1" data-name="Ebene 1" viewBox="0 0 348.181 72"><defs><style>.cls-1{fill:none;}.cls-2,.cls-3{fill:#383838;}.cls-3{opacity:0.75;}.cls-4{fill:#408ac5;}.cls-5,.cls-8{fill:#fff;}.cls-5{opacity:0.4;}.cls-6{opacity:0.5;}.cls-7{clip-path:url(#clip-path);}.cls-8{opacity:0.1;}.cls-9{fill:#27567c;}.cls-10{clip-path:url(#clip-path-2);}.cls-11{clip-path:url(#clip-path-3);}</style><clipPath id="clip-path" transform="translate(0.181 11)"><rect class="cls-1" x="8.5" y="16.5" width="29" height="5" /></clipPath><clipPath id="clip-path-2" transform="translate(0.181 11)"><rect class="cls-1" x="8.5" y="22.5" width="29" height="5" /></clipPath><clipPath id="clip-path-3" transform="translate(0.181 11)"><rect class="cls-1" x="8.5" y="28.5" width="29" height="5" /></clipPath></defs><polygon class="cls-2" points="32.455 5.988 12.955 5.988 12.029 3.938 0.181 3.938 0.181 67.875 11.181 67.875 12.931 72 32.431 72 34.181 67.875 348.181 67.875 348.181 4.102 348.181 3.938 33.332 3.938 32.455 5.988" /><polygon class="cls-3" points="32.431 4.063 12.931 4.063 11.207 0 0.181 0 0.181 63.875 11.181 63.875 12.931 68 32.431 68 34.181 63.875 348.181 63.875 348.181 0.102 348.181 0 34.154 0 32.431 4.063" /><polygon class="cls-4" points="32.281 6.199 12.781 6.199 11 2.118 0 2.118 0 66.056 11 66.056 12.75 70.181 32.25 70.181 34 66.056 348 66.056 348 2.283 348 2.118 34 2.118 32.281 6.199" /><polygon id="highlight" class="cls-5" points="34.181 1.938 32.431 6.063 12.931 6.063 11.181 1.938 0.181 1.938 0.181 3.938 11.181 3.938 12.931 8.063 32.431 8.063 34.181 3.938 348.181 3.938 348.181 2.102 348.181 1.938 34.181 1.938" /><g id="lines" class="cls-6"><g id="line"><g class="cls-7"><rect class="cls-8" x="7.271" y="26.415" width="31.458" height="7.952" /><rect class="cls-9" x="7.326" y="26.501" width="31.458" height="2.197" /><rect class="cls-9" x="37.347" y="28.035" width="0.603" height="4.945" /><rect class="cls-9" x="8.462" y="27.523" width="0.603" height="4.945" /></g></g><g id="line-2" data-name="line"><g class="cls-10"><rect class="cls-8" x="6.409" y="31.039" width="31.458" height="7.952" /><rect class="cls-9" x="6.646" y="32.241" width="31.458" height="2.197" /><rect class="cls-9" x="37.299" y="33.685" width="0.603" height="4.945" /><rect class="cls-9" x="8.415" y="33.564" width="0.603" height="4.945" /></g></g><g id="line-3" data-name="line"><g class="cls-11"><rect class="cls-8" x="6.477" y="37.182" width="31.458" height="7.952" /><rect class="cls-9" x="6.713" y="38.384" width="31.458" height="2.197" /><rect class="cls-9" x="37.367" y="39.828" width="0.603" height="4.945" /><rect class="cls-9" x="8.482" y="39.707" width="0.603" height="4.945" /></g></g></g><text id="text" x="43px" y="33px" fill="#FFFFFF" fill-opacity="1" font-weight="bold" xml:space="preserve" style="font-family: Roboto;font-size:12.0pt;">Move AR.Drone 2.0 up</text><text id="text" x="43px" y="47.0px" fill="#FFFFFF" fill-opacity="1" font-weight="bold" xml:space="preserve" style="font-family: Roboto;font-size:12.0pt;" /><text id="text" x="43.0px" y="47.0px" fill="#FFFFFF" fill-opacity="1" font-weight="normal" xml:space="preserve" style="font-family: Roboto;font-size:12.0pt;"> 1 </text><line id="var_line" x1="43" y1="50.0" x2="59.0" y2="50.0" stroke="#ffffff" fill="#ffffff" stroke-width="1" /><text id="text" x="59.0px" y="47.0px" fill="#FFFFFF" fill-opacity="1" font-weight="bold" xml:space="preserve" style="font-family: Roboto;font-size:12.0pt;"> second with </text><text id="text" x="147.0px" y="47.0px" fill="#FFFFFF" fill-opacity="1" font-weight="normal" xml:space="preserve" style="font-family: Roboto;font-size:12.0pt;"> 20 </text><line id="var_line" x1="147" y1="50.0" x2="171.0" y2="50.0" stroke="#ffffff" fill="#ffffff" stroke-width="1" /><text id="text" x="171.0px" y="47.0px" fill="#FFFFFF" fill-opacity="1" font-weight="bold" xml:space="preserve" style="font-family: Roboto;font-size:12.0pt;"> % power</text><desc id="json" tag="brick">{"base_type": "blue", "content": "Move AR.Drone 2.0 up\n$1$ second with $20$ % power", "size": "1h", "path": "brick_blue_1h.svg", "scaling_factor": 1.0, "x": 43, "y": 33}</desc></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 348.181 72">
+    <style>
+        .background {
+            fill: #408ac5;
+        }
+
+        .border {
+            fill: #383838;
+        }
+
+        .shade {
+            fill: #27567c;
+            stop-color: #000000;
+        }
+    </style>
+    <defs>
+        <linearGradient id="grad1" x1="0%" x2="0%" y1="0%" y2="100%">
+            <stop offset="0%" class="shade" stop-opacity="0.3" />
+            <stop offset="35%" class="shade" stop-opacity="0" />
+        </linearGradient>
+        <linearGradient id="grad2" x1="0%" x2="100%" y1="0%" y2="0%">
+            <stop offset="0%" class="shade" stop-opacity="0.125" />
+            <stop offset="2.5%" class="shade" stop-opacity="0" />
+        </linearGradient>
+        <linearGradient id="grad3" x1="100%" x2="0%" y1="0%" y2="0%">
+            <stop offset="0%" class="shade" stop-opacity="0.125" />
+            <stop offset="2.5%" class="shade" stop-opacity="0" />
+        </linearGradient>
+
+        <g id="tabblock">
+            <g>
+                <rect fill-opacity="0.025" width="25.458" height="7.636" x="10.271" y="22.5" fill="#fff" />
+                <rect width="25.458" height="7.636" x="10.271" y="22.5" fill="url(#grad1)" />
+                <rect width="25.458" height="7.636" x="10.271" y="22.5" fill="url(#grad2)" />
+                <rect width="25.458" height="7.636" x="10.271" y="22.5" fill="url(#grad3)" />
+            </g>
+        </g>
+    </defs>
+    
+    <g viewBox="0 10 348.181 72">
+        <path class="background" d="M0,5h348.181v63h-348.181z" />
+    </g>
+    
+    <g viewbox="0 0 351.887 72.748">
+        <path class="background" d="M0,2.000l11,0l1.75,4.125l19.5,0l1.75,-4.125l320,0l0,4.125l-355,0l0,-4.125z" />
+
+        <path class="border" d="M347.736,0l-315.056,0.001l0,0.008l-1.749,4.117l-16.858,0l-1.752,-4.126l-0.019,0.008l0,-0.007l-12.302,0l0,2l10.998,0l1.748,4.115l0.005,-0.002l0,0.012l19.502,0l0,-0.003l0.002,0.001l1.752,-4.123l320,-0.001l0,-2z" />
+        <path fill-opacity="0.4" fill="#fff" d="M347.736,2.063l-313.753,-0.063l0,0.003l-0.008,-0.003l-1.751,4.125l-19.484,0l-1.74,-4.098l0,-0.027l-11,0l0,2l9.665,0l1.753,4.127l0.005,-0.002l22.115,0l0,-0.001l0.008,0.003l1.753,-4.127l320,0.063l0,-2z" stroke-opacity="0.4" />
+    </g>
+    
+    <g viewbox="0 0 348 69">
+        <use y="3" href="#tabblock" />
+        <use y="13.5" href="#tabblock" />
+        <use y="24" href="#tabblock" />
+    </g>
+
+    
+    <g viewbox="0 0 351.887 72.748">
+        <path class="background" d="M0,66.661l12.318,-0.004l1.75,4.125l16.857,0.014l1.75,-4.125l12.367,-0.004l-45.042,-0.006z" />
+        <path class="border" d="M347.736,66.657l-315.056,0.001l0,0.008l-1.749,4.117l-16.858,0l-1.752,-4.126l-0.019,0.008l0,-0.007l-12.302,0l0,2l10.998,0l1.748,4.115l0.005,-0.002l0,0.012l19.502,0l0,-0.003l0.002,0.001l1.752,-4.123l317.729,-0.001l0,-2z" />
+    </g>
+<text id="text" x="43px" y="33px" fill="#FFFFFF" fill-opacity="1" font-weight="bold" xml:space="preserve" style="font-family: Roboto;font-size:12.0pt;">Move AR.Drone 2.0 up</text><text id="text" x="43px" y="47.0px" fill="#FFFFFF" fill-opacity="1" font-weight="bold" xml:space="preserve" style="font-family: Roboto;font-size:12.0pt;" /><text id="text" x="43.0px" y="47.0px" fill="#FFFFFF" fill-opacity="1" font-weight="normal" xml:space="preserve" style="font-family: Roboto;font-size:12.0pt;"> 1 </text><line id="var_line" x1="43" y1="50.0" x2="59.0" y2="50.0" stroke="#FFFFFF" fill="#FFFFFF" stroke-width="1" /><text id="text" x="59.0px" y="47.0px" fill="#FFFFFF" fill-opacity="1" font-weight="bold" xml:space="preserve" style="font-family: Roboto;font-size:12.0pt;"> second with </text><text id="text" x="147.0px" y="47.0px" fill="#FFFFFF" fill-opacity="1" font-weight="normal" xml:space="preserve" style="font-family: Roboto;font-size:12.0pt;"> 20 </text><line id="var_line" x1="147" y1="50.0" x2="171.0" y2="50.0" stroke="#FFFFFF" fill="#FFFFFF" stroke-width="1" /><text id="text" x="171.0px" y="47.0px" fill="#FFFFFF" fill-opacity="1" font-weight="bold" xml:space="preserve" style="font-family: Roboto;font-size:12.0pt;"> % power</text><desc id="json" tag="brick">{"base_type": "blue", "content": "Move AR.Drone 2.0 up\n$1$ second with $20$ % power", "size": "1h", "path": "brick_blue_1h.svg", "scaling_factor": 1.0, "x": 43, "y": 33}</desc></svg>

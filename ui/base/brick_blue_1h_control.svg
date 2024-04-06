@@ -1,65 +1,65 @@
-<svg id="Ebene_1" data-name="Ebene 1" xmlns="http://www.w3.org/2000/svg"
-    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 348 71.739">
+<svg xmlns='http://www.w3.org/2000/svg' viewBox="0 0 348.181 72">
+    <style>
+        .background {
+            fill: #408ac5;
+        }
+
+        .border {
+            fill: #383838;
+        }
+        .shade {
+            stop-color: #27567c;
+        }
+    </style>
     <defs>
-        <style>
-            .cls-1{fill:none;}.cls-2,.cls-3{fill:#383838;}.cls-3{opacity:0.75;}.cls-4{fill:#408ac5;}.cls-5,.cls-8{fill:#fff;}.cls-5{opacity:0.4;}.cls-6{opacity:0.5;}.cls-7{clip-path:url(#clip-path);}.cls-8{opacity:0.05;}.cls-9{fill:#27567c;}.cls-10{clip-path:url(#clip-path-2);}.cls-11{clip-path:url(#clip-path-3);}</style>
-        <clipPath id="clip-path" transform="translate(0 -1.131)">
-            <rect class="cls-1" x="8.5" y="28.5" width="29" height="5" />
-        </clipPath>
-        <clipPath id="clip-path-2" transform="translate(0 -1.131)">
-            <rect class="cls-1" x="8.5" y="34.5" width="29" height="5" />
-        </clipPath>
-        <clipPath id="clip-path-3" transform="translate(0 -1.131)">
-            <rect class="cls-1" x="8.5" y="40.5" width="29" height="5" />
-        </clipPath>
-        <clipPath id="clip-path-4" transform="translate(0 -1.131)">
-            <rect class="cls-1" x="8.5" y="46.5" width="29" height="5" />
-        </clipPath>
+        <linearGradient id="grad1" x1="0%" x2="0%" y1="0%" y2="100%">
+            <stop offset="0%" class="shade" stop-opacity="0.3" />
+            <stop offset="35%" class="shade" stop-opacity="0" />
+        </linearGradient>
+        <linearGradient id="grad2" x1="0%" x2="100%" y1="0%" y2="0%">
+            <stop offset="0%" class="shade" stop-opacity="0.125" />
+            <stop offset="2.5%" class="shade" stop-opacity="0" />
+        </linearGradient>
+        <linearGradient id="grad3" x1="100%" x2="0%" y1="0%" y2="0%">
+            <stop offset="0%" class="shade" stop-opacity="0.125" />
+            <stop offset="2.5%" class="shade" stop-opacity="0" />
+        </linearGradient>
+
+        <g id="tabblock">
+            <g>
+                <rect fill-opacity="0.025" width="25.458" height="7.636" x="10.271" y="22.5" fill="#fff" />
+                <rect width="25.458" height="7.636" x="10.271" y="22.5" fill="url(#grad1)" />
+                <rect width="25.458" height="7.636" x="10.271" y="22.5" fill="url(#grad2)" />
+                <rect width="25.458" height="7.636" x="10.271" y="22.5" fill="url(#grad3)" />
+            </g>
+        </g>
     </defs>
-    <path id="lower_outline" class="cls-2"
-        d="M212.75,23.881c-12.75,0-17.75,1-35.25-3.25-20.8-5.052-66-15.5-109.75-15.5S0,14.381,0,14.381V68.744H11l1.75,4.125h19.5L34,68.744H348V24.818S215.962,23.881,212.75,23.881Z"
-        transform="translate(0 -1.131)" />
-    <path id="upper_outline" class="cls-3"
-        d="M212.75,19.881c-12.75,0-17.75,1-35.25-3.25-20.8-5.052-66-15.5-109.75-15.5S0,10.381,0,10.381V64.744H11l1.75,4.125h19.5L34,64.744H348V20.818S215.962,19.881,212.75,19.881Z"
-        transform="translate(0 -1.131)" />
-    <path id="brick" class="cls-4"
-        d="M212.75,21.881c-12.75,0-17.75,1-35.25-3.25-20.8-5.052-66-15.5-109.75-15.5S0,12.381,0,12.381V66.744H11l1.75,4.125h19.5L34,66.744H348V22.818S215.962,21.881,212.75,21.881Z"
-        transform="translate(0 -1.131)" />
-    <path id="highlight" class="cls-5"
-        d="M212.75,21.881c-12.75,0-17.75,1-35.25-3.25-20.8-5.052-66-15.5-109.75-15.5S0,12.381,0,12.381v2s24-9.25,67.75-9.25S156.7,15.579,177.5,20.631c17.5,4.25,22.5,3.25,35.25,3.25,3.212,0,135.25.937,135.25.937v-2S215.962,21.881,212.75,21.881Z"
-        transform="translate(0 -1.131)" />
-    <g id="lines" class="cls-6">
-        <g id="line">
-            <g class="cls-7">
-                <rect class="cls-8" x="6.161" y="24.817" width="31.458" height="7.952" />
-                <rect class="cls-9" x="6.487" y="26.019" width="31.458" height="2.197" />
-                <rect class="cls-9" x="37.141" y="27.463" width="0.603" height="4.945" />
-                <rect class="cls-9" x="8.256" y="27.342" width="0.603" height="4.945" />
-            </g>
-        </g>
-        <g id="line-2" data-name="line">
-            <g class="cls-10">
-                <rect class="cls-9" x="6.487" y="32.08" width="31.458" height="2.197" />
-                <rect class="cls-8" x="6.161" y="30.877" width="31.458" height="7.952" />
-                <rect class="cls-9" x="37.141" y="33.523" width="0.603" height="4.945" />
-                <rect class="cls-9" x="8.256" y="33.402" width="0.603" height="4.945" />
-            </g>
-        </g>
-        <g id="line-3" data-name="line">
-            <g class="cls-11">
-                <rect class="cls-9" x="6.487" y="38.095" width="31.458" height="2.197" />
-                <rect class="cls-8" x="6.161" y="36.892" width="31.458" height="7.952" />
-                <rect class="cls-9" x="37.141" y="39.538" width="0.603" height="4.945" />
-                <rect class="cls-9" x="8.256" y="39.418" width="0.603" height="4.945" />
-            </g>
-        </g>
-        <g id="line-4" data-name="line">
-            <g class="cls-12">
-                <rect class="cls-8" x="6.161" y="42.908" width="31.458" height="7.952" />
-                <rect class="cls-9" x="6.487" y="44.11" width="31.458" height="2.197" />
-                <rect class="cls-9" x="37.141" y="45.553" width="0.603" height="4.945" />
-                <rect class="cls-9" x="8.256" y="45.433" width="0.603" height="4.945" />
-            </g>
-        </g>
+    <!-- middle scalable backround-->
+    <g viewBox="0 10 348.181 72">
+        <path class="background" d="M0,20h348.181v48h-348.181z" />
+    </g>
+    <!-- top -->
+    <g viewbox="0 0 351.887 72.748">
+        <path class="border"
+            d="m 214 19 c -12.279 -0.277 -17.75 1 -35.25 -3.25 c -20.8 -5 -66 -15.5 -110.784 -15.748 S 0 9.35 0 9.35 v 14.73 L 350 24.222 l 0 -5.222 l -130 0 Z" />
+        <path class="background"
+            d="M212.75,20c-12.75,0 -17.75,1 -35.25,-3.25 -20.8,-5.051 -66,-15.5 -109.75,-15.5S0,10.562 0,11L0,24.778L349,24.778L3450,20S2110,20 220,20Z" />
+        <path fill-opacity="0.4" fill="#fff"
+            d="M 212.75 20 c -12.75 0 -17.75 1 -35.25 -3.25 c -20.8 -5.052 -66 -15.5 -110.441 -15.533 S -0.002 11 0 11 L -0.002 11.718 v 2.286 s 22.6 -10 67.039 -10.002 S 156.7 14.448 177.5 19.5 c 17.5 4.25 22.5 3.25 40.25 3.25 c 3.212 0 135.25 0 135.25 0 v -2.749 Z"
+            stroke-opacity="0.4" />
+    </g>
+    <!-- middle path for bars on the left -->
+    <g viewbox="0 0 348 69">
+        <use y="3" href="#tabblock" />
+        <use y="13.5" href="#tabblock" />
+        <use y="24" href="#tabblock" />
+    </g>
+
+    <!-- bottom -->
+    <g viewbox="0 0 351.887 72.748">
+        <path class="background"
+            d="M0,66.661l12.318,-0.004l1.75,4.125l16.857,0.014l1.75,-4.125l12.367,-0.004l-45.042,-0.006z" />
+        <path class="border"
+            d="M347.736,66.657l-315.056,0.001l0,0.008l-1.749,4.117l-16.858,0l-1.752,-4.126l-0.019,0.008l0,-0.007l-12.302,0l0,2l10.998,0l1.748,4.115l0.005,-0.002l0,0.012l19.502,0l0,-0.003l0.002,0.001l1.752,-4.123l317.729,-0.001l0,-2z" />
     </g>
 </svg>

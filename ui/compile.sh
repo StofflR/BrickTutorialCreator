@@ -9,6 +9,8 @@ cp -r venv/lib/python3.10/site-packages/PySide6/Qt/ BrickTutorialCreator.dist/Py
 cp -r base/ BrickTutorialCreator.dist/
 cp resources/fonts/Roboto-Bold.ttf BrickTutorialCreator.dist/resources/fonts/Roboto-Bold.ttf
 cp resources/fonts/Roboto-Light.ttf BrickTutorialCreator.dist/resources/fonts/Roboto-Light.ttf
+cp resources/ccbysa.svg BrickTutorialCreator.dist/resources/ccbysa.svg
+
 mv BrickTutorialCreator.dist BrickTutorialCreator
 tar -czvf BrickTutorialCreator.tar.gz BrickTutorialCreator
 mv BrickTutorialCreator BrickTutorialCreator.dist
