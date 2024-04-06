@@ -7,6 +7,7 @@ mkdir .\BrickTutorialCreator.dist\resources\tmp
 mkdir .\BrickTutorialCreator.dist\resources\out
 mkdir .\BrickTutorialCreator.dist\resources\fonts
 xcopy.exe .\base\ .\BrickTutorialCreator.dist\base\ /s
+xcopy.exe .\resources\ .\BrickTutorialCreator.dist\resources\
 copy .\resources\icon.svg .\BrickTutorialCreator.dist\resources\icon.svg
 copy .\resources\fonts\Roboto-Bold.ttf .\BrickTutorialCreator.dist\resources\fonts\Roboto-Bold.ttf
 copy .\resources\fonts\Roboto-Light.ttf .\BrickTutorialCreator.dist\resources\fonts\Roboto-Light.ttf

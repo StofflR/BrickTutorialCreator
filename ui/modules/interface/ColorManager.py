@@ -29,6 +29,7 @@ class ColorManager(QObject):
         super().__init__(parent=parent)
         self.customColors = 0
         self._model = colorSchemes.copy()
+        self.customColorList = []
         self.loadCustomBricks()
 
     @Slot(str, result=bool)
@@ -131,12 +132,11 @@ class ColorManager(QObject):
                 .replace("brick_", "")
             )
             colors = []
-            customColors = []
             for color in colorSchemes:
                 colors.append(color["name"])
-            if brick_name not in colors and brick_name not in customColors:
+            if brick_name not in colors and brick_name not in self.customColorList:
                 self.loadColor(os.path.join(path, file), brick_name)
-                customColors.append(brick_name)
+                self.customColorList.append(brick_name)
 
     def loadColor(self, path, name):
         """
