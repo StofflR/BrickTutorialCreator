@@ -32,3 +32,5 @@ ui/.vs/
 ui/.vscode/
 
 ui/BrickTutorialCreator/
+
+ui/.qtcreator/*

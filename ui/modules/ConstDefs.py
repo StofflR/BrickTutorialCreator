@@ -127,6 +127,9 @@ pink_shade = "935e7b"
 red = "f24e50"
 red_shade = "ae2f2f"
 
+winered = "910d06"
+winered_shade = "750701"
+
 white = "ffffff"
 white_shade = "a9b4cd"
 white_border = "274383"
@@ -177,6 +180,12 @@ colorSchemes = [
     },
     {"name": "pink", "color": pink, "shade": pink_shade, "border": default_border},
     {"name": "red", "color": red, "shade": red_shade, "border": default_border},
+    {
+        "name": "winered",
+        "color": winered,
+        "shade": winered_shade,
+        "border": default_border,
+    },
     {"name": "white", "color": white, "shade": white_shade, "border": white_border},
     {
         "name": "transparent_white",

@@ -75,6 +75,11 @@ Item {
             "shade": red_shade,
             "border": default_border
         }, {
+            "name": "winered",
+            "color": winered,
+            "shade": winered_shade,
+            "border": default_border
+        }, {
             "name": "white",
             "color": white,
             "shade": white_shade,
@@ -129,6 +134,9 @@ Item {
 
     property string red: "f24e50"
     property string red_shade: "ae2f2f"
+
+    property string winered: "910d06"
+    property string winered_shade: "750701"
 
     property string white: "ffffff"
     property string white_shade: "a9b4cd"
