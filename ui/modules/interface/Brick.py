@@ -11,10 +11,10 @@ QML_IMPORT_MAJOR_VERSION = 1
 
 
 @QmlElement
-class Brick(SVGBrick, QObject):
+class Brick(QObject):
     def __init__(self, parent=None):
-        SVGBrick.__init__(self)
         QObject.__init__(self, parent)
+        self.brick = SVGBrick()
 
     @Signal
     def _updateBrick(self):
@@ -25,23 +25,23 @@ class Brick(SVGBrick, QObject):
         return
 
     def _getBaseType(self):
-        return self.base_type
+        return self.brick.base_type
 
     def _setBaseType(self, base_type):
-        self.base_type = base_type
+        self.brick.base_type = base_type
         self.resetSVG()
         self._updateBrick.emit()
 
     def _getContent(self):
-        return self.content
+        return self.brick.content
 
     def _setContent(self, value):
-        self.content = value
+        self.brick.content = value
         self.resetSVG()
         self._updateBrick.emit()
 
     def _getSize(self):
-        return self.size
+        return self.brick.size
 
     def _setSize(self, value):
         self.size = value
@@ -49,34 +49,34 @@ class Brick(SVGBrick, QObject):
         self._updateBrick.emit()
 
     def _getPath(self):
-        return self.path
+        return self.brick.path
 
     def _setPath(self, value):
-        self.path = value
+        self.brick.path = value
         self.resetSVG()
         self._updateBrick.emit()
 
     def _getScalingFactor(self):
-        return self.scaling_factor
+        return self.brick.scaling_factor
 
     def _setScalingFactor(self, value):
-        self.scaling_factor = value
+        self.brick.scaling_factor = value
         self.resetSVG()
         self._updateBrick.emit()
 
     def _getXPos(self):
-        return self.x
+        return self.brick.x
 
     def _setXPos(self, value):
-        self.x = value
+        self.brick.x = value
         self.resetSVG()
         self._updateBrick.emit()
 
     def _getYPos(self):
-        return self.y
+        return self.brick.y
 
     def _setYPos(self, value):
-        self.y = value
+        self.brick.y = value
         self.resetSVG()
         self._updateBrick.emit()
 
@@ -101,12 +101,12 @@ class Brick(SVGBrick, QObject):
         -------
         The SVG Brick base brick path
         """
-        base_brick = self.base_type
+        base_brick = self.brick.base_type
         control = ""
         if "(control)" in base_brick:
             base_brick = base_brick.replace(" (control)", "")
             control = "_control"
-        return "brick_" + base_brick + "_" + str(self.size) + control + SVG_EXT
+        return "brick_" + base_brick + "_" + str(self.brick.size) + control + SVG_EXT
 
     def _getFullBasePath(self) -> str:
         return addFileStub(os.path.join(DEF_BASE, self.basePath()))
@@ -114,8 +114,8 @@ class Brick(SVGBrick, QObject):
     fullBasePath = Property(str, fget=_getFullBasePath, notify=_updateBrick)
 
     def resetSVG(self) -> None:
-        self.reset()
-        self.addContent()
+        self.brick.reset()
+        self.brick.addContent()
 
     def updateFromJSON(self, json_text):
         """
@@ -124,13 +124,13 @@ class Brick(SVGBrick, QObject):
         ----------
         json_text: the json text to update the brick with
         """
-        self.base_type = getAttr(json_text, "base_type", "")
-        self.content = getAttr(json_text, "content", "")
-        self.size = getAttr(json_text, "size", "1h")
-        self.path = getAttr(json_text, "path", DEF_BASE_BRICK)
-        self.scaling_factor = float(getAttr(json_text, "scaling_factor", 1))
-        self.x = float(getAttr(json_text, "x", DEFAULT_X))
-        self.y = float(getAttr(json_text, "y", DEFAULT_Y))
+        self.brick.base_type = getAttr(json_text, "base_type", "")
+        self.brick.content = getAttr(json_text, "content", "")
+        self.brick.size = getAttr(json_text, "size", "1h")
+        self.brick.path = getAttr(json_text, "path", DEF_BASE_BRICK)
+        self.brick.scaling_factor = float(getAttr(json_text, "scaling_factor", 1))
+        self.brick.x = float(getAttr(json_text, "x", DEFAULT_X))
+        self.brick.y = float(getAttr(json_text, "y", DEFAULT_Y))
 
     @Slot(str)
     def fromJSON(self, path):
@@ -160,6 +160,20 @@ class Brick(SVGBrick, QObject):
         self.contentChanged.emit()
         self._updateBrick.emit()
 
+
+    @Slot(SVGBrick)
+    def fromSVGBrick(self, brick):
+        """
+        Load an SVG Brick from an SVG
+        Parameters
+        ----------
+        path: to the svg file
+        """
+        self.brick = brick
+        self.resetSVG()
+        self.contentChanged.emit()
+        self._updateBrick.emit()
+
     @Slot(str)
     def fromFile(self, path):
         """
@@ -181,8 +195,8 @@ class Brick(SVGBrick, QObject):
         ----------
         content: the content for the SVG brick
         """
-        if content != self.content:
-            self.content = content
+        if content != self.brick.content:
+            self.brick.content = content
             self.resetSVG()
 
     def _workingPath(self):
@@ -192,7 +206,7 @@ class Brick(SVGBrick, QObject):
         -------
         string of path to the current working brick
         """
-        return QUrl.fromLocalFile(self.getWorkingBrick()).toString()
+        return QUrl.fromLocalFile(self.brick.getWorkingBrick()).toString()
 
     workingPath = Property(str, fget=_workingPath, notify=_updateBrick)
 
@@ -205,7 +219,7 @@ class Brick(SVGBrick, QObject):
         string of the current SVG Brick
         """
         # clean multi, leading/tailing whitespaces
-        return " ".join(self.contentPlain().split()).strip().replace(" ", "_")
+        return " ".join(self.brick.contentPlain().split()).strip().replace(" ", "_")
 
     @Slot(str, result=str)
     @Slot(str, str, result=str)
@@ -223,7 +237,7 @@ class Brick(SVGBrick, QObject):
         path = removeFileStub(path)
         os.makedirs(path, exist_ok=True)
         target = os.path.join(path, self._getFileName(filename, SVG_EXT))
-        self.save(target)
+        self.brick.save(target)
         return target
 
     @Slot(str)
@@ -269,7 +283,7 @@ class Brick(SVGBrick, QObject):
         """
         path = removeFileStub(path)
         os.makedirs(path, exist_ok=True)
-        self.toJSON(os.path.join(path, self._getFileName(filename, JSON_EXT)))
+        self.brick.toJSON(os.path.join(path, self._getFileName(filename, JSON_EXT)))
 
     @Slot(str, result=str)
     def cleanFileName(self, filename):

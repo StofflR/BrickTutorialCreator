@@ -18,19 +18,18 @@ DelegateModel {
         MouseArea {
             id: dragArea
             z: dragArea.DelegateModel.itemsIndex
-            width: parent ? parent.width : 0
+            width: parent?.width
             height: content.height - (width / 55) > 0 ? content.height - (width / 55) : 0
             property bool held: false
-
             pressAndHoldInterval: 1
             drag.target: held ? content : undefined
             drag.axis: Drag.YAxis
-            onPressAndHold: held = true
-            onReleased: {
-                held = false
-                visualModel.selectedIndex = dragArea.DelegateModel.itemsIndex
-                visualModel.focus()
-            }
+            onPressed: held = true
+            onReleased: held = false
+            onHeldChanged: if(!held) {
+                               visualModel.selectedIndex = dragArea.DelegateModel.itemsIndex
+                               visualModel.focus()
+                           }
             Item {
                 id: content
                 anchors {
@@ -40,20 +39,22 @@ DelegateModel {
                 width: parent.width
                 height: image.height
 
-                Image {
+                EditableBrick {
                     id: image
                     width: content.width - 20
-                    source: modelData
-                    fillMode: Image.PreserveAspectFit
-                    sourceSize.width: width
-                    smooth: true
-                    cache: true
+                    saveButton.enabled: false
+                    loadButton.enabled: false
+                    Component.onCompleted: image.brick.fromSVGBrick(modelData)
+                    mouseArea.onPressed: dragArea.held = true
+                    mouseArea.onReleased: dragArea.held = false
+                    mouseArea.drag.target: dragArea.held ? content : undefined
+                    mouseArea.drag.axis: Drag.YAxis
                 }
                 Rectangle {
+                    id: handle
                     width: 10
                     height: image.height - image.width * 0.018
-                    opacity: dragArea.DelegateModel.itemsIndex === visualModel.selectedIndex ? 1 : 0
-                    color: palette.highlight
+                    color: dragArea.DelegateModel.itemsIndex === visualModel.selectedIndex ? palette.highlight : palette.disabled
                     anchors.left: image.right
                     anchors.margins: 5
                     radius: 5

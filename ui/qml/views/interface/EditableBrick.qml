@@ -24,6 +24,8 @@ Image {
     property alias editor: selectorComponent
     property alias content: previewContent
 
+    property alias mouseArea: mouseArea
+
     signal save
     brick.onContentChanged: previewContent.text = modifyableBrick.brickContent
     source: decodeURIComponent(
@@ -183,6 +185,7 @@ Image {
     }
 
     MouseArea {
+        id: mouseArea
         anchors.fill: previewContent
         property int pressedAt
 
@@ -218,7 +221,6 @@ Image {
         ToolTip.text: qsTr("Clear current brick content!")
         onPressed: {
             previewContent.text = ""
-            dataChanged()
             statusText = "INFO: Cleared brick content!"
         }
     }
