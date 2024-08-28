@@ -173,9 +173,7 @@ class TutorialManager(QObject):
             path=self.modelVal[0].working_brick_.replace(SVG_EXT, PNG_EXT),
             width=PNG_WIDTH_TUTORIAL,
         )
-        tutorial = QImage(
-            self.modelVal[0].working_brick_.replace(SVG_EXT, PNG_EXT)
-        )
+        tutorial = QImage(self.modelVal[0].working_brick_.replace(SVG_EXT, PNG_EXT))
 
         for brick in self.modelVal[1::]:
             brick.savePNG(

@@ -160,7 +160,6 @@ class Brick(QObject):
         self.contentChanged.emit()
         self._updateBrick.emit()
 
-
     @Slot(SVGBrick)
     def fromSVGBrick(self, brick):
         """
