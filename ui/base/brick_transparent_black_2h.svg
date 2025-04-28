@@ -1,0 +1,49 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox="0 0 348.181 94.748">
+    <style>
+        .background {
+            fill: #000000ff;
+        }
+
+        .border {
+            fill: #000000ff;
+        }
+
+        .shade {
+            fill: #000000ff;
+            stop-color: #000000;
+        }
+    </style>
+    <defs>
+        <linearGradient id="grad1" x1="0%" x2="0%" y1="0%" y2="100%">
+            <stop offset="0%" class="shade" stop-opacity="0.3" />
+            <stop offset="35%" class="shade" stop-opacity="0" />
+        </linearGradient>
+        <linearGradient id="grad2" x1="0%" x2="100%" y1="0%" y2="0%">
+            <stop offset="0%" class="shade" stop-opacity="0.125" />
+            <stop offset="2.5%" class="shade" stop-opacity="0" />
+        </linearGradient>
+        <linearGradient id="grad3" x1="100%" x2="0%" y1="0%" y2="0%">
+            <stop offset="0%" class="shade" stop-opacity="0.125" />
+            <stop offset="2.5%" class="shade" stop-opacity="0" />
+        </linearGradient>
+
+        <g id="tabblock">
+            <g>
+                <rect fill-opacity="0.025" width="25.458" height="6.836" x="10.271" y="22.5" fill="#fff" />
+                <rect width="25.458" height="6.836" x="10.271" y="22.5" fill="url(#grad1)" />
+                <rect width="25.458" height="6.836" x="10.271" y="22.5" fill="url(#grad2)" />
+                <rect width="25.458" height="6.836" x="10.271" y="22.5" fill="url(#grad3)" />
+            </g>
+        </g>
+    </defs>   
+    <!-- middle path for bars on the left -->
+    <g viewbox="0 0 348 69">
+        <use y="1" href="#tabblock" />
+        <use y="9" href="#tabblock" />
+        <use y="17.2" href="#tabblock" />
+        <use y="25.2" href="#tabblock" />
+        <use y="33.2" href="#tabblock" />
+        <use y="41.2" href="#tabblock" />
+        <use y="49.7" href="#tabblock" />
+    </g>
+</svg>

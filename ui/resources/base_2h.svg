@@ -1,0 +1,69 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox="0 0 348.181 94.748">
+    <style>
+        .background {
+            fill: #BACKGROUND;
+        }
+
+        .border {
+            fill: #BORDER;
+        }
+        .shade {
+            stop-color: #SHADE;
+        }
+    </style>
+    <defs>
+        <linearGradient id="grad1" x1="0%" x2="0%" y1="0%" y2="100%">
+            <stop offset="0%" class="shade" stop-opacity="0.3" />
+            <stop offset="35%" class="shade" stop-opacity="0" />
+        </linearGradient>
+        <linearGradient id="grad2" x1="0%" x2="100%" y1="0%" y2="0%">
+            <stop offset="0%" class="shade" stop-opacity="0.125" />
+            <stop offset="2.5%" class="shade" stop-opacity="0" />
+        </linearGradient>
+        <linearGradient id="grad3" x1="100%" x2="0%" y1="0%" y2="0%">
+            <stop offset="0%" class="shade" stop-opacity="0.125" />
+            <stop offset="2.5%" class="shade" stop-opacity="0" />
+        </linearGradient>
+
+        <g id="tabblock">
+            <g>
+                <rect fill-opacity="0.025" width="25.458" height="6.836" x="10.271" y="22.5" fill="#fff" />
+                <rect width="25.458" height="6.836" x="10.271" y="22.5" fill="url(#grad1)" />
+                <rect width="25.458" height="6.836" x="10.271" y="22.5" fill="url(#grad2)" />
+                <rect width="25.458" height="6.836" x="10.271" y="22.5" fill="url(#grad3)" />
+            </g>
+        </g>
+    </defs>
+    <!-- middle scalable backround-->
+    <g viewBox="0 10 348.181 94.748">
+        <path class="background" d="M0,5h348.181v85h-348.181z" />
+    </g>
+    <!-- top -->
+    <g viewbox="0 0 351.887 72.748">
+        <path class="background" d="M0,2.000l11,0l1.75,4.125l19.5,0l1.75,-4.125l320,0l0,4.125l-355,0l0,-4.125z" />
+
+        <path class="border"
+            d="M347.736,0l-315.056,0.001l0,0.008l-1.749,4.117l-16.858,0l-1.752,-4.126l-0.019,0.008l0,-0.007l-12.302,0l0,2l10.998,0l1.748,4.115l0.005,-0.002l0,0.012l19.502,0l0,-0.003l0.002,0.001l1.752,-4.123l320,-0.001l0,-2z" />
+        <path fill-opacity="0.4" fill="#fff"
+            d="M347.736,2.063l-313.753,-0.063l0,0.003l-0.008,-0.003l-1.751,4.125l-19.484,0l-1.74,-4.098l0,-0.027l-11,0l0,2l9.665,0l1.753,4.127l0.005,-0.002l22.115,0l0,-0.001l0.008,0.003l1.753,-4.127l320,0.063l0,-2z"
+            stroke-opacity="0.4" />
+    </g>
+    <!-- middle path for bars on the left -->
+    <g viewbox="0 0 348 69">
+        <use y="1" href="#tabblock" />
+        <use y="9" href="#tabblock" />
+        <use y="17.2" href="#tabblock" />
+        <use y="25.2" href="#tabblock" />
+        <use y="33.2" href="#tabblock" />
+        <use y="41.2" href="#tabblock" />
+        <use y="49.7" href="#tabblock" />
+    </g>
+
+    <!-- bottom -->
+    <g viewbox="0 0 351.887 94.748">
+        <path class="background"
+            d="M0,88.661l12.318,-0.004l1.75,4.125l16.857,0.014l1.75,-4.125l12.367,-0.004l-45.042,-0.006z" />
+        <path class="border"
+            d="M347.736,88.657l-315.056,0.001l0,0.008l-1.749,4.117l-16.858,0l-1.752,-4.126l-0.019,0.008l0,-0.007l-12.302,0l0,2l10.998,0l1.748,4.115l0.005,-0.002l0,0.012l19.502,0l0,-0.003l0.002,0.001l1.752,-4.123l317.729,-0.001l0,-2z" />
+    </g>
+</svg>

@@ -1,0 +1,63 @@
+<RCC>
+    <qresource prefix="/bricks">
+        <file>resources/add_black_24dp.svg</file>
+        <file>resources/add_circle_black_24dp.svg</file>
+        <file>resources/add_circle_outline_black_24dp.svg</file>
+        <file>resources/arrow_back_ios_black_24dp.svg</file>
+        <file>resources/arrow_forward_ios_black_24dp.svg</file>
+        <file>resources/build_black_24dp.svg</file>
+        <file>resources/cancel_black_24dp.svg</file>
+        <file>resources/check_circle_black_24dp.svg</file>
+        <file>resources/close_black_24dp.svg</file>
+        <file>resources/create_black_24dp.svg</file>
+        <file>resources/delete_black_24dp.svg</file>
+        <file>resources/disabled_by_default_black_24dp.svg</file>
+        <file>resources/done_black_24dp.svg</file>
+        <file>resources/help_outline_black_24dp.svg</file>
+        <file>resources/more_vert_black_24dp.svg</file>
+        <file>resources/refresh_black_24dp.svg</file>
+        <file>resources/remove_black_24dp.svg</file>
+        <file>resources/remove_circle_black_24dp.svg</file>
+        <file>resources/remove_circle_outline_black_24dp.svg</file>
+        <file>resources/reply_black_24dp.svg</file>
+        <file>resources/restore_black_24dp.svg</file>
+        <file>resources/save_black_24dp.svg</file>
+        <file>resources/settings_black_24dp.svg</file>
+        <file>resources/file_open_black_24dp.svg</file>
+        <file>resources/folder_open_black_24dp.svg</file>
+        <file>resources/text_snippet_black_24dp.svg</file>
+        <file>resources/icon.svg</file>
+        <file>resources/icon.png</file>
+        <file>resources/image_black.svg</file>
+        <file>resources/splitscreen.svg</file>
+        <file>resources/download.svg</file>
+        <file>resources/upload.svg</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>help.html</file>
+        <file>about.html</file>
+        <file>resources/base_1h.svg</file>
+        <file>resources/base_1h_control.svg</file>
+        <file>resources/base_2h.svg</file>
+        <file>resources/base_2h_control.svg</file>
+        <file>resources/base_3h.svg</file>
+        <file>base/base_0h_collapsed.svg</file>
+    </qresource>
+    <qresource prefix="/help">
+        <file>resources/help/brick_creator.png</file>
+        <file>resources/help/brick_creator_brick.png</file>
+        <file>resources/help/brick_creator_color.png</file>
+        <file>resources/help/brick_creator_name.png</file>
+        <file>resources/help/brick_creator_save.png</file>
+        <file>resources/help/tutorial.png</file>
+        <file>resources/help/tutorial_available_bricks.png</file>
+        <file>resources/help/tutorial_brick_filter.png</file>
+        <file>resources/help/tutorial_bricks.png</file>
+        <file>resources/help/tutorial_controls.png</file>
+        <file>resources/help/tutorial_name.png</file>
+        <file>resources/help/tutorial_paths.png</file>
+        <file>resources/help/tutorial_tutorial.png</file>
+        <file>resources/help/translator_extended.png</file>
+        <file>resources/help/translator_normal.png</file>
+    </qresource>
+</RCC>
