@@ -11,6 +11,7 @@ DelegateModel {
     delegate: timelineDelegate
     property int selectedIndex: -1
     signal focus
+    signal deleteElement(int index)
 
     Component {
         id: timelineDelegate
@@ -49,6 +50,7 @@ DelegateModel {
                     mouseArea.onReleased: dragArea.held = false
                     mouseArea.drag.target: dragArea.held ? content : undefined
                     mouseArea.drag.axis: Drag.YAxis
+                    clearButton.onPressed: deleteElement(index)
                 }
                 Rectangle {
                     id: handle

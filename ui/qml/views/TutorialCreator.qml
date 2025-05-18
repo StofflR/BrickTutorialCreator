@@ -106,6 +106,8 @@ Item {
                     orientation: ListView.Vertical
                     model: TutorialView {
                         onFocus: item.forceActiveFocus()
+                        onDeleteElement: index => tutorialManager.removeBrick(index)
+
                         id: proxyModel
                         model: tutorialManager?.model
                         onModelUpdated: {

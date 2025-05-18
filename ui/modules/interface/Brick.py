@@ -251,7 +251,9 @@ class Brick(QObject):
         """
         path = removeFileStub(path)
         os.makedirs(path, exist_ok=True)
-        SVGBrick.savePNG(self, os.path.join(path, self._getFileName(filename, PNG_EXT)))
+        target = os.path.join(path, filename)
+        self.brick.savePNG(target)
+        return target
 
     @Slot(str, result=bool)
     def exists(self, path):
@@ -311,5 +313,5 @@ class Brick(QObject):
         if not filename:
             filename = self.fileName()
         filename = cleanFileName(filename)
-        filename = filename if PNG_EXT in filename else filename + extension
+        filename = filename if extension in filename else filename + extension
         return filename

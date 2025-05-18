@@ -172,6 +172,7 @@ class SVGBrick(SVGBrickModifier):
         height : height of the image (default=None) image is scaled according to default brick height
         """
         assert path != ""
+        self.save()
         path = extendFileExtension(path, PNG_EXT)
         renderer = QSvgRenderer(self.working_brick_)
         if height is None:
