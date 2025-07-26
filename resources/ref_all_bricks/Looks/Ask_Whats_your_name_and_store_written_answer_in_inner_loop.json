@@ -1,0 +1,12 @@
+{
+    "Border": "#383838",
+    "Color": "#6b9c49",
+    "Content": "Ask _'What's your name?'_\nand store written answer in\n|inner loop|",
+    "Shade": "#486822",
+    "Size": "H2",
+    "Text": "#ffffff",
+    "Type": "Base",
+    "Width": 1920,
+    "X": 240,
+    "Y": 124.07339860589751
+}

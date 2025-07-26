@@ -1,0 +1,12 @@
+{
+    "Border": "#383838",
+    "Color": "#408ac5",
+    "Content": "When Raspberry Pi pin\n|3|\nchanges to\n|high|",
+    "Shade": "#27567c",
+    "Size": "H2",
+    "Text": "#ffffff",
+    "Type": "Base",
+    "Width": 1920,
+    "X": 240,
+    "Y": 124.07339860589751
+}

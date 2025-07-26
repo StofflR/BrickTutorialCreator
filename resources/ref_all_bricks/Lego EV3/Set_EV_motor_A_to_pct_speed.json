@@ -1,0 +1,12 @@
+{
+    "Border": "#383838",
+    "Color": "#fccb41",
+    "Content": "Set EV3 motor\n|A|\nto _100_ % speed",
+    "Shade": "#aa8832",
+    "Size": "H2",
+    "Text": "#ffffff",
+    "Type": "Base",
+    "Width": 1920,
+    "X": 240,
+    "Y": 124.07339860589751
+}

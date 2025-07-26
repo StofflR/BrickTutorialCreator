@@ -1,0 +1,12 @@
+{
+    "Border": "#383838",
+    "Color": "#fccb41",
+    "Content": "Play EV3 tone\nfor _1_ secondd Frequency _2_ x100Hz\nVolume _100_ %",
+    "Shade": "#aa8832",
+    "Size": "H2",
+    "Text": "#ffffff",
+    "Type": "Base",
+    "Width": 1920,
+    "X": 240,
+    "Y": 124.07339860589751
+}

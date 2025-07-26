@@ -1,0 +1,12 @@
+{
+    "Border": "#383838",
+    "Color": "#f24e50",
+    "Content": "Show variable\n|inner loop|\nat x: _100_ y: _200_\nsize: _120_ % color: _'#FF0000'_\naligned\n|centered|",
+    "Shade": "#ae2f2f",
+    "Size": "H3",
+    "Text": "#ffffff",
+    "Type": "Base",
+    "Width": 1920,
+    "X": 240,
+    "Y": 74.4440391635385
+}
