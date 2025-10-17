@@ -1,36 +1,14 @@
+**/.*/**
+**/__pycache__/**
 
-.idea/
+assets/.qmlls.ini
 
-ui/resources/out/
+build/*
+builds/*
 
-ui/resources/tmp/
 
-*.zip
+**/.qmlls.ini
 
-*/venv/
+*.ini
 
-*/main.build/
-
-*/BrickTutorialCreator.dist
-
-*/BrickTutorialCreator.build
-
-*.bin
-
-*.gz
-
-.DS_Store
-
-*ui.pyproject.user
-
-venv/
-
-*__pycache__
-
-ui/.vs/
-
-ui/.vscode/
-
-ui/BrickTutorialCreator/
-
-**/.qtcreator
+*.user
