@@ -5,93 +5,127 @@
 
 BrickLoader::BrickLoader(QObject *parent) : QObject(parent) {}
 
-void BrickLoader::loadFile(const QUrl &filePath) {
+QJsonObject BrickLoader::loadJSONObjectFromFile(QFile &file)
+{
+  QJsonObject result;
+  auto data = file.readAll();
+
+  if (data.isEmpty())
+  {
+    BrickUtility::updateStatusMessage(
+        QString("File is empty: %1").arg(file.fileName()));
+    return {};
+  }
+
+  if (file.fileName().endsWith(utility::svgSuffix, Qt::CaseInsensitive))
+  {
+    result = loadFromSVG(data);
+  }
+  else if (file.fileName().endsWith(utility::jsonSuffix,
+                                    Qt::CaseInsensitive))
+  {
+    result = loadFromJSON(data);
+  }
+  else if (file.fileName().endsWith(utility::pngSuffix,
+                                    Qt::CaseInsensitive))
+  {
+    result = loadFromPNG(data);
+  }
+  else
+  {
+    BrickUtility::updateStatusMessage(
+        QString("Unsupported file type: %1").arg(file.fileName()));
+  }
+  return result;
+}
+
+void BrickLoader::loadFile(const QUrl &filePath)
+{
   QFile file(filePath.toLocalFile());
-  if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+  if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+  {
     BrickUtility::updateStatusMessage(
         QString("Could not open file: %1").arg(filePath.toString()));
     return;
   }
-  if (filePath.toString().endsWith(utility::svgSuffix, Qt::CaseInsensitive)) {
-    loadFromSVG(&file);
-  } else if (filePath.toString().endsWith(utility::jsonSuffix,
-                                          Qt::CaseInsensitive)) {
-    loadFromJSON(&file);
-  } else if (filePath.toString().endsWith(utility::pngSuffix,
-                                          Qt::CaseInsensitive)) {
-    loadFromPNG(&file);
-  } else {
-    BrickUtility::updateStatusMessage(
-        QString("Unsupported file type: %1").arg(filePath.toString()));
-  }
+  auto jsonData = loadJSONObjectFromFile(file);
   file.close();
-}
 
-void BrickLoader::loadJSONDocument(const QByteArray &data) {
-  auto document = QJsonDocument::fromJson(data);
-  if (document.isNull() || !document.isObject()) {
-    BrickUtility::updateStatusMessage("Invalid JSON format.");
-    return;
-  }
   QString _size, _type, _color, _shade, _border, _textColor, _content;
   int _width = 0;
   double _xPos = 0.0, _yPos = 0.0;
-
-  if (!JSONGenerator::readJSON(document.object(), _size, _type, _color, _shade,
+  if (!JSONGenerator::readJSON(jsonData, _size, _type, _color, _shade,
                                _border, _textColor, _width, _xPos, _yPos,
                                _content))
     return;
-
   emit fileLoaded(_content, _type, _size, _color, _shade, _border, _textColor);
   emit positionLoaded(_xPos, _yPos);
   emit widthLoaded(_width);
   BrickUtility::updateStatusMessage("File loaded successfully.");
+  return;
 }
 
-void BrickLoader::loadFromPNG(QFile *file) {
-  if (!file || !file->isOpen()) {
-    BrickUtility::updateStatusMessage("Could not open file.");
-    return;
+QJsonObject BrickLoader::loadJSONDocument(const QByteArray &data)
+{
+  auto document = QJsonDocument::fromJson(data);
+  if (document.isNull() || !document.isObject())
+  {
+    BrickUtility::updateStatusMessage("Invalid JSON format.");
+    return {};
   }
-  QImage image(file->fileName(), "PNG");
-  if (image.isNull()) {
+  return document.object();
+}
+
+QJsonObject BrickLoader::loadFromPNG(const QByteArray &data)
+{
+  QImage image;
+  if (!image.loadFromData(data, "PNG"))
+  {
+    BrickUtility::updateStatusMessage("Failed to load image from data.");
+    return {};
+  }
+  if (image.isNull())
+  {
     BrickUtility::updateStatusMessage(
-        QString("Failed to load image: %1").arg(file->fileName()));
-    return;
+        QString("Failed to load image from data."));
+    return {};
   }
   QString metadata = image.text("metadata");
-  if (metadata.isEmpty()) {
+  if (metadata.isEmpty())
+  {
     BrickUtility::updateStatusMessage(
-        QString("No metadata found in: %1").arg(file->fileName()));
-    return;
+        QString("No metadata found in PNG image."));
+    return {};
   }
-  loadJSONDocument(metadata.toUtf8());
+  return BrickLoader::loadJSONDocument(metadata.toUtf8());
 }
 
-void BrickLoader::loadFromSVG(QFile *file) {
-  if (!file || !file->isOpen()) {
-    BrickUtility::updateStatusMessage("Could not open file.");
-    return;
+QJsonObject BrickLoader::loadFromSVG(const QByteArray &data)
+{
+  if (data.isEmpty())
+  {
+    return {};
   }
   // read <desc> tag for metadata
-  QString svgContent = QString::fromUtf8(file->readAll());
+  QString svgContent = QString::fromUtf8(data);
   QRegularExpression descTag(QRegularExpression::escape("<desc>") + "(.*)" +
                                  QRegularExpression::escape("</desc>"),
                              QRegularExpression::DotMatchesEverythingOption);
-  if (auto match = descTag.match(svgContent); match.hasMatch()) {
+  if (auto match = descTag.match(svgContent); match.hasMatch())
+  {
     QTextDocument textDoc;
     textDoc.setHtml(match.captured(1));
-    loadJSONDocument(textDoc.toPlainText().toUtf8());
-  } else {
+    return BrickLoader::loadJSONDocument(textDoc.toPlainText().toUtf8());
+  }
+  else
+  {
     BrickUtility::updateStatusMessage(
-        QString("No metadata found in: %1").arg(file->fileName()));
+        QString("No metadata found in SVG image."));
+    return {};
   }
 }
 
-void BrickLoader::loadFromJSON(QFile *file) {
-  if (!file || !file->isOpen()) {
-    BrickUtility::updateStatusMessage("Could not open file.");
-    return;
-  }
-  loadJSONDocument(file->readAll());
+QJsonObject BrickLoader::loadFromJSON(const QByteArray &data)
+{
+  return BrickLoader::loadJSONDocument(data);
 }

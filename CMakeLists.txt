@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 list(APPEND CMAKE_PREFIX_PATH "~/Qt/6.9.1/gcc_64/lib/cmake")
 
-find_package(Qt6 REQUIRED COMPONENTS Quick Core Svg Qml Gui Concurrent)
+find_package(Qt6 REQUIRED COMPONENTS Quick Widgets Core Svg Qml Gui Concurrent)
 
 include(Utility.cmake)
 
@@ -54,7 +54,7 @@ set_target_properties(${target} PROPERTIES
 )
 
 target_link_libraries(${target}
-    PRIVATE Qt6::Quick appModule
+    PRIVATE Qt6::Quick Qt6::Widgets appModule
 )
 
 include(GNUInstallDirs)

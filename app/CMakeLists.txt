@@ -25,4 +25,5 @@ Qt6::Core
 Qt6::Svg 
 Qt6::Gui
 Qt6::Concurrent
+Qt6::Widgets
 )

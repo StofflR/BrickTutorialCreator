@@ -194,6 +194,29 @@ ApplicationWindow {
             function setCurrentItem() {
                 stack.setCurrentItem(StackLayout.index);
             }
+            RowLayout {
+                anchors.fill: parent
+                Button {
+                    text: "Add Tutorial Brick"
+                    onClicked: {
+                        tutorialViewModel.addBrick();
+                    }
+                }
+                ListView {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    model: TutorialViewModel {
+                        id: tutorialViewModel
+                    }
+                    delegate: Item {
+                        width: parent.width
+                        height: 40
+                        Text {
+                            text: "Tutorial Item" + element
+                        }
+                    }
+                }
+            }
         }
     }
     footer: Label {

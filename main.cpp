@@ -1,7 +1,7 @@
-#include <QGuiApplication>
+#include <QApplication>
 #include <QQmlApplicationEngine>
 
-void setup(QGuiApplication* app, QQmlApplicationEngine* engine){
+void setup(QApplication* app, QQmlApplicationEngine* engine){
     engine->addImportPath("qrc:/");
     QObject::connect(
         engine,
@@ -16,7 +16,7 @@ void setup(QGuiApplication* app, QQmlApplicationEngine* engine){
 
 int main(int argc, char *argv[])
 {
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
     QQmlApplicationEngine engine;
     setup(&app, &engine);
     return app.exec();
@@ -24,12 +24,12 @@ int main(int argc, char *argv[])
 
 #else
 
-QGuiApplication *g_app = nullptr;
+QApplication *g_app = nullptr;
 QQmlApplicationEngine *g_engine = nullptr;
 
 int main(int argc, char **argv)
 {
-    g_app = new QGuiApplication(argc, argv);
+    g_app = new QApplication(argc, argv);
     g_engine = new QQmlApplicationEngine();
     setup(g_app, g_engine);
     return 0;

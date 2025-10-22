@@ -10,7 +10,8 @@
 #include <QTextDocument>
 #include <QTextStream>
 
-class BrickLoader : public QObject {
+class BrickLoader : public QObject
+{
   Q_OBJECT
   QML_ELEMENT
 public:
@@ -18,6 +19,11 @@ public:
   ~BrickLoader() = default;
 
   Q_INVOKABLE void loadFile(const QUrl &filePath);
+  static QJsonObject loadJSONObjectFromFile(QFile &file);
+
+  static QJsonObject loadFromPNG(const QByteArray &data);
+  static QJsonObject loadFromSVG(const QByteArray &data);
+  static QJsonObject loadFromJSON(const QByteArray &data);
 
 signals:
   void fileLoaded(const QString &content, const QString &type,
@@ -28,8 +34,5 @@ signals:
   void widthLoaded(int width);
 
 private:
-  void loadJSONDocument(const QByteArray &data);
-  void loadFromPNG(QFile *file);
-  void loadFromSVG(QFile *file);
-  void loadFromJSON(QFile *file);
+  static QJsonObject loadJSONDocument(const QByteArray &data);
 };
